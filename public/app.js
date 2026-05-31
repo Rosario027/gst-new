@@ -89,7 +89,32 @@ function getOnboardedCompanies() {
   }
 }
 
+// Real GST registrations from the backend (populated by api.js on login/onboarding).
+function getBackendRegistrations() {
+  try {
+    const regs = JSON.parse(localStorage.getItem('fylepro.registrations') || '[]');
+    if (!Array.isArray(regs) || !regs.length) return [];
+    return regs.map(r => ({
+      id: r.id,
+      name: (r.company_name || r.legal_name || 'Company') + (r.state_name ? ' · ' + r.state_name : ''),
+      shortName: r.company_name || r.legal_name || r.gstin,
+      gstin: r.gstin,
+      type: 'normal',
+      typeLabel: r.filing_scheme === 'qrmp' ? 'Normal Registration · QRMP' : 'Normal Registration',
+      state: (r.state_name || '') + (r.state_code ? ' (' + r.state_code + ')' : ''),
+      pan: (r.gstin || '').slice(2, 12),
+      aato: '',
+      period: r.filing_scheme === 'qrmp' ? 'Quarterly' : 'Monthly',
+      nextDue: 'GSTR-1 filing',
+      daysToDue: 0,
+      homePage: 'gstr1.html'
+    }));
+  } catch (e) { return []; }
+}
+
 function getAccessibleEntities() {
+  const backend = getBackendRegistrations();
+  if (backend.length) return backend;
   const onboarded = getOnboardedCompanies();
   return onboarded.length ? onboarded : ENTITIES;
 }

@@ -5,7 +5,6 @@ import { withTenant } from '../db';
 import { requireAuth } from '../middleware/auth';
 import { wrap } from '../middleware/async';
 import { buildTemplateWorkbook } from '../services/gstr1/template';
-import { buildSampleWorkbook } from '../services/gstr1/sample-data';
 import { buildReconReport } from '../services/gstr1/recon-report';
 import { parseWorkbook, parseCsv } from '../services/gstr1/parser';
 import { reconcile } from '../services/gstr1/reconcile';
@@ -45,15 +44,6 @@ gstr1Router.get('/template', requireAuth, wrap(async (req, res) => {
   const buf = await buildTemplateWorkbook({ gstin: req.query.gstin as string, period: normPeriod(req.query.period) || undefined });
   res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
   res.setHeader('Content-Disposition', `attachment; filename="GSTR1-Template-${normPeriod(req.query.period) || 'blank'}.xlsx"`);
-  res.send(buf);
-}));
-
-// ── Download sample data files (books / e-invoice) for the reco demo ──
-gstr1Router.get('/sample/:type', requireAuth, wrap(async (req, res) => {
-  const type = req.params.type === 'einvoice' ? 'einvoice' : 'books';
-  const buf = await buildSampleWorkbook(type);
-  res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-  res.setHeader('Content-Disposition', `attachment; filename="GSTR1-sample-${type}-052026.xlsx"`);
   res.send(buf);
 }));
 

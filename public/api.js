@@ -33,10 +33,9 @@
     return payload;
   }
 
-  async function login(loginId, password) {
-    const data = await api('/auth/login', { method: 'POST', body: { loginId, password } });
+  // Apply an auth response (login or onboarding): store token, session, registrations.
+  async function applyAuth(data) {
     setToken(data.token);
-    // shell-compatible session
     const u = data.user;
     localStorage.setItem('fylepro.session', JSON.stringify({
       userId: u.userId, loginId: u.loginId, name: u.fullName, role: u.role,
@@ -45,6 +44,15 @@
     await refreshRegistrations();
     return data;
   }
+
+  async function login(loginId, password) {
+    return applyAuth(await api('/auth/login', { method: 'POST', body: { loginId, password } }));
+  }
+
+  const onboarding = {
+    verify: (tempUserId, tempPassword) => api('/auth/onboarding/verify', { method: 'POST', body: { tempUserId, tempPassword } }),
+    complete: async (payload) => applyAuth(await api('/auth/onboarding/complete', { method: 'POST', body: payload })),
+  };
 
   async function refreshRegistrations() {
     try {
@@ -83,7 +91,6 @@
   const gstr1 = {
     sections: () => api('/gstr1/sections'),
     templateUrl: (gstin, period) => '/api/gstr1/template?gstin=' + encodeURIComponent(gstin || '') + '&period=' + encodeURIComponent(period || ''),
-    sampleUrl: (type) => '/api/gstr1/sample/' + (type === 'einvoice' ? 'einvoice' : 'books'),
     reconReportUrl: (reconId) => '/api/gstr1/reconciliations/' + reconId + '/report',
     validationReportUrl: (datasetId) => '/api/gstr1/datasets/' + datasetId + '/validation-report',
     upload: (file, registrationId, period, source) => {
@@ -103,7 +110,7 @@
   };
 
   window.FP = {
-    api, login, logout, requireSession, refreshRegistrations,
+    api, login, logout, onboarding, requireSession, refreshRegistrations,
     getRegistrations, currentRegistration, getToken, gstr1,
   };
 })();

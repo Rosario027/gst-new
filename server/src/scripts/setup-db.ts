@@ -15,7 +15,7 @@ async function main(): Promise<void> {
   if (fs.existsSync(seedPath)) {
     console.log('[db:setup] applying seed.sql ...');
     await pool.query(fs.readFileSync(seedPath, 'utf8'));
-    console.log('[db:setup] seed applied (login: admin / admin123).');
+    console.log('[db:setup] seed applied (clean slate — onboard via "New user?" with new / new123).');
   }
 
   await closePool();

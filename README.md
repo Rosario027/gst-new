@@ -42,7 +42,7 @@ The reconciliation **workbench** is at `/gstr1-workbench.html` (linked from the 
 │   └── *.html, app.js, styles.css
 ├── db/
 │   ├── schema.sql               # canonical schema (multi-tenant + RLS + GSTR-1 tables)
-│   └── seed.sql                 # demo tenant + admin/admin123 + one GSTIN
+│   └── seed.sql                 # clean slate (no demo data; onboarding creates real tenants)
 ├── dist/                        # compiled output (gitignored)
 ├── package.json  server/tsconfig.json
 ├── .env.example  railway.json  Procfile
@@ -66,7 +66,10 @@ npm start                       # http://localhost:8080
 npm run dev
 ```
 
-Login: **admin / admin123**
+**First run:** open the app → **New user?** → temporary credentials **new / new123**
+→ add your real GSTIN(s) → create your admin login → finish. This creates the
+tenant, company, GST registration(s) and admin user in the database. There is
+no pre-seeded demo account.
 
 ---
 

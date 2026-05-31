@@ -55,8 +55,6 @@
     localStorage.setItem('fylepro.entity', state.regId);
     $('wb-context').textContent = `${state.gstin || '—'} · ${MONTHS[+$('wb-month').value - 1]} ${yyyy} · delivery: ${state.deliveryMode.toUpperCase()}`;
     $('wb-template').href = FP.gstr1.templateUrl(state.gstin, state.period);
-    $('wb-sample-books').href = FP.gstr1.sampleUrl('books');
-    $('wb-sample-einv').href = FP.gstr1.sampleUrl('einvoice');
   }
 
   // ── Generic drop-zone wiring ──

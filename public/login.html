@@ -23,16 +23,16 @@
     <div class="login-card" id="login-card">
       <div class="login-card-head">
         <h2>Sign in</h2>
-        <span class="login-demo-pill">Demo: admin / admin123</span>
+        <span class="login-demo-pill">New here? Create a workspace below</span>
       </div>
       <form id="login-form" class="login-form">
         <label class="login-field">
           <span>User ID</span>
-          <input id="login-id" autocomplete="username" required value="admin">
+          <input id="login-id" autocomplete="username" required placeholder="Your login ID">
         </label>
         <label class="login-field">
           <span>Password</span>
-          <input id="login-password" type="password" autocomplete="current-password" required value="admin123">
+          <input id="login-password" type="password" autocomplete="current-password" required placeholder="Password">
         </label>
         <div class="login-error" id="login-error"></div>
         <button class="btn btn-primary login-submit" type="submit">Login</button>
@@ -168,9 +168,9 @@
       </ul>
 
       <div class="login-visual-card">
-        <div class="visual-row"><span>Matched invoices</span><strong>1,284</strong></div>
-        <div class="visual-row"><span>Flagged differences</span><strong style="color:#FCA5A5">17</strong></div>
-        <div class="visual-row"><span>Output</span><strong>GSTR1-052026.json</strong></div>
+        <div class="visual-row"><span>Upload format</span><strong>Excel / CSV</strong></div>
+        <div class="visual-row"><span>Validation</span><strong>Live, rule-based</strong></div>
+        <div class="visual-row"><span>Output</span><strong>Portal JSON</strong></div>
       </div>
     </div>
   </aside>
@@ -258,14 +258,19 @@ function showStep(step) {
   document.querySelectorAll('[data-step-dot]').forEach(dot => dot.classList.toggle('active', Number(dot.dataset.stepDot) <= step));
 }
 
-document.getElementById('temp-form').addEventListener('submit', (event) => {
+document.getElementById('temp-form').addEventListener('submit', async (event) => {
   event.preventDefault();
-  const ok = document.getElementById('temp-id').value.trim() === 'new' && document.getElementById('temp-password').value === 'new123';
-  if (!ok) {
-    document.getElementById('temp-error').textContent = 'Temporary credentials do not match.';
-    return;
+  const tempId = document.getElementById('temp-id').value.trim();
+  const tempPassword = document.getElementById('temp-password').value;
+  document.getElementById('temp-error').textContent = '';
+  try {
+    await window.FP.onboarding.verify(tempId, tempPassword);
+    showStep(2);
+  } catch (e) {
+    // offline fallback to the demo temporary credential
+    if (tempId === 'new' && tempPassword === 'new123') { showStep(2); return; }
+    document.getElementById('temp-error').textContent = e.message || 'Temporary credentials do not match.';
   }
-  showStep(2);
 });
 
 function renderCompanies() {
@@ -340,20 +345,42 @@ document.getElementById('add-team').addEventListener('click', () => {
   document.getElementById('team-password').value = '';
 });
 
-document.getElementById('team-form').addEventListener('submit', (event) => {
+function teamError(msg) {
+  let el = document.getElementById('team-error');
+  if (!el) { el = document.createElement('div'); el.id = 'team-error'; el.className = 'login-error'; document.getElementById('team-form').appendChild(el); }
+  el.textContent = msg || '';
+}
+
+document.getElementById('team-form').addEventListener('submit', async (event) => {
   event.preventDefault();
   if (!owner) return;
-  const onboarding = {
+  teamError('');
+  const payload = {
+    tempUserId: document.getElementById('temp-id').value.trim(),
+    tempPassword: document.getElementById('temp-password').value,
     workspaceName: companies[0].companyName,
-    owner,
-    companies,
-    teamMembers: team,
-    createdAt: new Date().toISOString()
+    companies: companies.map(c => ({ gstin: c.gstin, legalName: c.companyName, stateName: c.state, filingScheme: c.filingScheme })),
+    admin: { fullName: owner.name, loginId: owner.loginId, password: owner.password, role: owner.role },
+    team: team.map(t => ({ fullName: t.name, loginId: t.loginId, password: t.password, role: t.role }))
   };
-  localStorage.setItem('fylepro.onboarding', JSON.stringify(onboarding));
-  localStorage.setItem('fylepro.entity', companies[0].id);
-  setSession(owner, onboarding.workspaceName);
-  window.location.href = 'dashboard.html';
+
+  try {
+    // Create the real tenant, admin, companies, GSTINs and team in the database.
+    await window.FP.onboarding.complete(payload);
+    window.location.href = 'gstr1-workbench.html';
+  } catch (e) {
+    const msg = e.message || 'Onboarding failed.';
+    // Only fall back to offline mode on a network failure; surface real validation errors.
+    if (/failed to fetch|networkerror|load failed/i.test(msg)) {
+      const onboarding = { workspaceName: companies[0].companyName, owner, companies, teamMembers: team, createdAt: new Date().toISOString() };
+      localStorage.setItem('fylepro.onboarding', JSON.stringify(onboarding));
+      localStorage.setItem('fylepro.entity', companies[0].id);
+      setSession(owner, onboarding.workspaceName);
+      window.location.href = 'dashboard.html';
+      return;
+    }
+    teamError(msg);
+  }
 });
 </script>
 </body>
