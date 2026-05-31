@@ -121,9 +121,13 @@ CREATE TABLE IF NOT EXISTS gstr1_datasets (
   original_filename text,
   status text NOT NULL DEFAULT 'uploaded', -- uploaded|validated|reconciled|json_generated|filed
   summary jsonb NOT NULL DEFAULT '{}'::jsonb,
+  validation jsonb NOT NULL DEFAULT '{}'::jsonb,
   uploaded_by uuid REFERENCES users(id),
   created_at timestamptz NOT NULL DEFAULT now()
 );
+
+-- Added after initial release; safe for existing databases.
+ALTER TABLE gstr1_datasets ADD COLUMN IF NOT EXISTS validation jsonb NOT NULL DEFAULT '{}'::jsonb;
 
 -- Normalized records parsed from a dataset, one row per source line, tagged by section.
 CREATE TABLE IF NOT EXISTS gstr1_records (

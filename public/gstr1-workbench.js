@@ -101,15 +101,34 @@
       `<table class="wb-tbl"><thead><tr><th>Section</th><th>Row</th><th>Issues (first 50)</th></tr></thead><tbody>${rows}</tbody></table>`);
   }
 
+  function renderValidation(elId, datasetId, validation) {
+    if (!validation) return;
+    const v = validation, t = v.totals || {};
+    const map = { errors: ['err', 'Not ready — fix errors before generating JSON'], warnings: ['warn', 'Ready with warnings — review advised'], clean: ['ok', 'Clean — ready to generate JSON'] };
+    const [cls, label] = map[v.status] || ['muted', v.status];
+    const issues = (v.topIssues || []).slice(0, 8).map(i =>
+      `<tr><td>${i.code || ''}</td><td><span class="pill ${i.severity === 'error' ? 'err' : 'warn'}">${i.severity}</span></td><td>${i.count}</td><td style="font-family:inherit">${i.message}</td></tr>`).join('');
+    $(elId).insertAdjacentHTML('beforeend', `
+      <div style="margin-top:12px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+        <span class="pill ${cls}" style="font-size:12px;">${label}</span>
+        <span class="wb-muted">${t.errors || 0} errors · ${t.warnings || 0} warnings across ${t.rows || 0} rows</span>
+        <a class="btn btn-secondary" href="${FP.gstr1.validationReportUrl(datasetId)}" download>⬇ Download validation report</a>
+      </div>
+      ${issues ? `<table class="wb-tbl"><thead><tr><th>Code</th><th>Severity</th><th>Count</th><th>Issue</th></tr></thead><tbody>${issues}</tbody></table>` : ''}`);
+  }
+
   async function uploadBooks(file) {
     try {
       $('books-result').innerHTML = '<p class="wb-muted">Uploading & validating…</p>';
       const res = await FP.gstr1.upload(file, state.regId, state.period, 'books');
       state.booksDatasetId = res.datasetId;
+      $('books-result').innerHTML = '';
       renderSummary('books-result', res.summary, res.warnings);
+      renderValidation('books-result', res.datasetId, res.validation);
       renderErrors('books-result', res.records);
       enable('card-recon'); enable('card-json');
-      banner('Books uploaded and validated.', 's');
+      const st = res.validation && res.validation.status;
+      banner(st === 'errors' ? 'Uploaded — validation found errors (see report).' : 'Books uploaded and validated.', st === 'errors' ? 'e' : 's');
     } catch (e) { $('books-result').innerHTML = ''; banner(e.message, 'e'); }
   }
 

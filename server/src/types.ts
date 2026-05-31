@@ -24,6 +24,30 @@ export interface ValidationError {
   field: string;
   message: string;
   severity: 'error' | 'warning';
+  /** GSTN-style error code where applicable, e.g. RET191150. */
+  code?: string;
+}
+
+/** Context the validator needs to enforce supplier-relative (inter/intra) rules. */
+export interface ValidationContext {
+  supplierGstin: string;
+  supplierStateCode: string;
+  period: string; // MMYYYY
+}
+
+export interface ValidationSummary {
+  status: 'clean' | 'warnings' | 'errors';
+  totals: {
+    rows: number;
+    validRows: number;
+    errorRows: number;
+    warningRows: number;
+    errors: number;
+    warnings: number;
+  };
+  bySection: Record<string, { rows: number; errors: number; warnings: number }>;
+  byCode: Record<string, number>;
+  topIssues: { code: string; message: string; count: number; severity: 'error' | 'warning' }[];
 }
 
 export interface DatasetSummary {

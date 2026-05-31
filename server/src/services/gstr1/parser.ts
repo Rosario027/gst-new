@@ -1,7 +1,6 @@
 import ExcelJS from 'exceljs';
 import { Readable } from 'stream';
 import { SECTIONS, SectionDef, ColumnDef } from './sections';
-import { validateRecord } from './validate';
 import { DatasetSummary, ParsedRecord } from '../../types';
 import { toNumber, posLabel } from './util';
 
@@ -93,14 +92,9 @@ function parseSheet(ws: ExcelJS.Worksheet, section: SectionDef, out: ParsedRecor
     if (isNoteRow(data, section)) return;
 
     dataRowNo += 1;
-    const errors = validateRecord(section, data);
-    out.push({
-      section: section.key,
-      rowNo: dataRowNo,
-      data,
-      errors,
-      isValid: !errors.some((e) => e.severity === 'error'),
-    });
+    // Validation is applied later by validateDataset() once the supplier
+    // context (GSTIN/state/period) is known, so it can enforce inter/intra rules.
+    out.push({ section: section.key, rowNo: dataRowNo, data, errors: [], isValid: true });
   });
 }
 

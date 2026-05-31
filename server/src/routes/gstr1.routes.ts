@@ -9,6 +9,8 @@ import { buildSampleWorkbook } from '../services/gstr1/sample-data';
 import { buildReconReport } from '../services/gstr1/recon-report';
 import { parseWorkbook, parseCsv } from '../services/gstr1/parser';
 import { reconcile } from '../services/gstr1/reconcile';
+import { validateDataset } from '../services/gstr1/validate';
+import { buildValidationReport } from '../services/gstr1/validation-report';
 import { buildGstr1Json } from '../services/gstr1/json-builder';
 import { SECTIONS } from '../services/gstr1/sections';
 import { getPortalClient } from '../services/portal';
@@ -73,15 +75,24 @@ gstr1Router.post('/datasets', requireAuth, upload.single('file'), async (req, re
       const reg = await loadRegistration(client, registrationId);
       if (!reg) throw Object.assign(new Error('Registration not found or access denied'), { status: 404 });
 
+      // Validate with supplier context so inter/intra (IGST vs CGST+SGST) rules apply.
+      const { records, validation } = validateDataset(parsed.records, {
+        supplierGstin: reg.gstin,
+        supplierStateCode: reg.state_code,
+        period,
+      });
+      const summary = { ...parsed.summary, validRecords: validation.totals.validRows, errorRecords: validation.totals.errorRows };
+
       const ds = await client.query(
-        `INSERT INTO gstr1_datasets (tenant_id, company_id, gst_registration_id, period, source, original_filename, status, summary, uploaded_by)
-         VALUES (current_tenant_id(), $1, $2, $3, $4, $5, 'validated', $6, current_app_user_id())
+        `INSERT INTO gstr1_datasets (tenant_id, company_id, gst_registration_id, period, source, original_filename, status, summary, validation, uploaded_by)
+         VALUES (current_tenant_id(), $1, $2, $3, $4, $5, $6, $7, $8, current_app_user_id())
          RETURNING id, created_at`,
-        [reg.company_id, registrationId, period, source, req.file!.originalname, parsed.summary]
+        [reg.company_id, registrationId, period, source, req.file!.originalname,
+         validation.status === 'errors' ? 'errors' : 'validated', summary, validation]
       );
       const datasetId = ds.rows[0].id;
 
-      for (const rec of parsed.records) {
+      for (const rec of records) {
         await client.query(
           `INSERT INTO gstr1_records (tenant_id, dataset_id, section, row_no, data, errors, is_valid)
            VALUES (current_tenant_id(), $1, $2, $3, $4, $5, $6)`,
@@ -92,17 +103,19 @@ gstr1Router.post('/datasets', requireAuth, upload.single('file'), async (req, re
       await client.query(
         `INSERT INTO audit_logs (tenant_id, company_id, actor_user_id, action, entity_type, entity_id, details)
          VALUES (current_tenant_id(), $1, current_app_user_id(), 'gstr1.dataset.upload', 'gstr1_dataset', $2, $3)`,
-        [reg.company_id, datasetId, { period, source, records: parsed.records.length }]
+        [reg.company_id, datasetId, { period, source, records: records.length, status: validation.status }]
       );
 
-      return { datasetId, createdAt: ds.rows[0].created_at };
+      return { datasetId, createdAt: ds.rows[0].created_at, summary, validation, records };
     });
 
     res.json({
-      ...result,
-      summary: parsed.summary,
+      datasetId: result.datasetId,
+      createdAt: result.createdAt,
+      summary: result.summary,
+      validation: result.validation,
       warnings: parsed.warnings,
-      records: parsed.records,
+      records: result.records,
     });
   } catch (err: any) {
     res.status(err.status ?? 500).json({ error: err.message });
@@ -138,6 +151,34 @@ gstr1Router.get('/datasets/:id', requireAuth, wrap(async (req, res) => {
   });
   if (!data) return res.status(404).json({ error: 'Dataset not found' });
   res.json(data);
+}));
+
+// ── Download the validation report (Excel) for a dataset ──
+gstr1Router.get('/datasets/:id/validation-report', requireAuth, wrap(async (req, res) => {
+  const data = await withTenant(ctx(req), async (c) => {
+    const ds = await c.query(
+      `SELECT d.period, d.original_filename, d.validation, g.gstin
+         FROM gstr1_datasets d JOIN gst_registrations g ON g.id = d.gst_registration_id
+        WHERE d.id = $1`,
+      [req.params.id]
+    );
+    if (!ds.rows[0]) return null;
+    const recs = await c.query(
+      `SELECT section, row_no, data, errors, is_valid FROM gstr1_records WHERE dataset_id = $1 ORDER BY section, row_no`,
+      [req.params.id]
+    );
+    return { ds: ds.rows[0], recs: recs.rows };
+  });
+  if (!data) return res.status(404).json({ error: 'Dataset not found' });
+
+  const records = data.recs.map((r: any) => ({ section: r.section, rowNo: r.row_no, data: r.data, errors: r.errors, isValid: r.is_valid }));
+  const buf = await buildValidationReport({
+    gstin: data.ds.gstin, period: data.ds.period, filename: data.ds.original_filename,
+    records, validation: data.ds.validation,
+  });
+  res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  res.setHeader('Content-Disposition', `attachment; filename="GSTR1-validation-${data.ds.period}.xlsx"`);
+  res.send(buf);
 }));
 
 // ── Reconcile two datasets (books vs compare) ──
