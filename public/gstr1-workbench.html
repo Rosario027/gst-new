@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GSTR-1 Reconciliation Workbench · FylePro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .wb-grid { display: grid; gap: 16px; }
+  .wb-card { background:#fff; border:1px solid #E5E7EB; border-radius:12px; padding:20px; }
+  .wb-card h3 { margin:0 0 4px; font-size:15px; font-weight:600; color:#1F2937; }
+  .wb-card .wb-sub { color:#6B7280; font-size:12.5px; margin:0 0 14px; }
+  .wb-step-num { display:inline-grid; place-items:center; width:22px; height:22px; border-radius:6px; background:#374151; color:#fff; font-size:12px; font-weight:600; margin-right:8px; }
+  .wb-row { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  .wb-field { display:flex; flex-direction:column; gap:4px; }
+  .wb-field label { font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6B7280; font-weight:600; }
+  .wb-field select, .wb-field input { padding:8px 10px; border:1px solid #D1D5DB; border-radius:8px; font-family:inherit; font-size:13px; min-width:160px; }
+  .wb-drop { border:2px dashed #D1D5DB; border-radius:10px; padding:22px; text-align:center; color:#6B7280; font-size:13px; cursor:pointer; transition:.15s; }
+  .wb-drop.drag { border-color:#155CDB; background:#F0F6FF; color:#155CDB; }
+  .wb-stat { display:flex; gap:18px; flex-wrap:wrap; margin-top:6px; }
+  .wb-stat .s { background:#F9FAFB; border:1px solid #EEF0F3; border-radius:8px; padding:10px 14px; min-width:120px; }
+  .wb-stat .s b { display:block; font-family:'IBM Plex Mono',monospace; font-size:18px; color:#1F2937; }
+  .wb-stat .s span { font-size:11px; color:#6B7280; text-transform:uppercase; letter-spacing:.03em; }
+  table.wb-tbl { width:100%; border-collapse:collapse; font-size:12.5px; margin-top:10px; }
+  table.wb-tbl th { text-align:left; background:#F9FAFB; padding:7px 10px; border-bottom:1px solid #E5E7EB; font-size:11px; text-transform:uppercase; letter-spacing:.03em; color:#6B7280; }
+  table.wb-tbl td { padding:7px 10px; border-bottom:1px solid #F3F4F6; font-family:'IBM Plex Mono',monospace; }
+  .pill { display:inline-block; padding:2px 8px; border-radius:99px; font-size:11px; font-weight:600; }
+  .pill.ok { background:#E7F6ED; color:#168736; } .pill.warn { background:#FEF3E2; color:#C77700; }
+  .pill.err { background:#FBE9EC; color:#C8102E; } .pill.info { background:#EAF1FE; color:#155CDB; }
+  .pill.muted { background:#F0F1F4; color:#6B7280; }
+  .wb-muted { color:#9CA3AF; font-size:12px; }
+  pre.wb-json { background:#0F172A; color:#E2E8F0; padding:16px; border-radius:10px; overflow:auto; max-height:340px; font-size:12px; font-family:'IBM Plex Mono',monospace; }
+  .wb-banner { padding:10px 14px; border-radius:8px; font-size:13px; margin-bottom:12px; display:none; }
+  .wb-banner.show { display:block; } .wb-banner.e { background:#FBE9EC; color:#C8102E; } .wb-banner.s { background:#E7F6ED; color:#168736; }
+  .disabled-card { opacity:.5; pointer-events:none; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">GSTR-1 Reconciliation Workbench</h1>
+        <p class="page-subtitle" id="wb-context">Template → Upload → Validate → Reconcile → Generate portal JSON</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="gstr1.html" class="btn btn-secondary back-arrow-link">Back to GSTR-1</a>
+      </div>
+    </div>
+
+    <div class="wb-banner" id="wb-banner"></div>
+
+    <div class="wb-grid">
+
+      <!-- STEP 1: Period + template -->
+      <div class="wb-card" id="card-setup">
+        <h3><span class="wb-step-num">1</span>Period &amp; template</h3>
+        <p class="wb-sub">Pick the GSTIN and return period, then download the upload template to fill from your books.</p>
+        <div class="wb-row">
+          <div class="wb-field">
+            <label>GSTIN / Registration</label>
+            <select id="wb-reg"></select>
+          </div>
+          <div class="wb-field">
+            <label>Month</label>
+            <select id="wb-month"></select>
+          </div>
+          <div class="wb-field">
+            <label>Year</label>
+            <select id="wb-year"></select>
+          </div>
+          <div class="wb-field">
+            <label>&nbsp;</label>
+            <a class="btn btn-secondary" id="wb-template" download>Download template</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: Upload books -->
+      <div class="wb-card" id="card-books">
+        <h3><span class="wb-step-num">2</span>Upload books data</h3>
+        <p class="wb-sub">Upload your filled workbook (.xlsx) or the GSTN offline-tool export. Rows are validated on upload.</p>
+        <div class="wb-drop" id="drop-books">
+          <strong>Click or drop</strong> your books / sales-register file here
+          <div class="wb-muted" id="books-name"></div>
+        </div>
+        <input type="file" id="file-books" accept=".xlsx,.xls,.csv" hidden>
+        <div id="books-result"></div>
+      </div>
+
+      <!-- STEP 3: Reconcile -->
+      <div class="wb-card disabled-card" id="card-recon">
+        <h3><span class="wb-step-num">3</span>Reconcile against e-invoice / portal (optional)</h3>
+        <p class="wb-sub">Upload a comparison source to reconcile invoice-by-invoice. Skip if you only need JSON generation.</p>
+        <div class="wb-drop" id="drop-cmp">
+          <strong>Click or drop</strong> the comparison file (e-invoice / GSTN data)
+          <div class="wb-muted" id="cmp-name"></div>
+        </div>
+        <input type="file" id="file-cmp" accept=".xlsx,.xls,.csv" hidden>
+        <div class="wb-row" style="margin-top:12px;">
+          <button class="btn btn-primary" id="btn-reconcile" disabled>Run reconciliation</button>
+        </div>
+        <div id="recon-result"></div>
+      </div>
+
+      <!-- STEP 4: Generate JSON -->
+      <div class="wb-card disabled-card" id="card-json">
+        <h3><span class="wb-step-num">4</span>Generate GSTR-1 portal JSON</h3>
+        <p class="wb-sub">Builds the GSTN-schema JSON from validated rows. Download it, or push via API if this GSTIN is API-enabled.</p>
+        <div class="wb-row">
+          <button class="btn btn-primary" id="btn-generate">Generate JSON</button>
+          <a class="btn btn-secondary" id="btn-download-json" style="display:none" download>Download .json</a>
+          <button class="btn btn-secondary" id="btn-push" style="display:none">Push to portal (API)</button>
+          <span id="push-status" class="wb-muted"></span>
+        </div>
+        <div id="json-result"></div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="api.js"></script>
+<script src="app.js"></script>
+<script>renderShell('gstr1', 'GSTR-1 Outward Supplies', 'Reconciliation Workbench');</script>
+<script src="gstr1-workbench.js"></script>
+</body>
+</html>

@@ -173,6 +173,7 @@
   </aside>
 </main>
 
+<script src="api.js"></script>
 <script>
 const demoUsers = [{ id: 'admin', password: 'admin123', name: 'Admin User', role: 'Company Admin', company: 'Demo Workspace', initials: 'AD' }];
 let companies = [];
@@ -211,26 +212,37 @@ function findSavedUser(loginId, password) {
   return user ? { user, data } : null;
 }
 
-document.getElementById('login-form').addEventListener('submit', (event) => {
+document.getElementById('login-form').addEventListener('submit', async (event) => {
   event.preventDefault();
   const loginId = document.getElementById('login-id').value.trim();
   const password = document.getElementById('login-password').value;
-  const demo = demoUsers.find(x => x.id === loginId && x.password === password);
-  const saved = findSavedUser(loginId, password);
-  if (demo) {
-    setSession(demo);
-    localStorage.removeItem('fylepro.entity');
+  const errEl = document.getElementById('login-error');
+  errEl.textContent = '';
+
+  // 1. Try the real backend first.
+  try {
+    await window.FP.login(loginId, password);
     window.location.href = 'dashboard.html';
     return;
+  } catch (e) {
+    // 2. Fall back to local demo / saved-onboarding (offline prototype mode).
+    const demo = demoUsers.find(x => x.id === loginId && x.password === password);
+    const saved = findSavedUser(loginId, password);
+    if (demo) {
+      setSession(demo);
+      localStorage.removeItem('fylepro.entity');
+      window.location.href = 'dashboard.html';
+      return;
+    }
+    if (saved) {
+      const firstCompany = saved.data.companies.find(c => c.accessUserIds.includes(saved.user.userId));
+      setSession(saved.user, saved.data.workspaceName);
+      if (firstCompany) localStorage.setItem('fylepro.entity', firstCompany.id);
+      window.location.href = 'dashboard.html';
+      return;
+    }
+    errEl.textContent = e.message || 'Invalid login ID or password.';
   }
-  if (saved) {
-    const firstCompany = saved.data.companies.find(c => c.accessUserIds.includes(saved.user.userId));
-    setSession(saved.user, saved.data.workspaceName);
-    if (firstCompany) localStorage.setItem('fylepro.entity', firstCompany.id);
-    window.location.href = 'dashboard.html';
-    return;
-  }
-  document.getElementById('login-error').textContent = 'Invalid login ID or password.';
 });
 
 document.getElementById('show-onboarding').addEventListener('click', () => {
