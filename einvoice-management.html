@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IRN Search & History · E-Invoice · DigiGST 2.0</title>
+<title>IRN Search & History · E-Invoice · FylePro</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -111,7 +111,7 @@
           </div>
           <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;">
             <div style="display:flex;gap:6px;align-items:center;">
-              <button class="btn btn-secondary btn-sm" style="background:var(--ey-yellow);color:var(--ey-black-deep);border-color:var(--ey-yellow);font-weight:700;" onclick="if(window.showToast)window.showToast('Syncing IRN data live from IRP portal &middot; ETA 8 sec');">
+              <button class="btn btn-secondary btn-sm" style="background:var(--fp-accent);color:var(--fp-ink);border-color:var(--fp-accent);font-weight:700;" onclick="if(window.showToast)window.showToast('Syncing IRN data live from IRP portal &middot; ETA 8 sec');">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" stroke-width="2.4"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
                 Sync live from IRP
               </button>
@@ -155,7 +155,7 @@
       </div>
 
       <!-- Bulk action bar (visible only when rows selected) -->
-      <div id="irn-bulk-bar" style="display:none;padding:10px 18px;background:rgba(255,230,0,0.10);border-bottom:1px solid var(--ey-yellow);align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+      <div id="irn-bulk-bar" style="display:none;padding:10px 18px;background:rgba(107,114,128,0.10);border-bottom:1px solid var(--fp-accent);align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
         <div style="font-size:12px;color:var(--text);font-weight:600;">
           <span id="irn-selected-count">0</span> IRN(s) selected
           <button onclick="window.clearIrnSelection &amp;&amp; window.clearIrnSelection()" style="background:none;border:none;color:var(--text-muted);font-size:11px;text-decoration:underline;cursor:pointer;margin-left:8px;">Clear selection</button>
@@ -205,7 +205,7 @@
               <td><span style="font-family:var(--font-mono);color:var(--warning);font-weight:600;">22h 14m left</span></td>
               <td><span class="action-status matched">Active</span></td>
               <td>
-                <span style="display:inline-flex;align-items:center;font-size:11px;font-weight:600;color:var(--info);background:rgba(21,92,219,0.10);padding:3px 8px;border-radius:4px;"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" style="margin-right:4px;"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>DigiGST</span>
+                <span style="display:inline-flex;align-items:center;font-size:11px;font-weight:600;color:var(--info);background:rgba(21,92,219,0.10);padding:3px 8px;border-radius:4px;"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" style="margin-right:4px;"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>FylePro</span>
                 <div style="font-size:10px;color:var(--text-muted);margin-top:3px;font-family:var(--font-mono);">14-May 09:48</div>
               </td>
               <td>
@@ -232,7 +232,7 @@
               <td><span style="font-family:var(--font-mono);color:var(--warning);font-weight:600;">21h 10m left</span></td>
               <td><span class="action-status matched">Active</span></td>
               <td>
-                <span style="display:inline-flex;align-items:center;font-size:11px;font-weight:600;color:var(--info);background:rgba(21,92,219,0.10);padding:3px 8px;border-radius:4px;"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" style="margin-right:4px;"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>DigiGST</span>
+                <span style="display:inline-flex;align-items:center;font-size:11px;font-weight:600;color:var(--info);background:rgba(21,92,219,0.10);padding:3px 8px;border-radius:4px;"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" style="margin-right:4px;"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>FylePro</span>
                 <div style="font-size:10px;color:var(--text-muted);margin-top:3px;font-family:var(--font-mono);">13-May 18:42</div>
               </td>
               <td>
@@ -285,7 +285,7 @@
               <td><span style="font-family:var(--font-mono);color:var(--text-muted);">Closed (&gt; 24h)</span></td>
               <td><span class="action-status matched">Active</span></td>
               <td>
-                <span style="display:inline-flex;align-items:center;font-size:11px;font-weight:600;color:var(--info);background:rgba(21,92,219,0.10);padding:3px 8px;border-radius:4px;"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" style="margin-right:4px;"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>DigiGST</span>
+                <span style="display:inline-flex;align-items:center;font-size:11px;font-weight:600;color:var(--info);background:rgba(21,92,219,0.10);padding:3px 8px;border-radius:4px;"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" style="margin-right:4px;"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>FylePro</span>
                 <div style="font-size:10px;color:var(--text-muted);margin-top:3px;font-family:var(--font-mono);">12-May 11:48</div>
               </td>
               <td>
@@ -330,14 +330,14 @@
               <td>13-May 11:24</td>
               <td class="mono">TS-EXP/26/0418</td>
               <td>Export-LUT</td>
-              <td>Tata Steel Singapore (URP)</td>
+              <td>Apex Steel Singapore (URP)</td>
               <td class="num">8</td>
               <td class="num">42,18,000</td>
               <td>NIC-2</td>
               <td><span style="font-family:var(--font-mono);color:var(--text-muted);">Closed</span></td>
               <td><span class="action-status matched">Active</span></td>
               <td>
-                <span style="display:inline-flex;align-items:center;font-size:11px;font-weight:600;color:var(--info);background:rgba(21,92,219,0.10);padding:3px 8px;border-radius:4px;"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" style="margin-right:4px;"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>DigiGST</span>
+                <span style="display:inline-flex;align-items:center;font-size:11px;font-weight:600;color:var(--info);background:rgba(21,92,219,0.10);padding:3px 8px;border-radius:4px;"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" style="margin-right:4px;"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>FylePro</span>
                 <div style="font-size:10px;color:var(--text-muted);margin-top:3px;font-family:var(--font-mono);">11-May 19:24</div>
               </td>
               <td>
@@ -355,7 +355,7 @@
               <td>14-May 14:18</td>
               <td class="mono">TS/26/02812</td>
               <td>Tax Inv</td>
-              <td>Tata Consumer</td>
+              <td>Apex Consumer</td>
               <td class="num">2</td>
               <td class="num">3,35,120</td>
               <td>NIC-1</td>

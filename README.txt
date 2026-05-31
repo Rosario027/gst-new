@@ -1,11 +1,11 @@
 ═══════════════════════════════════════════════════════════════════════════
-  DigiGST 2.0 — EY GST Compliance Platform · Interactive Prototype
+  FylePro — FylePro GST Compliance Platform · Interactive Prototype
   Version 2.0.9 · Build 2026.05 · 15-May-2026
 ═══════════════════════════════════════════════════════════════════════════
 
   Pure HTML / CSS / JS — no backend, no build step. Open index.html in
   any modern browser. All data is hand-crafted to be plausible for a
-  Tata-scale enterprise on the EY DigiGST platform.
+  enterprise-scale on the FylePro platform.
 
 
 ───────────────────────────────────────────────────────────────────────────
@@ -56,19 +56,19 @@
   The prototype supports three real GST entity types under one PAN
   (AABCT3518Q), each with its own GSTIN, returns, due dates, workflow.
 
-  ENTITY 1 · Tata Steel Maharashtra (Normal Registration)
+  ENTITY 1 · Apex Steel Maharashtra (Normal Registration)
       GSTIN 27AABCT3518Q1ZV · Monthly filer · AATO ₹ 1,28,500 Cr
       Returns: GSTR-1 → GSTR-1A → GSTR-3B → GSTR-9
       Next due: GSTR-1 by 11-Jun-2026
 
-  ENTITY 2 · Tata Services Ltd ISD (Input Service Distributor)
+  ENTITY 2 · Apex Services Ltd ISD (Input Service Distributor)
       GSTIN 27AABCT3518Q2ZW · Monthly filer · distributes credit
       Returns: GSTR-6 (monthly) → GSTR-6A (auto-drafted view) → GSTR-9
       Mandatory ISD registration from 01-Apr-2025 per Notification
       16/2024-CT (amendment to §2(61) and §20 of CGST Act).
       Next due: GSTR-6 by 13-Jun-2026
 
-  ENTITY 3 · Tata Traders LLP (Composition Scheme §10)
+  ENTITY 3 · Apex Traders LLP (Composition Scheme §10)
       GSTIN 27AABCT3518Q3ZX · Quarterly filer · AATO ₹ 1.24 Cr
       Trader at 1% (0.5% CGST + 0.5% SGST). Cannot claim ITC, cannot
       issue tax invoice (only Bill of Supply), cannot supply inter-
@@ -79,7 +79,7 @@
   ENTITY SWITCHER — visible at the top of every screen as a dark sticky
   strip showing current entity name, GSTIN, type-badge, next-due.
   Click to open a centered modal listing all 3 entities; selecting one
-  persists in localStorage ("digigst.entity"), redirects to dashboard,
+  persists in localStorage ("FylePro.entity"), redirects to dashboard,
   and:
 
       → sidebar changes to entity-specific items
@@ -154,7 +154,7 @@
   HOW TO RUN
 ───────────────────────────────────────────────────────────────────────────
 
-  1. Unzip DigiGST-2.0-Prototype.zip
+  1. Unzip FylePro-2.0-Prototype.zip
   2. Open index.html (or dashboard.html) in Chrome / Edge / Firefox / Safari
   3. Click the hamburger (top-left) to open the navigation drawer
   4. Click the entity strip at the top of any page to switch entities
@@ -179,5 +179,5 @@
 
 
   ═════════════════════════════════════════════════════════════════════
-  EY DigiGST Platform · v2.0.9 · For demo to Tata Enterprises tax team
+  FylePro platform · v2.0.9 · For demo to Apex Enterprises tax team
   ═════════════════════════════════════════════════════════════════════

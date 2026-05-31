@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Challans · DigiGST 2.0</title>
+<title>Challans · FylePro</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -90,7 +90,7 @@
     <div class="filter-bar">
       <div class="field">
         <label class="field-label">GSTIN</label>
-        <select class="select"><option>27AABCT3518Q1ZV — Tata Steel · Maharashtra</option><option>06AABCT3518Q1Z2 — Tata Motors · Haryana</option><option>33AABCT3518Q1ZN — Tata Consumer · Tamil Nadu</option></select>
+        <select class="select"><option>27AABCT3518Q1ZV — Apex Steel · Maharashtra</option><option>06AABCT3518Q1Z2 — Apex Motors · Haryana</option><option>33AABCT3518Q1ZN — Apex Consumer · Tamil Nadu</option></select>
       </div>
       <div class="field">
         <label class="field-label">Reason for Challan</label>
@@ -142,19 +142,19 @@
           <div class="payment-cell"><input value="0.00"></div>
           <div class="payment-cell"><input value="0.00"></div>
 
-          <div class="payment-cell" style="background:var(--ey-black-deep);color:var(--ey-yellow);font-weight:700">TOTAL</div>
-          <div class="payment-cell" style="background:var(--ey-black-deep);color:var(--ey-yellow);font-weight:700;text-align:right">₹ 0.00</div>
-          <div class="payment-cell" style="background:var(--ey-black-deep);color:var(--ey-yellow);font-weight:700;text-align:right">₹ 0.00</div>
-          <div class="payment-cell" style="background:var(--ey-black-deep);color:var(--ey-yellow);font-weight:700;text-align:right">₹ 0.00</div>
+          <div class="payment-cell" style="background:var(--fp-ink);color:var(--fp-accent);font-weight:700">TOTAL</div>
+          <div class="payment-cell" style="background:var(--fp-ink);color:var(--fp-accent);font-weight:700;text-align:right">₹ 0.00</div>
+          <div class="payment-cell" style="background:var(--fp-ink);color:var(--fp-accent);font-weight:700;text-align:right">₹ 0.00</div>
+          <div class="payment-cell" style="background:var(--fp-ink);color:var(--fp-accent);font-weight:700;text-align:right">₹ 0.00</div>
         </div>
       </div>
     </div>
 
     <!-- TOTAL + MODE OF PAYMENT -->
     <div style="display:grid;grid-template-columns:1fr 1.3fr;gap:16px;margin-top:16px;">
-      <div class="card-tight" style="background:linear-gradient(135deg, var(--ey-black-deep), #1F1F2C);color:#fff;border:none;">
-        <div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ey-yellow);font-weight:600;margin-bottom:8px">Total Challan Amount</div>
-        <div class="amount-display size-xl" style="color:#fff;font-size:36px;"><span class="currency-sym" style="color:rgba(255,230,0,0.6)">₹</span>0<span style="font-size:18px;color:rgba(255,255,255,0.6)">.00</span></div>
+      <div class="card-tight" style="background:linear-gradient(135deg, var(--fp-ink), #6B7280);color:#fff;border:none;">
+        <div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--fp-accent);font-weight:600;margin-bottom:8px">Total Challan Amount</div>
+        <div class="amount-display size-xl" style="color:#fff;font-size:36px;"><span class="currency-sym" style="color:rgba(107,114,128,0.6)">₹</span>0<span style="font-size:18px;color:rgba(255,255,255,0.6)">.00</span></div>
         <div class="muted small" style="color:rgba(255,255,255,0.6);margin-top:10px">Challan valid for 15 days from generation</div>
       </div>
 
@@ -164,28 +164,28 @@
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
           <label class="file-type-option" style="display:flex;align-items:center;gap:10px;padding:14px;cursor:pointer;border-radius:var(--radius-sm);border:1px solid var(--border);">
-            <input type="radio" name="mode" checked style="accent-color:var(--ey-yellow)">
+            <input type="radio" name="mode" checked style="accent-color:var(--fp-accent)">
             <div>
               <div style="font-weight:600;font-size:13px">NEFT / RTGS</div>
               <div class="muted small">Bank transfer via challan</div>
             </div>
           </label>
           <label class="file-type-option" style="display:flex;align-items:center;gap:10px;padding:14px;cursor:pointer;border-radius:var(--radius-sm);border:1px solid var(--border);">
-            <input type="radio" name="mode" style="accent-color:var(--ey-yellow)">
+            <input type="radio" name="mode" style="accent-color:var(--fp-accent)">
             <div>
               <div style="font-weight:600;font-size:13px">Net Banking</div>
               <div class="muted small">23 authorised banks</div>
             </div>
           </label>
           <label class="file-type-option" style="display:flex;align-items:center;gap:10px;padding:14px;cursor:pointer;border-radius:var(--radius-sm);border:1px solid var(--border);">
-            <input type="radio" name="mode" style="accent-color:var(--ey-yellow)">
+            <input type="radio" name="mode" style="accent-color:var(--fp-accent)">
             <div>
               <div style="font-weight:600;font-size:13px">Over the Counter</div>
               <div class="muted small">≤ ₹ 10,000 only · Cash/Cheque/DD</div>
             </div>
           </label>
           <label class="file-type-option" style="display:flex;align-items:center;gap:10px;padding:14px;cursor:pointer;border-radius:var(--radius-sm);border:1px solid var(--border);">
-            <input type="radio" name="mode" style="accent-color:var(--ey-yellow)">
+            <input type="radio" name="mode" style="accent-color:var(--fp-accent)">
             <div>
               <div style="font-weight:600;font-size:13px">Credit/Debit Card</div>
               <div class="muted small">Via authorized payment gateway</div>

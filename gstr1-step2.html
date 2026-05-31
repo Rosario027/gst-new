@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Step 2 · IRN Auto-fetch &amp; Upload · GSTR-1 · DigiGST 2.0</title>
+<title>Step 2 · IRN Auto-fetch &amp; Upload · GSTR-1 · FylePro</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -49,18 +49,18 @@
     
 
     <!-- IRN AUTO-FETCH BANNER -->
-    <div class="card" style="background:linear-gradient(135deg, var(--ey-black-deep), #1F1F2C);color:#fff;border:none;padding:22px 26px;margin-bottom:20px;">
+    <div class="card" style="background:linear-gradient(135deg, var(--fp-ink), #6B7280);color:#fff;border:none;padding:22px 26px;margin-bottom:20px;">
       <div style="display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;">
-        <div style="width:52px;height:52px;border-radius:14px;background:var(--ey-yellow);color:var(--ey-black-deep);display:grid;place-items:center;">
+        <div style="width:52px;height:52px;border-radius:14px;background:var(--fp-accent);color:var(--fp-ink);display:grid;place-items:center;">
           <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
         </div>
         <div>
-          <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ey-yellow);font-weight:600;margin-bottom:4px">IRP Auto-fetch · Successful</div>
+          <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--fp-accent);font-weight:600;margin-bottom:4px">IRP Auto-fetch · Successful</div>
           <div style="font-size:20px;font-weight:700;color:#fff;">2,68,419 IRNs pulled from IRP for 1–14 May 2026</div>
           <div style="margin-top:6px;font-size:12.5px;color:rgba(255,255,255,0.78);">Last sync · 14-May-2026 09:48 AM · via ClearTax GSP · Next auto-sync in 2 hours</div>
         </div>
         <div style="text-align:right;">
-          <button class="btn cta-large" style="background:var(--ey-yellow);color:var(--ey-black-deep);">
+          <button class="btn cta-large" style="background:var(--fp-accent);color:var(--fp-ink);">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
             Re-sync now
           </button>
@@ -146,7 +146,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
           </div>
           <div class="drop-zone-area-cta">Drop books file here or click to browse</div>
-          <div class="drop-zone-area-formats">.xlsx .csv .json &middot; up to 100 MB &middot; uses DigiGST sales template</div>
+          <div class="drop-zone-area-formats">.xlsx .csv .json &middot; up to 100 MB &middot; uses FylePro sales template</div>
         </div>
 
         <div class="drop-zone-actions">
@@ -201,7 +201,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr style="background:rgba(255,230,0,0.04);">
+          <tr style="background:rgba(107,114,128,0.04);">
             <td class="mono" style="font-size:11.5px;color:var(--text-muted);">15-May 09:48</td>
             <td>
               <div style="font-family:var(--font-mono);font-weight:600;font-size:12px;">irn-fetch-v3.json &harr; sales-may-w3.xlsx</div>
@@ -343,8 +343,8 @@
     </div>
 
         <!-- v2.0.34 — Validation summary after reco (per-table impact) -->
-    <div class="card" style="padding:0;margin-bottom:20px;overflow:hidden;border-left:4px solid var(--ey-yellow);">
-      <div style="padding:14px 22px;background:linear-gradient(135deg,#FFFDF0,var(--surface));border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+    <div class="card" style="padding:0;margin-bottom:20px;overflow:hidden;border-left:4px solid var(--fp-accent);">
+      <div style="padding:14px 22px;background:linear-gradient(135deg,#F8FAFC,var(--surface));border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
         <div>
           <div style="font-size:13.5px;font-weight:700;color:var(--text);">Reconciliation impact summary &middot; per GSTR-1 section</div>
           <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px;">How the reco results will affect each section of GSTR-1 when you proceed to outward register tiles below &middot; review before continuing</div>
@@ -375,7 +375,7 @@
             <tr><td><strong>7 &middot; B2C Others</strong></td><td class="num mono">14</td><td class="num mono">218</td><td class="num mono">3</td><td class="num mono" style="color:var(--warning);">&minus; 2,12,000</td><td><span class="action-status pending">Review variance</span></td></tr>
             <tr><td><strong>9A &middot; Credit Notes</strong></td><td class="num mono">2</td><td class="num mono">18</td><td class="num mono">0</td><td class="num mono" style="color:var(--error);">&minus; 8,42,000</td><td><span class="action-status matched">Apply on continue</span></td></tr>
             <tr><td><strong>11 &middot; Advances received</strong></td><td class="num mono">0</td><td class="num mono">6</td><td class="num mono">0</td><td class="num mono">No tax effect</td><td><span class="action-status matched">Apply on continue</span></td></tr>
-            <tr style="background:rgba(255,230,0,0.08);font-weight:700;border-top:2px solid var(--ey-yellow);">
+            <tr style="background:rgba(107,114,128,0.08);font-weight:700;border-top:2px solid var(--fp-accent);">
               <td>Total across 8 sections</td>
               <td class="num mono">53</td>
               <td class="num mono">1,112</td>
@@ -393,7 +393,7 @@
 
     <!-- OUTWARD REGISTER · CATEGORY-WISE SOURCE TILES -->
     <!-- v2.0.40 — Per-category download template for reupload -->
-    <div class="card" style="padding:14px 18px;margin-bottom:16px;background:linear-gradient(135deg,#FFFDF0,var(--surface));border-left:4px solid var(--ey-yellow);">
+    <div class="card" style="padding:14px 18px;margin-bottom:16px;background:linear-gradient(135deg,#F8FAFC,var(--surface));border-left:4px solid var(--fp-accent);">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
         <div style="min-width:0;">
           <div style="font-size:13px;font-weight:700;color:var(--text);">Download template for reupload &middot; per category</div>
@@ -429,7 +429,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" stroke-width="2.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           11 &middot; Advances received
         </button>
-        <button class="btn btn-primary btn-sm" style="justify-content:flex-start;background:var(--ey-yellow);color:var(--ey-black-deep);border-color:var(--ey-yellow);font-weight:700;" onclick="if(window.showToast)window.showToast('Downloading ALL categories as single workbook (8 sheets)...');">
+        <button class="btn btn-primary btn-sm" style="justify-content:flex-start;background:var(--fp-accent);color:var(--fp-ink);border-color:var(--fp-accent);font-weight:700;" onclick="if(window.showToast)window.showToast('Downloading ALL categories as single workbook (8 sheets)...');">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" stroke-width="2.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Download all (1 workbook)
         </button>
@@ -601,7 +601,7 @@
     </div>
 
     <!-- MISMATCH ALERT -->
-    <div class="card" style="padding:18px 22px;margin-bottom:20px;border-left:4px solid var(--warning);background:#FFFBEB;">
+    <div class="card" style="padding:18px 22px;margin-bottom:20px;border-left:4px solid var(--warning);background:#F9FAFB;">
       <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">18 mismatches require attention</div>
       <div style="font-size:12.5px;color:var(--text-muted);margin-bottom:12px;">
         Most are tax-amount rounding differences (≤ ₹ 2). One invoice (TS/26/02846 · Voltas) is in your sales register but no IRN was found on the IRP — either it wasn't reported, or the IRN was cancelled within the 24-hour window.

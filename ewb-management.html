@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Manage EWBs &middot; E-Way Bill &middot; DigiGST 2.0</title>
+<title>Manage EWBs &middot; E-Way Bill &middot; FylePro</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -59,7 +59,7 @@
           </div>
           <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;">
             <div style="display:flex;gap:6px;align-items:center;">
-              <button class="btn btn-secondary btn-sm" style="background:var(--ey-yellow);color:var(--ey-black-deep);border-color:var(--ey-yellow);font-weight:700;" onclick="if(window.showToast)window.showToast('Syncing EWB data live from EWB portal &middot; ETA 6 sec');">
+              <button class="btn btn-secondary btn-sm" style="background:var(--fp-accent);color:var(--fp-ink);border-color:var(--fp-accent);font-weight:700;" onclick="if(window.showToast)window.showToast('Syncing EWB data live from EWB portal &middot; ETA 6 sec');">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" stroke-width="2.4"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
                 Sync live from EWB portal
               </button>
@@ -105,7 +105,7 @@
       </div>
 
       <!-- Bulk action bar (visible only when rows selected) -->
-      <div id="ewb-bulk-bar" style="display:none;padding:10px 18px;background:rgba(255,230,0,0.10);border-bottom:1px solid var(--ey-yellow);align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+      <div id="ewb-bulk-bar" style="display:none;padding:10px 18px;background:rgba(107,114,128,0.10);border-bottom:1px solid var(--fp-accent);align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
         <div style="font-size:12px;color:var(--text);font-weight:600;">
           <span id="ewb-selected-count">0</span> EWB(s) selected
           <button onclick="window.clearEwbSelection &amp;&amp; window.clearEwbSelection()" style="background:none;border:none;color:var(--text-muted);font-size:11px;text-decoration:underline;cursor:pointer;margin-left:8px;">Clear selection</button>
@@ -157,7 +157,7 @@
               <td><span style="font-size:11px;color:var(--text-muted);">Closed (gen + 24h passed? No, still open until 16-May 18:42)</span></td>
               <td><span class="action-status matched">Active</span></td>
               <td>
-                <span style="display:inline-flex;align-items:center;font-size:11px;font-weight:600;color:var(--info);background:rgba(21,92,219,0.10);padding:3px 8px;border-radius:4px;"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" style="margin-right:4px;"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>DigiGST</span>
+                <span style="display:inline-flex;align-items:center;font-size:11px;font-weight:600;color:var(--info);background:rgba(21,92,219,0.10);padding:3px 8px;border-radius:4px;"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" style="margin-right:4px;"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>FylePro</span>
                 <div style="font-size:10px;color:var(--text-muted);margin-top:3px;font-family:var(--font-mono);">14-May 09:48</div>
               </td>
               <td>
@@ -170,7 +170,7 @@
             </tr>
 
             <!-- IN CANCEL WINDOW + extend (critical) -->
-            <tr style="background:rgba(255,230,0,0.05);">
+            <tr style="background:rgba(107,114,128,0.05);">
               <td style="padding:0 8px;"><input type="checkbox" class="ewb-row-check" onchange="window.updateEwbSelectionCount &amp;&amp; window.updateEwbSelectionCount()" style="cursor:pointer;"></td>
               <td class="mono">181 0042 8442 91</td>
               <td>15-May 17:38</td>
@@ -184,13 +184,13 @@
               <td><span style="font-size:11px;color:var(--warning);font-weight:600;font-family:var(--font-mono);">5h 18m left to cancel</span></td>
               <td><span class="action-status reject">Critical</span></td>
               <td>
-                <span style="display:inline-flex;align-items:center;font-size:11px;font-weight:600;color:var(--info);background:rgba(21,92,219,0.10);padding:3px 8px;border-radius:4px;"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" style="margin-right:4px;"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>DigiGST</span>
+                <span style="display:inline-flex;align-items:center;font-size:11px;font-weight:600;color:var(--info);background:rgba(21,92,219,0.10);padding:3px 8px;border-radius:4px;"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" style="margin-right:4px;"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>FylePro</span>
                 <div style="font-size:10px;color:var(--text-muted);margin-top:3px;font-family:var(--font-mono);">13-May 18:42</div>
               </td>
               <td>
                 <div style="display:flex;gap:4px;flex-wrap:wrap;">
                   <button class="row-edit-btn" title="View"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-                  <button class="row-edit-btn" style="background:#FFFDF0;border-color:var(--ey-yellow);color:var(--ey-black-deep);font-weight:700;" title="Extend validity (available 8h before/after expiry)" onclick="if(window.openEwbExtendPopup) window.openEwbExtendPopup({ewb:'181 0042 8442 91', validUntil:'18-May 23:59'});">
+                  <button class="row-edit-btn" style="background:#F8FAFC;border-color:var(--fp-accent);color:var(--fp-ink);font-weight:700;" title="Extend validity (available 8h before/after expiry)" onclick="if(window.openEwbExtendPopup) window.openEwbExtendPopup({ewb:'181 0042 8442 91', validUntil:'18-May 23:59'});">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                     Extend
                   </button>
@@ -244,7 +244,7 @@
               <td><span style="font-size:11px;color:var(--warning);font-weight:600;font-family:var(--font-mono);">22h 18m left to cancel</span></td>
               <td><span class="action-status pending">Cancel window</span></td>
               <td>
-                <span style="display:inline-flex;align-items:center;font-size:11px;font-weight:600;color:var(--info);background:rgba(21,92,219,0.10);padding:3px 8px;border-radius:4px;"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" style="margin-right:4px;"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>DigiGST</span>
+                <span style="display:inline-flex;align-items:center;font-size:11px;font-weight:600;color:var(--info);background:rgba(21,92,219,0.10);padding:3px 8px;border-radius:4px;"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" style="margin-right:4px;"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>FylePro</span>
                 <div style="font-size:10px;color:var(--text-muted);margin-top:3px;font-family:var(--font-mono);">12-May 11:48</div>
               </td>
               <td>
@@ -299,7 +299,7 @@
               <td><span style="font-size:11px;color:var(--text-muted);font-family:var(--font-mono);">Closed</span></td>
               <td><span class="action-status matched">Delivered</span></td>
               <td>
-                <span style="display:inline-flex;align-items:center;font-size:11px;font-weight:600;color:var(--info);background:rgba(21,92,219,0.10);padding:3px 8px;border-radius:4px;"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" style="margin-right:4px;"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>DigiGST</span>
+                <span style="display:inline-flex;align-items:center;font-size:11px;font-weight:600;color:var(--info);background:rgba(21,92,219,0.10);padding:3px 8px;border-radius:4px;"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" style="margin-right:4px;"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>FylePro</span>
                 <div style="font-size:10px;color:var(--text-muted);margin-top:3px;font-family:var(--font-mono);">11-May 19:24</div>
               </td>
               <td>
@@ -351,7 +351,7 @@
               <td><span style="font-size:11px;color:var(--error);font-weight:600;font-family:var(--font-mono);">N/A &middot; verified by officer at Bhiwandi check-post 15-May 16:42</span></td>
               <td><span class="action-status matched">Active &middot; verified</span></td>
               <td>
-                <span style="display:inline-flex;align-items:center;font-size:11px;font-weight:600;color:var(--info);background:rgba(21,92,219,0.10);padding:3px 8px;border-radius:4px;"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" style="margin-right:4px;"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>DigiGST</span>
+                <span style="display:inline-flex;align-items:center;font-size:11px;font-weight:600;color:var(--info);background:rgba(21,92,219,0.10);padding:3px 8px;border-radius:4px;"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" style="margin-right:4px;"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>FylePro</span>
                 <div style="font-size:10px;color:var(--text-muted);margin-top:3px;font-family:var(--font-mono);">10-May 14:32</div>
               </td>
               <td>

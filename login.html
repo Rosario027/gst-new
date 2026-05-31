@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login · FylePro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="login-body">
+<main class="login-shell">
+  <section class="login-panel">
+    <div class="login-brand">
+      <div class="login-brand-mark">FP</div>
+      <div>
+        <h1>FylePro</h1>
+        <p>GST compliance workspace</p>
+      </div>
+    </div>
+
+    <div class="login-card" id="login-card">
+      <div class="login-card-head">
+        <h2>Sign in</h2>
+        <span class="login-demo-pill">Demo: admin / admin123</span>
+      </div>
+      <form id="login-form" class="login-form">
+        <label class="login-field">
+          <span>User ID</span>
+          <input id="login-id" autocomplete="username" required value="admin">
+        </label>
+        <label class="login-field">
+          <span>Password</span>
+          <input id="login-password" type="password" autocomplete="current-password" required value="admin123">
+        </label>
+        <div class="login-error" id="login-error"></div>
+        <button class="btn btn-primary login-submit" type="submit">Login</button>
+      </form>
+      <button class="login-link-btn" id="show-onboarding" type="button">New user?</button>
+    </div>
+
+    <div class="onboarding-card hidden" id="onboarding-card">
+      <div class="login-card-head">
+        <h2>New user onboarding</h2>
+        <span class="login-demo-pill">Temporary: new / new123</span>
+      </div>
+
+      <div class="onboarding-steps">
+        <span class="onboarding-step active" data-step-dot="1">1</span>
+        <span class="onboarding-step" data-step-dot="2">2</span>
+        <span class="onboarding-step" data-step-dot="3">3</span>
+        <span class="onboarding-step" data-step-dot="4">4</span>
+      </div>
+
+      <form id="temp-form" class="login-form onboarding-step-panel" data-step-panel="1">
+        <label class="login-field">
+          <span>Temporary user ID</span>
+          <input id="temp-id" autocomplete="username" required value="new">
+        </label>
+        <label class="login-field">
+          <span>Temporary password</span>
+          <input id="temp-password" type="password" autocomplete="current-password" required value="new123">
+        </label>
+        <div class="login-error" id="temp-error"></div>
+        <button class="btn btn-primary login-submit" type="submit">Verify</button>
+      </form>
+
+      <form id="company-form" class="login-form onboarding-step-panel hidden" data-step-panel="2">
+        <div class="onboarding-grid">
+          <label class="login-field">
+            <span>GST number</span>
+            <input id="company-gstin" maxlength="15" placeholder="27AABCF1234A1Z5">
+          </label>
+          <label class="login-field">
+            <span>Company name</span>
+            <input id="company-name" placeholder="Company legal name">
+          </label>
+          <label class="login-field">
+            <span>State</span>
+            <input id="company-state" placeholder="Maharashtra (27)">
+          </label>
+          <label class="login-field">
+            <span>Filing scheme</span>
+            <select id="filing-scheme">
+              <option value="monthly">Normal monthly filing</option>
+              <option value="qrmp">QRMP scheme</option>
+            </select>
+          </label>
+        </div>
+        <div class="onboarding-actions">
+          <button class="btn btn-secondary" type="button" id="add-company">Add GSTIN</button>
+          <button class="btn btn-primary" type="submit">Continue</button>
+        </div>
+        <div class="company-list" id="company-list"></div>
+        <div class="login-error" id="company-error"></div>
+      </form>
+
+      <form id="owner-form" class="login-form onboarding-step-panel hidden" data-step-panel="3">
+        <div class="onboarding-grid">
+          <label class="login-field">
+            <span>Your name</span>
+            <input id="owner-name" required placeholder="Tax admin name">
+          </label>
+          <label class="login-field">
+            <span>Login ID</span>
+            <input id="owner-login" required placeholder="owner.admin">
+          </label>
+          <label class="login-field">
+            <span>Password</span>
+            <input id="owner-password" type="password" required placeholder="Create password">
+          </label>
+          <label class="login-field">
+            <span>User role</span>
+            <select id="owner-role">
+              <option>Company Admin</option>
+              <option>Tax Manager</option>
+              <option>Approver</option>
+            </select>
+          </label>
+        </div>
+        <button class="btn btn-primary login-submit" type="submit">Create admin</button>
+      </form>
+
+      <form id="team-form" class="login-form onboarding-step-panel hidden" data-step-panel="4">
+        <div class="onboarding-grid">
+          <label class="login-field">
+            <span>Team member name</span>
+            <input id="team-name" placeholder="Optional">
+          </label>
+          <label class="login-field">
+            <span>Login ID</span>
+            <input id="team-login" placeholder="team.user">
+          </label>
+          <label class="login-field">
+            <span>Password</span>
+            <input id="team-password" type="password" placeholder="Set password">
+          </label>
+          <label class="login-field">
+            <span>Role</span>
+            <select id="team-role">
+              <option>Preparer</option>
+              <option>Reviewer</option>
+              <option>Viewer</option>
+            </select>
+          </label>
+        </div>
+        <div class="access-box" id="company-access"></div>
+        <div class="onboarding-actions">
+          <button class="btn btn-secondary" type="button" id="add-team">Add team member</button>
+          <button class="btn btn-primary" type="submit">Finish onboarding</button>
+        </div>
+        <div class="company-list" id="team-list"></div>
+      </form>
+    </div>
+  </section>
+
+  <aside class="login-visual">
+    <div class="login-visual-card">
+      <div class="visual-row">
+        <span>Company isolation</span>
+        <strong>Tenant + GSTIN scoped</strong>
+      </div>
+      <div class="visual-row">
+        <span>Access control</span>
+        <strong>Per company</strong>
+      </div>
+      <div class="visual-row">
+        <span>Theme</span>
+        <strong>Light grey + white</strong>
+      </div>
+    </div>
+  </aside>
+</main>
+
+<script>
+const demoUsers = [{ id: 'admin', password: 'admin123', name: 'Admin User', role: 'Company Admin', company: 'Demo Workspace', initials: 'AD' }];
+let companies = [];
+let owner = null;
+let team = [];
+
+function initials(name) {
+  return (name || 'FP').split(/\s+/).filter(Boolean).slice(0, 2).map(x => x[0].toUpperCase()).join('');
+}
+
+function slug(value) {
+  return (value || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'company';
+}
+
+function setSession(user, companyName) {
+  localStorage.setItem('fylepro.session', JSON.stringify({
+    userId: user.userId || user.id,
+    loginId: user.loginId || user.id,
+    name: user.name,
+    role: user.role,
+    company: companyName || user.company || 'Workspace',
+    initials: initials(user.name)
+  }));
+}
+
+function getSavedOnboarding() {
+  try { return JSON.parse(localStorage.getItem('fylepro.onboarding') || 'null'); }
+  catch(e) { return null; }
+}
+
+function findSavedUser(loginId, password) {
+  const data = getSavedOnboarding();
+  if (!data) return null;
+  const allUsers = [data.owner].concat(data.teamMembers || []);
+  const user = allUsers.find(x => x.loginId === loginId && x.password === password);
+  return user ? { user, data } : null;
+}
+
+document.getElementById('login-form').addEventListener('submit', (event) => {
+  event.preventDefault();
+  const loginId = document.getElementById('login-id').value.trim();
+  const password = document.getElementById('login-password').value;
+  const demo = demoUsers.find(x => x.id === loginId && x.password === password);
+  const saved = findSavedUser(loginId, password);
+  if (demo) {
+    setSession(demo);
+    localStorage.removeItem('fylepro.entity');
+    window.location.href = 'dashboard.html';
+    return;
+  }
+  if (saved) {
+    const firstCompany = saved.data.companies.find(c => c.accessUserIds.includes(saved.user.userId));
+    setSession(saved.user, saved.data.workspaceName);
+    if (firstCompany) localStorage.setItem('fylepro.entity', firstCompany.id);
+    window.location.href = 'dashboard.html';
+    return;
+  }
+  document.getElementById('login-error').textContent = 'Invalid login ID or password.';
+});
+
+document.getElementById('show-onboarding').addEventListener('click', () => {
+  document.getElementById('login-card').classList.add('hidden');
+  document.getElementById('onboarding-card').classList.remove('hidden');
+});
+
+function showStep(step) {
+  document.querySelectorAll('[data-step-panel]').forEach(panel => panel.classList.toggle('hidden', panel.dataset.stepPanel !== String(step)));
+  document.querySelectorAll('[data-step-dot]').forEach(dot => dot.classList.toggle('active', Number(dot.dataset.stepDot) <= step));
+}
+
+document.getElementById('temp-form').addEventListener('submit', (event) => {
+  event.preventDefault();
+  const ok = document.getElementById('temp-id').value.trim() === 'new' && document.getElementById('temp-password').value === 'new123';
+  if (!ok) {
+    document.getElementById('temp-error').textContent = 'Temporary credentials do not match.';
+    return;
+  }
+  showStep(2);
+});
+
+function renderCompanies() {
+  const list = document.getElementById('company-list');
+  list.innerHTML = companies.map(company => `<div class="company-chip"><strong>${company.companyName}</strong><span>${company.gstin} · ${company.filingScheme === 'qrmp' ? 'QRMP' : 'Monthly'}</span></div>`).join('');
+  const access = document.getElementById('company-access');
+  access.innerHTML = companies.map(company => `<label class="access-check"><input type="checkbox" value="${company.id}" checked> <span>${company.companyName}<small>${company.gstin}</small></span></label>`).join('');
+}
+
+document.getElementById('add-company').addEventListener('click', () => {
+  const gstin = document.getElementById('company-gstin').value.trim().toUpperCase();
+  const companyName = document.getElementById('company-name').value.trim();
+  const state = document.getElementById('company-state').value.trim() || 'State from GSTIN';
+  const filingScheme = document.getElementById('filing-scheme').value;
+  if (!gstin || gstin.length !== 15 || !companyName) {
+    document.getElementById('company-error').textContent = 'Add a valid 15 character GST number and company name.';
+    return;
+  }
+  const id = slug(companyName + '-' + gstin);
+  if (!companies.some(x => x.id === id)) {
+    companies.push({ id, gstin, companyName, state, filingScheme, accessUserIds: [] });
+  }
+  document.getElementById('company-gstin').value = '';
+  document.getElementById('company-name').value = '';
+  document.getElementById('company-state').value = '';
+  document.getElementById('company-error').textContent = '';
+  renderCompanies();
+});
+
+document.getElementById('company-form').addEventListener('submit', (event) => {
+  event.preventDefault();
+  if (!companies.length) document.getElementById('add-company').click();
+  if (!companies.length) return;
+  showStep(3);
+});
+
+document.getElementById('owner-form').addEventListener('submit', (event) => {
+  event.preventDefault();
+  owner = {
+    userId: 'owner-' + slug(document.getElementById('owner-login').value),
+    name: document.getElementById('owner-name').value.trim(),
+    loginId: document.getElementById('owner-login').value.trim(),
+    password: document.getElementById('owner-password').value,
+    role: document.getElementById('owner-role').value,
+    companyAccess: companies.map(x => x.id)
+  };
+  companies = companies.map(company => ({ ...company, accessUserIds: [owner.userId] }));
+  renderCompanies();
+  showStep(4);
+});
+
+document.getElementById('add-team').addEventListener('click', () => {
+  const loginId = document.getElementById('team-login').value.trim();
+  const password = document.getElementById('team-password').value;
+  if (!loginId || !password) return;
+  const selected = Array.from(document.querySelectorAll('#company-access input:checked')).map(x => x.value);
+  const member = {
+    userId: 'team-' + slug(loginId),
+    name: document.getElementById('team-name').value.trim() || loginId,
+    loginId,
+    password,
+    role: document.getElementById('team-role').value,
+    companyAccess: selected
+  };
+  team.push(member);
+  companies = companies.map(company => selected.includes(company.id)
+    ? { ...company, accessUserIds: Array.from(new Set(company.accessUserIds.concat(member.userId))) }
+    : company);
+  document.getElementById('team-list').innerHTML = team.map(member => `<div class="company-chip"><strong>${member.name}</strong><span>${member.role} · ${member.companyAccess.length} company access</span></div>`).join('');
+  document.getElementById('team-name').value = '';
+  document.getElementById('team-login').value = '';
+  document.getElementById('team-password').value = '';
+});
+
+document.getElementById('team-form').addEventListener('submit', (event) => {
+  event.preventDefault();
+  if (!owner) return;
+  const onboarding = {
+    workspaceName: companies[0].companyName,
+    owner,
+    companies,
+    teamMembers: team,
+    createdAt: new Date().toISOString()
+  };
+  localStorage.setItem('fylepro.onboarding', JSON.stringify(onboarding));
+  localStorage.setItem('fylepro.entity', companies[0].id);
+  setSession(owner, onboarding.workspaceName);
+  window.location.href = 'dashboard.html';
+});
+</script>
+</body>
+</html>

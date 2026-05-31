@@ -1,28 +1,28 @@
-# DigiGST 2.0 — Session State (v2.0.17)
+# FylePro — Session State (v2.0.17)
 *Updated 17-May-2026*
 
 ## Where we are
 - **Current version**: 2.0.17
 - **Total HTML files**: 58 (incl. 16 detail pages)
-- **Final deliverable**: `/mnt/user-data/outputs/DigiGST-2.0-Prototype.zip` (~252 KB)
-- **Working directory**: `/home/claude/digigst/`
-- **User / admin persona**: Jude Akash, Tax Manager at Tata Enterprises (renamed from Priya Ramesh in v2.0.17)
-- **Brand**: EY black `#2E2E38` + yellow `#FFE600`. IBM Plex Sans + Mono.
+- **Final deliverable**: `/mnt/user-data/outputs/FylePro-2.0-Prototype.zip` (~252 KB)
+- **Working directory**: `/home/claude/FylePro/`
+- **User / admin persona**: Jude Akash, Tax Manager at Apex Enterprises (renamed from Priya Ramesh in v2.0.17)
+- **Brand**: FylePro black `#4B5563` + yellow `#E5E7EB`. IBM Plex Sans + Mono.
 
 ## Architecture (DO NOT CHANGE without reason)
 - Pure HTML/CSS/JS, no backend, no build step.
 - `renderShell(active, breadcrumb, sub)` from app.js renders sidebar drawer + header on every page.
-- Entity-aware: `localStorage('digigst.entity')` holds active entity id. Sidebar swaps based on entity type.
+- Entity-aware: `localStorage('FylePro.entity')` holds active entity id. Sidebar swaps based on entity type.
 - Three entities under PAN AABCT3518Q:
-  - `tata-steel-mh` — Normal, GSTR-1 workflow, due 11-Jun-2026
-  - `tata-services-isd` — ISD, GSTR-6 workflow, due 13-Jun-2026
-  - `tata-traders-comp` — Composition, CMP-08 Q1 due 18-Jul-2026
+  - `apex-steel-mh` — Normal, GSTR-1 workflow, due 11-Jun-2026
+  - `apex-services-isd` — ISD, GSTR-6 workflow, due 13-Jun-2026
+  - `apex-traders-comp` — Composition, CMP-08 Q1 due 18-Jul-2026
 - Step-flow helpers: `renderStepHeader` (status + intro + current upload) above tables, `renderStepFooter` (validation + disposition + history) below. Both injected via shim `renderStepFlow`.
 - Drop zone CSS components: `.drop-zone-pair`, `.drop-zone-single`, `.drop-zone-area`.
 - Auto-computed indicator: `.cell-edited` row class + `.cell-auto-hint` red badge with click-to-revert.
 
 ## Workflows complete end-to-end
-### GSTR-1 Outward (Tata Steel)
+### GSTR-1 Outward (Apex Steel)
 1. `gstr1-step1.html` — Validate sales register (Excel/Manual/API) + uploaded-data preview (v2.0.16)
 2. `gstr1-step2.html` — IRN auto-fetch + IRN-vs-Books drop-zone pair + Reco summary (v2.0.15)
 3. `gstr1-step3.html` — Outward summary tiles, **each opens own detail page** (v2.0.16)
@@ -36,19 +36,19 @@
 - Each form shows existing/new pair fields + change-summary banner
 - Inline JS switcher driven by `#amend-action-select` change events
 
-### GSTR-3B Inward (Tata Steel)
+### GSTR-3B Inward (Apex Steel)
 1. `gstr3b-step1.html` — PR upload drop zone + preview
 2. `gstr3b-step2.html` — IMS auto-fetch, **6 IMS tiles open own detail pages** (v2.0.16)
 3. `gstr3b-step3.html` — Confirm Inward Summary (6 sub-tables, reconciliation source block)
 4. `gstr3b-step4.html` — Compute ITC & Set-off (editable Sections 4 + 6.1, auto-computed indicators)
 5. `gstr3b-step5.html` — Preview & file
 
-### GSTR-6 ISD (Tata Services)
+### GSTR-6 ISD (Apex Services)
 1. `gstr6-step1.html` — GSTR-6A auto-fetch
 2. `gstr6-step2.html` — Distribute ITC across 12 units (Rule 39), editable distribution table (v2.0.15)
 3. `gstr6-step3.html` — Preview & file
 
-### Composition (Tata Traders)
+### Composition (Apex Traders)
 - `cmp08.html` — Quarterly CMP-08
 - `gstr4.html` — Annual GSTR-4
 - `bos-register.html` — Bill of Supply
@@ -89,10 +89,10 @@ All detail pages follow the same template: breadcrumb back to parent step → bi
 
 ## Build script
 ```bash
-rm -rf /tmp/DigiGST-2.0-Prototype && mkdir /tmp/DigiGST-2.0-Prototype && \
-cp /home/claude/digigst/*.html /home/claude/digigst/*.css /home/claude/digigst/*.js /home/claude/digigst/README.txt /tmp/DigiGST-2.0-Prototype/ && \
-rm -f /mnt/user-data/outputs/DigiGST-2.0-Prototype.zip && \
-cd /tmp && zip -rq /mnt/user-data/outputs/DigiGST-2.0-Prototype.zip DigiGST-2.0-Prototype/ -x "*.DS_Store"
+rm -rf /tmp/FylePro-2.0-Prototype && mkdir /tmp/FylePro-2.0-Prototype && \
+cp /home/claude/FylePro/*.html /home/claude/FylePro/*.css /home/claude/FylePro/*.js /home/claude/FylePro/README.txt /tmp/FylePro-2.0-Prototype/ && \
+rm -f /mnt/user-data/outputs/FylePro-2.0-Prototype.zip && \
+cd /tmp && zip -rq /mnt/user-data/outputs/FylePro-2.0-Prototype.zip FylePro-2.0-Prototype/ -x "*.DS_Store"
 ```
 
 ## Version log
@@ -182,7 +182,7 @@ Critical bug fix + 2 small enhancements.
 
 1. **CRITICAL UI BUG FIX: Validation badge vertical-letter wrap.** Screenshots from the user showed every letter of badge names rendering on its own line (e.g., "A / l / l / 6 / I / M / S / s / e / c / t / i / o / n / s") across many pages — Steps 2, 3, 4, 5 of GSTR-3B, GSTR-1 Step 4, plus IMS pages. Root cause: the badge used `grid-template-columns: 8px minmax(0,1fr) auto` (dot | name | count) and when the count text was long (e.g., "B2B/CDN/Amd/CDN-Amd/ECO/ECO-Amd"), it expanded to fit, squeezing the name column to ~1 character width. `overflow-wrap: anywhere` then broke every single letter. Fix: restructure to a 2-row layout via `grid-template-areas: "dot name" / ". count"`. Name now has full column width; count goes on its own row below. Min badge width 220px, min-height 56px, count uses mono font 11px.
 
-2. **Run Reco prominent CTA card on gstr3b-step3.html.** Yellow gradient card with EY-black icon, between "Reconciliation sources · IMS vs Books" heading and the drop-zone-pair. "Run reconciliation now" title + descriptive sub explaining match keys (Supplier GSTIN + Doc no + Doc date + Taxable value with ±₹1 tolerance) + a dark "Run reco" button. Click triggers a toast.
+2. **Run Reco prominent CTA card on gstr3b-step3.html.** Yellow gradient card with FylePro-black icon, between "Reconciliation sources · IMS vs Books" heading and the drop-zone-pair. "Run reconciliation now" title + descriptive sub explaining match keys (Supplier GSTIN + Doc no + Doc date + Taxable value with ±₹1 tolerance) + a dark "Run reco" button. Click triggers a toast.
 
 3. **GSTR-6 portal Section 4 ITC Details + Distributed credit reconciliation tables added on gstr6-step2.html.** Modelled exactly from the GSTR-6 portal screenshot (Image 3): two tables stacked. First: Description × Integrated/Central/State-UT/Cess with rows for (a) Total ITC available for distribution, (b) Amount of eligible ITC, (c) Amount of ineligible ITC. Second: Distributed credit reconciliation with `Description × Amount distributed × Utilization (IGST/CGST/SGST/Cess)` columns numbered 1-6, with 5 rows (Integrated/Central/State-UT/Cess + Total). Includes the portal's exact action buttons: BACK / CALCULATE ITC / SAVE.
 
@@ -207,9 +207,9 @@ All share the same UI pattern: page header → why-banner → drop-zone-pair (So
 
 ### Stage 2 — Sidebar reorganization
 Added "Reconciliation" nav-section to all 3 entity sidebars:
-- **Normal entity** (Tata Steel): all 6 reco modules
-- **ISD entity** (Tata Services): 3 modules (2A vs 2B, 2A vs Books, 2B vs Books)
-- **Composition entity** (Tata Traders): 2 modules (2A vs Books, Books vs E-invoice)
+- **Normal entity** (Apex Steel): all 6 reco modules
+- **ISD entity** (Apex Services): 3 modules (2A vs 2B, 2A vs Books, 2B vs Books)
+- **Composition entity** (Apex Traders): 2 modules (2A vs Books, Books vs E-invoice)
 Each entity sees only relevant recos. Includes "critical" badge on 2B vs Books in Normal sidebar.
 
 ### Stage 3 — Intermediate progress snapshot
@@ -217,7 +217,7 @@ Memory + SESSION-STATE + bundle saved as v2.0.21a to preserve work if session di
 
 ### Stage 4 — E-invoice module enhancements
 - Added `window.openIrnPopup()` modal in app.js. Captures supplier/recipient/invoice/transport. Same modal styling as openChallanPopup. On Generate: closes modal + toast "IRN issued · 35dc4d8d... · EWB EBN 312504201842"
-- Added Generate IRN + Books vs E-invoice cross-link banner to all 3 e-invoice pages (upload, management, reports). Yellow-themed card with EY-black icon, between LIFECYCLE STRIP and the existing workflow content.
+- Added Generate IRN + Books vs E-invoice cross-link banner to all 3 e-invoice pages (upload, management, reports). Yellow-themed card with FylePro-black icon, between LIFECYCLE STRIP and the existing workflow content.
 
 ### Stage 5 — Run Reco buttons in step pages
 - **gstr1-step2.html**: Added prominent Run Reco card between IRN-vs-Books drop-zone-pair and the reco report. Triggers toast on click.
@@ -231,7 +231,7 @@ Memory + SESSION-STATE + bundle saved as v2.0.21a to preserve work if session di
 - All hrefs resolve, JS parses, 0 \u escape sequences
 
 ## Reusable patterns added in v2.0.21
-- `reco-run-card` + `reco-run-btn` CSS classes (yellow gradient card with EY-black icon, dark button) — use anywhere a "Run this reconciliation now" prominent CTA is needed
+- `reco-run-card` + `reco-run-btn` CSS classes (yellow gradient card with FylePro-black icon, dark button) — use anywhere a "Run this reconciliation now" prominent CTA is needed
 - Reco module template at `/tmp/gen_reco_modules.py` — to add a new reco type, copy the MODULES dict pattern with title/subtitle/why_text/source_a/source_b/results
 - `openIrnPopup()` parallel to `openChallanPopup()` — modal pattern can be reused for other forms
 
@@ -245,7 +245,7 @@ File: `gstr1-detail-8-nil-exempt.html`. Table was 6 cols (PoS / Category / Inter
 - Non-GST: 2710 (motor spirit), 2207 (alcohol)
 
 ### Fix 2 — Table 12 (HSN summary) totals row added
-File: `gstr1-detail-12-hsn.html`. Previously had no totals row — sample 8-row table ended without aggregates, making the "totals" appear misaligned (nothing to align to). Added a sample sub-total row at the bottom with EY-yellow background, bold, top border in EY-yellow. 8 td cells matching the 8 th cells in the header. Tabular-nums for clean column alignment.
+File: `gstr1-detail-12-hsn.html`. Previously had no totals row — sample 8-row table ended without aggregates, making the "totals" appear misaligned (nothing to align to). Added a sample sub-total row at the bottom with FylePro-yellow background, bold, top border in FylePro-yellow. 8 td cells matching the 8 th cells in the header. Tabular-nums for clean column alignment.
 
 ### Surprise UI audit pass
 Audit script checked all 65 HTML files for:
@@ -278,7 +278,7 @@ Post-audit: 0 issues remaining, 163 = 163 div balance in gstr1-step1, 95 = 95 in
 EWB module built in 6 stages with memory checkpoints between each. E-Invoice work intentionally deferred to next turn.
 
 ### Stage 1 — `ewb.html` (EWB hub/landing)
-Teal accent (`#0BA5E9` linear-gradient with `#0E6BA8`) to visually distinguish from IRN's EY-yellow/black. Sections:
+Teal accent (`#0BA5E9` linear-gradient with `#0E6BA8`) to visually distinguish from IRN's FylePro-yellow/black. Sections:
 - Header: title with teal pill icon + tag-line "distinct from IRN / e-invoice"
 - Why-EWB-differs-from-IRN info banner (with concrete example: one invoice may have 0, 1, or several EWBs)
 - 4 live-stat tiles: Active 418 / Expiring <24h 12 / In cancel window 28 / Generated MTD 2,847
@@ -394,11 +394,11 @@ Module purpose: just FETCH notices from GSTN portal + tag the workflow stage. An
 - 6 filter pills + entity dropdown
 - 6-row notices sample table with per-row stage dropdown (Unread/Read/Working/Closed) and indigo-violet gradient Digilimm+ button per row (varies by stage: "Open in Digilimm+" / "Continue in Digilimm+" / "Analyse in Digilimm+")
 - Sample notices: ASMT-10 (Immediate), DRC-01A (Working), ADT-01 audit (Read), RFD-02 (Closed), DRC-01 (Unread purple-tinted), DRC-01C ISD (Working)
-- Deep-link URL pattern: `https://digilimm.ey.com/notice/{rfn}` with `target="_blank"`
+- Deep-link URL pattern: `https://digilimm.FylePro.com/notice/{rfn}` with `target="_blank"`
 - Bottom full-width indigo gradient CTA banner with "Launch Digilimm+" button
 
 ### Phase D — `reports.html` (entity-aware)
-- Header + EY-yellow context banner showing active entity + Refresh-from-GSTN button
+- Header + FylePro-yellow context banner showing active entity + Refresh-from-GSTN button
 - 5-col filter bar: Report type / From period / To period / Format / Download button
 - Async-generation UX note: multi-period bundling → ZIP when >1 file; "Report ready in 2 mins" toast for large reports
 - 8 report type tiles: G1 / G1A / 2A / 2B (cyan) / IMS (green) / 3B (yellow) / G9 (indigo) / 1ff
@@ -425,9 +425,9 @@ Implemented in `dashboard.html`. Two distinct additions:
 - @keyframes spin for in-progress icon
 
 **Per-entity data sources** (entity-aware):
-- **Normal** (Tata Steel, 10 sources, accent #7C3AED): GSTR-1, 2A, 2B (locked), 3B, IMS, IRN (FAILED · IRP-1 timeout · with Try-again btn), EWB (IN PROGRESS · ~30s remaining), Cash, Credit, Notices (PENDING · depends on IRN). 7/10 = 70% green progress bar shown
-- **ISD** (Tata Services, 4 sources, accent #6366F1): GSTR-6, GSTR-6A, Cash, ITC distribution. All SYNCED (100%)
-- **Composition** (Tata Traders, 5 sources, accent #16A34A): CMP-08, GSTR-4, BoS, Purchase register, Cash. All SYNCED (100%)
+- **Normal** (Apex Steel, 10 sources, accent #7C3AED): GSTR-1, 2A, 2B (locked), 3B, IMS, IRN (FAILED · IRP-1 timeout · with Try-again btn), EWB (IN PROGRESS · ~30s remaining), Cash, Credit, Notices (PENDING · depends on IRN). 7/10 = 70% green progress bar shown
+- **ISD** (Apex Services, 4 sources, accent #6366F1): GSTR-6, GSTR-6A, Cash, ITC distribution. All SYNCED (100%)
+- **Composition** (Apex Traders, 5 sources, accent #16A34A): CMP-08, GSTR-4, BoS, Purchase register, Cash. All SYNCED (100%)
 
 ### Final audit
 - 73 HTML files (was 69 in v2.0.23, +4 IRN pages and +0 net for v2.0.25 — overwrites + dashboard edit)
@@ -534,7 +534,7 @@ User flagged screenshot issues across 3 pages. Broken into fragments with memory
 The HTML used class names (`lifecycle-strip`, `lifecycle-phase`, `phase-icon-circle`, `phase-content`, `phase-label`, `phase-meta`, `phase-connector`) that had no matching CSS rules — so the elements rendered as plain vertical flow content. Added CSS:
 - `.lifecycle-strip`: flex row container with wrap support for narrow viewports
 - `.lifecycle-phase`: flex row with 12px gap, icon + content, min-width 200px
-- `.phase-icon-circle`: 38px circle with state-driven colors — `.complete` green/white, `.current` EY-yellow/black with 4px yellow halo glow, `.overdue` red/white, default muted grey
+- `.phase-icon-circle`: 38px circle with state-driven colors — `.complete` green/white, `.current` FylePro-yellow/black with 4px yellow halo glow, `.overdue` red/white, default muted grey
 - `.phase-label`: 13.5px bold with state color matching the icon
 - `.phase-meta`: 11.5px mono muted with ellipsis on overflow
 - `.phase-connector`: 32px horizontal bar between phases (hidden on <720px viewports)
@@ -543,7 +543,7 @@ The HTML used class names (`lifecycle-strip`, `lifecycle-phase`, `phase-icon-cir
 ### Fragment 2 — gstr1-detail-12-hsn totals row alignment
 Replaced the existing "Sample sub-total · 8 HSN codes" row with TWO rows:
 1. Muted "Sample sub-total · 8 HSN codes shown above" row (grey, font-weight 600, top border-light) — for the visible-rows aggregate
-2. Bold "TOTAL · Grand total · 2,471 HSN codes" row (EY-yellow tinted, font-weight 700, top border-2px EY-yellow, font-size 13px) — for the full 2,471 codes aggregate
+2. Bold "TOTAL · Grand total · 2,471 HSN codes" row (FylePro-yellow tinted, font-weight 700, top border-2px FylePro-yellow, font-size 13px) — for the full 2,471 codes aggregate
 Values: 8,42,17,418.6 MTS · ₹1,28,42,18,000.00 taxable · ₹19,42,18,000.00 IGST · ₹3,68,42,000.00 CGST+SGST
 All numeric cells use inline `font-variant-numeric: tabular-nums` to ensure column alignment despite varying digit widths.
 
@@ -581,13 +581,13 @@ Wrapped existing 6 IMS tables in `<div class="recon-view recon-view-ims" data-re
 3. **Unclaimed in 2B** (2B > Books, 473 records, ₹84.2 L missed claim opportunity)
 4. **Value mismatches** (675 records with diff > ₹1)
 5. **Carry-forward from prior 2B** (84 records unlocked, ₹14.8 L)
-6. **Final 2B-eligible ITC pool** (summary card with 5 contribution boxes + Net ₹35.40 Cr highlighted in EY-yellow)
+6. **Final 2B-eligible ITC pool** (summary card with 5 contribution boxes + Net ₹35.40 Cr highlighted in FylePro-yellow)
 
 CSS toggle: `body[data-recon-source="2b"] .recon-view-ims { display:none }` reciprocal for 2B, so source toggle (from v2.0.28) now controls table visibility too.
 
 ### Fragment 2 — Reusable patterns CSS
 Three reusable patterns added to styles.css:
-- `.run-action-card` (yellow-gradient, EY-black btn) — used wherever a "Run X" action follows an upload
+- `.run-action-card` (yellow-gradient, FylePro-black btn) — used wherever a "Run X" action follows an upload
 - `.activity-tracker-card` (table with progress pills processing/success/partial/failed + inline progress bar with pulse-dot keyframe animation)
 - `.next-action-grid` + `.next-action-card` (4-card layout for "pick next step", recommended variant green-bordered)
 
@@ -604,7 +604,7 @@ All 6 `gstr1-step*.html` pages now have their step-pip elements as `<a href="...
 - Added "Sync final GSTR-1 template from Step 1 + Step 2" card at top (info-blue gradient) with Re-sync button + Upload Excel override button
 - Added Late Fee Calculator card before action bar (warning-yellow border):
   - Standard rates info block: Normal ₹50/day (₹25 CGST + ₹25 SGST), Nil ₹20/day (₹10+₹10)
-  - Max caps per return: ≤₹1.5Cr → ₹2,000; ₹1.5-5Cr → ₹5,000; >₹5Cr → ₹10,000 (highlighted as applicable to Tata Steel); Nil → ₹500
+  - Max caps per return: ≤₹1.5Cr → ₹2,000; ₹1.5-5Cr → ₹5,000; >₹5Cr → ₹10,000 (highlighted as applicable to Apex Steel); Nil → ₹500
   - 5-scenario estimate table (on-time / 1 day / 5 days / 50 days / 200+ days capped) with tabular-nums alignment
   - Legal reference: Notification 7/2023-CT + Sec 47 of CGST/SGST Act
 
@@ -687,7 +687,7 @@ User requested removing duplicate sections in gstr1-step2, redesigning IRN reco 
 ### Fragment 1 — gstr1-step2 cleanup
 - Removed "Reconciliation report · IRN side ↔ Books side" section (1859 chars) — duplicated info shown in Reconciliation outcome preview boxes below
 - Removed "IRN vs Step 1 sales register · reconciliation" section (1518 chars) — redundant after the 4 preview boxes
-- Replaced 4-card Disposition next-action-grid with simplified 3-button strip: **Continue with reconciled data** (primary EY-yellow) / **Resync data from ERP** (secondary) / **Reset all data** (red text). Fits in a single responsive row, no card layout.
+- Replaced 4-card Disposition next-action-grid with simplified 3-button strip: **Continue with reconciled data** (primary FylePro-yellow) / **Resync data from ERP** (secondary) / **Reset all data** (red text). Fits in a single responsive row, no card layout.
 - Redesigned IRN reconciliation history from the card+row format to a clean `<table class="data-table grid-lined compact">` with columns: Time / Pair (IRN ↔ Books) / Source / Records / Status / Actions. Status column has the activity-status-pill above and a compact progress bar below for in-progress rows. 657 lines, balanced.
 
 ### Fragment 2 — gstr3b-step1 redesign per gstr1-step1 pattern
@@ -707,7 +707,7 @@ User requested removing duplicate sections in gstr1-step2, redesigning IRN reco 
 Two parallel changes for IMS view and 2B view:
 
 **Summary cards** (one per view, inserted right after view container opens):
-- **IMS summary**: info-blue accented card with 6-row table — Matched/Non-matched/Prior-period/Pending/Rejected/Final reconciled. Each row has bucket name + colored dot + records + Taxable + IGST + CGST+SGST + Action default + Excel download button. Final row in EY-yellow tint as "Flows to 3B Table 4(A)".
+- **IMS summary**: info-blue accented card with 6-row table — Matched/Non-matched/Prior-period/Pending/Rejected/Final reconciled. Each row has bucket name + colored dot + records + Taxable + IGST + CGST+SGST + Action default + Excel download button. Final row in FylePro-yellow tint as "Flows to 3B Table 4(A)".
 - **2B summary**: violet (#7C3AED) accented card with 5-row table — 2B Matched/Excess in Books/Unclaimed in 2B/Value mismatches/Carry-forward + Net 2B-eligible ITC final row. Each row shows Effect on ITC text in matching color (Clean claim / Reverse Rule 36(4) / Book & claim / Investigate / Unlocked ITC).
 - Both summaries have a "Download summary (Excel)" button in the head.
 
@@ -798,7 +798,7 @@ The user said the validation/recon history table was "too messy". Added a stylin
 - Status pill and progress bar layout polished
 
 ### Fragment 3 — Table 12 HSN Summary card now blue
-Changed from EY-yellow (FFFDF0 + var(--ey-yellow)) to info-blue (F0F7FF + var(--info)) matching Table 13 (Documents Issued) treatment. Both bulk-upload cards now share the same blue accent for visual consistency.
+Changed from FylePro-yellow (FFFDF0 + var(--fp-accent)) to info-blue (F0F7FF + var(--info)) matching Table 13 (Documents Issued) treatment. Both bulk-upload cards now share the same blue accent for visual consistency.
 
 ### Fragment 4 — gstr3b-step1 download validation summary options
 Added a download row BEFORE the 4-tile big-stat-grid in gstr3b-step1:
@@ -867,7 +867,7 @@ Ran integrity check on `window.toggleReconBreakup` infrastructure in gstr3b-step
 Confirmed working end-to-end. The "4 buttons triggering toggleReconBreakup" count includes both the `onclick="window.toggleReconBreakup && window.toggleReconBreakup('ims')"` short-circuit check AND the actual invocation per button — so 2 buttons × 2 mentions = 4 textual occurrences, but only 2 real button instances.
 
 ### Fragment 3 — Validation summary after Step 2 reco
-Added "Reconciliation impact summary · per GSTR-1 section" card to gstr1-step2, positioned between the 4 reco preview boxes and the OUTWARD REGISTER source tiles. EY-yellow left-border accent. 8-row table showing per-section impact:
+Added "Reconciliation impact summary · per GSTR-1 section" card to gstr1-step2, positioned between the 4 reco preview boxes and the OUTWARD REGISTER source tiles. FylePro-yellow left-border accent. 8-row table showing per-section impact:
 
 | Section | New | Updated | Removed | Net (₹) | Status |
 |---|---|---|---|---|---|
@@ -936,7 +936,7 @@ Total 12 tiles × responsive grid + flex action footer. Hover shadow effect on e
   - "Sync all from portal" primary CTA in header
   - Last sync banner: "15-May-2026 09:18:42 IST · all 4 ledgers up-to-date · next auto-sync 15:18 IST"
   - 4 colored ledger cards (Cash green / Credit blue / Challans yellow / DRC-03A violet), each with current value + secondary status + per-card Sync + Excel buttons
-  - Combined ledger position banner (EY-black gradient): Total cash / Total ITC / May 3B liability est. / Net additional cash required
+  - Combined ledger position banner (FylePro-black gradient): Total cash / Total ITC / May 3B liability est. / Net additional cash required
 - **app.js sidebar update**: "Overview · all ledgers" added as first sub-item in Ledgers section across all 3 sidebar variants (Normal/ISD/Composition). Yellow-bordered for emphasis. Direct link to ledgers.html. (Avoided modifying the parent toggle button which had previously caused JS breakage.)
 
 ### Fragment 6 — IMS validation + expandable auto-cat summary
@@ -952,7 +952,7 @@ Total 12 tiles × responsive grid + flex action footer. Hover shadow effect on e
 - `window.toggleAutoCatRow(cat)` in app.js handles toggle + chevron rotation
 
 ### Side fixes
-- **notices.html**: Sync button promoted from secondary to EY-yellow primary cta-large with last-sync timestamp underneath ("● Last sync: 15-May 09:18:42 · next in 5h 12m"). All bright violet (#7C3AED, #F3E8FF) softened to indigo (#6366F1, #EEF2FF) — 18 instances replaced.
+- **notices.html**: Sync button promoted from secondary to FylePro-yellow primary cta-large with last-sync timestamp underneath ("● Last sync: 15-May 09:18:42 · next in 5h 12m"). All bright violet (#7C3AED, #F3E8FF) softened to indigo (#6366F1, #EEF2FF) — 18 instances replaced.
 - **drc03a.html**: Lifecycle CSS class fixed from `.lifecycle-strip` to `.lifecycle-timeline` (the page uses new phase-icon-circle structure that needs v2.0.30's renamed class).
 - **gstr6-step1.html**: Service category table given `min-width:1100px` + per-column `min-width` settings so "8,46,927.00" and "3,287 elig · 128 inelig" cells align properly.
 
@@ -989,7 +989,7 @@ Per-page summary configurations:
 - **reco-books-vs-ims.html**: Books vs IMS — Matched (auto-accept) / In IMS not in Books (pending) / In Books not in IMS (supplier delay) / Rejected in IMS.
 - **pr-recon.html** (Purchase Register vs GSTR-2B): Matched (PR ↔ 2B) / Excess in PR / In 2B not in PR / Value mismatch. Final row: Net PR-eligible ITC ₹38.07 Cr flowing to 3B Table 4(A). ACTIVITY LOG section removed (4,694 chars).
 
-Each summary has Excel download per row + summary-level Excel + EY-yellow total row.
+Each summary has Excel download per row + summary-level Excel + FylePro-yellow total row.
 
 JS: `window.toggleReconBreakupGeneric(recoId)` added — handles all 6 reco pages via data-recon-breakup-generic attribute, rotates chevron 180° on expand, swaps button text.
 
@@ -1066,7 +1066,7 @@ Bundle 384 KB. Ready for demo.
 All collapsible sections have the v2.0.36 enhanced animation (cubic-bezier easing, staggered child fade-in 40-200ms, chevron rotation, yellow gradient indicator on expanded).
 
 ## v2.0.38 changes (23-May-2026) — Ledger child-page navigation + IRN/EWB fully-engineered list management
-User flagged 2 items: (1) cash-ledger/credit-ledger/challans/drc03a need navigation back to Ledgers overview, since they're meant to be sub-pages of the overview; (2) IRN + EWB management list pages need full engineering with source filter (DigiGST-generated vs Auto-fetched from portal), period selector, line-wise download, and multi-line bulk selection.
+User flagged 2 items: (1) cash-ledger/credit-ledger/challans/drc03a need navigation back to Ledgers overview, since they're meant to be sub-pages of the overview; (2) IRN + EWB management list pages need full engineering with source filter (FylePro-generated vs Auto-fetched from portal), period selector, line-wise download, and multi-line bulk selection.
 
 ### Fragment 1 — Ledger child-page breadcrumb navigation
 All 4 ledger child pages now have a breadcrumb above the page title pointing back to the overview:
@@ -1080,9 +1080,9 @@ The `.back-arrow-link-inline` CSS class (new) uses `::before` pseudo-element to 
 ### Fragment 2 — IRN management (einvoice-management.html) fully engineered
 Replaced the v2.0.34 simple filter row with a comprehensive control bar:
 
-**Source toggle** (segmented control, EY-yellow active state):
+**Source toggle** (segmented control, FylePro-yellow active state):
 - **All sources** (2,68,419)
-- **Generated from DigiGST** (2,18,184) — IRNs created via this app's workflow
+- **Generated from FylePro** (2,18,184) — IRNs created via this app's workflow
 - **Auto-fetched from IRP** (50,235) — IRNs created on the IRP portal directly, pulled in via auto-sync
 
 **Period filter**: This filing period (May-26) / Last 7 days / 30 / 90 / FYTD / Custom
@@ -1105,7 +1105,7 @@ Identical structure for parity:
 
 **Source toggle**:
 - All sources (14,802)
-- Generated from DigiGST (11,418)
+- Generated from FylePro (11,418)
 - Auto-fetched from EWB portal (3,384)
 
 **Period filter** + **Movement type** (All / Outward sale / Inward purchase / Job work / Branch transfer) + **Status** (All / Active / Expiring <24 hrs / Delivered / Cancelled)
@@ -1126,9 +1126,9 @@ Bundle 388 KB.
 User flagged 5 items: (1) replace source toggle with a column at end of IRN/EWB tables; (2) add Sync live button + timestamp in filter header; (3) remove URGENT pending row from IRN dummy data; (4) custom range opens period+calendar picker, remove Monthly button from GSTR-2A/2B; (5) Ledgers sidebar click should navigate to overview. Plus UI alignment polish across modules + README.md.
 
 ### Fragment 1 — IRN + EWB Source column (replaces 3-button toggle)
-**Removed** the v2.0.38 source toggle (3 segmented buttons: All / DigiGST-generated / Auto-fetched). **Added a new "Source" column** at the end of each table row instead, showing each record's actual origin with icon + label + timestamp:
+**Removed** the v2.0.38 source toggle (3 segmented buttons: All / FylePro-generated / Auto-fetched). **Added a new "Source" column** at the end of each table row instead, showing each record's actual origin with icon + label + timestamp:
 
-- **DigiGST** (info-blue pill with checkmark-circle icon) — IRN/EWB created via this app's workflow
+- **FylePro** (info-blue pill with checkmark-circle icon) — IRN/EWB created via this app's workflow
 - **Auto · IRP** / **Auto · EWB** (success-green pill with refresh icon) — pulled from portal via auto-sync
 
 Each cell shows the icon-pill on line 1 and the source-fetch timestamp underneath in mono font (e.g., `14-May 09:48`).
@@ -1166,7 +1166,7 @@ Added `v2.0.39 — Final UI alignment polish` block to styles.css:
 - Source cell `vertical-align: middle` for consistent alignment
 - Custom scrollbar styling on `.table-wrap` (10px height, themed)
 - Card hover transition consistency
-- Date input focus state (EY-yellow outline)
+- Date input focus state (FylePro-yellow outline)
 
 ### Fragment 6 — README.md created
 New comprehensive README.md replacing the previous brief README.txt:
@@ -1204,7 +1204,7 @@ The new step4 mirrors the GSTN portal's GSTR-3B summary layout exactly:
 - **5.1 Interest and Late fee for previous tax period**
 - **6.1 Payment of tax** (full-width) — Balance Liability / Paid via Cash / Paid via Credit / Total payable
 
-Each tile uses EY-navy `#1B3A5C` header (red `#E97A7A` for tile 4 to match portal). Clicking the tile toggles a detail panel below showing line-wise breakup tables with Excel download per section. `window.togglePortalTile(tileId)` in inline script handles expand/collapse + chevron rotation.
+Each tile uses FylePro-navy `#1B3A5C` header (red `#E97A7A` for tile 4 to match portal). Clicking the tile toggles a detail panel below showing line-wise breakup tables with Excel download per section. `window.togglePortalTile(tileId)` in inline script handles expand/collapse + chevron rotation.
 
 All gstr3b step pages (step1 through step6) had their workflow bar updated to show 6 pips with correct done/current/upcoming states. gstr3b.html hub also updated to show 6 step cards.
 
@@ -1219,7 +1219,7 @@ User wanted offline-reupload templates per GSTR-1 category. Added a yellow-accen
 - 7 B2C Others
 - 9A Credit/Debit Notes
 - 11 Advances received
-- **Download all (1 workbook)** — primary EY-yellow button — 8 sheets
+- **Download all (1 workbook)** — primary FylePro-yellow button — 8 sheets
 
 Each button triggers a toast simulating Excel template download with current category data pre-filled.
 

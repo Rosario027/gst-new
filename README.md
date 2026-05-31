@@ -1,28 +1,28 @@
-# DigiGST 2.0 — UI Prototype
+# FylePro — UI Prototype
 
-> EY GST compliance platform · interactive UI prototype for Tata Enterprises demo
+> FylePro GST compliance platform · interactive UI prototype for Apex Enterprises demo
 
 **Version**: 2.0.40
 **Status**: Demo-ready HTML/CSS/JS prototype (no backend)
-**Author persona**: Jude Akash, Tax Manager · Tata Enterprises (PAN AABCT3518Q)
+**Author persona**: Jude Akash, Tax Manager · Apex Enterprises (PAN AABCT3518Q)
 
 ---
 
 ## What this is
 
-A single-page-app-style interactive prototype demonstrating EY's next-generation GST compliance product. **Fully clickable**, **multi-entity aware**, and **covers every workflow** a tax manager would touch in a typical month — outward returns, inward reconciliation, ITC setoff, IRN/EWB generation, IMS actions, payments, notices, and reports.
+A single-page-app-style interactive prototype demonstrating FylePro next-generation GST compliance product. **Fully clickable**, **multi-entity aware**, and **covers every workflow** a tax manager would touch in a typical month — outward returns, inward reconciliation, ITC setoff, IRN/EWB generation, IMS actions, payments, notices, and reports.
 
 Built as pure HTML + CSS + JavaScript with **no backend**. All numbers, IRNs, timestamps and statuses are realistic fixtures. Toast notifications stand in for the API calls a production version would make.
 
 ## Entities
 
-The prototype is built for **Tata Group** with 3 GSTIN registrations under one PAN, each demonstrating a different filing pattern:
+The prototype is built for **Apex Group** with 3 GSTIN registrations under one PAN, each demonstrating a different filing pattern:
 
 | Entity | Type | Returns | Due |
 |---|---|---|---|
-| `tata-steel-mh` | Normal | GSTR-1 / 3B / 9 | 11-Jun (May filing) |
-| `tata-services-isd` | ISD | GSTR-6 / GSTR-6A | 13-Jun (May filing) |
-| `tata-traders-comp` | Composition | CMP-08 / GSTR-4 | 18-Jul (Q1 FY26) |
+| `apex-steel-mh` | Normal | GSTR-1 / 3B / 9 | 11-Jun (May filing) |
+| `apex-services-isd` | ISD | GSTR-6 / GSTR-6A | 13-Jun (May filing) |
+| `apex-traders-comp` | Composition | CMP-08 / GSTR-4 | 18-Jul (Q1 FY26) |
 
 Switch entities via the top-right entity badge — sidebar, modules, and dashboard all adapt.
 
@@ -56,7 +56,7 @@ These pages are for internal user review only — no bulk-post actions, just dow
 
 ### IRN (E-Invoice)
 - **Hub**: `einvoice.html` — Generate single / Bulk upload / Search history / Sync from IRP
-- **Search & history**: `einvoice-management.html` — full-featured list with **Source column** (DigiGST-generated vs Auto-fetched from IRP), period filter, doc-type filter, status filter, line-wise Excel, multi-row checkbox select with bulk actions (download, cancel, email)
+- **Search & history**: `einvoice-management.html` — full-featured list with **Source column** (FylePro-generated vs Auto-fetched from IRP), period filter, doc-type filter, status filter, line-wise Excel, multi-row checkbox select with bulk actions (download, cancel, email)
 - **Compliance**: CGST Rule 48(4) info card with thresholds, generation window, cancellation window, exclusions, penalty
 
 ### EWB (E-Way Bill)
@@ -71,7 +71,7 @@ Click "Ledgers & Payments" in the sidebar → opens overview page (`ledgers.html
 - **Challans (PMT-06)** — 12 pending, 2 expiring
 - **DRC-03A** — Link voluntary payments to demand orders
 
-Each child page has a breadcrumb back to the overview. Combined position banner (EY-black) shows: Total cash / Total ITC / Estimated 3B liability / Net additional cash required.
+Each child page has a breadcrumb back to the overview. Combined position banner (FylePro-black) shows: Total cash / Total ITC / Estimated 3B liability / Net additional cash required.
 
 ### Reports & Compliance
 - **Reports** (`reports.html`): 12 actionable tiles, each with period dropdown + format-specific download (GSTR-1/3B/6/9/9C → PDF, GSTR-1A/IMS/FF/Ledgers/EWB → Excel, 2A/2B → Excel). Custom range opens a calendar+filing-period modal.
@@ -83,7 +83,7 @@ Amnesty applications, system settings (entity, profile, security).
 
 ## Design system
 
-- **Brand**: EY black (`#2E2E38`) + EY yellow (`#FFE600`)
+- **Brand**: FylePro black (`#4B5563`) + FylePro yellow (`#E5E7EB`)
 - **Typography**: IBM Plex Sans (UI) + IBM Plex Mono (numbers, IDs, GSTINs)
 - **Accent colors**: success green (`#168736`), error red (`#C8102E`), warning amber (`#C77700`), info blue (`#155CDB`), violet (`#6366F1` for IMS/portal-sync)
 - **Numbering**: Indian-style lakhs/crores throughout (`₹ 1,82,891` not `182,891`)
@@ -100,7 +100,7 @@ Amnesty applications, system settings (entity, profile, security).
 ## File organization
 
 ```
-/home/claude/digigst/
+/home/claude/FylePro/
 ├── index.html, dashboard.html            # entry points
 ├── gstr1*.html, gstr3b*.html, gstr6*.html  # filing workflows
 ├── reco-*.html, pr-recon.html            # reconciliation pages

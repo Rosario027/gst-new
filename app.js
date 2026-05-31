@@ -1,4 +1,4 @@
-// DigiGST 2.0 — shared interactivity + entity management
+// FylePro — shared interactivity + entity management
 
 // ============================================
 // ENTITY DATA MODEL (v2.0.8)
@@ -7,9 +7,9 @@
 // ============================================
 const ENTITIES = [
   {
-    id: 'tata-steel-mh',
-    name: 'Tata Steel · Maharashtra',
-    shortName: 'Tata Steel',
+    id: 'apex-steel-mh',
+    name: 'Apex Steel · Maharashtra',
+    shortName: 'Apex Steel',
     gstin: '27AABCT3518Q1ZV',
     type: 'normal',
     typeLabel: 'Normal Registration',
@@ -22,9 +22,9 @@ const ENTITIES = [
     homePage: 'gstr1.html'
   },
   {
-    id: 'tata-services-isd',
-    name: 'Tata Services Ltd · ISD',
-    shortName: 'Tata Services (ISD)',
+    id: 'apex-services-isd',
+    name: 'Apex Services Ltd · ISD',
+    shortName: 'Apex Services (ISD)',
     gstin: '27AABCT3518Q2ZW',
     type: 'isd',
     typeLabel: 'Input Service Distributor',
@@ -37,9 +37,9 @@ const ENTITIES = [
     homePage: 'gstr6.html'
   },
   {
-    id: 'tata-traders-comp',
-    name: 'Tata Traders LLP · Composition',
-    shortName: 'Tata Traders (Comp.)',
+    id: 'apex-traders-comp',
+    name: 'Apex Traders LLP · Composition',
+    shortName: 'Apex Traders (Comp.)',
     gstin: '27AABCT3518Q3ZX',
     type: 'composition',
     typeLabel: 'Composition Scheme (\u00A710)',
@@ -53,15 +53,62 @@ const ENTITIES = [
   }
 ];
 
+function getStoredSession() {
+  try {
+    return JSON.parse(localStorage.getItem('fylepro.session') || 'null');
+  } catch(e) {
+    return null;
+  }
+}
+
+function getOnboardedCompanies() {
+  try {
+    const data = JSON.parse(localStorage.getItem('fylepro.onboarding') || 'null');
+    if (!data || !Array.isArray(data.companies)) return [];
+    const session = getStoredSession();
+    const userId = session && session.userId;
+    return data.companies
+      .filter(company => !userId || company.accessUserIds.includes(userId))
+      .map(company => ({
+        id: company.id,
+        name: company.companyName + ' · ' + company.state,
+        shortName: company.companyName,
+        gstin: company.gstin,
+        type: 'normal',
+        typeLabel: company.filingScheme === 'qrmp' ? 'Normal Registration · QRMP' : 'Normal Registration',
+        state: company.state,
+        pan: company.gstin.slice(2, 12),
+        aato: 'Onboarded company',
+        period: company.filingScheme === 'qrmp' ? 'Quarterly' : 'Monthly',
+        nextDue: company.filingScheme === 'qrmp' ? 'QRMP filing cycle active' : 'Monthly filing cycle active',
+        daysToDue: 0,
+        homePage: 'gstr1.html'
+      }));
+  } catch(e) {
+    return [];
+  }
+}
+
+function getAccessibleEntities() {
+  const onboarded = getOnboardedCompanies();
+  return onboarded.length ? onboarded : ENTITIES;
+}
+
 function getCurrentEntity() {
   let id = null;
-  try { id = localStorage.getItem('digigst.entity'); } catch(e) {}
-  const e = ENTITIES.find(x => x.id === id);
-  return e || ENTITIES[0];
+  const entities = getAccessibleEntities();
+  try { id = localStorage.getItem('fylepro.entity'); } catch(e) {}
+  const e = entities.find(x => x.id === id);
+  return e || entities[0];
 }
 
 function switchEntity(newId) {
-  try { localStorage.setItem('digigst.entity', newId); } catch(e) {}
+  const allowed = getAccessibleEntities().some(x => x.id === newId);
+  if (!allowed) {
+    if (window.showToast) window.showToast('Access denied for this company');
+    return;
+  }
+  try { localStorage.setItem('fylepro.entity', newId); } catch(e) {}
   window.location.href = 'dashboard.html';
 }
 
@@ -682,6 +729,8 @@ function getSidebarHTML(active, entityType) {
 // ENTITY SWITCHER PANEL HTML
 // ============================================
 function getEntitySwitcherPanel(currentId) {
+  const entities = getAccessibleEntities();
+  const pan = entities[0] && entities[0].pan ? entities[0].pan : 'selected PAN';
   const cardHTML = (e) => {
     const isSel = e.id === currentId;
     const cls = e.type === 'isd' ? 'isd' : e.type === 'composition' ? 'composition' : '';
@@ -709,10 +758,10 @@ function getEntitySwitcherPanel(currentId) {
     <div class="entity-switcher-panel" id="entity-switcher-panel">
       <div class="entity-switcher-panel-header">
         <div class="entity-switcher-panel-title">Switch filing entity</div>
-        <div class="entity-switcher-panel-sub">All 3 entities share PAN <strong class="mono">AABCT3518Q</strong> &middot; switching reloads with entity-specific dashboard, sidebar and due dates</div>
+        <div class="entity-switcher-panel-sub">Only companies assigned to your login are listed here. Current PAN scope: <strong class="mono">${pan}</strong>.</div>
       </div>
       <div class="entity-switcher-list">
-        ${ENTITIES.map(cardHTML).join('')}
+        ${entities.map(cardHTML).join('')}
       </div>
     </div>`;
 }
@@ -747,6 +796,11 @@ function getEntityStripHTML(entity) {
 // SHELL RENDERER
 // ============================================
 function renderShell(active, moduleName, breadcrumb) {
+  const session = getStoredSession();
+  if (!session) {
+    window.location.href = 'login.html';
+    return;
+  }
   const entity = getCurrentEntity();
 
   const hamburger = `
@@ -759,8 +813,8 @@ function renderShell(active, moduleName, breadcrumb) {
   const sidebar = `
   <aside class="sidebar drawer-mode" id="sidebar-drawer">
     <div class="brand">
-      <div class="brand-mark">EY</div>
-      <div class="brand-text">DigiGST <span>2.0</span></div>
+      <div class="brand-mark">FP</div>
+      <div class="brand-text">FylePro</div>
     </div>
     <nav class="nav">
       ${getSidebarHTML(active, entity.type)}
@@ -778,7 +832,7 @@ function renderShell(active, moduleName, breadcrumb) {
     </nav>
     <div class="sidebar-footer">
       v2.0.8 &middot; Build 2026.05<br>
-      <span style="opacity:0.6">EY DigiGST Platform</span>
+      <span style="opacity:0.6">FylePro Platform</span>
     </div>
   </aside>`;
 
@@ -800,10 +854,10 @@ function renderShell(active, moduleName, breadcrumb) {
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/></svg>
       </button>
       <button class="user-chip">
-        <div class="avatar">PR</div>
+        <div class="avatar">${session.initials || 'FP'}</div>
         <div>
-          <div class="user-name">Jude Akash</div>
-          <span class="user-meta">Tax Manager &middot; Tata Ent.</span>
+          <div class="user-name">${session.name || 'FylePro User'}</div>
+          <span class="user-meta">${session.role || 'Tax Manager'} &middot; ${session.company || 'Workspace'}</span>
         </div>
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
       </button>
@@ -1324,7 +1378,7 @@ window.openChallanPopup = function(ctx) {
           </div>
           <div class="modal-field">
             <label class="modal-field-label">Cess &middot; Tax (&#8377;)</label>
-            <input class="modal-field-input" value="${ctx.amount || '8,00,00,000'}" style="text-align:right;font-family:var(--font-mono);background:#FFFDF0;border-color:var(--ey-yellow);">
+            <input class="modal-field-input" value="${ctx.amount || '8,00,00,000'}" style="text-align:right;font-family:var(--font-mono);background:#F8FAFC;border-color:var(--fp-accent);">
           </div>
         </div>
 
@@ -1348,10 +1402,10 @@ window.openChallanPopup = function(ctx) {
           </div>
         </div>
 
-        <div class="modal-summary-strip" style="background:linear-gradient(135deg, #FFFDF0, var(--surface));border-color:var(--ey-yellow);">
+        <div class="modal-summary-strip" style="background:linear-gradient(135deg, #F8FAFC, var(--surface));border-color:var(--fp-accent);">
           <div class="modal-summary-item">
             <div class="modal-summary-label">Total challan amount</div>
-            <div class="modal-summary-value" style="font-size:18px;color:var(--ey-black-deep);">&#8377; ${ctx.amount || '8,00,00,000'}</div>
+            <div class="modal-summary-value" style="font-size:18px;color:var(--fp-ink);">&#8377; ${ctx.amount || '8,00,00,000'}</div>
           </div>
           <div class="modal-summary-item">
             <div class="modal-summary-label">CPIN (on generate)</div>
@@ -1448,7 +1502,7 @@ window.openIrnPopup = function(ctx) {
           </div>
           <div class="modal-field">
             <label class="modal-field-label">Trade name</label>
-            <input class="modal-field-input" value="Tata Steel Mumbai" readonly style="background:var(--bg);">
+            <input class="modal-field-input" value="Apex Steel Mumbai" readonly style="background:var(--bg);">
           </div>
         </div>
 
@@ -1509,7 +1563,7 @@ window.openIrnPopup = function(ctx) {
           </div>
         </div>
 
-        <div class="modal-summary-strip" style="background:linear-gradient(135deg, #FFFDF0, var(--surface));border-color:var(--ey-yellow);">
+        <div class="modal-summary-strip" style="background:linear-gradient(135deg, #F8FAFC, var(--surface));border-color:var(--fp-accent);">
           <div class="modal-summary-item">
             <div class="modal-summary-label">IGST</div>
             <div class="modal-summary-value">&mdash;</div>
@@ -1524,7 +1578,7 @@ window.openIrnPopup = function(ctx) {
           </div>
           <div class="modal-summary-item">
             <div class="modal-summary-label">Invoice total</div>
-            <div class="modal-summary-value" style="color:var(--ey-black-deep);">&#8377; 9,93,560</div>
+            <div class="modal-summary-value" style="color:var(--fp-ink);">&#8377; 9,93,560</div>
           </div>
         </div>
 
@@ -1828,7 +1882,7 @@ window.openIrnLineItemsPopup = function(ctx) {
           <div>
             <div class="modal-section-title" style="border-top:none;padding-top:0;margin-top:0;">QR + signed JSON</div>
             <div style="display:flex;align-items:center;gap:14px;">
-              <div style="width:96px;height:96px;background:repeating-linear-gradient(45deg, var(--ey-black-deep), var(--ey-black-deep) 4px, #fff 4px, #fff 8px);border-radius:6px;flex-shrink:0;border:2px solid var(--ey-black-deep);"></div>
+              <div style="width:96px;height:96px;background:repeating-linear-gradient(45deg, var(--fp-ink), var(--fp-ink) 4px, #fff 4px, #fff 8px);border-radius:6px;flex-shrink:0;border:2px solid var(--fp-ink);"></div>
               <div style="font-size:11px;color:var(--text-muted);line-height:1.55;">QR contains: Supplier GSTIN, Buyer GSTIN, Doc no, Doc date, Invoice value, Main HSN, IRN, IRP date. Verifiable via any QR scanner against IRP.</div>
             </div>
           </div>
@@ -2057,15 +2111,15 @@ window.setIrnSource = function(source, btn) {
   document.querySelectorAll('.irn-source-toggle').forEach(function(b) {
     if (b === btn) {
       b.classList.add('active');
-      b.style.background = 'var(--ey-yellow)';
-      b.style.color = 'var(--ey-black-deep)';
+      b.style.background = 'var(--fp-accent)';
+      b.style.color = 'var(--fp-ink)';
     } else {
       b.classList.remove('active');
       b.style.background = 'transparent';
       b.style.color = 'var(--text-muted)';
     }
   });
-  var label = source === 'all' ? 'all sources' : source === 'digi' ? 'DigiGST-generated' : 'Auto-fetched from IRP';
+  var label = source === 'all' ? 'all sources' : source === 'digi' ? 'FylePro-generated' : 'Auto-fetched from IRP';
   if (window.showToast) window.showToast('IRN view filtered to: ' + label);
 };
 
@@ -2103,15 +2157,15 @@ window.setEwbSource = function(source, btn) {
   document.querySelectorAll('.ewb-source-toggle').forEach(function(b) {
     if (b === btn) {
       b.classList.add('active');
-      b.style.background = 'var(--ey-yellow)';
-      b.style.color = 'var(--ey-black-deep)';
+      b.style.background = 'var(--fp-accent)';
+      b.style.color = 'var(--fp-ink)';
     } else {
       b.classList.remove('active');
       b.style.background = 'transparent';
       b.style.color = 'var(--text-muted)';
     }
   });
-  var label = source === 'all' ? 'all sources' : source === 'digi' ? 'DigiGST-generated' : 'Auto-fetched from EWB portal';
+  var label = source === 'all' ? 'all sources' : source === 'digi' ? 'FylePro-generated' : 'Auto-fetched from EWB portal';
   if (window.showToast) window.showToast('EWB view filtered to: ' + label);
 };
 
