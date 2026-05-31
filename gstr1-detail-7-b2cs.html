@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2C Others &middot; summary (state-wise) · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">
+          <a href="gstr1-step3.html" style="color:var(--text-muted);text-decoration:none;">&larr; Step 3 (Outward summary)</a> &middot; Detail view
+        </div>
+        <h1 class="page-title">7 &middot; B2C Others &middot; summary (state-wise)</h1>
+        <p class="page-subtitle">Intra-state to unregistered + inter-state below &#8377; 2.5 L &middot; aggregated per state &amp; rate</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="gstr1-step3.html" class="btn btn-secondary">&larr; Back to Step 3 (Outward summary)</a>
+      </div>
+    </div>
+
+    <div class="big-stat-grid" style="margin-bottom:20px;">
+      <div class="big-stat" style="border-left:3px solid var(--info);"><div class="big-stat-label">State rows</div><div class="big-stat-value">36</div><div class="big-stat-sub">All states + UTs</div></div>
+      <div class="big-stat"><div class="big-stat-label">Taxable value</div><div class="big-stat-value">&#8377; 2.42 Cr</div><div class="big-stat-sub">Aggregated retail</div></div>
+      <div class="big-stat"><div class="big-stat-label">Rate slabs</div><div class="big-stat-value">4</div><div class="big-stat-sub">5% / 12% / 18% / 28%</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--success);"><div class="big-stat-label">Total tax</div><div class="big-stat-value">&#8377; 38.4 L</div><div class="big-stat-sub">CGST + SGST / IGST</div></div>
+    </div>
+
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">
+        <div style="min-width:0;flex:1 1 240px;">
+          <div style="font-size:13.5px;font-weight:700;color:var(--text);line-height:1.4;">B2C Others state-wise summary &middot; sample of 8 of 36</div>
+          <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">Aggregated by state-of-supply &middot; auto-computed from underlying retail invoices</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="btn btn-secondary btn-sm">Download CSV</button>
+          <button class="btn btn-secondary btn-sm">Filter</button>
+          <button class="btn btn-secondary btn-sm">Edit rows</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table grid-lined compact">
+          <thead><tr><th>PoS</th><th>Type</th><th class="num">Rate %</th><th class="num">Taxable (₹)</th><th class="num">IGST</th><th class="num">CGST</th><th class="num">SGST</th><th class="num">Cess</th></tr></thead>
+          <tbody><tr><td>27-Maharashtra</td><td>Intra-state</td><td class="num">18</td><td class="num">1,42,18,400</td><td class="num">—</td><td class="num">12,79,656</td><td class="num">12,79,656</td><td class="num">—</td></tr><tr><td>29-Karnataka</td><td>Intra-state</td><td class="num">18</td><td class="num">38,42,000</td><td class="num">—</td><td class="num">3,45,780</td><td class="num">3,45,780</td><td class="num">—</td></tr><tr><td>07-Delhi</td><td>Inter-state</td><td class="num">18</td><td class="num">18,42,000</td><td class="num">3,31,560</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr><tr><td>06-Haryana</td><td>Inter-state</td><td class="num">18</td><td class="num">12,18,000</td><td class="num">2,19,240</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr><tr><td>33-Tamil Nadu</td><td>Inter-state</td><td class="num">18</td><td class="num">8,42,000</td><td class="num">1,51,560</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr><tr><td>24-Gujarat</td><td>Inter-state</td><td class="num">18</td><td class="num">6,84,000</td><td class="num">1,23,120</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr><tr><td>19-West Bengal</td><td>Inter-state</td><td class="num">18</td><td class="num">4,28,000</td><td class="num">77,040</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr><tr><td>27-Maharashtra</td><td>Intra-state</td><td class="num">5</td><td class="num">8,42,000</td><td class="num">—</td><td class="num">21,050</td><td class="num">21,050</td><td class="num">—</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">36 state rows &middot; &#8377; 38.4 L total tax &middot; auto-computed from retail register</div>
+        <div class="action-bar-status">Open the retail register to drill into per-state invoice list &middot; reconciles with POS terminal data</div>
+      </div>
+      <div class="action-bar-actions">
+        <a href="gstr1-step3.html" class="btn btn-secondary cta-large">&larr; Back to Step 3 (Outward summary)</a>
+        <button class="btn btn-secondary cta-large">Save changes</button>
+        <a href="gstr1-step3.html" class="btn btn-primary cta-large">Done &middot; return to Step 3 (Outward summary) &rarr;</a>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('gstr1', 'GSTR-1 &middot; Step 3 detail', '7 detail');</script>
+</body>
+</html>

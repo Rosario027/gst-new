@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CMP-08 Quarterly · Composition · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">CMP-08 &middot; Quarterly Statement of Self-Assessed Tax</h1>
+        <p class="page-subtitle">Q1 (Apr-Jun) 2026-27 &middot; Composition scheme &sect;10 &middot; Due 18-Jul-2026</p>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn btn-secondary cta-large">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download JSON
+        </button>
+        <button class="btn btn-secondary cta-large">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Preview
+        </button>
+      </div>
+    </div>
+
+    <!-- COMPOSITION CONTEXT BANNER -->
+    <div class="card" style="background:linear-gradient(135deg, #14532D 0%, #16A34A 100%);color:#fff;border:none;padding:20px 24px;margin-bottom:20px;">
+      <div style="display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;">
+        <div style="width:48px;height:48px;border-radius:12px;background:rgba(255,255,255,0.18);display:grid;place-items:center;">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        </div>
+        <div>
+          <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.85);font-weight:600;margin-bottom:4px">Composition Scheme &sect;10 &middot; Trader at 1% rate</div>
+          <div style="font-size:18px;font-weight:700;color:#fff;">CMP-08 is paid quarterly; GSTR-4 is filed annually &middot; No tax invoice, no ITC, no GSTR-1 / 3B</div>
+          <div style="margin-top:6px;font-size:12.5px;color:rgba(255,255,255,0.82);">As a composition trader, you pay tax on your aggregate turnover at 1% (0.5% CGST + 0.5% SGST) and issue Bill of Supply (not tax invoice). Inward purchases don't qualify for ITC.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPIS -->
+    <div class="big-stat-grid" style="margin-bottom:20px;">
+      <div class="big-stat accent">
+        <div class="big-stat-label">Q1 turnover</div>
+        <div class="big-stat-value">&#8377; 38,40,000</div>
+        <div class="big-stat-sub">Apr-Jun 2026 &middot; outward intra-state</div>
+      </div>
+      <div class="big-stat" style="border-left:3px solid var(--ey-yellow)">
+        <div class="big-stat-label">Tax rate</div>
+        <div class="big-stat-value">1.0%</div>
+        <div class="big-stat-sub">0.5% CGST + 0.5% SGST &middot; trader</div>
+      </div>
+      <div class="big-stat" style="border-left:3px solid var(--success)">
+        <div class="big-stat-label">Tax payable</div>
+        <div class="big-stat-value" style="color:var(--success)">&#8377; 38,400</div>
+        <div class="big-stat-sub">&#8377; 19,200 each CGST + SGST</div>
+      </div>
+      <div class="big-stat" style="border-left:3px solid var(--info)">
+        <div class="big-stat-label">FYTD AATO</div>
+        <div class="big-stat-value">&#8377; 38.4 L</div>
+        <div class="big-stat-sub">Within &#8377; 1.5 Cr limit &#10003;</div>
+      </div>
+    </div>
+
+    <!-- TABLE 3 — OUTWARD SUPPLIES (Self-assessed) -->
+    <div class="card" style="padding:0;margin-bottom:18px;">
+      <div style="padding:18px 22px;border-bottom:1px solid var(--border);">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">Table 3 &middot; Summary of self-assessed liability</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Aggregate turnover for the quarter and tax thereon (per Rule 62)</div>
+      </div>
+      <div class="table-wrap">
+<table class="data-table grid-lined">
+        <thead>
+          <tr>
+            <th>Nature of supply</th>
+            <th class="num">Turnover (&#8377;)</th>
+            <th class="num">Tax rate</th>
+            <th class="num">CGST (&#8377;)</th>
+            <th class="num">SGST (&#8377;)</th>
+            <th class="num">Total tax (&#8377;)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>3(1) &middot; Outward supplies (including exempt) made by composition taxpayer</td>
+            <td class="num">38,40,000.00</td>
+            <td class="num">1.0%</td>
+            <td class="num">19,200.00</td>
+            <td class="num">19,200.00</td>
+            <td class="num">38,400.00</td>
+          </tr>
+          <tr>
+            <td>3(2) &middot; Inward supplies attracting reverse charge (incl. import of services)</td>
+            <td class="num">&mdash;</td>
+            <td class="num">&mdash;</td>
+            <td class="num">&mdash;</td>
+            <td class="num">&mdash;</td>
+            <td class="num">&mdash;</td>
+          </tr>
+          <tr>
+            <td>3(3) &middot; Tax payable on (1) and (2)</td>
+            <td class="num">&mdash;</td>
+            <td class="num">&mdash;</td>
+            <td class="num">19,200.00</td>
+            <td class="num">19,200.00</td>
+            <td class="num">38,400.00</td>
+          </tr>
+          <tr>
+            <td>3(4) &middot; Interest payable (if any)</td>
+            <td class="num">&mdash;</td>
+            <td class="num">&mdash;</td>
+            <td class="num">&mdash;</td>
+            <td class="num">&mdash;</td>
+            <td class="num">&mdash;</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr style="font-weight:700;background:var(--bg);">
+            <td>3(5) &middot; Tax and interest paid</td>
+            <td class="num">&mdash;</td>
+            <td class="num">&mdash;</td>
+            <td class="num">19,200.00</td>
+            <td class="num">19,200.00</td>
+            <td class="num">38,400.00</td>
+          </tr>
+        </tfoot>
+      </table>
+</div>
+    </div>
+
+    <!-- MONTH-WISE TURNOVER BREAKDOWN -->
+    <div class="card" style="padding:0;margin-bottom:18px;">
+      <div style="padding:18px 22px;border-bottom:1px solid var(--border);">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">Monthly turnover breakdown &middot; Q1 (Apr-Jun 2026)</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">From Bill of Supply register &middot; intra-state sales only (composition can't supply inter-state)</div>
+      </div>
+      <div class="table-wrap">
+<table class="data-table grid-lined">
+        <thead>
+          <tr><th>Month</th><th class="num">No. of Bills of Supply</th><th class="num">Turnover (&#8377;)</th><th class="num">CGST (&#8377;)</th><th class="num">SGST (&#8377;)</th><th class="num">Total tax (&#8377;)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>April 2026</td><td class="num">218</td><td class="num">12,84,000.00</td><td class="num">6,420.00</td><td class="num">6,420.00</td><td class="num">12,840.00</td></tr>
+          <tr><td>May 2026</td><td class="num">241</td><td class="num">13,42,000.00</td><td class="num">6,710.00</td><td class="num">6,710.00</td><td class="num">13,420.00</td></tr>
+          <tr><td>June 2026</td><td class="num">196</td><td class="num">12,14,000.00</td><td class="num">6,070.00</td><td class="num">6,070.00</td><td class="num">12,140.00</td></tr>
+        </tbody>
+        <tfoot>
+          <tr style="font-weight:700;background:var(--bg);">
+            <td>Q1 Total</td><td class="num">655</td><td class="num">38,40,000.00</td><td class="num">19,200.00</td><td class="num">19,200.00</td><td class="num">38,400.00</td>
+          </tr>
+        </tfoot>
+      </table>
+</div>
+    </div>
+
+    <!-- PAYMENT PANEL -->
+    <div class="card" style="padding:24px;margin-bottom:20px;background:linear-gradient(135deg, #F0FDF4, #FFF);border-left:4px solid var(--success);">
+      <div style="display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;">
+        <div style="width:48px;height:48px;border-radius:12px;background:var(--success);color:#fff;display:grid;place-items:center;">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div>
+          <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);font-weight:600">Self-assessed tax computed</div>
+          <div style="font-size:16px;font-weight:700;color:var(--text);">Total tax payable &middot; &#8377; 38,400 (&#8377; 19,200 CGST + &#8377; 19,200 SGST)</div>
+          <div style="font-size:12.5px;color:var(--text-muted);margin-top:4px">Generate challan PMT-06, pay via NEFT / RTGS / Net banking / UPI, then file CMP-08 with EVC</div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-secondary cta-large">Generate PMT-06 challan</button>
+          <button class="btn btn-primary cta-xlarge">Pay tax &amp; file with EVC &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('cmp08', 'CMP-08 Quarterly', 'Q1 (Apr-Jun) 2026-27 &middot; Due 18-Jul-2026');</script>
+</body>
+</html>

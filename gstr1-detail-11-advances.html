@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advances received / adjusted &middot; DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">
+          <a href="gstr1-step3.html" style="color:var(--text-muted);text-decoration:none;">&larr; Step 3 (Outward summary)</a> &middot; Detail view
+        </div>
+        <h1 class="page-title">11 &middot; Advances received / adjusted</h1>
+        <p class="page-subtitle">Advance payments received in May for which invoice will be issued later &middot; tax paid on advance &middot; adjusted against future invoice</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="gstr1-step3.html" class="btn btn-secondary">&larr; Back to Step 3</a>
+      </div>
+    </div>
+
+    <div class="big-stat-grid" style="margin-bottom:20px;">
+      <div class="big-stat" style="border-left:3px solid var(--info);"><div class="big-stat-label">Advances received</div><div class="big-stat-value">27</div><div class="big-stat-sub">New advances this month</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--warning);"><div class="big-stat-label">Adv tax payable</div><div class="big-stat-value">&#8377; 4.2 L</div><div class="big-stat-sub">Tax on advance receipts</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--success);"><div class="big-stat-label">Adv adjusted</div><div class="big-stat-value">14</div><div class="big-stat-sub">Against May invoices</div></div>
+      <div class="big-stat"><div class="big-stat-label">Carry-forward advances</div><div class="big-stat-value">13</div><div class="big-stat-sub">Pending invoice issue</div></div>
+    </div>
+
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">
+        <div style="min-width:0;flex:1 1 240px;">
+          <div style="font-size:13.5px;font-weight:700;color:var(--text);line-height:1.4;">Sample of 8 from 27 advance receipts</div>
+          <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">11A: advances received this period &middot; 11B: advances received earlier and now adjusted against an invoice</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="btn btn-secondary btn-sm">Download CSV</button>
+          <button class="btn btn-secondary btn-sm">Filter</button>
+          <button class="btn btn-secondary btn-sm">Edit rows</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table grid-lined compact">
+          <thead><tr><th class="mono">Ref no.</th><th>Section</th><th>Date</th><th>Recipient</th><th>PoS</th><th class="num">Adv value (&#8377;)</th><th class="num">Rate %</th><th class="num">Tax on adv (&#8377;)</th></tr></thead>
+          <tbody><tr><td class="mono">ADV/26/0418</td><td>11A</td><td>11-May</td><td>Hindalco Industries</td><td>27-MH</td><td class="num">5,00,000</td><td class="num">18</td><td class="num">90,000</td></tr><tr><td class="mono">ADV/26/0419</td><td>11A</td><td>12-May</td><td>Reliance Industries</td><td>29-KA</td><td class="num">8,40,000</td><td class="num">18</td><td class="num">1,51,200</td></tr><tr><td class="mono">ADV/26/0420</td><td>11A</td><td>12-May</td><td>Apollo Tyres</td><td>33-TN</td><td class="num">2,50,000</td><td class="num">18</td><td class="num">45,000</td></tr><tr><td class="mono">ADV/25/0382</td><td>11B</td><td>14-May</td><td>Honda Cars India</td><td>07-DL</td><td class="num">&minus; 4,00,000</td><td class="num">18</td><td class="num">&minus; 72,000</td></tr><tr><td class="mono">ADV/26/0421</td><td>11A</td><td>13-May</td><td>L&amp;T Construction</td><td>06-HR</td><td class="num">12,00,000</td><td class="num">18</td><td class="num">2,16,000</td></tr><tr><td class="mono">ADV/25/0411</td><td>11B</td><td>13-May</td><td>Tata Consumer</td><td>27-MH</td><td class="num">&minus; 1,80,000</td><td class="num">18</td><td class="num">&minus; 32,400</td></tr><tr><td class="mono">ADV/26/0422</td><td>11A</td><td>14-May</td><td>Bharat Forge</td><td>29-KA</td><td class="num">3,20,000</td><td class="num">18</td><td class="num">57,600</td></tr><tr><td class="mono">ADV/26/0423</td><td>11A</td><td>14-May</td><td>Maruti Suzuki</td><td>24-GJ</td><td class="num">6,80,000</td><td class="num">18</td><td class="num">1,22,400</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">27 advances &middot; &#8377; 4.2 L tax payable on adv &middot; 14 adjusted &middot; 13 carry-fwd</div>
+        <div class="action-bar-status">Tax on advance due immediately even before invoice issue &middot; adjustment row reverses earlier liability</div>
+      </div>
+      <div class="action-bar-actions">
+        <a href="gstr1-step3.html" class="btn btn-secondary cta-large">&larr; Back to Step 3</a>
+        <button class="btn btn-secondary cta-large">Save changes</button>
+        <a href="gstr1-step3.html" class="btn btn-primary cta-large">Done &middot; return to Step 3 &rarr;</a>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('gstr1', 'GSTR-1 &middot; Step 3 detail', '11 detail');</script>
+</body>
+</html>

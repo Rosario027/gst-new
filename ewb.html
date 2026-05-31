@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-Way Bill (EWB) &middot; DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">
+          E-Way Bill &middot; ewaybillgst.gov.in &middot; <span style="color:var(--info);font-weight:700;">distinct from IRN / e-invoice</span>
+        </div>
+        <h1 class="page-title" style="display:flex;align-items:center;gap:12px;">
+          <span style="display:inline-grid;place-items:center;width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#0E6BA8,#0BA5E9);color:#fff;">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17h2l1.5-9h11L19 17h2"/><circle cx="7" cy="19" r="2"/><circle cx="17" cy="19" r="2"/><path d="M10 12h4"/></svg>
+          </span>
+          E-Way Bill (EWB)
+        </h1>
+        <p class="page-subtitle">Mandatory for movement of goods &gt; &#8377; 50,000 &middot; generated on the dedicated EWB portal &middot; validity 1 day per 200 km &middot; cancellation window 24h post-generation</p>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn btn-secondary" onclick="if(window.showToast) window.showToast('Pulling latest EWBs from ewaybillgst.gov.in...');">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="14" height="14" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          Sync from EWB portal
+        </button>
+        <a href="ewb-generate.html" class="btn btn-primary">+ New EWB</a>
+      </div>
+    </div>
+
+    <!-- WHY THIS IS DIFFERENT FROM IRN -->
+    <div class="card" style="background:linear-gradient(135deg, #E0F2FE, var(--surface));border-left:4px solid #0BA5E9;padding:16px 20px;margin-bottom:24px;">
+      <div style="display:flex;gap:14px;align-items:flex-start;">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#0BA5E9" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <div style="font-size:12.5px;line-height:1.6;color:var(--text);">
+          <strong>EWB vs IRN &mdash; what&apos;s different:</strong> IRN is for the <em>invoice itself</em> (B2B &gt; &#8377; 5 Cr), one-time, never expires, generated on IRP. EWB is for the <em>movement of goods</em>, mandatory whenever consignment value &gt; &#8377; 50k, has a strict validity period (1 day / 200 km), can be cancelled within 24 hours, and is generated on a separate portal (ewaybillgst.gov.in). One invoice may have <strong>0, 1, or several</strong> EWBs depending on how the goods are shipped.
+        </div>
+      </div>
+    </div>
+
+    <!-- LIVE STATS ROW -->
+    <div class="big-stat-grid" style="margin-bottom:24px;">
+      <div class="big-stat" style="border-left:3px solid var(--success);">
+        <div class="big-stat-label">Active EWBs</div>
+        <div class="big-stat-value" style="color:var(--success);">418</div>
+        <div class="big-stat-sub">Valid &middot; in transit</div>
+      </div>
+      <div class="big-stat" style="border-left:3px solid var(--error);">
+        <div class="big-stat-label">Expiring &lt; 24h</div>
+        <div class="big-stat-value" style="color:var(--error);">12</div>
+        <div class="big-stat-sub">Need extension or arrival confirmation</div>
+      </div>
+      <div class="big-stat" style="border-left:3px solid var(--warning);">
+        <div class="big-stat-label">In cancel window</div>
+        <div class="big-stat-value" style="color:var(--warning);">28</div>
+        <div class="big-stat-sub">Can still cancel (&lt; 24h old)</div>
+      </div>
+      <div class="big-stat" style="border-left:3px solid var(--info);">
+        <div class="big-stat-label">Generated MTD</div>
+        <div class="big-stat-value">2,847</div>
+        <div class="big-stat-sub">May 2026 &middot; 89% via API</div>
+      </div>
+    </div>
+
+    <!-- QUICK ACTION TILES -->
+    <div style="font-size:13px;font-weight:700;color:var(--text);letter-spacing:0.06em;text-transform:uppercase;margin:8px 0 14px;">What would you like to do?</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));gap:14px;margin-bottom:28px;">
+
+      <a href="ewb-generate.html" style="text-decoration:none;color:inherit;">
+        <div class="card" style="padding:22px;display:flex;flex-direction:column;gap:14px;height:100%;border:2px solid transparent;transition:all 0.15s;cursor:pointer;" onmouseover="this.style.borderColor='#0BA5E9';this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(11,165,233,0.18)';" onmouseout="this.style.borderColor='transparent';this.style.transform='';this.style.boxShadow='';">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#0E6BA8,#0BA5E9);color:#fff;display:grid;place-items:center;">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </div>
+            <span class="badge" style="background:rgba(11,165,233,0.10);color:#0BA5E9;font-size:10px;font-weight:700;letter-spacing:0.05em;padding:4px 8px;border-radius:6px;">SINGLE</span>
+          </div>
+          <div>
+            <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;">Generate single EWB</div>
+            <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">Fill Part A (invoice details) + Part B (transport details) &middot; system computes validity from distance &middot; instant EWB no.</div>
+          </div>
+        </div>
+      </a>
+
+      <a href="ewb-bulk.html" style="text-decoration:none;color:inherit;">
+        <div class="card" style="padding:22px;display:flex;flex-direction:column;gap:14px;height:100%;border:2px solid transparent;transition:all 0.15s;cursor:pointer;" onmouseover="this.style.borderColor='#0BA5E9';this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(11,165,233,0.18)';" onmouseout="this.style.borderColor='transparent';this.style.transform='';this.style.boxShadow='';">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#0E6BA8,#0BA5E9);color:#fff;display:grid;place-items:center;">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            </div>
+            <span class="badge" style="background:rgba(11,165,233,0.10);color:#0BA5E9;font-size:10px;font-weight:700;letter-spacing:0.05em;padding:4px 8px;border-radius:6px;">BULK</span>
+          </div>
+          <div>
+            <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;">Bulk upload + portal sync</div>
+            <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">Upload bulk EWB JSON / Excel template or auto-sync EWBs raised directly on the portal by drivers / transporters.</div>
+          </div>
+        </div>
+      </a>
+
+      <a href="ewb-management.html" style="text-decoration:none;color:inherit;">
+        <div class="card" style="padding:22px;display:flex;flex-direction:column;gap:14px;height:100%;border:2px solid transparent;transition:all 0.15s;cursor:pointer;" onmouseover="this.style.borderColor='#0BA5E9';this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(11,165,233,0.18)';" onmouseout="this.style.borderColor='transparent';this.style.transform='';this.style.boxShadow='';">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#0E6BA8,#0BA5E9);color:#fff;display:grid;place-items:center;">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+            </div>
+            <span class="badge" style="background:rgba(11,165,233,0.10);color:#0BA5E9;font-size:10px;font-weight:700;letter-spacing:0.05em;padding:4px 8px;border-radius:6px;">MANAGE</span>
+          </div>
+          <div>
+            <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;">View / extend / cancel</div>
+            <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">List of all EWBs with live time-left-to-modify countdowns &middot; extend (8h before/after expiry) or cancel (within 24h).</div>
+          </div>
+        </div>
+      </a>
+
+      <div class="card" style="padding:22px;display:flex;flex-direction:column;gap:14px;height:100%;border:2px solid transparent;transition:all 0.15s;cursor:pointer;background:linear-gradient(135deg, #E0F2FE, var(--surface));" onclick="if(window.showToast) window.showToast('Auto-sync from EWB portal: pulling EWBs raised directly by drivers / transporters...');" onmouseover="this.style.borderColor='#0BA5E9';this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(11,165,233,0.18)';" onmouseout="this.style.borderColor='transparent';this.style.transform='';this.style.boxShadow='';">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#0E6BA8,#0BA5E9);color:#fff;display:grid;place-items:center;">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          </div>
+          <span class="badge" style="background:rgba(11,165,233,0.10);color:#0BA5E9;font-size:10px;font-weight:700;letter-spacing:0.05em;padding:4px 8px;border-radius:6px;">AUTO-SYNC</span>
+        </div>
+        <div>
+          <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;">Sync portal-generated EWBs</div>
+          <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">Pull EWBs your drivers / transporters generated directly on ewaybillgst.gov.in. Last sync: 15-May 18:42 (37 new EWBs pulled).</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- VALIDITY RULES (LAW REFERENCE) -->
+    <div class="card" style="padding:18px 22px;margin-bottom:20px;background:linear-gradient(135deg,#F0F7FF,var(--surface));border-left:4px solid var(--info);">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:12px;">
+        <div>
+          <div style="font-size:13.5px;font-weight:700;color:var(--text);">EWB validity &middot; Rule 138 of CGST Rules</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Movement-of-goods compliance &middot; key action windows for normal &amp; ODC cargo</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+          <select class="btn btn-secondary btn-sm" style="padding:6px 10px;">
+            <option>This filing period</option>
+            <option>Last 7 days</option>
+            <option>Last 30 days</option>
+            <option>FYTD</option>
+            <option>Custom range…</option>
+          </select>
+          <button class="btn btn-secondary btn-sm" onclick="if(window.showToast)window.showToast('Downloading EWB line-wise records (Excel)...');">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" stroke-width="2.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export line-wise (Excel)
+          </button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;">
+        <div style="padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">Validity (regular cargo)</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);margin-top:4px;">1 day / 200 km</div>
+          <div style="font-size:10.5px;color:var(--text-muted);margin-top:2px;">Rule 138(10)</div>
+        </div>
+        <div style="padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">Validity (ODC cargo)</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);margin-top:4px;">1 day / 20 km</div>
+          <div style="font-size:10.5px;color:var(--text-muted);margin-top:2px;">Rule 138(10) proviso</div>
+        </div>
+        <div style="padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">Extend before expiry</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);margin-top:4px;">8 hrs &mdash; 8 hrs</div>
+          <div style="font-size:10.5px;color:var(--text-muted);margin-top:2px;">before / after expiry &middot; 138(9)</div>
+        </div>
+        <div style="padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">Cancellation</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);margin-top:4px;">24 hours</div>
+          <div style="font-size:10.5px;color:var(--text-muted);margin-top:2px;">from generation &middot; 138(5)</div>
+        </div>
+        <div style="padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">Threshold</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);margin-top:4px;">&#8377; 50,000</div>
+          <div style="font-size:10.5px;color:var(--text-muted);margin-top:2px;">consignment value</div>
+        </div>
+        <div style="padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">Penalty (mismatch)</div>
+          <div style="font-size:14px;font-weight:700;color:var(--error);margin-top:4px;">100% tax + &#8377; 10K</div>
+          <div style="font-size:10.5px;color:var(--text-muted);margin-top:2px;">whichever higher &middot; Sec 129</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECENT EWBs -->
+    <div class="card" style="padding:0;margin-bottom:24px;">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">
+        <div style="min-width:0;flex:1 1 240px;">
+          <div style="font-size:13.5px;font-weight:700;color:var(--text);">Recent EWBs &middot; sample of 8 from 418 active</div>
+          <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">Time-left countdowns are live &middot; red = expiring &lt; 24h &middot; orange = within cancel window</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <a href="ewb-management.html" class="btn btn-secondary btn-sm">View all 418 EWBs &rarr;</a>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table grid-lined compact">
+          <thead>
+            <tr>
+              <th class="mono">EWB no.</th>
+              <th>Generated</th>
+              <th>Invoice</th>
+              <th>From &rarr; To</th>
+              <th class="num">Value (&#8377;)</th>
+              <th class="num">Dist. (km)</th>
+              <th>Vehicle</th>
+              <th>Time left</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="mono">181 0042 8412 38</td>
+              <td>15-May 09:18</td>
+              <td class="mono">TS/26/02818</td>
+              <td>Mumbai &rarr; Bangalore</td>
+              <td class="num">8,42,000</td>
+              <td class="num">982</td>
+              <td class="mono">MH-04-AB-1234</td>
+              <td><span style="font-family:var(--font-mono);color:var(--success);font-weight:600;">3d 14h left</span></td>
+              <td><span class="action-status matched">Active</span></td>
+            </tr>
+            <tr>
+              <td class="mono">181 0042 8418 42</td>
+              <td>15-May 11:42</td>
+              <td class="mono">TS/26/02824</td>
+              <td>Mumbai &rarr; Pune</td>
+              <td class="num">5,18,400</td>
+              <td class="num">148</td>
+              <td class="mono">MH-12-CD-5678</td>
+              <td><span style="font-family:var(--font-mono);color:var(--warning);font-weight:600;">18h 22m left</span></td>
+              <td><span class="action-status pending">Expiring</span></td>
+            </tr>
+            <tr>
+              <td class="mono">181 0042 8431 17</td>
+              <td>15-May 14:08</td>
+              <td class="mono">TS/26/02831</td>
+              <td>Mumbai &rarr; Delhi</td>
+              <td class="num">42,18,000</td>
+              <td class="num">1,438</td>
+              <td class="mono">MH-06-EF-9012</td>
+              <td><span style="font-family:var(--font-mono);color:var(--success);font-weight:600;">6d 3h left</span></td>
+              <td><span class="action-status matched">Active</span></td>
+            </tr>
+            <tr>
+              <td class="mono">181 0042 8438 04</td>
+              <td>15-May 16:24</td>
+              <td class="mono">TS/26/02835</td>
+              <td>Mumbai &rarr; Chennai</td>
+              <td class="num">18,42,000</td>
+              <td class="num">1,338</td>
+              <td class="mono">MH-04-GH-3456</td>
+              <td><span style="font-family:var(--font-mono);color:var(--warning);font-weight:600;">22h 18m left to cancel</span></td>
+              <td><span class="action-status pending">In cancel window</span></td>
+            </tr>
+            <tr>
+              <td class="mono">181 0042 8442 91</td>
+              <td>15-May 17:38</td>
+              <td class="mono">TS/26/02842</td>
+              <td>Mumbai &rarr; Ahmedabad</td>
+              <td class="num">12,84,000</td>
+              <td class="num">532</td>
+              <td class="mono">MH-12-IJ-7890</td>
+              <td><span style="font-family:var(--font-mono);color:var(--error);font-weight:600;">8h 42m left &mdash; extend?</span></td>
+              <td><span class="action-status reject">Critical</span></td>
+            </tr>
+            <tr>
+              <td class="mono">181 0042 8448 23</td>
+              <td>15-May 18:42</td>
+              <td class="mono">TS/26/02848</td>
+              <td>Mumbai &rarr; Kolkata</td>
+              <td class="num">28,40,000</td>
+              <td class="num">1,968</td>
+              <td class="mono">MH-04-KL-2345</td>
+              <td><span style="font-family:var(--font-mono);color:var(--success);font-weight:600;">9d 11h left</span></td>
+              <td><span class="action-status matched">Active</span></td>
+            </tr>
+            <tr>
+              <td class="mono">181 0042 7838 02</td>
+              <td>10-May 08:18</td>
+              <td class="mono">TS/26/02738</td>
+              <td>Mumbai &rarr; Hyderabad</td>
+              <td class="num">9,42,000</td>
+              <td class="num">712</td>
+              <td class="mono">MH-04-MN-6789</td>
+              <td><span style="font-family:var(--font-mono);color:var(--text-muted);">Delivered</span></td>
+              <td><span class="action-status matched">Delivered</span></td>
+            </tr>
+            <tr>
+              <td class="mono">181 0042 8401 88</td>
+              <td>14-May 15:22</td>
+              <td class="mono">TS/26/02801</td>
+              <td>Mumbai &rarr; Surat</td>
+              <td class="num">3,18,400</td>
+              <td class="num">288</td>
+              <td class="mono">MH-04-OP-0123</td>
+              <td><span style="font-family:var(--font-mono);color:var(--text-muted);">Cancelled by user</span></td>
+              <td><span class="action-status reject">Cancelled</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('ewb', 'E-Way Bill', 'Movement of goods &middot; Rule 138');</script>
+</body>
+</html>

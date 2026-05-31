@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Purchase Register vs GSTR-2B Reconciliation · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Purchase Register vs GSTR-2B Reconciliation</h1>
+        <p class="page-subtitle">Inward Supplies · ITC reconciliation · driven by IMS actions · May 2026</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="ims.html" class="btn btn-secondary">Open IMS</a>
+        <a href="dashboard.html" class="btn btn-secondary back-arrow-link">Dashboard</a>
+      </div>
+    </div>
+
+    <!-- CONTEXT STRIP -->
+    <div class="help-strip">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <div><strong>When to do this:</strong> Reconcile your Purchase Register (PR) against the portal-side GSTR-2B — which is now driven by your <strong>IMS</strong> actions (Accept / Reject / Pending). Run this <em>after</em> your suppliers have filed their GSTR-1 and <em>before</em> you finalise GSTR-3B Table 4 ITC claim. Five buckets isolate the records: Matched, Value Mismatch, Missing in 2B, Missing in PR, and Probable match.</div>
+    </div>
+
+    <div class="help-strip">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <div><strong>How it works:</strong> Click into any bucket below to see the records and take action. Wrong-GSTIN postings (most common cause of "Missing in PR") can be Rejected in IMS in a single click. Value mismatches typically need supplier outreach for an amendment.</div>
+    </div>
+
+    <!-- IMS PENDING ACTION BANNER -->
+    <div class="ims-banner">
+      <div class="ims-banner-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+      <div>
+        <div class="ims-banner-title">142 invoices on your IMS dashboard need action</div>
+        <div class="ims-banner-sub">If you don't act before 14-Jun-2026, they're <strong>deemed Accepted</strong> and flow into your GSTR-2B / GSTR-3B automatically. We strongly recommend Reject for wrong-GSTIN postings before that cut-off.</div>
+      </div>
+      <div>
+        <a href="ims.html" class="btn btn-primary cta-large">Open IMS dashboard →</a>
+      </div>
+    </div>
+
+    <!-- 5 RECON BUCKETS -->
+    <div class="recon-bucket-grid">
+      <div class="recon-bucket matched active">
+        <div class="recon-bucket-title">✓ Matched</div>
+        <div class="recon-bucket-count">4,82,418</div>
+        <div class="recon-bucket-meta">Exact match on GSTIN + Inv # + value</div>
+      </div>
+      <div class="recon-bucket mismatch">
+        <div class="recon-bucket-title">⚠ Value mismatch</div>
+        <div class="recon-bucket-count">214</div>
+        <div class="recon-bucket-meta">Same Inv # but value differs</div>
+      </div>
+      <div class="recon-bucket missing-2b">
+        <div class="recon-bucket-title">⊘ Missing in 2B</div>
+        <div class="recon-bucket-count">87</div>
+        <div class="recon-bucket-meta">In PR but supplier hasn't filed</div>
+      </div>
+      <div class="recon-bucket missing-pr">
+        <div class="recon-bucket-title">✗ Missing in PR</div>
+        <div class="recon-bucket-count">142</div>
+        <div class="recon-bucket-meta">In 2B but not in our records — possible wrong-GSTIN</div>
+      </div>
+      <div class="recon-bucket probable">
+        <div class="recon-bucket-title">≈ Probable match</div>
+        <div class="recon-bucket-count">31</div>
+        <div class="recon-bucket-meta">Fuzzy match · GSTIN + Inv # ± 1 char</div>
+      </div>
+    </div>
+
+    <!-- v2.0.36 — PR vs 2B summary (GSTR-3B pattern) -->
+    <div class="card" style="padding:0;margin-bottom:18px;border-left:4px solid var(--info);overflow:hidden;">
+      <div style="padding:16px 22px;background:linear-gradient(135deg,#F0F7FF,var(--surface));border-bottom:1px solid var(--border);">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+          <div>
+            <div style="font-size:14px;font-weight:700;color:var(--text);">Purchase Register vs GSTR-2B reconciliation summary</div>
+            <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">PR: Your purchase register (1,84,217 records) &harr; 2B: 14-May snapshot (1,82,418 records) &middot; for your internal reconciliation review</div>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="if(window.showToast)window.showToast('Downloading PR vs 2B reco summary (Excel)...');">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" stroke-width="2.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download summary (Excel)
+          </button>
+        </div>
+      </div>
+      <div style="padding:0;">
+        <table class="data-table grid-lined compact" style="margin:0;border:none;border-radius:0;">
+          <thead><tr><th>Bucket</th><th class="num">Records</th><th class="num">Taxable (&#8377;)</th><th class="num">Tax (&#8377;)</th><th>Action default</th><th>Download</th></tr></thead>
+          <tbody>
+            <tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--success);margin-right:8px;"></span>Matched (PR &harr; 2B)</td><td class="num mono">1,78,892</td><td class="num mono">38,42,18,000</td><td class="num mono">6,12,42,000</td><td>Clean ITC claim</td><td><button class="row-edit-btn">Excel</button></td></tr>
+            <tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--error);margin-right:8px;"></span>Excess in PR (not in 2B)</td><td class="num mono">1,799</td><td class="num mono">8,42,18,000</td><td class="num mono">3,18,18,000</td><td>Reverse Rule 36(4)</td><td><button class="row-edit-btn">Excel</button></td></tr>
+            <tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--info);margin-right:8px;"></span>In 2B, not in PR</td><td class="num mono">142</td><td class="num mono">84,20,000</td><td class="num mono">15,15,600</td><td>Investigate &middot; wrong GSTIN?</td><td><button class="row-edit-btn">Excel</button></td></tr>
+            <tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--warning);margin-right:8px;"></span>Value mismatch</td><td class="num mono">675</td><td class="num mono">&plusmn; 8,40,000</td><td class="num mono">&mdash;</td><td>Investigate</td><td><button class="row-edit-btn">Excel</button></td></tr>
+            <tr style="background:rgba(255,230,0,0.10);font-weight:700;border-top:2px solid var(--ey-yellow);"><td>Net PR-eligible ITC</td><td class="num mono">1,79,567</td><td class="num mono">38,07,12,000</td><td colspan="2">Flows to 3B Table 4(A) &middot; auto</td><td><button class="row-edit-btn" style="background:rgba(255,230,0,0.20);color:var(--ey-black-deep);">Excel</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- v2.0.36 — Show item-wise breakup toggle -->
+    <div style="text-align:center;margin:0 0 18px;">
+      <button class="btn btn-secondary" id="prvs2b-breakup-toggle" onclick="window.toggleReconBreakupGeneric &amp;&amp; window.toggleReconBreakupGeneric('prvs2b')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+        Show item-wise breakup (5 bucket detail tables)
+      </button>
+    </div>
+
+    <div class="recon-breakup-generic" data-recon-breakup-generic="prvs2b" style="display:none;">
+
+    <!-- HOW THESE BUCKETS WORK -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:18px 22px;border-bottom:1px solid var(--border);">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">Bucket 4 · Missing in PR · 142 records</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">These are inward supplies appearing in your GSTR-2B that you don't have a purchase record for. Most are wrong-GSTIN postings — supplier put your GSTIN by mistake. Reject in IMS to remove from your 2B.</div>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Supplier GSTIN</th>
+            <th>Supplier name</th>
+            <th>Inv #</th>
+            <th>Inv date</th>
+            <th class="num">Taxable</th>
+            <th class="num">IGST</th>
+            <th class="num">CGST</th>
+            <th class="num">SGST</th>
+            <th>IMS status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono">29AAFCM2547L1ZX</td>
+            <td>Mahindra Logistics</td>
+            <td class="mono">ML/26/04812</td>
+            <td>09-May-2026</td>
+            <td class="num">2,84,000.00</td>
+            <td class="num">51,120.00</td>
+            <td class="num">—</td>
+            <td class="num">—</td>
+            <td><span class="ims-status-pill noaction">No action</span></td>
+            <td>
+              <div class="ims-action-cell">
+                <button class="ims-action-btn accept" title="Accept">A</button>
+                <button class="ims-action-btn reject" title="Reject">R</button>
+                <button class="ims-action-btn pending" title="Pending">P</button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="mono">06AAGCB8742C1Z3</td>
+            <td>Bharat Forge Ltd</td>
+            <td class="mono">BF/26/00821</td>
+            <td>11-May-2026</td>
+            <td class="num">1,18,420.00</td>
+            <td class="num">21,315.60</td>
+            <td class="num">—</td>
+            <td class="num">—</td>
+            <td><span class="ims-status-pill noaction">No action</span></td>
+            <td>
+              <div class="ims-action-cell">
+                <button class="ims-action-btn accept" title="Accept">A</button>
+                <button class="ims-action-btn reject selected" title="Reject">R</button>
+                <button class="ims-action-btn pending" title="Pending">P</button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="mono">33AABCG5021Q1ZH</td>
+            <td>Godrej Industries</td>
+            <td class="mono">GI/26/12047</td>
+            <td>10-May-2026</td>
+            <td class="num">62,500.00</td>
+            <td class="num">—</td>
+            <td class="num">5,625.00</td>
+            <td class="num">5,625.00</td>
+            <td><span class="ims-status-pill noaction">No action</span></td>
+            <td>
+              <div class="ims-action-cell">
+                <button class="ims-action-btn accept" title="Accept">A</button>
+                <button class="ims-action-btn reject" title="Reject">R</button>
+                <button class="ims-action-btn pending selected" title="Pending">P</button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="mono">07AAACL2138F1ZD</td>
+            <td>L&amp;T Construction</td>
+            <td class="mono">LT/26/00328</td>
+            <td>08-May-2026</td>
+            <td class="num">4,82,000.00</td>
+            <td class="num">86,760.00</td>
+            <td class="num">—</td>
+            <td class="num">—</td>
+            <td><span class="ims-status-pill accept">Accepted</span></td>
+            <td>
+              <div class="ims-action-cell">
+                <button class="ims-action-btn accept selected" title="Accept">A</button>
+                <button class="ims-action-btn reject" title="Reject">R</button>
+                <button class="ims-action-btn pending" title="Pending">P</button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="mono">19AAACK7184J1ZQ</td>
+            <td>Kolkata Steels Pvt</td>
+            <td class="mono">KS/26/01244</td>
+            <td>12-May-2026</td>
+            <td class="num">2,18,000.00</td>
+            <td class="num">39,240.00</td>
+            <td class="num">—</td>
+            <td class="num">—</td>
+            <td><span class="ims-status-pill noaction">No action</span></td>
+            <td>
+              <div class="ims-action-cell">
+                <button class="ims-action-btn accept" title="Accept">A</button>
+                <button class="ims-action-btn reject" title="Reject">R</button>
+                <button class="ims-action-btn pending" title="Pending">P</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="pagination">
+        <span style="font-size:12px;color:var(--text-muted);">Showing 1–5 of 142 wrong-GSTIN records</span>
+        <div class="flex gap-1">
+          <button class="page-btn" disabled>‹ Prev</button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn">…</button>
+          <button class="page-btn">29</button>
+          <button class="page-btn">Next ›</button>
+        </div>
+      </div>
+    </div>
+
+    </div>
+    <!-- /breakup -->
+
+    <!-- ITC AT RISK -->
+    <div class="card" style="padding:18px 22px;margin-bottom:20px;border-left:4px solid var(--error);background:#FFF5F6;">
+      <div style="display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;">
+        <div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">₹ 12.4 L ITC at risk in this period</div>
+          <div style="font-size:12.5px;color:var(--text-muted);">
+            12 records have <strong>value mismatches</strong> between PR and 2B. If you proceed without action, you'll claim ITC that's not supported by GSTR-2B and trigger automatic notices under Rule 36(4). Resolve before the GSTR-3B cut-off (20-May-2026, 6 days remaining).
+          </div>
+        </div>
+        <button class="btn btn-primary cta-large">Resolve all 12 →</button>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">12 mismatches pending action</div>
+        <div class="action-bar-status">Resolve via IMS Accept/Reject or supplier outreach before GSTR-3B</div>
+      </div>
+      <div class="action-bar-actions">
+        <a href="dashboard.html" class="btn btn-secondary cta-large back-arrow-link">Dashboard</a>
+        <a href="ims.html" class="btn btn-secondary cta-large">Open IMS →</a>
+        <a href="itc-upload.html" class="btn btn-primary cta-xlarge">Continue to ITC Reconciliation →</a>
+      </div>
+    </div>
+
+</main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('prrecon', 'PR vs GSTR-2B Reconciliation', 'Inward Supplies · Reconciliation');</script>
+</body>
+</html>

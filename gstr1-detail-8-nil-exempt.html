@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nil-rated &middot; Exempt &middot; Non-GST supplies &middot; DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">
+          <a href="gstr1-step3.html" style="color:var(--text-muted);text-decoration:none;">&larr; Step 3 (Outward summary)</a> &middot; Detail view
+        </div>
+        <h1 class="page-title">8 &middot; Nil-rated &middot; Exempt &middot; Non-GST supplies</h1>
+        <p class="page-subtitle">Outward supplies that attract no GST &middot; reported state-wise so recipient&apos;s ITC math works correctly</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="gstr1-step3.html" class="btn btn-secondary">&larr; Back to Step 3</a>
+      </div>
+    </div>
+
+    <div class="big-stat-grid" style="margin-bottom:20px;">
+      <div class="big-stat" style="border-left:3px solid var(--info);"><div class="big-stat-label">Total rows</div><div class="big-stat-value">142</div><div class="big-stat-sub">State + category breakdown</div></div>
+      <div class="big-stat"><div class="big-stat-label">Nil-rated value</div><div class="big-stat-value">&#8377; 18.4 Cr</div><div class="big-stat-sub">Items at 0% rate</div></div>
+      <div class="big-stat"><div class="big-stat-label">Exempt value</div><div class="big-stat-value">&#8377; 8.2 Cr</div><div class="big-stat-sub">&sect;11 notified exemptions</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--success);"><div class="big-stat-label">Non-GST value</div><div class="big-stat-value">&#8377; 2.4 Cr</div><div class="big-stat-sub">Alcohol &middot; petrol &middot; out-of-scope</div></div>
+    </div>
+
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">
+        <div style="min-width:0;flex:1 1 240px;">
+          <div style="font-size:13.5px;font-weight:700;color:var(--text);line-height:1.4;">Sample of 8 rows from 142</div>
+          <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">Aggregated by state-of-supply and category &middot; each category has different recipient-side ITC treatment</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="btn btn-secondary btn-sm">Download CSV</button>
+          <button class="btn btn-secondary btn-sm">Filter</button>
+          <button class="btn btn-secondary btn-sm">Edit rows</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table grid-lined compact">
+          <thead><tr><th>PoS</th><th>Category</th><th class="mono">HSN</th><th>Description</th><th>Inter / Intra</th><th class="num">Reg recipient (&#8377;)</th><th class="num">Unreg recipient (&#8377;)</th><th class="num">Total (&#8377;)</th></tr></thead>
+          <tbody><tr><td>27-MH</td><td>Nil-rated</td><td class="mono">0701</td><td>Potatoes &middot; fresh / chilled</td><td>Intra-state</td><td class="num">48,40,000</td><td class="num">12,40,000</td><td class="num">60,80,000</td></tr><tr><td>29-KA</td><td>Nil-rated</td><td class="mono">0401</td><td>Milk &middot; not concentrated / unsweetened</td><td>Inter-state</td><td class="num">38,40,000</td><td class="num">8,40,000</td><td class="num">46,80,000</td></tr><tr><td>33-TN</td><td>Nil-rated</td><td class="mono">1006</td><td>Rice &middot; unbranded</td><td>Inter-state</td><td class="num">22,40,000</td><td class="num">4,40,000</td><td class="num">26,80,000</td></tr><tr><td>27-MH</td><td>Exempt</td><td class="mono">1101</td><td>Wheat flour &middot; pre-packaged &le; 25kg</td><td>Intra-state</td><td class="num">18,40,000</td><td class="num">2,40,000</td><td class="num">20,80,000</td></tr><tr><td>07-DL</td><td>Exempt</td><td class="mono">0813</td><td>Dried fruits &middot; misc.</td><td>Inter-state</td><td class="num">12,40,000</td><td class="num">1,80,000</td><td class="num">14,20,000</td></tr><tr><td>24-GJ</td><td>Exempt</td><td class="mono">1701</td><td>Sugar &middot; jaggery / khandsari</td><td>Inter-state</td><td class="num">8,42,000</td><td class="num">1,28,000</td><td class="num">9,70,000</td></tr><tr><td>27-MH</td><td>Non-GST</td><td class="mono">2710</td><td>Petroleum oils &middot; motor spirit</td><td>Intra-state</td><td class="num">14,40,000</td><td class="num">2,40,000</td><td class="num">16,80,000</td></tr><tr><td>29-KA</td><td>Non-GST</td><td class="mono">2207</td><td>Alcohol &middot; ethyl, undenatured</td><td>Inter-state</td><td class="num">5,40,000</td><td class="num">1,20,000</td><td class="num">6,60,000</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">142 rows &middot; &#8377; 29 Cr total nil/exempt/non-GST &middot; reported for completeness</div>
+        <div class="action-bar-status">No tax impact but recipient reverse-charge treatment depends on accurate category tagging</div>
+      </div>
+      <div class="action-bar-actions">
+        <a href="gstr1-step3.html" class="btn btn-secondary cta-large">&larr; Back to Step 3</a>
+        <button class="btn btn-secondary cta-large">Save changes</button>
+        <a href="gstr1-step3.html" class="btn btn-primary cta-large">Done &middot; return to Step 3 &rarr;</a>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('gstr1', 'GSTR-1 &middot; Step 3 detail', '8 detail');</script>
+</body>
+</html>

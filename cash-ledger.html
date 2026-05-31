@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cash Ledger · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+    <div class="page-head">
+      <div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px;">
+          <a href="ledgers.html" class="back-arrow-link-inline" style="text-decoration:none;color:var(--text-muted);font-weight:600;">Ledgers &amp; Payments</a> &middot; <strong style="color:var(--text);">Cash Ledger</strong>
+        </div>
+        <h1 class="page-title">Cash Ledger</h1>
+        <p class="page-subtitle">Electronic cash ledger maintained on GST portal · All deposits, utilizations and refunds</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="challans.html" class="btn btn-primary cta-large">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Create Challan to Deposit
+        </a>
+        <button class="btn btn-secondary cta-large">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/></svg>
+          Download Statement
+        </button>
+      </div>
+    </div>
+
+
+    <!-- LIFECYCLE / STATUS STRIP -->
+    <div class="lifecycle-strip">
+      <div class="lifecycle-header">
+        <div class="lifecycle-header-title">Cash position snapshot · Continuous ledger</div>
+        <div class="lifecycle-header-help">Cash sits in the ledger until utilized for tax payment, set-off, or refund</div>
+      </div>
+      <div class="lifecycle-body">
+        <div class="lifecycle-phase past">
+          <div class="phase-marker"><span class="marker-dot"></span>Last deposit</div>
+          <div class="phase-title">12-May-2026</div>
+          <div class="phase-status success">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+            ₹ 8,40,000 credited via Net Banking
+          </div>
+          <div class="phase-due">
+            <span class="due-date mono">CIN HDFC26050008412</span>
+            <span class="days-left onTrack">Settled in 2 hours</span>
+          </div>
+        </div>
+        <div class="lifecycle-phase current">
+          <div class="phase-marker"><span class="marker-dot"></span>Available now</div>
+          <div class="phase-title">₹ 1,84,72,418</div>
+          <div class="phase-status">Across IGST · CGST · SGST heads · Ready for utilization</div>
+          <div class="phase-due">
+            <span class="due-date">Live balance · GSTIN 27AABCT3518Q1ZV</span>
+            <span class="days-left onTrack">Synced 9:48 AM</span>
+          </div>
+        </div>
+        <div class="lifecycle-phase upcoming">
+          <div class="phase-marker"><span class="marker-dot"></span>Next anticipated use</div>
+          <div class="phase-title">GSTR-3B Apr filing</div>
+          <div class="phase-status muted">Cash payable: ₹ 0 (ITC covers liability)</div>
+          <div class="phase-due">
+            <span class="due-date">Due 20-May-2026</span>
+            <span class="days-left nearDue">6 days remaining</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BALANCE HERO -->
+    <div class="card" style="background:linear-gradient(135deg, var(--ey-black-deep), #1F1F2C);color:#fff;border:none;">
+      <div style="display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:center;padding:6px 10px;">
+        <div class="ledger-icon cash" style="width:56px;height:56px;border-radius:14px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="26" height="26"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
+        </div>
+        <div>
+          <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ey-yellow);font-weight:600;margin-bottom:6px">Total Cash Ledger Balance · GSTIN 27AABCT3518Q1ZV</div>
+          <div class="amount-display size-xl" style="color:var(--ey-yellow);font-size:42px;"><span class="currency-sym" style="color:rgba(255,230,0,0.6)">₹</span>1,84,72,418<span style="font-size:18px;color:rgba(255,230,0,0.6)">.00</span></div>
+          <div style="margin-top:8px;font-size:13px;color:rgba(255,255,255,0.78);">Last updated · 14-May-2026 09:48 AM · From GST portal</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:11px;color:rgba(255,230,0,0.7);letter-spacing:0.08em;text-transform:uppercase;font-weight:600;margin-bottom:4px">MTD Activity</div>
+          <div style="font-size:13.5px;color:#fff;line-height:1.7">
+            Deposits · <strong class="mono">₹ 2,18,42,000</strong><br>
+            Utilization · <strong class="mono">₹ 84,12,418</strong><br>
+            Refunds · <strong class="mono">—</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HEAD-WISE BREAKDOWN -->
+    <div class="section-banner" style="margin-top:24px">
+      <div class="section-banner-num">1</div>
+      <div>
+        <div class="section-banner-title">Balance by Tax Head</div>
+        <div class="section-banner-sub">Cash ledger maintains separate balances for each tax head</div>
+      </div>
+    </div>
+
+    <div class="big-stat-grid">
+      <div class="big-stat">
+        <div class="big-stat-label">IGST</div>
+        <div class="big-stat-value"><span class="cur">₹</span>84,12,418</div>
+        <div class="big-stat-sub">Last deposit · 12-May · ₹ 50 L</div>
+      </div>
+      <div class="big-stat">
+        <div class="big-stat-label">CGST</div>
+        <div class="big-stat-value"><span class="cur">₹</span>50,30,000</div>
+        <div class="big-stat-sub">Last deposit · 08-May · ₹ 50 L</div>
+      </div>
+      <div class="big-stat">
+        <div class="big-stat-label">SGST</div>
+        <div class="big-stat-value"><span class="cur">₹</span>50,30,000</div>
+        <div class="big-stat-sub">Last deposit · 08-May · ₹ 50 L</div>
+      </div>
+      <div class="big-stat">
+        <div class="big-stat-label">CESS</div>
+        <div class="big-stat-value"><span class="cur">₹</span>0</div>
+        <div class="big-stat-sub">No CESS liability</div>
+      </div>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="section-banner" style="margin-top:24px">
+      <div class="section-banner-num">2</div>
+      <div>
+        <div class="section-banner-title">Transaction History</div>
+        <div class="section-banner-sub">All deposits and utilizations · Reconciled with GST portal nightly</div>
+      </div>
+    </div>
+
+    <div class="filter-bar">
+      <div class="field">
+        <label class="field-label">Date Range</label>
+        <select class="select"><option>This month (May 2026)</option><option>Last 30 days</option><option>Last quarter</option><option>FY 2025-26</option><option>Custom range</option></select>
+      </div>
+      <div class="field">
+        <label class="field-label">GSTIN</label>
+        <select class="select"><option>27AABCT3518Q1ZV — Maharashtra</option><option>All 47 GSTINs</option></select>
+      </div>
+      <div class="field">
+        <label class="field-label">Transaction Type</label>
+        <select class="select"><option>All</option><option>Deposit (Challan)</option><option>Utilization (Tax Payment)</option><option>Refund</option><option>Inter-head transfer (PMT-09)</option></select>
+      </div>
+      <div class="field">
+        <label class="field-label">Tax Head</label>
+        <select class="select"><option>All heads</option><option>IGST</option><option>CGST</option><option>SGST</option><option>CESS</option></select>
+      </div>
+      <div class="filter-actions">
+        <button class="btn btn-primary">Apply</button>
+      </div>
+    </div>
+
+    <!-- TRANSACTIONS -->
+    <div class="table-wrap">
+      <div class="table-toolbar">
+        <div class="table-toolbar-left">
+          <div class="table-count"><strong>8 transactions</strong> · May 2026</div>
+        </div>
+        <button class="btn btn-secondary btn-sm">Export</button>
+      </div>
+      <!-- v2.0.34 — Date filter + Excel export -->
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 18px;margin-bottom:14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;">
+        <div style="font-size:12px;color:var(--text-muted);">
+          <strong style="color:var(--text);">Filter &amp; export</strong> &middot; choose period &middot; download line-wise Excel for offline analysis
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+          <select class="btn btn-secondary btn-sm" style="padding:6px 10px;">
+              <option>This filing period</option>
+              <option>Last 7 days</option>
+              <option>Last 30 days</option>
+              <option>Last 90 days</option>
+              <option>FYTD</option>
+              <option>Custom range…</option>
+          </select>
+          <button class="btn btn-secondary btn-sm" onclick="if(window.showToast)window.showToast('Downloading Cash ledger transactions as Excel (line-wise)...');">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" stroke-width="2.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export Excel
+          </button>
+        </div>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Reference</th>
+            <th>Head</th>
+            <th class="num">Amount</th>
+            <th class="num">Balance After</th>
+            <th>Source</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>13-May-2026<br><span class="muted small">14:22</span></td>
+            <td><span class="badge success"><span class="badge-dot"></span>Deposit</span></td>
+            <td class="mono small">CIN 26271200541283</td>
+            <td class="mono">IGST</td>
+            <td class="num">50,00,000.00</td>
+            <td class="num">84,12,418.00</td>
+            <td>Challan · ICICI Bank</td>
+          </tr>
+          <tr>
+            <td>12-May-2026<br><span class="muted small">11:18</span></td>
+            <td><span class="badge info"><span class="badge-dot"></span>Utilization</span></td>
+            <td class="mono small">ARN AA270526009287N</td>
+            <td class="mono">CGST</td>
+            <td class="num" style="color:var(--error)">−24,12,000.00</td>
+            <td class="num">50,30,000.00</td>
+            <td>GSTR-3B · March 2026</td>
+          </tr>
+          <tr>
+            <td>12-May-2026<br><span class="muted small">11:18</span></td>
+            <td><span class="badge info"><span class="badge-dot"></span>Utilization</span></td>
+            <td class="mono small">ARN AA270526009287N</td>
+            <td class="mono">SGST</td>
+            <td class="num" style="color:var(--error)">−24,12,000.00</td>
+            <td class="num">50,30,000.00</td>
+            <td>GSTR-3B · March 2026</td>
+          </tr>
+          <tr>
+            <td>08-May-2026<br><span class="muted small">10:42</span></td>
+            <td><span class="badge success"><span class="badge-dot"></span>Deposit</span></td>
+            <td class="mono small">CIN 26270800498127</td>
+            <td class="mono">CGST</td>
+            <td class="num">50,00,000.00</td>
+            <td class="num">74,42,000.00</td>
+            <td>Challan · HDFC Bank</td>
+          </tr>
+          <tr>
+            <td>08-May-2026<br><span class="muted small">10:42</span></td>
+            <td><span class="badge success"><span class="badge-dot"></span>Deposit</span></td>
+            <td class="mono small">CIN 26270800498128</td>
+            <td class="mono">SGST</td>
+            <td class="num">50,00,000.00</td>
+            <td class="num">74,42,000.00</td>
+            <td>Challan · HDFC Bank</td>
+          </tr>
+          <tr>
+            <td>03-May-2026<br><span class="muted small">15:07</span></td>
+            <td><span class="badge success"><span class="badge-dot"></span>Deposit</span></td>
+            <td class="mono small">CIN 26270500412749</td>
+            <td class="mono">IGST</td>
+            <td class="num">68,42,000.00</td>
+            <td class="num">34,12,418.00</td>
+            <td>Challan · SBI</td>
+          </tr>
+          <tr>
+            <td>01-May-2026<br><span class="muted small">09:00</span></td>
+            <td><span class="badge warning"><span class="badge-dot"></span>Opening</span></td>
+            <td class="muted small">Carry-forward</td>
+            <td class="mono">IGST</td>
+            <td class="num">—</td>
+            <td class="num">34,12,418.00</td>
+            <td>Opening balance</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="table-footer">
+        <div class="pagination-info">Showing 1–7 of 8 transactions</div>
+        <div class="pagination">
+          <button class="page-btn" disabled>←</button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">→</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- v2.0.19 — PMT-09 inter-head transfer prominent CTA -->
+    <div class="card" style="padding:20px 24px;margin-bottom:18px;background:linear-gradient(135deg, #2E2E38, #1F1F2C);color:#fff;border:none;">
+      <div style="display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;">
+        <div style="width:48px;height:48px;border-radius:12px;background:var(--ey-yellow);color:var(--ey-black-deep);display:grid;place-items:center;">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+        </div>
+        <div>
+          <div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.7);font-weight:700">PMT-09 &middot; Inter-head cash transfer</div>
+          <div style="font-size:15px;font-weight:700;color:#fff;">Re-allocate cash between major heads (IGST / CGST / SGST / Cess) or minor heads (Tax / Interest / Fee / Penalty)</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.75);margin-top:3px">Use when a deposit was made under the wrong head &middot; Rule 87(13) &middot; no refund, balance simply re-allocated &middot; updates instantly on GSTN</div>
+        </div>
+        <a href="pmt-09.html" class="btn cta-large" style="background:var(--ey-yellow);color:var(--ey-black-deep);">Open PMT-09 &rarr;</a>
+      </div>
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="section-banner" style="margin-top:24px">
+      <div class="section-banner-num">3</div>
+      <div>
+        <div class="section-banner-title">Cash Ledger Actions</div>
+        <div class="section-banner-sub">Common tasks for managing your cash ledger</div>
+      </div>
+    </div>
+
+    <div class="quick-actions" style="grid-template-columns:repeat(3, 1fr)">
+      <a href="challans.html" class="quick-action-card">
+        <div class="qa-icon" style="background:#E7EEFD;color:#155CDB">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+        <div class="qa-title">Create New Challan</div>
+        <div class="qa-sub">Deposit cash to ledger via PMT-06</div>
+        <div class="qa-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      </a>
+      <button class="quick-action-card" style="border:1px solid var(--border);background:var(--surface);text-align:left;cursor:pointer;">
+        <div class="qa-icon" style="background:#FCE7F3;color:#BE185D">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+        </div>
+        <div class="qa-title">Inter-head Transfer (PMT-09)</div>
+        <div class="qa-sub">Move balance between IGST, CGST, SGST, CESS</div>
+        <div class="qa-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      </button>
+      <button class="quick-action-card" style="border:1px solid var(--border);background:var(--surface);text-align:left;cursor:pointer;">
+        <div class="qa-icon" style="background:#ECFDF5;color:#0F5F26">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+        </div>
+        <div class="qa-title">Apply for Refund (RFD-01)</div>
+        <div class="qa-sub">Excess balance refund · Inverted duty</div>
+        <div class="qa-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      </button>
+    </div>
+
+    <div style="height: 40px"></div>
+  </main>
+</div>
+
+<script src="app.js"></script>
+<script>renderShell('cash', 'Cash Ledger', '');</script>
+</body>
+</html>

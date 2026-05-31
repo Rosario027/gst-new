@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GSTR-3B Step 6 · Preview &amp; File · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Step 6 &middot; Preview, Submit &amp; File GSTR-3B</h1>
+        <p class="page-subtitle">Final preview, pre-file checks, DSC / EVC signing &middot; once filed, ARN is issued instantly and values freeze</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="gstr3b.html" class="btn btn-secondary">&larr; Back to GSTR-3B hub</a>
+      </div>
+    </div>
+
+    <div class="step-progress-bar">
+      <a href="gstr3b-step1.html" class="step-pip done step-pip-link" title="Go to Purchase data"><div class="step-pip-dot"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Purchase data</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr3b-step2.html" class="step-pip done step-pip-link" title="Go to Auto IMS fetch"><div class="step-pip-dot"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Auto IMS fetch</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr3b-step3.html" class="step-pip done step-pip-link" title="Go to Confirm Inward"><div class="step-pip-dot"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Confirm Inward</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr3b-step4.html" class="step-pip done step-pip-link" title="Go to Tax Summary"><div class="step-pip-dot"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Tax Summary</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr3b-step5.html" class="step-pip done step-pip-link" title="Go to ITC &amp; Set-off"><div class="step-pip-dot"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>ITC &amp; Set-off</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr3b-step6.html" class="step-pip current step-pip-link" title="Go to Preview &amp; File"><div class="step-pip-dot">6</div>Preview &amp; File</a>
+    </div>
+
+    <div id="step-flow"></div>
+
+    <!-- PRE-FILE CHECKLIST -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:18px 22px;border-bottom:1px solid var(--border);">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">Pre-file checklist &middot; all checks passed</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Final pre-flight before locking values and generating ARN</div>
+      </div>
+      <table class="data-table grid-lined">
+        <thead><tr><th style="width:40px;">&#10003;</th><th>Check</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td style="text-align:center;color:var(--success);">&#10003;</td><td>JSON schema valid per GSTN spec</td><td><span class="action-status matched">Passed</span></td></tr>
+          <tr><td style="text-align:center;color:var(--success);">&#10003;</td><td>Outward (3.1) reconciles with GSTR-1 of May 2026</td><td><span class="action-status matched">Passed</span></td></tr>
+          <tr><td style="text-align:center;color:var(--success);">&#10003;</td><td>Inward ITC reconciles with reconciled IMS records from Step 3</td><td><span class="action-status matched">Passed</span></td></tr>
+          <tr><td style="text-align:center;color:var(--success);">&#10003;</td><td>Set-off respects Rule 88A (with audited manual overrides)</td><td><span class="action-status matched">Passed (1 override approved)</span></td></tr>
+          <tr><td style="text-align:center;color:var(--success);">&#10003;</td><td>PMT-06 challan generated for Cess cash &#8377; 8 Cr</td><td><span class="action-status matched">Passed &middot; CIN AA270526001428C</span></td></tr>
+          <tr><td style="text-align:center;color:var(--success);">&#10003;</td><td>DSC of authorised signatory active</td><td><span class="action-status matched">Passed &middot; expires 14-Aug-2027</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- FILE PANEL -->
+    <div class="card" style="padding:24px;margin-bottom:20px;background:linear-gradient(135deg, #FFFDF0, var(--surface));border-left:4px solid var(--ey-yellow);">
+      <div style="display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;">
+        <div style="width:52px;height:52px;border-radius:14px;background:var(--ey-yellow);color:var(--ey-black-deep);display:grid;place-items:center;">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div>
+          <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);font-weight:700">Ready to file</div>
+          <div style="font-size:17px;font-weight:700;color:var(--text);">All 6 pre-file checks passed &middot; Cash leg paid (PMT-06 AA270526001428C)</div>
+          <div style="font-size:12.5px;color:var(--text-muted);margin-top:4px">Filing locks values permanently &middot; ARN issued instantly &middot; recipient GSTR-2B refreshes within 4 hours</div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-secondary cta-large">Download draft PDF</button>
+          <button class="btn btn-primary cta-xlarge">File with DSC &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">Ready to file &middot; Due 20-Jun-2026 (35 days remaining)</div>
+        <div class="action-bar-status">Submit freezes values &middot; cannot be edited after ARN issued</div>
+      </div>
+      <div class="action-bar-actions">
+        <a href="gstr3b-step4.html" class="btn btn-secondary cta-large">&larr; Step 4</a>
+        <button class="btn btn-secondary cta-large">Save &amp; close</button>
+        <button class="btn btn-primary cta-xlarge">Submit &amp; file with DSC &rarr;</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('gstr3b', 'GSTR-3B Inward', 'Step 6 &middot; Preview &amp; File');</script>
+<script>
+renderStepFlow({
+  anchor: "#step-flow",
+  intro: 'Final preview and pre-file checks. JSON GSTN-spec validation, outward/inward reconciliation, set-off audit and DSC verification — all must pass before submit.',
+  status: {
+    state: "In progress", period: "May 2026", today: "15-May-2026 (Fri)",
+    due: "GSTR-3B by 20-Jun-2026", dueClass: "",
+    lastAction: "14-May 18:42 by System", nextMilestone: "Submit & file with DSC"
+  },
+  currentUpload: {
+    fileName: "gstr3b-final-v1.json", fileType: "json", size: "21.4 MB",
+    source: "Final consolidation of Steps 1-4",
+    uploadedBy: "System", uploadedAt: "14-May 18:42:08",
+    records: "Full GSTR-3B (all sections)", pass: "All checks", warn: 0, fail: 0,
+    label: "Final filing payload"
+  },
+  validations: [
+    {state:"pass", name:"JSON schema GSTN-spec", count:"✓ Schema OK"},
+    {state:"pass", name:"3.1 reconciles with GSTR-1", count:"✓ Outward tied"},
+    {state:"pass", name:"Section 4 reconciles with IMS", count:"✓ Inward tied"},
+    {state:"pass", name:"Set-off Rule 88A audit", count:"✓ 1 override approved"},
+    {state:"pass", name:"DSC active", count:"✓ Expires 14-Aug-2027"},
+    {state:"pass", name:"PMT-06 cash leg paid", count:"✓ ₹ 8 Cr · CIN ready"}
+  ],
+  history: [
+    {version:"v1", label:"Final consolidation • ready to file", source:"System", by:"System", time:"14-May 18:42:08", records:"Full GSTR-3B", tag:"current"}
+  ],
+  dispositions: [
+    {id:"continue", primary:true, title:"Submit & file with DSC",
+     desc:"Final submit. Values lock permanently. ARN issued immediately. Recipient GSTR-2Bs refresh in 4 hours."},
+    {id:"refresh", title:"Re-run pre-file checks",
+     desc:"Verify schema, reconciliations, set-off, DSC once more before locking."},
+    {id:"replace", title:"Go back to Step 4 to fix",
+     desc:"If a check fails or you want to tweak set-off, return to Step 4. Chain re-validates forward."}
+  ]
+});
+</script>
+</body>
+</html>

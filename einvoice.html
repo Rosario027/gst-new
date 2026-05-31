@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-Invoice (IRN) &middot; DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">
+          E-Invoice &middot; IRP (einvoice1.gst.gov.in) &middot; <span style="color:#7C3AED;font-weight:700;">distinct from EWB</span>
+        </div>
+        <h1 class="page-title" style="display:flex;align-items:center;gap:12px;">
+          <span style="display:inline-grid;place-items:center;width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#4338CA,#7C3AED);color:#fff;">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
+          </span>
+          E-Invoice (IRN)
+        </h1>
+        <p class="page-subtitle">Mandatory for B2B supplies if AATO &gt; &#8377; 5 Cr &middot; 64-char hash from IRP &middot; auto-populates GSTR-1 &middot; 30-day generation window &middot; 24-hour cancel window</p>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn btn-secondary" onclick="if(window.showToast) window.showToast('Polling all 6 IRPs (NIC1, NIC2, GSP1-4) for newly issued IRNs...');">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="14" height="14" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          Sync from IRP
+        </button>
+        <a href="einvoice-generate.html" class="btn btn-primary">+ New IRN</a>
+      </div>
+    </div>
+
+    <!-- WHY IRN DIFFERS FROM EWB -->
+    <div class="card" style="background:linear-gradient(135deg, #F3E8FF, var(--surface));border-left:4px solid #7C3AED;padding:16px 20px;margin-bottom:24px;">
+      <div style="display:flex;gap:14px;align-items:flex-start;">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#7C3AED" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <div style="font-size:12.5px;line-height:1.6;color:var(--text);">
+          <strong>IRN vs EWB &mdash; the simple split:</strong> IRN is for the <em>invoice itself</em>. EWB is for the <em>movement of goods</em>. IRN is mandatory for all B2B &gt; &#8377; 5 Cr taxpayers, once generated it never expires, and only the supplier ever generates one per invoice. The 64-char IRN hash is derived from Supplier GSTIN + Doc no + Doc date + Doc type + FY &mdash; deterministic, so duplicate invoices are rejected at the portal. Once issued, the IRP signs the JSON, returns a QR code (to be printed on invoice), and auto-pushes the data into your GSTR-1.
+        </div>
+      </div>
+    </div>
+
+    <!-- LIVE STATS -->
+    <div class="big-stat-grid" style="margin-bottom:24px;">
+      <div class="big-stat" style="border-left:3px solid var(--success);">
+        <div class="big-stat-label">IRNs MTD</div>
+        <div class="big-stat-value" style="color:var(--success);">2,68,419</div>
+        <div class="big-stat-sub">May 2026 &middot; 94% via API, 6% manual</div>
+      </div>
+      <div class="big-stat" style="border-left:3px solid var(--warning);">
+        <div class="big-stat-label">In cancel window</div>
+        <div class="big-stat-value" style="color:var(--warning);">84</div>
+        <div class="big-stat-sub">&lt; 24h old &middot; can still cancel</div>
+      </div>
+      <div class="big-stat" style="border-left:3px solid var(--error);">
+        <div class="big-stat-label">30-day window closing</div>
+        <div class="big-stat-value" style="color:var(--error);">12</div>
+        <div class="big-stat-sub">Invoices &gt; 23 days &middot; generate IRN urgently</div>
+      </div>
+      <div class="big-stat" style="border-left:3px solid #7C3AED;">
+        <div class="big-stat-label">Failed (auto-retry)</div>
+        <div class="big-stat-value" style="color:#7C3AED;">38</div>
+        <div class="big-stat-sub">JSON validation issues &middot; queued for retry</div>
+      </div>
+    </div>
+
+    <!-- IRP HEALTH STRIP -->
+    <div class="card" style="padding:14px 18px;margin-bottom:24px;background:linear-gradient(135deg, #F5F8FA, var(--surface));">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;">Multi-IRP routing &middot; 6 portals operational</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(110px, 1fr));gap:10px;">
+        <div style="padding:8px 12px;background:rgba(22,135,54,0.06);border-radius:var(--radius);border:1px solid rgba(22,135,54,0.20);">
+          <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--success);font-weight:700;"><span style="width:6px;height:6px;background:var(--success);border-radius:50%;"></span>NIC-IRP1</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px;font-family:var(--font-mono);">1,42,818 IRNs &middot; 89ms avg</div>
+        </div>
+        <div style="padding:8px 12px;background:rgba(22,135,54,0.06);border-radius:var(--radius);border:1px solid rgba(22,135,54,0.20);">
+          <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--success);font-weight:700;"><span style="width:6px;height:6px;background:var(--success);border-radius:50%;"></span>NIC-IRP2</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px;font-family:var(--font-mono);">68,421 IRNs &middot; 92ms avg</div>
+        </div>
+        <div style="padding:8px 12px;background:rgba(22,135,54,0.06);border-radius:var(--radius);border:1px solid rgba(22,135,54,0.20);">
+          <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--success);font-weight:700;"><span style="width:6px;height:6px;background:var(--success);border-radius:50%;"></span>GSP-1 (ClearTax)</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px;font-family:var(--font-mono);">28,400 IRNs &middot; 142ms</div>
+        </div>
+        <div style="padding:8px 12px;background:rgba(199,119,0,0.08);border-radius:var(--radius);border:1px solid rgba(199,119,0,0.30);">
+          <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--warning);font-weight:700;"><span style="width:6px;height:6px;background:var(--warning);border-radius:50%;"></span>GSP-2 (Defmacro)</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px;font-family:var(--font-mono);">18,400 &middot; degraded 320ms</div>
+        </div>
+        <div style="padding:8px 12px;background:rgba(22,135,54,0.06);border-radius:var(--radius);border:1px solid rgba(22,135,54,0.20);">
+          <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--success);font-weight:700;"><span style="width:6px;height:6px;background:var(--success);border-radius:50%;"></span>GSP-3 (IRISGST)</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px;font-family:var(--font-mono);">5,840 IRNs &middot; 118ms avg</div>
+        </div>
+        <div style="padding:8px 12px;background:rgba(22,135,54,0.06);border-radius:var(--radius);border:1px solid rgba(22,135,54,0.20);">
+          <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--success);font-weight:700;"><span style="width:6px;height:6px;background:var(--success);border-radius:50%;"></span>GSP-4 (Cygnet)</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px;font-family:var(--font-mono);">4,540 IRNs &middot; 124ms avg</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div style="font-size:13px;font-weight:700;color:var(--text);letter-spacing:0.06em;text-transform:uppercase;margin:8px 0 14px;">What would you like to do?</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));gap:14px;margin-bottom:28px;">
+
+      <a href="einvoice-generate.html" style="text-decoration:none;color:inherit;">
+        <div class="card" style="padding:22px;display:flex;flex-direction:column;gap:14px;height:100%;border:2px solid transparent;transition:all 0.15s;cursor:pointer;" onmouseover="this.style.borderColor='#7C3AED';this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(124,58,237,0.18)';" onmouseout="this.style.borderColor='transparent';this.style.transform='';this.style.boxShadow='';">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#4338CA,#7C3AED);color:#fff;display:grid;place-items:center;">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </div>
+            <span class="badge" style="background:rgba(124,58,237,0.10);color:#7C3AED;font-size:10px;font-weight:700;letter-spacing:0.05em;padding:4px 8px;border-radius:6px;">SINGLE</span>
+          </div>
+          <div>
+            <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;">Generate single IRN</div>
+            <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">Fill JSON schema v1.1 fields &middot; document + seller + buyer + line items + tax totals &middot; instant 64-char IRN + QR code.</div>
+          </div>
+        </div>
+      </a>
+
+      <a href="einvoice-bulk.html" style="text-decoration:none;color:inherit;">
+        <div class="card" style="padding:22px;display:flex;flex-direction:column;gap:14px;height:100%;border:2px solid transparent;transition:all 0.15s;cursor:pointer;" onmouseover="this.style.borderColor='#7C3AED';this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(124,58,237,0.18)';" onmouseout="this.style.borderColor='transparent';this.style.transform='';this.style.boxShadow='';">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#4338CA,#7C3AED);color:#fff;display:grid;place-items:center;">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            </div>
+            <span class="badge" style="background:rgba(124,58,237,0.10);color:#7C3AED;font-size:10px;font-weight:700;letter-spacing:0.05em;padding:4px 8px;border-radius:6px;">BULK</span>
+          </div>
+          <div>
+            <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;">Bulk upload + ERP sync</div>
+            <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">Upload JSON / Excel template OR auto-sync from SAP / Tally / Oracle SD &middot; up to 1,000 invoices per batch.</div>
+          </div>
+        </div>
+      </a>
+
+      <a href="einvoice-management.html" style="text-decoration:none;color:inherit;">
+        <div class="card" style="padding:22px;display:flex;flex-direction:column;gap:14px;height:100%;border:2px solid transparent;transition:all 0.15s;cursor:pointer;" onmouseover="this.style.borderColor='#7C3AED';this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(124,58,237,0.18)';" onmouseout="this.style.borderColor='transparent';this.style.transform='';this.style.boxShadow='';">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#4338CA,#7C3AED);color:#fff;display:grid;place-items:center;">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </div>
+            <span class="badge" style="background:rgba(124,58,237,0.10);color:#7C3AED;font-size:10px;font-weight:700;letter-spacing:0.05em;padding:4px 8px;border-radius:6px;">SEARCH</span>
+          </div>
+          <div>
+            <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;">Search &amp; history</div>
+            <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">Search by IRN / doc no / buyer / date &middot; view line items &middot; download PDF + signed JSON &middot; cancel within 24h.</div>
+          </div>
+        </div>
+      </a>
+
+      <div class="card" style="padding:22px;display:flex;flex-direction:column;gap:14px;height:100%;border:2px solid transparent;transition:all 0.15s;cursor:pointer;background:linear-gradient(135deg, #F3E8FF, var(--surface));" onclick="if(window.showToast) window.showToast('Auto-sync from IRP &middot; pulling IRNs generated by SAP-direct API and other channels...');" onmouseover="this.style.borderColor='#7C3AED';this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(124,58,237,0.18)';" onmouseout="this.style.borderColor='transparent';this.style.transform='';this.style.boxShadow='';">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#4338CA,#7C3AED);color:#fff;display:grid;place-items:center;">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          </div>
+          <span class="badge" style="background:rgba(124,58,237,0.10);color:#7C3AED;font-size:10px;font-weight:700;letter-spacing:0.05em;padding:4px 8px;border-radius:6px;">AUTO-SYNC</span>
+        </div>
+        <div>
+          <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;">Sync IRP-issued IRNs</div>
+          <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">Pull IRNs that SAP / Tally / external systems pushed to IRP directly. Last sync 15-May 18:42 (84 new IRNs reconciled).</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- IRN MANDATES + LAW REFERENCE -->
+    <div class="card" style="padding:18px 22px;margin-bottom:20px;background:linear-gradient(135deg,#F0F7FF,var(--surface));border-left:4px solid var(--info);">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:12px;">
+        <div>
+          <div style="font-size:13.5px;font-weight:700;color:var(--text);">IRN mandates &middot; CGST Rule 48(4)</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Mandatory IRN generation for B2B supplies if aggregate turnover crosses threshold in any preceding FY since 2017-18</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+          <select class="btn btn-secondary btn-sm" style="padding:6px 10px;">
+            <option>This filing period</option>
+            <option>Last 30 days</option>
+            <option>FYTD</option>
+            <option>Custom range…</option>
+          </select>
+          <button class="btn btn-secondary btn-sm" onclick="if(window.showToast)window.showToast('Downloading IRN line-wise records (Excel)...');">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" stroke-width="2.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export line-wise (Excel)
+          </button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;">
+        <div style="padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">Turnover threshold</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);margin-top:4px;">&#8377; 5 Cr+</div>
+          <div style="font-size:10.5px;color:var(--text-muted);margin-top:2px;">applies to Tata since 23-Sep-2020</div>
+        </div>
+        <div style="padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">Generation window</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);margin-top:4px;">Within 30 days</div>
+          <div style="font-size:10.5px;color:var(--text-muted);margin-top:2px;">of invoice date &middot; Rule 48(4)</div>
+        </div>
+        <div style="padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">Cancellation window</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);margin-top:4px;">24 hours</div>
+          <div style="font-size:10.5px;color:var(--text-muted);margin-top:2px;">from IRN generation</div>
+        </div>
+        <div style="padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">Exclusions</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);margin-top:4px;">SEZ &middot; B2C</div>
+          <div style="font-size:10.5px;color:var(--text-muted);margin-top:2px;">Bank, Insurance, GTA</div>
+        </div>
+        <div style="padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">Penalty</div>
+          <div style="font-size:14px;font-weight:700;color:var(--error);margin-top:4px;">&#8377; 25,000/invoice</div>
+          <div style="font-size:10.5px;color:var(--text-muted);margin-top:2px;">non-generation, Sec 122</div>
+        </div>
+        <div style="padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">Auto-fetch status</div>
+          <div style="font-size:14px;font-weight:700;color:var(--success);margin-top:4px;">Live</div>
+          <div style="font-size:10.5px;color:var(--text-muted);margin-top:2px;">every 4 hrs from IRP</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECENT IRNs -->
+    <div class="card" style="padding:0;margin-bottom:24px;">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">
+        <div style="min-width:0;flex:1 1 240px;">
+          <div style="font-size:13.5px;font-weight:700;color:var(--text);">Recent IRNs &middot; sample of 8 from 2,68,419 MTD</div>
+          <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">Cancel window countdowns are live &middot; orange = within 24h (cancel still allowed)</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <a href="einvoice-management.html" class="btn btn-secondary btn-sm">View all 2,68,419 IRNs &rarr;</a>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table grid-lined compact">
+          <thead>
+            <tr>
+              <th class="mono">IRN (last 16 ch)</th>
+              <th>Generated</th>
+              <th class="mono">Doc no</th>
+              <th>Buyer</th>
+              <th class="num">Value (&#8377;)</th>
+              <th>IRP</th>
+              <th>Cancel window</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="mono">...4d2c6f8c3b91a2</td>
+              <td>15-May 18:42</td>
+              <td class="mono">TS/26/02842</td>
+              <td>Hindalco Industries</td>
+              <td class="num">9,93,560</td>
+              <td>NIC-1</td>
+              <td><span style="font-family:var(--font-mono);color:var(--warning);font-weight:600;">22h 14m left</span></td>
+              <td><span class="action-status matched">Active</span></td>
+            </tr>
+            <tr>
+              <td class="mono">...8a1b9d4c2e7f5b</td>
+              <td>15-May 17:38</td>
+              <td class="mono">TS/26/02841</td>
+              <td>Reliance Industries</td>
+              <td class="num">15,15,360</td>
+              <td>NIC-2</td>
+              <td><span style="font-family:var(--font-mono);color:var(--warning);font-weight:600;">21h 10m left</span></td>
+              <td><span class="action-status matched">Active</span></td>
+            </tr>
+            <tr>
+              <td class="mono">...6c3e8f1a9d2b4c</td>
+              <td>15-May 14:08</td>
+              <td class="mono">TS/26/02835</td>
+              <td>Apollo Tyres</td>
+              <td class="num">4,53,556</td>
+              <td>NIC-1</td>
+              <td><span style="font-family:var(--font-mono);color:var(--warning);font-weight:600;">17h 40m left</span></td>
+              <td><span class="action-status matched">Active</span></td>
+            </tr>
+            <tr>
+              <td class="mono">...2b7d4e9f1a8c3e</td>
+              <td>15-May 11:42</td>
+              <td class="mono">TS/26/02824</td>
+              <td>Bharat Forge</td>
+              <td class="num">6,11,712</td>
+              <td>GSP-1</td>
+              <td><span style="font-family:var(--font-mono);color:var(--warning);font-weight:600;">15h 14m left</span></td>
+              <td><span class="action-status matched">Active</span></td>
+            </tr>
+            <tr>
+              <td class="mono">...9f1c2a8b5d6e3a</td>
+              <td>14-May 18:08</td>
+              <td class="mono">TS/26/02818</td>
+              <td>L&amp;T Construction</td>
+              <td class="num">49,77,240</td>
+              <td>NIC-1</td>
+              <td><span style="font-family:var(--font-mono);color:var(--text-muted);">Cancel window closed</span></td>
+              <td><span class="action-status matched">Active</span></td>
+            </tr>
+            <tr>
+              <td class="mono">...5e2d8a4b1c9f7e</td>
+              <td>14-May 16:42</td>
+              <td class="mono">TS/26/02815</td>
+              <td>Maruti Suzuki</td>
+              <td class="num">21,73,560</td>
+              <td>NIC-2</td>
+              <td><span style="font-family:var(--font-mono);color:var(--text-muted);">Cancel window closed</span></td>
+              <td><span class="action-status matched">Active</span></td>
+            </tr>
+            <tr style="opacity:0.6;background:rgba(200,16,46,0.03);">
+              <td class="mono">...3a9d4e8f2c1b6a</td>
+              <td>14-May 14:18</td>
+              <td class="mono">TS/26/02812</td>
+              <td>Tata Consumer</td>
+              <td class="num">3,35,120</td>
+              <td>NIC-1</td>
+              <td><span style="font-family:var(--font-mono);color:var(--text-muted);">Cancelled 14-May 15:22</span></td>
+              <td><span class="action-status reject">Cancelled</span></td>
+            </tr>
+            <tr style="background:rgba(199,119,0,0.04);">
+              <td class="mono">...7e1f2c9b4d8a3f</td>
+              <td>15-May 09:18</td>
+              <td class="mono">TS/26/02818-CN</td>
+              <td>Hindalco (CN)</td>
+              <td class="num">&minus; 84,200</td>
+              <td>NIC-1</td>
+              <td><span style="font-family:var(--font-mono);color:var(--warning);font-weight:600;">14h 50m left</span></td>
+              <td><span class="action-status pending">Active (CN)</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('einvoice', 'E-Invoice (IRN)', 'Mandatory B2B &middot; CGST Rule 48(4)');</script>
+</body>
+</html>

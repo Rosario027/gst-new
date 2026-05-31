@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step 1 · Auto-fetch GSTR-6A · ISD · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Step 1 &middot; Auto-fetch GSTR-6A</h1>
+        <p class="page-subtitle">View every invoice / debit / credit note where suppliers entered your ISD GSTIN in their GSTR-1 &middot; mark eligible vs ineligible ITC for downstream distribution</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="gstr6.html" class="btn btn-secondary">&larr; Back to GSTR-6</a>
+      </div>
+    </div>
+
+    <div class="step-progress-bar">
+      <a href="gstr6-step1.html" class="step-pip current step-pip-link" title="Go to Auto-fetch GSTR-6A"><div class="step-pip-dot">1</div>Auto-fetch GSTR-6A</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr6-step2.html" class="step-pip step-pip-link" title="Go to Distribute ITC"><div class="step-pip-dot">2</div>Distribute ITC</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr6-step3.html" class="step-pip step-pip-link" title="Go to Preview &amp; File"><div class="step-pip-dot">3</div>Preview &amp; File</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr6-step3.html" class="step-pip step-pip-link" title="Go to Amendments"><div class="step-pip-dot">4</div>Amendments</a>
+    </div>
+
+
+
+    <!-- STEP FLOW MOUNT (v2.0.10) -->
+    <div id="step-flow"></div>
+
+
+    
+
+    <!-- BANNER -->
+    <div class="card" style="background:linear-gradient(135deg, #4338CA 0%, #6366F1 100%);color:#fff;border:none;padding:22px 26px;margin-bottom:20px;">
+      <div style="display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;">
+        <div style="width:52px;height:52px;border-radius:14px;background:rgba(255,255,255,0.18);display:grid;place-items:center;">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div>
+          <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.9);font-weight:600;margin-bottom:4px">GSTN GSTR-6A &middot; Auto-fetch successful</div>
+          <div style="font-size:20px;font-weight:700;color:#fff;">3,418 supplier records pulled for May 2026</div>
+          <div style="margin-top:6px;font-size:12.5px;color:rgba(255,255,255,0.82);">Last sync &middot; 14-May-2026 09:48 AM via GSP &middot; Updates whenever a supplier files / amends GSTR-1 against your ISD GSTIN</div>
+        </div>
+        <div style="text-align:right;">
+          <button class="btn cta-large" style="background:#fff;color:#4338CA;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            Re-sync now
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ITC ELIGIBILITY BREAKDOWN -->
+    <div class="big-stat-grid">
+      <div class="big-stat accent">
+        <div class="big-stat-label">Total records</div>
+        <div class="big-stat-value">3,418</div>
+        <div class="big-stat-sub">Invoices &middot; CN &middot; DN &middot; Amendments</div>
+      </div>
+      <div class="big-stat" style="border-left:3px solid var(--success)">
+        <div class="big-stat-label">Eligible ITC</div>
+        <div class="big-stat-value" style="color:var(--success)">&#8377; 82.14 L</div>
+        <div class="big-stat-sub">3,287 records &middot; 96.2%</div>
+      </div>
+      <div class="big-stat" style="border-left:3px solid var(--error)">
+        <div class="big-stat-label">Ineligible &sect;17(5)</div>
+        <div class="big-stat-value" style="color:var(--error)">&#8377; 2.04 L</div>
+        <div class="big-stat-sub">128 records (motor vehicles, club, etc.)</div>
+      </div>
+      <div class="big-stat" style="border-left:3px solid var(--warning)">
+        <div class="big-stat-label">Pending review</div>
+        <div class="big-stat-value" style="color:var(--warning)">3</div>
+        <div class="big-stat-sub">Eligibility unclear &middot; awaiting tax-team review</div>
+      </div>
+    </div>
+
+    <!-- TOP SERVICE CATEGORIES -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:18px 22px;border-bottom:1px solid var(--border);">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">Top service categories in GSTR-6A &middot; May 2026</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Common corporate services received at ISD GSTIN for distribution to all units</div>
+      </div>
+      <div class="table-wrap">
+<table class="data-table grid-lined" style="min-width:1100px;">
+        <thead>
+          <tr>
+            <th style="min-width:220px;">Service category</th>
+            <th style="min-width:90px;">SAC</th>
+            <th class="num" style="min-width:80px;">Records</th>
+            <th class="num" style="min-width:130px;">Taxable value (&#8377;)</th>
+            <th class="num" style="min-width:110px;">IGST</th>
+            <th class="num" style="min-width:110px;">CGST</th>
+            <th class="num" style="min-width:110px;">SGST</th>
+            <th style="min-width:160px;">Eligibility</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Statutory audit &amp; assurance</td>
+            <td class="mono">998221</td>
+            <td class="num">14</td>
+            <td class="num">1,42,18,000.00</td>
+            <td class="num">25,59,240.00</td>
+            <td class="num">&mdash;</td>
+            <td class="num">&mdash;</td>
+            <td><span class="action-status matched">Eligible</span></td>
+          </tr>
+          <tr>
+            <td>Legal &amp; advocacy services</td>
+            <td class="mono">998212</td>
+            <td class="num">42</td>
+            <td class="num">84,21,800.00</td>
+            <td class="num">15,15,924.00</td>
+            <td class="num">&mdash;</td>
+            <td class="num">&mdash;</td>
+            <td><span class="action-status matched">Eligible</span></td>
+          </tr>
+          <tr>
+            <td>IT software licenses (SAP, Office 365)</td>
+            <td class="mono">997331</td>
+            <td class="num">128</td>
+            <td class="num">1,82,42,000.00</td>
+            <td class="num">32,83,560.00</td>
+            <td class="num">&mdash;</td>
+            <td class="num">&mdash;</td>
+            <td><span class="action-status matched">Eligible</span></td>
+          </tr>
+          <tr>
+            <td>Advertising &amp; market research</td>
+            <td class="mono">998361</td>
+            <td class="num">218</td>
+            <td class="num">62,84,000.00</td>
+            <td class="num">&mdash;</td>
+            <td class="num">5,65,560.00</td>
+            <td class="num">5,65,560.00</td>
+            <td><span class="action-status matched">Eligible</span></td>
+          </tr>
+          <tr>
+            <td>Telecom &amp; data services</td>
+            <td class="mono">998413</td>
+            <td class="num">1,847</td>
+            <td class="num">28,42,100.00</td>
+            <td class="num">&mdash;</td>
+            <td class="num">2,55,789.00</td>
+            <td class="num">2,55,789.00</td>
+            <td><span class="action-status matched">Eligible</span></td>
+          </tr>
+          <tr>
+            <td>Motor vehicle rental (corporate use)</td>
+            <td class="mono">996601</td>
+            <td class="num">42</td>
+            <td class="num">8,42,000.00</td>
+            <td class="num">1,51,560.00</td>
+            <td class="num">&mdash;</td>
+            <td class="num">&mdash;</td>
+            <td><span class="action-status missing-pr">Blocked &middot; &sect;17(5)(a)</span></td>
+          </tr>
+          <tr>
+            <td>Club / health-club membership</td>
+            <td class="mono">999721</td>
+            <td class="num">18</td>
+            <td class="num">2,84,200.00</td>
+            <td class="num">&mdash;</td>
+            <td class="num">25,578.00</td>
+            <td class="num">25,578.00</td>
+            <td><span class="action-status missing-pr">Blocked &middot; &sect;17(5)(b)(ii)</span></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr style="font-weight:700;background:var(--bg);">
+            <td colspan="2">Total &middot; 3,418 records across 31 SACs</td>
+            <td class="num">3,418</td>
+            <td class="num">4,68,55,100.00</td>
+            <td class="num">75,10,284.00</td>
+            <td class="num">8,46,927.00</td>
+            <td class="num">8,46,927.00</td>
+            <td>3,287 elig &middot; 128 inelig</td>
+          </tr>
+        </tfoot>
+      </table>
+</div>
+    </div>
+
+    
+
+    <!-- ACTION BAR -->
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">GSTR-6A reviewed &middot; eligibility tagged</div>
+        <div class="action-bar-status">3,287 eligible records (&#8377; 82.14 L) ready for distribution &middot; 128 ineligible flagged separately</div>
+      </div>
+      <div class="action-bar-actions">
+        <a href="gstr6.html" class="btn btn-secondary cta-large">&larr; Back to hub</a>
+        <button class="btn btn-secondary cta-large">Save &amp; close</button>
+        <a href="gstr6-step2.html" class="btn btn-primary cta-xlarge">Mark complete &middot; Next: Distribute ITC &rarr;</a>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('gstr6', 'GSTR-6 ISD', 'Step 1 &middot; Auto-fetch GSTR-6A');</script>
+
+<script>
+renderStepFlow({
+  anchor: "#step-flow",
+  intro: 'Review GSTR-6A — every invoice, debit, credit note where suppliers entered your ISD GSTIN in their GSTR-1. Tag each record as eligible or ineligible ITC before distribution.',
+  status: {
+  "state": "Completed",
+  "period": "May 2026",
+  "today": "15-May-2026 (Fri)",
+  "due": "GSTR-6 by 13-Jun-2026",
+  "dueClass": "warn",
+  "lastAction": "14-May 11:42 by Jude",
+  "nextMilestone": "Step 2: Distribute ITC"
+},
+  currentUpload: {
+  "fileName": "gstr6a-v2.json",
+  "fileType": "json",
+  "size": "3.8 MB",
+  "source": "GSTN GSTR-6A portal pull via GSP",
+  "uploadedBy": "Jude Akash",
+  "uploadedAt": "14-May 11:42:18",
+  "records": "3,418",
+  "pass": "3,287",
+  "warn": 3,
+  "fail": 128
+},
+  validations: [
+  {
+    "name": "All 6A records pulled",
+    "state": "pass",
+    "count": "✓ 3,418"
+  },
+  {
+    "name": "Eligibility tagged",
+    "state": "pass",
+    "count": "✓ 3,287 elig"
+  },
+  {
+    "name": "§17(5) ineligible flagged",
+    "state": "fail",
+    "count": "✗ 128 blocked"
+  },
+  {
+    "name": "Pending review",
+    "state": "warn",
+    "count": "⚠ 3 unclear"
+  },
+  {
+    "name": "Supplier GSTINs valid",
+    "state": "pass",
+    "count": "✓ 218 unique"
+  }
+],
+  history: [
+  {
+    "version": "v2",
+    "label": "After eligibility tagging review",
+    "source": "Manual review",
+    "by": "Jude Akash",
+    "time": "14-May 11:42:18",
+    "records": "3,418",
+    "tag": "current"
+  },
+  {
+    "version": "v1",
+    "label": "Initial 6A pull from GSTN",
+    "source": "GSTN 6A pull",
+    "by": "System",
+    "time": "14-May 09:48:02",
+    "records": "3,418",
+    "tag": "initial"
+  }
+],
+  dispositions: [
+  {
+    "id": "continue",
+    "primary": true,
+    "title": "Continue with v2",
+    "desc": "Eligibility tagged. Proceed to Step 2 — distribute ₹ 82.14 L eligible ITC to 12 recipient units."
+  },
+  {
+    "id": "refresh",
+    "title": "Re-sync GSTR-6A from GSTN",
+    "desc": "Pull any new supplier filings against this ISD GSTIN since 09:48."
+  },
+  {
+    "id": "amend",
+    "title": "Re-tag eligibility for 3 unclear rows",
+    "desc": "Open the pending-review queue to decide eligibility on the 3 ambiguous records."
+  }
+]
+});
+</script>
+</body>
+</html>

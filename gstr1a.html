@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GSTR-1A Amendment · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">GSTR-1A · Same-period correction</h1>
+        <p class="page-subtitle">Add missed invoices or amend particulars between GSTR-1 file and GSTR-3B file · Notification 12/2024-CT · Rule 59(4A)</p>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn btn-secondary">View prior GSTR-1A filings</button>
+      </div>
+    </div>
+
+    <!-- LIFECYCLE -->
+    <div class="lifecycle-timeline">
+      <div class="lifecycle-phase complete">
+        <div class="phase-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="phase-content">
+          <div class="phase-label">GSTR-1 filed</div>
+          <div class="phase-meta">ARN AA270525036294Z · 11-Jun-2026</div>
+        </div>
+      </div>
+      <div class="phase-connector complete"></div>
+      <div class="lifecycle-phase current">
+        <div class="phase-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></div>
+        <div class="phase-content">
+          <div class="phase-label">GSTR-1A window OPEN</div>
+          <div class="phase-meta">9 days remaining · one amendment allowed</div>
+        </div>
+      </div>
+      <div class="phase-connector"></div>
+      <div class="lifecycle-phase">
+        <div class="phase-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div>
+        <div class="phase-content">
+          <div class="phase-label">GSTR-3B</div>
+          <div class="phase-meta">Due 20-Jun-2026</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="help-strip">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <div><strong>GSTR-1A scope:</strong> Same-period corrections only. Amended values flow into the <em>same period's</em> GSTR-3B (Table 3). You can file <strong>only one</strong> GSTR-1A per tax period. <strong>Recipient GSTIN cannot be amended</strong> here — use Tables 9A / 9C of next period's GSTR-1 for that.</div>
+    </div>
+
+    <!-- v2.0.34 — GSTR-1A bulk upload template -->
+    <div class="run-action-card" style="margin-bottom:18px;">
+      <div class="run-action-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      </div>
+      <div class="run-action-text">
+        <div class="run-action-title">Bulk amendment upload &middot; GSTR-1A template</div>
+        <div class="run-action-sub">For multiple amendments at once, download the template, fill amendments per row (one row per invoice/credit-note correction), upload to apply in bulk &middot; or add records one by one via the form below</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <button class="run-action-btn" onclick="if(window.showToast)window.showToast('Excel template upload dialog opening...');">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Upload Excel
+        </button>
+        <button class="btn btn-secondary btn-sm" onclick="if(window.showToast)window.showToast('Downloading GSTR-1A bulk template (Excel)...');" style="background:var(--surface);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" stroke-width="2.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download template
+        </button>
+      </div>
+    </div>
+
+    <!-- v2.0.34 — Upload history for GSTR-1A -->
+    <div class="activity-tracker-card" style="margin-bottom:18px;">
+      <div class="activity-tracker-head">
+        <div>
+          <div class="activity-tracker-head-title">GSTR-1A bulk upload history</div>
+          <div class="activity-tracker-head-sub">Past template uploads &middot; each upload merges into the current GSTR-1A draft &middot; one filing allowed per period</div>
+        </div>
+      </div>
+      <table class="data-table grid-lined compact" style="margin-bottom:0;border:none;border-radius:0;">
+        <thead>
+          <tr>
+            <th style="width:120px;">Time</th>
+            <th>File</th>
+            <th class="num" style="width:100px;">Amendments</th>
+            <th style="width:200px;">Status</th>
+            <th style="width:120px;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono" style="font-size:11.5px;color:var(--text-muted);">14-May 19:24</td>
+            <td>
+              <div style="font-family:var(--font-mono);font-weight:600;font-size:12px;">gstr1a-amendments-may26.xlsx</div>
+              <div style="font-size:10.5px;color:var(--text-muted);margin-top:2px;">2.1 MB &middot; uploaded by Jude Akash</div>
+            </td>
+            <td class="num mono" style="font-size:11.5px;">28</td>
+            <td><span class="activity-status-pill success">Merged into draft &middot; 26 applied &middot; 2 conflicts</span></td>
+            <td>
+              <button class="row-edit-btn">Download</button>
+              <button class="row-edit-btn">View conflicts</button>
+            </td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:11.5px;color:var(--text-muted);">14-May 11:18</td>
+            <td>
+              <div style="font-family:var(--font-mono);font-weight:600;font-size:12px;">gstr1a-tax-rate-fix.xlsx</div>
+              <div style="font-size:10.5px;color:var(--text-muted);margin-top:2px;">0.4 MB &middot; small correction file</div>
+            </td>
+            <td class="num mono" style="font-size:11.5px;">8</td>
+            <td><span class="activity-status-pill success">Merged into draft &middot; all 8 applied</span></td>
+            <td><button class="row-edit-btn">Download</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- KEY DIFFERENTIATOR CARDS -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:14px;margin-bottom:20px;">
+      <div class="card" style="padding:18px 20px;border-left:4px solid var(--success);">
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--success);font-weight:700;margin-bottom:6px;">Allowed in GSTR-1A</div>
+        <ul style="margin:0;padding-left:20px;font-size:12.5px;line-height:1.7;color:var(--text);">
+          <li>Add missed invoices for the same period</li>
+          <li>Amend taxable value, tax rate, IGST/CGST/SGST</li>
+          <li>Amend Place of Supply</li>
+          <li>Amend HSN, invoice date (within FY)</li>
+          <li>Add credit / debit notes</li>
+        </ul>
+      </div>
+      <div class="card" style="padding:18px 20px;border-left:4px solid var(--error);">
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--error);font-weight:700;margin-bottom:6px;">NOT allowed</div>
+        <ul style="margin:0;padding-left:20px;font-size:12.5px;line-height:1.7;color:var(--text);">
+          <li>Changing recipient GSTIN</li>
+          <li>Amending records from earlier periods</li>
+          <li>Filing more than one GSTR-1A per period</li>
+          <li>Changing export indicator (with/without payment)</li>
+        </ul>
+      </div>
+      <div class="card" style="padding:18px 20px;border-left:4px solid var(--info);">
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--info);font-weight:700;margin-bottom:6px;">Timing rules</div>
+        <ul style="margin:0;padding-left:20px;font-size:12.5px;line-height:1.7;color:var(--text);">
+          <li>Available after GSTR-1 is filed</li>
+          <li>Must file <strong>before</strong> GSTR-3B</li>
+          <li>QRMP: one per quarter</li>
+          <li>Monthly: one per month</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ADD AMENDMENT FORM -->
+    <div class="card" style="padding:22px 24px;margin-bottom:20px;">
+      <div class="card-section-header">
+        <div>
+          <div class="card-section-title">Add a record to this GSTR-1A</div>
+          <div class="card-section-sub">Select what you're amending and pick the target table</div>
+        </div>
+      </div>
+
+      <div class="filter-bar" style="margin-bottom:14px;">
+        <div class="field">
+          <label class="field-label">Action</label>
+          <select class="select" id="amend-action-select">
+            <option value="amend-invoice">Amend existing invoice</option>
+            <option value="add-invoice">Add new invoice (missed in GSTR-1)</option>
+            <option value="add-cn">Add credit note</option>
+            <option value="add-dn">Add debit note</option>
+            <option value="amend-hsn">Amend HSN summary line</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label">Target table</label>
+          <select class="select">
+            <option>Table 4A · B2B Regular</option>
+            <option>Table 5A · B2C Large</option>
+            <option>Table 6A · Exports</option>
+            <option>Table 9B · CDN to registered</option>
+            <option>Table 12 · HSN</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label">Reason</label>
+          <select class="select">
+            <option>Invoice missed in original GSTR-1</option>
+            <option>Value correction</option>
+            <option>Rate correction</option>
+            <option>PoS correction</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- DYNAMIC AMENDMENT FORMS -->
+
+      <!-- 1. Amend existing invoice (DEFAULT-ACTIVE) -->
+      <div class="amendment-form active" data-amend-form="amend-invoice">
+        <div class="amendment-form-head">Amend existing invoice &middot; what can be changed</div>
+        <div class="amendment-form-sub">Pick the invoice from the May-2026 GSTR-1 register and override the values. The invoice number itself cannot change (use Add credit/debit note for that). Existing values shown read-only; new values are editable.</div>
+
+        <div class="amendment-form-grid">
+          <div class="amendment-field">
+            <label class="amendment-field-label">Invoice no. (locked)</label>
+            <input class="amendment-field-input readonly" value="TS/26/02418" readonly>
+          </div>
+          <div class="amendment-field">
+            <label class="amendment-field-label">Invoice date</label>
+            <input class="amendment-field-input readonly" value="12-May-2026" readonly>
+          </div>
+          <div class="amendment-field">
+            <label class="amendment-field-label">Recipient GSTIN</label>
+            <div class="amendment-field-pair">
+              <div><div class="amendment-field-pair-sub existing">existing</div><input class="amendment-field-input readonly" value="27AAACH7409R1ZX" readonly></div>
+              <div><div class="amendment-field-pair-sub new">new</div><input class="amendment-field-input editable" value="27AAACH7409R1ZX"></div>
+            </div>
+          </div>
+          <div class="amendment-field">
+            <label class="amendment-field-label">Place of supply</label>
+            <div class="amendment-field-pair">
+              <div><div class="amendment-field-pair-sub existing">existing</div><input class="amendment-field-input readonly" value="27 - Maharashtra" readonly></div>
+              <div><div class="amendment-field-pair-sub new">new</div><input class="amendment-field-input editable" value="27 - Maharashtra"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="amendment-form-section-title">Value &amp; tax (editable)</div>
+        <div class="amendment-form-grid">
+          <div class="amendment-field">
+            <label class="amendment-field-label">Taxable value (&#8377;)</label>
+            <div class="amendment-field-pair">
+              <div><div class="amendment-field-pair-sub existing">existing</div><input class="amendment-field-input readonly" value="8,42,000.00" readonly></div>
+              <div><div class="amendment-field-pair-sub new">new</div><input class="amendment-field-input editable" value="8,54,000.00"></div>
+            </div>
+          </div>
+          <div class="amendment-field">
+            <label class="amendment-field-label">Tax rate (%)</label>
+            <div class="amendment-field-pair">
+              <div><div class="amendment-field-pair-sub existing">existing</div><input class="amendment-field-input readonly" value="18" readonly></div>
+              <div><div class="amendment-field-pair-sub new">new</div><input class="amendment-field-input editable" value="18"></div>
+            </div>
+          </div>
+          <div class="amendment-field">
+            <label class="amendment-field-label">IGST (&#8377;)</label>
+            <div class="amendment-field-pair">
+              <div><div class="amendment-field-pair-sub existing">existing</div><input class="amendment-field-input readonly" value="1,51,560.00" readonly></div>
+              <div><div class="amendment-field-pair-sub new">new</div><input class="amendment-field-input editable" value="1,53,720.00"></div>
+            </div>
+          </div>
+          <div class="amendment-field">
+            <label class="amendment-field-label">CGST + SGST (&#8377;)</label>
+            <div class="amendment-field-pair">
+              <div><div class="amendment-field-pair-sub existing">existing</div><input class="amendment-field-input readonly" value="—" readonly></div>
+              <div><div class="amendment-field-pair-sub new">new</div><input class="amendment-field-input editable" value="—"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="amendment-changes-banner">
+          <strong>Change summary:</strong> Taxable &uarr; &#8377;12,000 &middot; IGST &uarr; &#8377;2,160 &middot; net liability impact <strong>+ &#8377;2,160 IGST</strong>
+        </div>
+
+        <div class="amendment-form-actions">
+          <button class="btn btn-primary cta-large">Save amendment to GSTR-1A</button>
+          <button class="btn btn-secondary cta-large">Cancel</button>
+        </div>
+      </div>
+
+      <!-- 2. Add new invoice -->
+      <div class="amendment-form" data-amend-form="add-invoice">
+        <div class="amendment-form-head">Add new invoice &middot; missed in original GSTR-1</div>
+        <div class="amendment-form-sub">A B2B invoice that was raised in May but not reported in your filed GSTR-1. Will be added to Table 4A and flow into recipient GSTR-2B in the next cycle.</div>
+        <div class="amendment-form-grid">
+          <div class="amendment-field"><label class="amendment-field-label">Invoice no.</label><input class="amendment-field-input editable" placeholder="e.g. TS/26/04241"></div>
+          <div class="amendment-field"><label class="amendment-field-label">Invoice date</label><input class="amendment-field-input editable" type="date" value="2026-05-14"></div>
+          <div class="amendment-field"><label class="amendment-field-label">Recipient GSTIN</label><input class="amendment-field-input editable" placeholder="15-char GSTIN"></div>
+          <div class="amendment-field"><label class="amendment-field-label">Place of supply</label><input class="amendment-field-input editable" placeholder="State name + code"></div>
+          <div class="amendment-field"><label class="amendment-field-label">Taxable value (&#8377;)</label><input class="amendment-field-input editable" placeholder="0.00"></div>
+          <div class="amendment-field"><label class="amendment-field-label">Tax rate (%)</label><input class="amendment-field-input editable" placeholder="18"></div>
+          <div class="amendment-field"><label class="amendment-field-label">IGST (&#8377;)</label><input class="amendment-field-input editable" placeholder="auto-computed"></div>
+          <div class="amendment-field"><label class="amendment-field-label">CGST + SGST (&#8377;)</label><input class="amendment-field-input editable" placeholder="auto-computed"></div>
+        </div>
+        <div class="amendment-form-actions">
+          <button class="btn btn-primary cta-large">Save new invoice</button>
+          <button class="btn btn-secondary cta-large">Cancel</button>
+        </div>
+      </div>
+
+      <!-- 3. Add credit note -->
+      <div class="amendment-form" data-amend-form="add-cn">
+        <div class="amendment-form-head">Add credit note</div>
+        <div class="amendment-form-sub">Issued against an original invoice to reduce taxable value or tax (price reduction, returns, post-sale discount). Reduces your outward liability and recipient&apos;s ITC.</div>
+        <div class="amendment-form-grid">
+          <div class="amendment-field"><label class="amendment-field-label">CN no.</label><input class="amendment-field-input editable" placeholder="e.g. TS-CN/26/843"></div>
+          <div class="amendment-field"><label class="amendment-field-label">CN date</label><input class="amendment-field-input editable" type="date" value="2026-05-14"></div>
+          <div class="amendment-field"><label class="amendment-field-label">Original invoice no.</label><input class="amendment-field-input editable" placeholder="e.g. TS/26/02418"></div>
+          <div class="amendment-field"><label class="amendment-field-label">Recipient GSTIN</label><input class="amendment-field-input editable" placeholder="auto-filled from invoice"></div>
+          <div class="amendment-field"><label class="amendment-field-label">Reason</label>
+            <select class="select" style="width:100%;">
+              <option>Sales return</option>
+              <option>Post-sale discount</option>
+              <option>Deficiency in service</option>
+              <option>Price reduction</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="amendment-field"><label class="amendment-field-label">Taxable value (CN, &#8377;)</label><input class="amendment-field-input editable" placeholder="0.00"></div>
+          <div class="amendment-field"><label class="amendment-field-label">IGST (&#8377;)</label><input class="amendment-field-input editable" placeholder="auto-computed"></div>
+          <div class="amendment-field"><label class="amendment-field-label">CGST + SGST (&#8377;)</label><input class="amendment-field-input editable" placeholder="auto-computed"></div>
+        </div>
+        <div class="amendment-form-actions">
+          <button class="btn btn-primary cta-large">Save credit note</button>
+          <button class="btn btn-secondary cta-large">Cancel</button>
+        </div>
+      </div>
+
+      <!-- 4. Add debit note -->
+      <div class="amendment-form" data-amend-form="add-dn">
+        <div class="amendment-form-head">Add debit note</div>
+        <div class="amendment-form-sub">Issued against an original invoice to increase taxable value or tax (under-billing correction, rate revision). Increases your outward liability and recipient&apos;s ITC claim.</div>
+        <div class="amendment-form-grid">
+          <div class="amendment-field"><label class="amendment-field-label">DN no.</label><input class="amendment-field-input editable" placeholder="e.g. TS-DN/26/127"></div>
+          <div class="amendment-field"><label class="amendment-field-label">DN date</label><input class="amendment-field-input editable" type="date" value="2026-05-14"></div>
+          <div class="amendment-field"><label class="amendment-field-label">Original invoice no.</label><input class="amendment-field-input editable" placeholder="e.g. TS/26/03847"></div>
+          <div class="amendment-field"><label class="amendment-field-label">Recipient GSTIN</label><input class="amendment-field-input editable" placeholder="auto-filled from invoice"></div>
+          <div class="amendment-field"><label class="amendment-field-label">Reason</label>
+            <select class="select" style="width:100%;">
+              <option>Under-billing correction</option>
+              <option>Rate revision (upward)</option>
+              <option>Post-sale add-on charge</option>
+              <option>Freight / packing added later</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="amendment-field"><label class="amendment-field-label">Taxable value (DN, &#8377;)</label><input class="amendment-field-input editable" placeholder="0.00"></div>
+          <div class="amendment-field"><label class="amendment-field-label">IGST (&#8377;)</label><input class="amendment-field-input editable" placeholder="auto-computed"></div>
+          <div class="amendment-field"><label class="amendment-field-label">CGST + SGST (&#8377;)</label><input class="amendment-field-input editable" placeholder="auto-computed"></div>
+        </div>
+        <div class="amendment-form-actions">
+          <button class="btn btn-primary cta-large">Save debit note</button>
+          <button class="btn btn-secondary cta-large">Cancel</button>
+        </div>
+      </div>
+
+      <!-- 5. Amend HSN summary line -->
+      <div class="amendment-form" data-amend-form="amend-hsn">
+        <div class="amendment-form-head">Amend HSN summary line &middot; Table 12</div>
+        <div class="amendment-form-sub">Quantity, taxable value, rate or tax component changed for a given HSN code. HSN code itself is not changeable (use Add new HSN line if a new code is needed).</div>
+        <div class="amendment-form-grid">
+          <div class="amendment-field"><label class="amendment-field-label">HSN code (locked)</label><input class="amendment-field-input readonly" value="720839" readonly></div>
+          <div class="amendment-field"><label class="amendment-field-label">Description</label><input class="amendment-field-input readonly" value="Hot-rolled flat steel &middot; w &ge; 600mm" readonly></div>
+          <div class="amendment-field"><label class="amendment-field-label">UQC</label>
+            <div class="amendment-field-pair">
+              <div><div class="amendment-field-pair-sub existing">existing</div><input class="amendment-field-input readonly" value="MTS" readonly></div>
+              <div><div class="amendment-field-pair-sub new">new</div><input class="amendment-field-input editable" value="MTS"></div>
+            </div>
+          </div>
+          <div class="amendment-field"><label class="amendment-field-label">Quantity</label>
+            <div class="amendment-field-pair">
+              <div><div class="amendment-field-pair-sub existing">existing</div><input class="amendment-field-input readonly" value="48,217.500" readonly></div>
+              <div><div class="amendment-field-pair-sub new">new</div><input class="amendment-field-input editable" value="48,256.200"></div>
+            </div>
+          </div>
+        </div>
+        <div class="amendment-form-section-title">Value &amp; tax (editable)</div>
+        <div class="amendment-form-grid">
+          <div class="amendment-field"><label class="amendment-field-label">Taxable value (&#8377;)</label>
+            <div class="amendment-field-pair">
+              <div><div class="amendment-field-pair-sub existing">existing</div><input class="amendment-field-input readonly" value="68,42,18,512.00" readonly></div>
+              <div><div class="amendment-field-pair-sub new">new</div><input class="amendment-field-input editable" value="68,47,72,418.00"></div>
+            </div>
+          </div>
+          <div class="amendment-field"><label class="amendment-field-label">Rate (%)</label>
+            <div class="amendment-field-pair">
+              <div><div class="amendment-field-pair-sub existing">existing</div><input class="amendment-field-input readonly" value="18" readonly></div>
+              <div><div class="amendment-field-pair-sub new">new</div><input class="amendment-field-input editable" value="18"></div>
+            </div>
+          </div>
+          <div class="amendment-field"><label class="amendment-field-label">IGST (&#8377;)</label>
+            <div class="amendment-field-pair">
+              <div><div class="amendment-field-pair-sub existing">existing</div><input class="amendment-field-input readonly" value="8,42,18,000.00" readonly></div>
+              <div><div class="amendment-field-pair-sub new">new</div><input class="amendment-field-input editable" value="8,42,82,000.00"></div>
+            </div>
+          </div>
+          <div class="amendment-field"><label class="amendment-field-label">Cess (&#8377;)</label>
+            <div class="amendment-field-pair">
+              <div><div class="amendment-field-pair-sub existing">existing</div><input class="amendment-field-input readonly" value="—" readonly></div>
+              <div><div class="amendment-field-pair-sub new">new</div><input class="amendment-field-input editable" value="—"></div>
+            </div>
+          </div>
+        </div>
+        <div class="amendment-changes-banner">
+          <strong>Change summary:</strong> Qty &uarr; 38.7 MTS &middot; Taxable &uarr; &#8377; 5.54 L &middot; IGST &uarr; &#8377; 64,000 &middot; aligns Table 12 with corrected dispatch records
+        </div>
+        <div class="amendment-form-actions">
+          <button class="btn btn-primary cta-large">Save HSN amendment</button>
+          <button class="btn btn-secondary cta-large">Cancel</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- JS to switch amendment forms based on Action dropdown -->
+    <script>
+      (function(){
+        var sel = document.getElementById('amend-action-select');
+        if (!sel) return;
+        var forms = document.querySelectorAll('[data-amend-form]');
+        function show(action){
+          forms.forEach(function(f){
+            f.classList.toggle('active', f.getAttribute('data-amend-form') === action);
+          });
+        }
+        sel.addEventListener('change', function(){ show(sel.value); });
+        show(sel.value);
+      })();
+    </script>
+
+    <!-- QUEUED AMENDMENTS -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:18px 22px;border-bottom:1px solid var(--border);">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">Amendments queued · 3 records</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Net liability change from this GSTR-1A: <strong style="color:var(--success);">+ ₹ 18,420.00 CGST/SGST</strong></div>
+      </div>
+      <div class="table-wrap">
+      <table class="data-table grid-lined compact">
+        <thead>
+          <tr>
+            <th>Action</th>
+            <th>Table</th>
+            <th>Inv / CN / DN no.</th>
+            <th>Recipient</th>
+            <th class="num">Taxable change (&#8377;)</th>
+            <th class="num">Tax change (&#8377;)</th>
+            <th style="width:60px;text-align:center;">Edit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="ims-status-pill accept">Added</span></td>
+            <td class="mono">4A</td>
+            <td class="mono">TS/26/02847</td>
+            <td>Apollo Tyres</td>
+            <td class="num">82,400.00</td>
+            <td class="num">+14,832.00</td>
+            <td><button class="icon-btn" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button></td>
+          </tr>
+          <tr>
+            <td><span class="ims-status-pill pending">Amended</span></td>
+            <td class="mono">4A</td>
+            <td class="mono">TS/26/02418</td>
+            <td>Hindalco Industries</td>
+            <td class="num">+ 12,000.00</td>
+            <td class="num">+2,160.00</td>
+            <td><button class="icon-btn" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button></td>
+          </tr>
+          <tr>
+            <td><span class="ims-status-pill reject">CN added</span></td>
+            <td class="mono">9B</td>
+            <td class="mono">TS-CN/26/843</td>
+            <td>Tata Consumer</td>
+            <td class="num">−8,200.00</td>
+            <td class="num">+1,428.00</td>
+            <td><button class="icon-btn" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">3 amendments staged · ready to file</div>
+        <div class="action-bar-status">Once filed, values flow into May-2026 GSTR-3B Table 3</div>
+      </div>
+      <div class="action-bar-actions">
+        <button class="btn btn-secondary cta-large">Save draft</button>
+        <button class="btn btn-secondary cta-large">Preview PDF</button>
+        <button class="btn btn-primary cta-xlarge">File GSTR-1A with DSC →</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('gstr1a', 'GSTR-1A · Amendment Return', 'Returns · May 2026');</script>
+</body>
+</html>

@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GSTR-3B Step 5 · ITC &amp; Set-off · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Step 5 · Compute ITC &amp; Set-off</h1>
+        <p class="page-subtitle">Auto-derived from Step 3 reconciliation &middot; review Section 4 (Eligible ITC) and Section 6.1 (Tax Set-off) &middot; cells are editable with auto-computed values as fallback</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="gstr3b.html" class="btn btn-secondary">&larr; Back to GSTR-3B hub</a>
+      </div>
+    </div>
+
+    <!-- STEP PROGRESS BAR — Steps 1-3 done, 4 current -->
+    <div class="step-progress-bar">
+      <a href="gstr3b-step1.html" class="step-pip done step-pip-link" title="Go to Purchase data"><div class="step-pip-dot"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Purchase data</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr3b-step2.html" class="step-pip done step-pip-link" title="Go to Auto IMS fetch"><div class="step-pip-dot"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Auto IMS fetch</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr3b-step3.html" class="step-pip done step-pip-link" title="Go to Confirm Inward"><div class="step-pip-dot"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Confirm Inward</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr3b-step4.html" class="step-pip done step-pip-link" title="Go to Tax Summary"><div class="step-pip-dot"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Tax Summary</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr3b-step6.html" class="step-pip current step-pip-link" title="Go to ITC &amp; Set-off"><div class="step-pip-dot">5</div>ITC &amp; Set-off</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr3b-step6.html" class="step-pip  step-pip-link" title="Go to Preview &amp; File"><div class="step-pip-dot">6</div>Preview &amp; File</a>
+    </div>
+
+    <!-- STEP FLOW MOUNT -->
+    <div id="step-flow"></div>
+
+    <!-- AUTO-COMPUTED INDICATOR HELP STRIP -->
+    <div class="step-intro">
+      <strong>How editing works:</strong> All values below are auto-computed from Step 3 (reconciled inward). You can override any cell &mdash; click <span class="row-edit-btn" style="pointer-events:none;display:inline-flex;vertical-align:middle;margin:0 3px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span> to edit a row. Manually overridden cells are highlighted with the yellow strip and show a red <span style="color:var(--error);font-weight:700;">auto: &lt;original value&gt; &#x21BA;</span> tag &mdash; click it any time to revert to the auto-computed value.
+    </div>
+
+    <!-- SECTION 4 — ELIGIBLE ITC -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:18px 22px;border-bottom:1px solid var(--border);">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">Section 4 &middot; Eligible Input Tax Credit</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Auto-derived from Step 3 reconciliation &middot; CA can override any cell; auto-computed value retained for one-click revert</div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border-bottom:1px solid var(--border);flex-wrap:wrap;">
+        <div style="font-size:11.5px;color:var(--text-muted);">
+          <strong style="color:var(--text);">Editable table.</strong> Override any value to handle CA judgement calls &middot; original auto-computed shown in red for revert
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="row-edit-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add row
+          </button>
+          <button class="row-edit-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            Reset all to auto
+          </button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table grid-lined compact editable">
+          <thead>
+            <tr>
+              <th>Sl.</th>
+              <th>Particulars</th>
+              <th class="num ledger-col-igst">IGST (&#8377;)</th>
+              <th class="num ledger-col-cgst">CGST (&#8377;)</th>
+              <th class="num ledger-col-sgst">SGST / UTGST (&#8377;)</th>
+              <th class="num ledger-col-cess">Cess (&#8377;)</th>
+              <th style="width:80px;text-align:center;">Edit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>(A) 1</td>
+              <td>ITC available &middot; Import of goods</td>
+              <td class="num ledger-col-igst">2,57,20,200</td>
+              <td class="num ledger-col-cgst">&mdash;</td>
+              <td class="num ledger-col-sgst">&mdash;</td>
+              <td class="num ledger-col-cess">42,18,400</td>
+              <td style="text-align:center;"><button class="row-edit-btn" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button></td>
+            </tr>
+            <tr>
+              <td>(A) 2</td>
+              <td>ITC available &middot; Import of services</td>
+              <td class="num ledger-col-igst">39,31,560</td>
+              <td class="num ledger-col-cgst">&mdash;</td>
+              <td class="num ledger-col-sgst">&mdash;</td>
+              <td class="num ledger-col-cess">&mdash;</td>
+              <td style="text-align:center;"><button class="row-edit-btn" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button></td>
+            </tr>
+            <tr>
+              <td>(A) 3</td>
+              <td>ITC available &middot; Inward supplies under RCM</td>
+              <td class="num ledger-col-igst">31,25,320</td>
+              <td class="num ledger-col-cgst">14,06,394</td>
+              <td class="num ledger-col-sgst">14,06,394</td>
+              <td class="num ledger-col-cess">&mdash;</td>
+              <td style="text-align:center;"><button class="row-edit-btn" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button></td>
+            </tr>
+            <tr class="cell-edited">
+              <td>(A) 4</td>
+              <td>ITC available &middot; Inward supplies from ISD</td>
+              <td class="num ledger-col-igst">46,98,408</td>
+              <td class="num ledger-col-cgst cell-edited">
+                15,00,000
+                <div><span class="cell-auto-hint" title="Click to revert to auto-computed value">
+                  <span class="cell-auto-hint-label">auto</span>17,57,592
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                </span></div>
+              </td>
+              <td class="num ledger-col-sgst">17,57,592</td>
+              <td class="num ledger-col-cess">&mdash;</td>
+              <td style="text-align:center;"><button class="row-edit-btn" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button></td>
+            </tr>
+            <tr>
+              <td>(A) 5</td>
+              <td>ITC available &middot; All other ITC</td>
+              <td class="num ledger-col-igst">3,84,21,840</td>
+              <td class="num ledger-col-cgst">1,16,46,158</td>
+              <td class="num ledger-col-sgst">1,16,46,158</td>
+              <td class="num ledger-col-cess">&mdash;</td>
+              <td style="text-align:center;"><button class="row-edit-btn" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button></td>
+            </tr>
+            <tr>
+              <td>(B) 1</td>
+              <td>ITC reversed &middot; As per Rules 38, 42, 43 &amp; &sect;17(5)</td>
+              <td class="num ledger-col-igst">&mdash;</td>
+              <td class="num ledger-col-cgst">2,12,490</td>
+              <td class="num ledger-col-sgst">2,12,490</td>
+              <td class="num ledger-col-cess">&mdash;</td>
+              <td style="text-align:center;"><button class="row-edit-btn" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button></td>
+            </tr>
+            <tr style="background:rgba(22,135,54,0.06);font-weight:700;">
+              <td>(C)</td>
+              <td>Net ITC available &middot; (A) &ndash; (B)</td>
+              <td class="num ledger-col-igst">7,58,97,328</td>
+              <td class="num ledger-col-cgst">1,25,82,552</td>
+              <td class="num ledger-col-sgst">1,45,97,654</td>
+              <td class="num ledger-col-cess">42,18,400</td>
+              <td>&mdash;</td>
+            </tr>
+            <tr>
+              <td>(D)</td>
+              <td>Ineligible ITC &middot; As per &sect;17(5)</td>
+              <td class="num ledger-col-igst">&mdash;</td>
+              <td class="num ledger-col-cgst">14,076</td>
+              <td class="num ledger-col-sgst">14,076</td>
+              <td class="num ledger-col-cess">&mdash;</td>
+              <td style="text-align:center;"><button class="row-edit-btn" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- LEDGER BALANCES (v2.0.18 — modelled after GST portal Section 6.1 cash + credit ledger view) -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:18px 22px;border-bottom:1px solid var(--border);background:linear-gradient(135deg, #E8F4F9, var(--surface));">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">6.1 Payment of tax &middot; Available balances as on date</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;display:flex;align-items:center;gap:6px;">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="var(--info)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          The cash available as on date and ITC available (considering ITC of current tax period) are shown in this table.
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table grid-lined compact">
+          <thead>
+            <tr>
+              <th rowspan="2" style="vertical-align:middle;">Description</th>
+              <th colspan="5" style="text-align:center;background:rgba(99,102,241,0.08);">Cash Ledger Balance</th>
+              <th colspan="5" style="text-align:center;background:rgba(22,135,54,0.08);">Credit Ledger Balance (incl. current month&apos;s credit)</th>
+            </tr>
+            <tr>
+              <th class="num">Integrated Tax (&#8377;)</th>
+              <th class="num">Central Tax (&#8377;)</th>
+              <th class="num">State / UT Tax (&#8377;)</th>
+              <th class="num">CESS (&#8377;)</th>
+              <th class="num">Total (&#8377;)</th>
+              <th class="num">Integrated Tax (&#8377;)</th>
+              <th class="num">Central Tax (&#8377;)</th>
+              <th class="num">State / UT Tax (&#8377;)</th>
+              <th class="num">CESS (&#8377;)</th>
+              <th class="num">Total (&#8377;)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Tax</strong></td>
+              <td class="num">17,450.00</td>
+              <td class="num">20.00</td>
+              <td class="num">20.00</td>
+              <td class="num">0.00</td>
+              <td class="num"><strong>17,490.00</strong></td>
+              <td class="num">7,58,97,328</td>
+              <td class="num">1,25,82,552</td>
+              <td class="num">1,45,97,654</td>
+              <td class="num">42,18,400</td>
+              <td class="num"><strong>10,72,95,934</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Interest</strong></td>
+              <td class="num">0.00</td>
+              <td class="num">0.00</td>
+              <td class="num">0.00</td>
+              <td class="num">0.00</td>
+              <td class="num"><strong>0.00</strong></td>
+              <td class="num">&mdash;</td>
+              <td class="num">&mdash;</td>
+              <td class="num">&mdash;</td>
+              <td class="num">&mdash;</td>
+              <td class="num">&mdash;</td>
+            </tr>
+            <tr>
+              <td><strong>Late Fees</strong></td>
+              <td class="num">&mdash;</td>
+              <td class="num">0.00</td>
+              <td class="num">0.00</td>
+              <td class="num">&mdash;</td>
+              <td class="num"><strong>0.00</strong></td>
+              <td class="num">&mdash;</td>
+              <td class="num">&mdash;</td>
+              <td class="num">&mdash;</td>
+              <td class="num">&mdash;</td>
+              <td class="num">&mdash;</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SECTION 6.1 — TAX PAYMENT & SET-OFF (v2.0.18 — full 13-column GST-portal-style structure) -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:18px 22px;border-bottom:1px solid var(--border);">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">Section 6.1 &middot; Tax payment &amp; ITC set-off (Rule 88A order)</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;display:flex;align-items:center;gap:6px;">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="var(--info)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          The net tax payable has been calculated after considering the available balance in the negative liability statement. System auto-populates &ldquo;Tax to be paid through ITC&rdquo; columns; CA can override to optimise cash flow.
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:10px 14px;background:var(--bg);border-bottom:1px solid var(--border);flex-wrap:wrap;">
+        <div style="font-size:11.5px;color:var(--text-muted);min-width:0;flex:1 1 240px;">
+          <strong style="color:var(--text);">Editable set-off allocation.</strong> Override columns 8&ndash;11 to redirect ITC usage &middot; columns 12, 13, 18, 19 auto-recompute from your changes &middot; auto-computed values shown in red for revert
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="row-edit-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            Auto-suggest set-off
+          </button>
+          <button class="row-edit-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+            Manual override
+          </button>
+          <button class="row-edit-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            Reset all to auto
+          </button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table grid-lined compact editable" id="setoff-table" style="min-width:1480px;font-size:11px;">
+          <thead>
+            <tr>
+              <th rowspan="2" style="vertical-align:middle;min-width:140px;font-size:11.5px;">Description</th>
+              <th colspan="2" style="text-align:center;background:rgba(21,92,219,0.06);font-size:11px;">Net Tax Payable (&#8377;)</th>
+              <th colspan="4" style="text-align:center;background:rgba(22,135,54,0.10);font-size:11px;">Paid through ITC</th>
+              <th rowspan="2" style="vertical-align:middle;min-width:108px;line-height:1.35;" class="num">Tax in Cash<br><span style="font-weight:400;color:var(--text-muted);font-size:10px;">(other than RC) (&#8377;)</span></th>
+              <th rowspan="2" style="vertical-align:middle;min-width:88px;line-height:1.35;" class="num">RC Tax<br><span style="font-weight:400;color:var(--text-muted);font-size:10px;">in Cash (&#8377;)</span></th>
+              <th rowspan="2" style="vertical-align:middle;min-width:88px;line-height:1.35;" class="num">Interest<br><span style="font-weight:400;color:var(--text-muted);font-size:10px;">payable (&#8377;)</span></th>
+              <th rowspan="2" style="vertical-align:middle;min-width:88px;line-height:1.35;" class="num">Interest<br><span style="font-weight:400;color:var(--text-muted);font-size:10px;">in Cash (&#8377;)</span></th>
+              <th rowspan="2" style="vertical-align:middle;min-width:88px;line-height:1.35;" class="num">Late Fee<br><span style="font-weight:400;color:var(--text-muted);font-size:10px;">payable (&#8377;)</span></th>
+              <th rowspan="2" style="vertical-align:middle;min-width:88px;line-height:1.35;" class="num">Late Fee<br><span style="font-weight:400;color:var(--text-muted);font-size:10px;">in Cash (&#8377;)</span></th>
+              <th rowspan="2" style="vertical-align:middle;min-width:96px;line-height:1.35;" class="num">Utilizable<br><span style="font-weight:400;color:var(--text-muted);font-size:10px;">Cash bal (&#8377;)</span></th>
+              <th rowspan="2" style="vertical-align:middle;min-width:108px;line-height:1.35;" class="num">Additional<br><span style="font-weight:400;color:var(--text-muted);font-size:10px;">Cash req. (&#8377;)</span></th>
+              <th rowspan="2" style="vertical-align:middle;text-align:center;width:50px;font-size:10.5px;">Edit</th>
+            </tr>
+            <tr>
+              <th class="num">Reverse charge &amp; &sect;9(5)</th>
+              <th class="num">Other than reverse charge</th>
+              <th class="num ledger-col-igst">Integrated Tax</th>
+              <th class="num ledger-col-cgst">Central Tax</th>
+              <th class="num ledger-col-sgst">State / UT Tax</th>
+              <th class="num ledger-col-cess">CESS</th>
+            </tr>
+            <tr style="background:var(--bg);font-family:var(--font-mono);font-size:10px;color:var(--text-muted);">
+              <th>1</th><th>6(2-4)</th><th>7(3-5)</th><th>8</th><th>9</th><th>10</th><th>11</th>
+              <th>12 (7-8-9-10-11)</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th><th>19</th><th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Integrated Tax (&#8377;)</strong></td>
+              <td class="num">0</td>
+              <td class="num">5,82,18,400</td>
+              <td class="num ledger-col-igst">5,82,18,400</td>
+              <td class="num ledger-col-cgst">0</td>
+              <td class="num ledger-col-sgst">0</td>
+              <td class="num ledger-col-cess">&mdash;</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num">&mdash;</td>
+              <td class="num">&mdash;</td>
+              <td class="num">17,450.00</td>
+              <td class="num">0.00</td>
+              <td style="text-align:center;"><button class="row-edit-btn" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button></td>
+            </tr>
+            <tr>
+              <td><strong>Central Tax (&#8377;)</strong></td>
+              <td class="num">0</td>
+              <td class="num">1,42,18,400</td>
+              <td class="num ledger-col-igst">16,78,928</td>
+              <td class="num ledger-col-cgst">1,25,39,472</td>
+              <td class="num ledger-col-sgst">&mdash;</td>
+              <td class="num ledger-col-cess">&mdash;</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num">&mdash;</td>
+              <td class="num">&mdash;</td>
+              <td class="num">20.00</td>
+              <td class="num">0.00</td>
+              <td style="text-align:center;"><button class="row-edit-btn" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button></td>
+            </tr>
+            <tr class="cell-edited">
+              <td><strong>State / UT Tax (&#8377;)</strong></td>
+              <td class="num">0</td>
+              <td class="num">1,42,18,400</td>
+              <td class="num ledger-col-igst cell-edited">0
+                <div><span class="cell-auto-hint" title="Click to revert to auto-computed value">
+                  <span class="cell-auto-hint-label">auto</span>16,78,928
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                </span></div>
+              </td>
+              <td class="num ledger-col-cgst">&mdash;</td>
+              <td class="num ledger-col-sgst cell-edited">1,42,18,400
+                <div><span class="cell-auto-hint" title="Click to revert to auto-computed value">
+                  <span class="cell-auto-hint-label">auto</span>1,25,39,472
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                </span></div>
+              </td>
+              <td class="num ledger-col-cess">&mdash;</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num">&mdash;</td>
+              <td class="num">&mdash;</td>
+              <td class="num">20.00</td>
+              <td class="num">0.00</td>
+              <td style="text-align:center;"><button class="row-edit-btn" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button></td>
+            </tr>
+            <tr>
+              <td><strong>CESS (&#8377;)</strong></td>
+              <td class="num">0</td>
+              <td class="num">8,42,18,000</td>
+              <td class="num ledger-col-igst">&mdash;</td>
+              <td class="num ledger-col-cgst">&mdash;</td>
+              <td class="num ledger-col-sgst">&mdash;</td>
+              <td class="num ledger-col-cess">42,18,400</td>
+              <td class="num">8,00,00,000</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num">&mdash;</td>
+              <td class="num">&mdash;</td>
+              <td class="num">0.00</td>
+              <td class="num" style="color:var(--error);font-weight:700;">8,00,00,000</td>
+              <td style="text-align:center;"><button class="row-edit-btn" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button></td>
+            </tr>
+            <tr style="background:rgba(255,230,0,0.10);font-weight:700;">
+              <td>Total tax discharged</td>
+              <td class="num">0</td>
+              <td class="num">17,08,73,200</td>
+              <td class="num ledger-col-igst">5,98,97,328</td>
+              <td class="num ledger-col-cgst">1,25,39,472</td>
+              <td class="num ledger-col-sgst">1,42,18,400</td>
+              <td class="num ledger-col-cess">42,18,400</td>
+              <td class="num">8,00,00,000</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num">0</td>
+              <td class="num">&mdash;</td>
+              <td class="num">&mdash;</td>
+              <td class="num">17,490.00</td>
+              <td class="num" style="color:var(--error);">8,00,00,000</td>
+              <td>&mdash;</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- v2.0.18 — GST portal-style action button strip -->
+      <div style="background:linear-gradient(180deg, #fff, #F5F8FA);border-top:1px solid var(--border);padding:14px 22px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
+        <div style="font-size:11.5px;color:var(--text-muted);min-width:0;flex:1 1 280px;">
+          Cash shortfall of <strong style="color:var(--error);">&#8377; 8,00,00,000</strong> on Cess head &middot; create PMT-06 challan before filing
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <a href="gstr3b-step3.html" class="btn btn-secondary cta-large">&larr; Back</a>
+          <button class="btn btn-secondary cta-large">Preview draft GSTR-3B</button>
+          <button class="btn btn-secondary cta-large" onclick="window.openChallanPopup()" style="background:linear-gradient(135deg, #6366F1, #4338CA);color:#fff;border-color:transparent;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Create challan
+          </button>
+          <button class="btn btn-secondary cta-large" style="background:linear-gradient(135deg, #15823A, #16A34A);color:#fff;border-color:transparent;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Make payment / post credit to ledger
+          </button>
+          <a href="gstr3b-step6.html" class="btn btn-primary cta-large">Proceed to file &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- SUMMARY STATS -->
+    <div class="big-stat-grid" style="margin-bottom:20px;">
+      <div class="big-stat accent">
+        <div class="big-stat-label">Total tax liability</div>
+        <div class="big-stat-value">&#8377; 17.09 Cr</div>
+        <div class="big-stat-sub">IGST + CGST + SGST + Cess</div>
+      </div>
+      <div class="big-stat" style="border-left:3px solid var(--success);">
+        <div class="big-stat-label">ITC utilised</div>
+        <div class="big-stat-value" style="color:var(--success);">&#8377; 9.08 Cr</div>
+        <div class="big-stat-sub">Net ITC from Section 4(C)</div>
+      </div>
+      <div class="big-stat" style="border-left:3px solid var(--warning);">
+        <div class="big-stat-label">Cash payable</div>
+        <div class="big-stat-value" style="color:var(--warning);">&#8377; 8.00 Cr</div>
+        <div class="big-stat-sub">Cess shortfall &middot; pay via PMT-06</div>
+      </div>
+      <div class="big-stat" style="border-left:3px solid var(--info);">
+        <div class="big-stat-label">Credit ledger balance after filing</div>
+        <div class="big-stat-value" style="color:var(--info);">&#8377; 28.4 L</div>
+        <div class="big-stat-sub">Carry-forward to next period</div>
+      </div>
+    </div>
+
+    <!-- ACTION BAR -->
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">ITC computed &middot; Cash payable &#8377; 8 Cr (Cess shortfall)</div>
+        <div class="action-bar-status">Generate PMT-06 challan first &middot; then Preview &amp; File</div>
+      </div>
+      <div class="action-bar-actions">
+        <a href="gstr3b-step3.html" class="btn btn-secondary cta-large">&larr; Step 3</a>
+        <button class="btn btn-secondary cta-large">Save &amp; close</button>
+        <a href="gstr3b-step6.html" class="btn btn-primary cta-xlarge">Mark complete &middot; Next: Preview &amp; File &rarr;</a>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('gstr3b', 'GSTR-3B Inward', 'Step 5 &middot; ITC &amp; Set-off');</script>
+<script>
+renderStepFlow({
+  anchor: "#step-flow",
+  intro: 'Compute eligible ITC (Section 4) and apply against tax liability per Rule 88A (Section 6.1). Both tables editable; manually overridden cells keep their auto-computed value visible in red for one-click revert.',
+  status: {
+    state: "In progress", period: "May 2026", today: "15-May-2026 (Fri)",
+    due: "GSTR-3B by 20-Jun-2026", dueClass: "",
+    lastAction: "14-May 18:24 by Jude", nextMilestone: "Step 5: Preview & File"
+  },
+  currentUpload: {
+    fileName: "itc-setoff-v2.json", fileType: "json", size: "1.4 MB",
+    source: "Auto-derived from Step 3 + Section 4 reversals",
+    uploadedBy: "System (with overrides by Jude)", uploadedAt: "14-May 18:24:08",
+    records: "Section 4 + 6.1 + Cess Cash", pass: "All", warn: 0, fail: 0,
+    label: "Currently computed ITC & set-off"
+  },
+  validations: [
+    {state:"pass", name:"Net ITC = Available − Reversed", count:"✓ Reconciled"},
+    {state:"pass", name:"Rule 88A order respected (with override)", count:"✓ CA confirmed"},
+    {state:"pass", name:"Cash + ITC = Total liability", count:"✓ ₹ 17.09 Cr"},
+    {state:"warn", name:"Cess Cash shortfall ₹ 8 Cr", count:"⚠ PMT-06 challan needed"},
+    {state:"pass", name:"Override audit captured", count:"✓ 2 overrides logged"}
+  ],
+  history: [
+    {version:"v2", label:"After SGST set-off override (cash optimisation)", source:"Manual override", by:"Jude Akash", time:"14-May 18:24:08", records:"Sec 4 + 6.1", tag:"override"},
+    {version:"v1", label:"Initial Rule 88A auto-allocation", source:"System", by:"System", time:"14-May 18:08:42", records:"Sec 4 + 6.1", tag:"initial"}
+  ],
+  dispositions: [
+    {id:"continue", primary:true, title:"Continue with v2",
+     desc:"Set-off finalised. Proceed to Step 5 (Preview & File). PMT-06 will be queued for Cess cash shortfall."},
+    {id:"refresh", title:"Re-run Rule 88A auto-allocation",
+     desc:"Refresh the auto-computed allocations. Manual overrides will be flagged as needing re-approval."},
+    {id:"manual", title:"Edit further allocations",
+     desc:"Open any row to override the auto-computed ITC distribution. Useful for cash-flow optimisation across heads."},
+    {id:"replace", title:"Reset all to Rule 88A auto",
+     desc:"Discard all manual overrides and reset every cell to its auto-computed value. v1 will become the current."}
+  ]
+});
+</script>
+</body>
+</html>

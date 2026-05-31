@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HSN Summary · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">
+          <a href="gstr1-step3.html" style="color:var(--text-muted);text-decoration:none;">&larr; Step 3 (Outward summary)</a> &middot; Detail view
+        </div>
+        <h1 class="page-title">12 &middot; HSN Summary</h1>
+        <p class="page-subtitle">6-digit HSN mandatory from Feb 2025 for AATO &gt; &#8377; 5 Cr &middot; quantity &middot; taxable &middot; tax components</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="gstr1-step3.html" class="btn btn-secondary">&larr; Back to Step 3 (Outward summary)</a>
+      </div>
+    </div>
+
+    <div class="big-stat-grid" style="margin-bottom:20px;">
+      <div class="big-stat" style="border-left:3px solid var(--success);"><div class="big-stat-label">HSN codes used</div><div class="big-stat-value">2,639</div><div class="big-stat-sub">Distinct 6-digit</div></div>
+      <div class="big-stat"><div class="big-stat-label">Total qty</div><div class="big-stat-value">4.18 L MTS</div><div class="big-stat-sub">Steel + ancillary</div></div>
+      <div class="big-stat"><div class="big-stat-label">Taxable value</div><div class="big-stat-value">&#8377; 132.6 Cr</div><div class="big-stat-sub">All HSN aggregated</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--success);"><div class="big-stat-label">Tax (all)</div><div class="big-stat-value">&#8377; 23.8 Cr</div><div class="big-stat-sub">IGST + CGST + SGST + Cess</div></div>
+    </div>
+
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">
+        <div style="min-width:0;flex:1 1 240px;">
+          <div style="font-size:13.5px;font-weight:700;color:var(--text);line-height:1.4;">HSN summary &middot; sample of 8 from 2,639 codes</div>
+          <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">Auto-derived from invoice line items &middot; editable inline if HSN master needs override</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="btn btn-secondary btn-sm">Download CSV</button>
+          <button class="btn btn-secondary btn-sm">Filter</button>
+          <button class="btn btn-secondary btn-sm">Edit rows</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table grid-lined compact">
+          <thead><tr><th class="mono">HSN</th><th>Description</th><th>UQC</th><th class="num">Qty</th><th class="num">Taxable (₹)</th><th class="num">Rate %</th><th class="num">IGST</th><th class="num">CGST + SGST</th></tr></thead>
+          <tbody><tr><td class="mono">720839</td><td>Hot-rolled steel, w ≥ 600mm</td><td>MTS</td><td class="num">48,217.5</td><td class="num">68,42,18,512</td><td class="num">18</td><td class="num">8,42,18,000</td><td class="num">—</td></tr><tr><td class="mono">721049</td><td>Coated steel sheets</td><td>MTS</td><td class="num">12,418.2</td><td class="num">18,42,12,840</td><td class="num">18</td><td class="num">2,15,58,000</td><td class="num">—</td></tr><tr><td class="mono">722230</td><td>Other bars/rods stainless</td><td>MTS</td><td class="num">8,412.6</td><td class="num">10,82,18,000</td><td class="num">18</td><td class="num">1,42,18,000</td><td class="num">—</td></tr><tr><td class="mono">730110</td><td>Sheet piling steel</td><td>MTS</td><td class="num">4,218.4</td><td class="num">5,82,18,000</td><td class="num">18</td><td class="num">82,18,000</td><td class="num">—</td></tr><tr><td class="mono">730820</td><td>Towers/lattice steel</td><td>MTS</td><td class="num">2,148.8</td><td class="num">3,42,18,000</td><td class="num">18</td><td class="num">48,12,000</td><td class="num">—</td></tr><tr><td class="mono">730890</td><td>Other steel structures</td><td>MTS</td><td class="num">1,841.2</td><td class="num">2,18,42,000</td><td class="num">18</td><td class="num">32,42,000</td><td class="num">—</td></tr><tr><td class="mono">732690</td><td>Other articles of iron/steel</td><td>KGS</td><td class="num">48,218</td><td class="num">1,82,18,000</td><td class="num">18</td><td class="num">—</td><td class="num">16,42,000</td></tr><tr><td class="mono">760421</td><td>Hollow profiles aluminium</td><td>MTS</td><td class="num">2,148.6</td><td class="num">2,82,42,000</td><td class="num">18</td><td class="num">—</td><td class="num">25,42,000</td></tr><tr style="background:rgba(0,0,0,0.02);font-weight:600;border-top:1px solid var(--border);"><td class="mono" style="color:var(--text-muted);">—</td><td style="color:var(--text-muted);">Sample sub-total · 8 HSN codes shown above</td><td>—</td><td class="num" style="font-variant-numeric:tabular-nums;color:var(--text-muted);">79,623.3</td><td class="num" style="font-variant-numeric:tabular-nums;color:var(--text-muted);">1,13,73,87,352.00</td><td>—</td><td class="num" style="font-variant-numeric:tabular-nums;color:var(--text-muted);">13,62,66,000.00</td><td class="num" style="font-variant-numeric:tabular-nums;color:var(--text-muted);">41,84,000.00</td></tr><tr style="background:rgba(255,230,0,0.14);font-weight:700;border-top:2px solid var(--ey-yellow);font-size:13px;"><td class="mono" style="color:var(--ey-black-deep);">TOTAL</td><td style="color:var(--ey-black-deep);font-weight:700;">Grand total · 2,471 HSN codes</td><td style="color:var(--ey-black-deep);">—</td><td class="num" style="font-variant-numeric:tabular-nums;color:var(--ey-black-deep);">8,42,17,418.6</td><td class="num" style="font-variant-numeric:tabular-nums;color:var(--ey-black-deep);">1,28,42,18,000.00</td><td class="num" style="color:var(--ey-black-deep);">—</td><td class="num" style="font-variant-numeric:tabular-nums;color:var(--ey-black-deep);">19,42,18,000.00</td><td class="num" style="font-variant-numeric:tabular-nums;color:var(--ey-black-deep);">3,68,42,000.00</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">2,639 HSN codes &middot; Phase-3 6-digit compliant &middot; aggregated from 2,84,217 line items</div>
+        <div class="action-bar-status">Cess column populated for HSN 24 (tobacco) &middot; manual overrides logged with revert option</div>
+      </div>
+      <div class="action-bar-actions">
+        <a href="gstr1-step3.html" class="btn btn-secondary cta-large">&larr; Back to Step 3 (Outward summary)</a>
+        <button class="btn btn-secondary cta-large">Save changes</button>
+        <a href="gstr1-step3.html" class="btn btn-primary cta-large">Done &middot; return to Step 3 (Outward summary) &rarr;</a>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('gstr1', 'GSTR-1 &middot; Step 3 detail', '12 detail');</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bill of Supply Register · Composition · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Bill of Supply Register</h1>
+        <p class="page-subtitle">Composition dealers issue Bill of Supply, not tax invoices (Rule 49) &middot; cannot charge GST separately &middot; intra-state supplies only</p>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn btn-primary cta-large">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          New Bill of Supply
+        </button>
+      </div>
+    </div>
+
+    <div class="big-stat-grid" style="margin-bottom:20px;">
+      <div class="big-stat accent"><div class="big-stat-label">Q1 BoS count</div><div class="big-stat-value">655</div><div class="big-stat-sub">Apr-Jun 2026</div></div>
+      <div class="big-stat"><div class="big-stat-label">Q1 turnover</div><div class="big-stat-value">&#8377; 38.40 L</div><div class="big-stat-sub">Flows into CMP-08</div></div>
+      <div class="big-stat"><div class="big-stat-label">Avg ticket size</div><div class="big-stat-value">&#8377; 5,863</div><div class="big-stat-sub">Per Bill of Supply</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--success)"><div class="big-stat-label">Composition status</div><div class="big-stat-value" style="color:var(--success)">Active</div><div class="big-stat-sub">CMP-02 dated 12-Mar-2025</div></div>
+    </div>
+
+    <div class="card" style="padding:0;">
+      <div style="padding:18px 22px;border-bottom:1px solid var(--border);">
+        <div style="font-size:14px;font-weight:700;">Latest 8 Bills of Supply</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Showing 8 of 655 records for Q1 2026-27</div>
+      </div>
+      <div class="table-wrap">
+<table class="data-table grid-lined">
+        <thead>
+          <tr><th>BoS no.</th><th>Date</th><th>Customer</th><th>Item description</th><th class="num">Amount (&#8377;)</th><th>Place of supply</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="mono">BoS/26-27/0655</td><td>14-May-26</td><td>Walk-in customer</td><td>Textiles &middot; cotton fabric 12 m</td><td class="num">4,800.00</td><td>Maharashtra</td></tr>
+          <tr><td class="mono">BoS/26-27/0654</td><td>14-May-26</td><td>Sunita Devi</td><td>Stationery &middot; office supplies</td><td class="num">2,184.00</td><td>Maharashtra</td></tr>
+          <tr><td class="mono">BoS/26-27/0653</td><td>13-May-26</td><td>Kiran Traders</td><td>Bulk &middot; rice 100 kg</td><td class="num">12,500.00</td><td>Maharashtra</td></tr>
+          <tr><td class="mono">BoS/26-27/0652</td><td>13-May-26</td><td>Walk-in customer</td><td>FMCG &middot; soap, detergent</td><td class="num">1,841.00</td><td>Maharashtra</td></tr>
+          <tr><td class="mono">BoS/26-27/0651</td><td>13-May-26</td><td>Rakesh Kumar</td><td>Hardware &middot; tools assorted</td><td class="num">8,420.00</td><td>Maharashtra</td></tr>
+          <tr><td class="mono">BoS/26-27/0650</td><td>12-May-26</td><td>Patel Stores</td><td>Bulk &middot; pulses 50 kg</td><td class="num">7,500.00</td><td>Maharashtra</td></tr>
+          <tr><td class="mono">BoS/26-27/0649</td><td>12-May-26</td><td>Walk-in customer</td><td>Stationery</td><td class="num">948.00</td><td>Maharashtra</td></tr>
+          <tr><td class="mono">BoS/26-27/0648</td><td>11-May-26</td><td>Anita Sharma</td><td>Textiles &middot; saree</td><td class="num">3,200.00</td><td>Maharashtra</td></tr>
+        </tbody>
+      </table>
+</div>
+    </div>
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('bos-register', 'Bill of Supply', 'Register &middot; Q1 2026-27');</script>
+</body>
+</html>

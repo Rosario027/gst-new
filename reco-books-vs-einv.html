@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Books vs E-invoice / IMS Auto-computed &middot; DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">
+          <a href="dashboard.html" style="color:var(--text-muted);text-decoration:none;">&larr; Dashboard</a> &middot; Reconciliation &middot; Books vs E-invoice
+        </div>
+        <h1 class="page-title">Books vs E-invoice / IMS Auto-computed</h1>
+        <p class="page-subtitle">Outward supplies in Books compared with what flowed to GSTN via e-invoicing + how IMS auto-computed visibility looks to your buyers &middot; tie-out the outward leg</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="dashboard.html" class="btn btn-secondary">&larr; Back</a>
+      </div>
+    </div>
+
+    <!-- WHY THIS RECONCILIATION -->
+    <div class="card" style="background:linear-gradient(135deg, #E8F4F9, var(--surface));border-left:4px solid var(--info);padding:14px 18px;margin-bottom:20px;">
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--info)" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <div style="font-size:12.5px;line-height:1.55;color:var(--text);">
+          <strong>Why this reconciliation matters:</strong> Every B2B invoice from registered businesses with AATO &gt; &#8377; 5 Cr must carry an IRN (e-invoice). The IRN data flows to GSTN, populates GSTR-1, and from there flows to buyers&apos; IMS dashboards. If Books has an invoice but no IRN was generated, you&apos;ll have a GSTR-1 mismatch and your buyer can&apos;t take ITC. This reco closes that outward loop &mdash; Books invoice &harr; IRN issued &harr; IMS visible to buyer.
+        </div>
+      </div>
+    </div>
+
+    <!-- SOURCE CONFIGURATION -->
+    <div style="margin:8px 0 10px;">
+      <div style="font-size:15px;font-weight:700;color:var(--text);letter-spacing:-0.005em;">Source configuration</div>
+      <div style="font-size:12.5px;color:var(--text-muted);margin-top:3px;">Choose between manual template upload, auto-sync from ERP / GST portal, or a mix. The Run Reco button below will use whichever is freshest on each side.</div>
+    </div>
+
+    <div class="drop-zone-pair">
+
+      <!-- SOURCE A -->
+      <div class="drop-zone-single">
+        <div class="drop-zone-head">
+          <div>
+            <div class="drop-zone-eyebrow">Source A</div>
+            <div class="drop-zone-title">Books (Sales Register)</div>
+            <div class="drop-zone-sub">ERP-pulled outward invoices &middot; B2B + B2C + Exports</div>
+          </div>
+          <span class="status-pill complete">Synced from SAP</span>
+        </div>
+
+        <div class="drop-zone-area">
+          <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="var(--text-muted)" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <div class="drop-zone-text">Drop Sales Excel / CSV template here, or</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px;">
+            <button class="btn btn-secondary btn-sm">Browse manual upload</button>
+            <button class="btn btn-secondary btn-sm" onclick="if(window.showToast) window.showToast('Auto-syncing Books (Sales Register) from SAP / Oracle SD...');">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              Auto-sync from SAP / Oracle SD
+            </button>
+          </div>
+        </div>
+
+        <div class="drop-zone-history">
+          <div class="drop-zone-history-row">
+            <span>Last refresh</span>
+            <span class="mono">15-May 14:22</span>
+          </div>
+          <div class="drop-zone-history-row">
+            <span>Records loaded</span>
+            <span class="mono">2,84,217 rows</span>
+          </div>
+          <div class="drop-zone-history-row">
+            <span>Method</span>
+            <span class="mono">SAP SD connector</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SOURCE B -->
+      <div class="drop-zone-single">
+        <div class="drop-zone-head">
+          <div>
+            <div class="drop-zone-eyebrow">Source B</div>
+            <div class="drop-zone-title">E-invoice / IMS Auto-computed</div>
+            <div class="drop-zone-sub">IRN-issued records from IRP + IMS auto-visibility to buyers</div>
+          </div>
+          <span class="status-pill complete">Auto-synced</span>
+        </div>
+
+        <div class="drop-zone-area">
+          <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="var(--text-muted)" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <div class="drop-zone-text">Drop IRN response JSON template here, or</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px;">
+            <button class="btn btn-secondary btn-sm">Browse manual upload</button>
+            <button class="btn btn-secondary btn-sm" onclick="if(window.showToast) window.showToast('Auto-syncing E-invoice / IMS Auto-computed from IRP / GSTN...');">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              Auto-sync from IRP / GSTN
+            </button>
+          </div>
+        </div>
+
+        <div class="drop-zone-history">
+          <div class="drop-zone-history-row">
+            <span>Last refresh</span>
+            <span class="mono">15-May 18:38</span>
+          </div>
+          <div class="drop-zone-history-row">
+            <span>Records loaded</span>
+            <span class="mono">2,42,118 rows</span>
+          </div>
+          <div class="drop-zone-history-row">
+            <span>Method</span>
+            <span class="mono">IRP API + IMS feed</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RUN RECO PROMINENT CTA -->
+    <div class="reco-run-card">
+      <div class="reco-run-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      </div>
+      <div>
+        <div class="reco-run-card-title">Run reconciliation now</div>
+        <div class="reco-run-card-sub">
+          Match 2,84,217 Books records &times; 2,42,118 E-inv records using <strong>Inv no + Inv date + Buyer GSTIN</strong> &middot; tolerance &plusmn; &#8377;1 on taxable
+        </div>
+      </div>
+      <button class="reco-run-btn" onclick="if(window.showToast) window.showToast('Match engine running &middot; estimated 18 seconds...');">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Run reco
+      </button>
+    </div>
+
+    <!-- ENGINE STATUS / LAST RUN -->
+    <div class="card" style="padding:16px 22px;margin-bottom:20px;background:linear-gradient(135deg, #F5F8FA, var(--surface));">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));gap:14px;">
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);">Last run</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);margin-top:3px;">15-May 18:42</div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);">Records compared</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);margin-top:3px;">2,84,217</div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);">Matched</div>
+          <div style="font-size:13px;font-weight:600;color:var(--success);margin-top:3px;">2,41,584</div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);">Mismatched / one-sided</div>
+          <div style="font-size:13px;font-weight:600;color:var(--warning);margin-top:3px;">42,633</div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);">Match rate</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);margin-top:3px;">85.00%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BIG STATS / OUTCOMES -->
+    <div class="big-stat-grid" style="margin-bottom:20px;">
+      <div class="big-stat" style="border-left:3px solid var(--info);"><div class="big-stat-label">Books invoices</div><div class="big-stat-value">2,84,217</div><div class="big-stat-sub">B2B + B2C + Exports</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--success);"><div class="big-stat-label">IRN issued (eligible)</div><div class="big-stat-value">2,42,118</div><div class="big-stat-sub">85.2% of total</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--error);"><div class="big-stat-label">Missing IRN</div><div class="big-stat-value">534</div><div class="big-stat-sub">B2B over &#8377; 5 Cr threshold</div></div>
+      <div class="big-stat"><div class="big-stat-label">B2C / exempt (no IRN reqd)</div><div class="big-stat-value">41,565</div><div class="big-stat-sub">14.6% &middot; no action</div></div>
+    </div>
+
+    <!-- v2.0.36 — Reconciliation summary (per GSTR-3B pattern) -->
+    <div class="card" style="padding:0;margin-bottom:18px;border-left:4px solid var(--info);overflow:hidden;">
+      <div style="padding:16px 22px;background:linear-gradient(135deg,#F0F7FF,var(--surface));border-bottom:1px solid var(--border);">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+          <div>
+            <div style="font-size:14px;font-weight:700;color:var(--text);">Books vs E-invoice/IMS Auto-computed reconciliation summary</div>
+            <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">Books: Your purchase register &harr; E-inv/IMS auto: System-auto-computed from IRP+IMS &middot; for your internal reconciliation review</div>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="if(window.showToast)window.showToast('Downloading consolidated Books vs E-invoice/IMS Auto-computed reco summary (Excel)...');">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" stroke-width="2.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download summary (Excel)
+          </button>
+        </div>
+      </div>
+      <div style="padding:0;">
+        <table class="data-table grid-lined compact" style="margin:0;border:none;border-radius:0;">
+          <thead><tr><th>Bucket</th><th class="num">Records</th><th class="num">Taxable (&#8377;)</th><th class="num">Tax (&#8377;)</th><th>Action default</th><th>Download</th></tr></thead>
+          <tbody>
+              <tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--success);margin-right:8px;"></span>Matched (both sides)</td><td class="num mono">1,72,418</td><td class="num mono">36,18,42,000</td><td class="num mono">5,89,32,000</td><td>Consistent</td><td><button class="row-edit-btn">Excel</button></td></tr>
+              <tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--warning);margin-right:8px;"></span>In Books, missing IRN</td><td class="num mono">4,218</td><td class="num mono">2,42,18,000</td><td class="num mono">42,18,000</td><td>Check IRN gen</td><td><button class="row-edit-btn">Excel</button></td></tr>
+              <tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--info);margin-right:8px;"></span>In E-inv, not in Books</td><td class="num mono">2,148</td><td class="num mono">84,20,000</td><td class="num mono">15,15,600</td><td>Add to PR</td><td><button class="row-edit-btn">Excel</button></td></tr>
+              <tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--error);margin-right:8px;"></span>Value mismatch</td><td class="num mono">675</td><td class="num mono">14,80,000</td><td class="num mono">— variable</td><td>Reconcile</td><td><button class="row-edit-btn">Excel</button></td></tr>
+              <tr style="background:rgba(255,230,0,0.10);font-weight:700;border-top:2px solid var(--ey-yellow);"><td>Final reconciliation</td><td class="num mono">1,79,459</td><td colspan="3">Consolidated outcome &middot; download full report below</td><td><button class="row-edit-btn" style="background:rgba(255,230,0,0.20);color:var(--ey-black-deep);">Excel</button></td></tr>
+            </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- v2.0.36 — Show item-wise breakup toggle -->
+    <div style="text-align:center;margin:0 0 18px;">
+      <button class="btn btn-secondary" id="booksvseinv-breakup-toggle" onclick="window.toggleReconBreakupGeneric &amp;&amp; window.toggleReconBreakupGeneric('booksvseinv')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+        Show item-wise breakup (detailed table)
+      </button>
+    </div>
+
+    <div class="recon-breakup-generic" data-recon-breakup-generic="booksvseinv" style="display:none;">
+
+    <!-- RESULTS TABLE (sample) -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">
+        <div style="min-width:0;flex:1 1 240px;">
+          <div style="font-size:13.5px;font-weight:700;color:var(--text);">Reconciliation results &middot; sample of 8 from 2,84,217</div>
+          <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">Status colours: <span style="color:var(--success);font-weight:600;">matched</span> &middot; <span style="color:var(--warning);font-weight:600;">value mismatch</span> &middot; <span style="color:var(--info);font-weight:600;">only in A</span> &middot; <span style="color:var(--error);font-weight:600;">only in B</span></div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="btn btn-secondary btn-sm">Download CSV</button>
+          <button class="btn btn-secondary btn-sm">Filter</button>
+          
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table grid-lined compact">
+          <thead><tr><th class="mono">Inv no</th><th>Date</th><th class="mono">Buyer GSTIN</th><th>Type</th><th class="num">Books Taxable</th><th>IRN status</th><th>IMS visible to buyer</th><th>Status</th></tr></thead>
+          <tbody><tr><td class="mono">TS/26/02418</td><td>12-May</td><td class="mono">27AAACH7409R1ZX</td><td>B2B</td><td class="num">8,42,000</td><td><span class="action-status matched">IRN active</span></td><td><span class="action-status matched">Yes</span></td><td><span class="action-status matched">matched</span></td></tr><tr><td class="mono">TS/26/02419</td><td>12-May</td><td class="mono">29AAACR5055K1Z1</td><td>B2B</td><td class="num">12,84,000</td><td><span class="action-status matched">IRN active</span></td><td><span class="action-status matched">Yes</span></td><td><span class="action-status matched">matched</span></td></tr><tr><td class="mono">TS/26/02420</td><td>12-May</td><td class="mono">33AABCA1948K1ZW</td><td>B2B</td><td class="num">3,84,200</td><td><span class="action-status reject">No IRN</span></td><td><span class="action-status reject">No</span></td><td><span class="action-status pending">generate IRN</span></td></tr><tr><td class="mono">TS/26/02421</td><td>12-May</td><td class="mono">07AABCH5181J1ZE</td><td>B2B</td><td class="num">42,18,400</td><td><span class="action-status matched">IRN active</span></td><td><span class="action-status matched">Yes</span></td><td><span class="action-status matched">matched</span></td></tr><tr><td class="mono">TS/26/B2CL/0118</td><td>12-May</td><td>—</td><td>B2C-L</td><td class="num">4,84,000</td><td><span class="action-status pending">N/A (B2C)</span></td><td><span class="action-status pending">N/A</span></td><td><span class="action-status matched">no IRN required</span></td></tr><tr><td class="mono">TS/26/EXP/0418</td><td>12-May</td><td>—</td><td>Export</td><td class="num">42,18,000</td><td><span class="action-status matched">IRN active</span></td><td><span class="action-status matched">Yes (buyer abroad)</span></td><td><span class="action-status matched">matched</span></td></tr><tr><td class="mono">TS/26/02424</td><td>13-May</td><td class="mono">29AABCB3128J1ZP</td><td>B2B</td><td class="num">5,18,400</td><td><span class="action-status reject">No IRN</span></td><td><span class="action-status reject">No</span></td><td><span class="action-status pending">generate IRN</span></td></tr><tr><td class="mono">TS/26/02425</td><td>14-May</td><td class="mono">24AABCM4218R1ZK</td><td>B2B</td><td class="num">18,42,000</td><td><span class="action-status matched">IRN active</span></td><td><span class="action-status matched">Yes</span></td><td><span class="action-status matched">matched</span></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    </div>
+    <!-- /breakup -->
+
+    <!-- ACTION BAR -->
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">534 B2B invoices over threshold missing IRN &middot; bulk-generate via IRP retry</div>
+        <div class="action-bar-status">IRN must be generated within 30 days of invoice date &middot; 12 invoices approaching deadline</div>
+      </div>
+      <div class="action-bar-actions">
+        <a href="dashboard.html" class="btn btn-secondary cta-large">&larr; Back</a>
+        <button class="btn btn-secondary cta-large">Export results</button>
+        <button class="btn btn-secondary cta-large" onclick="if(window.showToast) window.showToast('Reconciliation marked as reviewed for internal records.');">Mark reconciliation reviewed</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('recobookseinv', 'Reconciliation', 'Books vs E-invoice');</script>
+</body>
+</html>

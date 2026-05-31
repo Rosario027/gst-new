@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GSTR-9 Annual Return · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">GSTR-9 · Annual Return</h1>
+        <p class="page-subtitle">Annual consolidation of all monthly GSTR-1 and GSTR-3B returns · FY-wise</p>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn btn-secondary cta-large">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          View Last Year's Return
+        </button>
+      </div>
+    </div>
+
+    <!-- LIFECYCLE STRIP -->
+    <div class="lifecycle-strip">
+      <div class="lifecycle-header">
+        <div class="lifecycle-header-title">GSTR-9 filing lifecycle · Annual · Due 31-Dec of following FY</div>
+        <div class="lifecycle-header-help">Mandatory if turnover &gt; ₹ 2 Cr · GSTR-9C reconciliation if &gt; ₹ 5 Cr</div>
+      </div>
+      <div class="lifecycle-body">
+        <div class="lifecycle-phase past">
+          <div class="phase-marker"><span class="marker-dot"></span>Previous FY</div>
+          <div class="phase-title">FY 2024–25</div>
+          <div class="phase-status success">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+            Filed on 28-Dec-2025
+          </div>
+          <div class="phase-due">
+            <span class="due-date mono">ARN AA271225041287N</span>
+            <span class="days-left onTrack">GSTR-9C also filed</span>
+          </div>
+        </div>
+        <div class="lifecycle-phase current">
+          <div class="phase-marker"><span class="marker-dot"></span>Current FY · in accumulation</div>
+          <div class="phase-title">FY 2025–26</div>
+          <div class="phase-status">11 of 12 months filed · April 2026 pending</div>
+          <div class="phase-due">
+            <span class="due-date">Due 31-Dec-2026</span>
+            <span class="days-left onTrack">231 days remaining</span>
+          </div>
+        </div>
+        <div class="lifecycle-phase upcoming">
+          <div class="phase-marker"><span class="marker-dot"></span>Next FY</div>
+          <div class="phase-title">FY 2026–27</div>
+          <div class="phase-status muted">Accumulation starts 1-Apr-2026</div>
+          <div class="phase-due">
+            <span class="due-date">Due 31-Dec-2027</span>
+            <span class="days-left">596 days from today</span>
+          </div>
+        </div>
+        <div class="lifecycle-action">
+          <button class="btn btn-secondary cta-large">Generate Draft</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- HELP -->
+    <div class="help-strip">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <div><strong>About GSTR-9:</strong> Annual consolidation of all monthly returns filed during the FY. Pre-filled from GSTR-1, GSTR-3B and GSTR-2A. Auto-reconciles outward supply, ITC, tax paid, refunds. GSTR-9C (Reconciliation statement) is mandatory if aggregate turnover exceeds ₹ 5 Cr.</div>
+    </div>
+
+    <!-- BIG STATS -->
+    <div class="big-stat-grid">
+      <div class="big-stat accent">
+        <div class="big-stat-label">Annual Turnover (FY 2025-26)</div>
+        <div class="big-stat-value"><span class="cur">₹</span>1,824 Cr</div>
+        <div class="big-stat-sub">↑ 18.4% vs FY 2024-25</div>
+      </div>
+      <div class="big-stat">
+        <div class="big-stat-label">Total Tax Paid</div>
+        <div class="big-stat-value"><span class="cur">₹</span>238.42 Cr</div>
+        <div class="big-stat-sub">11 of 12 monthly returns</div>
+      </div>
+      <div class="big-stat">
+        <div class="big-stat-label">Total ITC Claimed</div>
+        <div class="big-stat-value"><span class="cur">₹</span>71.84 Cr</div>
+        <div class="big-stat-sub">After Rule 42/43 reversals</div>
+      </div>
+      <div class="big-stat">
+        <div class="big-stat-label">Months Completed</div>
+        <div class="big-stat-value">11<span class="cur">/12</span></div>
+        <div class="big-stat-sub">April 2026 — pending file</div>
+      </div>
+    </div>
+
+    <!-- MONTHLY SUMMARY -->
+    <div class="card mt-4">
+      <div class="card-head">
+        <div>
+          <h3 class="card-title">Monthly Returns Summary · FY 2025-26</h3>
+          <p class="card-subtitle">Consolidated view of all GSTR-1 and GSTR-3B filings · Source data for GSTR-9</p>
+        </div>
+        <button class="btn btn-secondary btn-sm">View detailed breakdown</button>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Month</th>
+            <th>GSTR-1 ARN</th>
+            <th>GSTR-1 Filed</th>
+            <th class="num">Outward Taxable</th>
+            <th>GSTR-3B ARN</th>
+            <th>3B Filed</th>
+            <th class="num">Tax Paid</th>
+            <th class="num">ITC Claimed</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Apr 2025</td><td class="mono small">AA270525001218</td><td>10-May-2025</td><td class="num">142.18 Cr</td><td class="mono small">AA270525004812</td><td>18-May-2025</td><td class="num">21.42 Cr</td><td class="num">6.18 Cr</td></tr>
+          <tr><td>May 2025</td><td class="mono small">AA270625002841</td><td>09-Jun-2025</td><td class="num">158.47 Cr</td><td class="mono small">AA270625006142</td><td>19-Jun-2025</td><td class="num">22.18 Cr</td><td class="num">6.42 Cr</td></tr>
+          <tr><td>Jun 2025</td><td class="mono small">AA270725003918</td><td>11-Jul-2025</td><td class="num">164.21 Cr</td><td class="mono small">AA270725007418</td><td>18-Jul-2025</td><td class="num">22.84 Cr</td><td class="num">6.84 Cr</td></tr>
+          <tr><td>Jul 2025</td><td class="mono small">AA270825004128</td><td>10-Aug-2025</td><td class="num">152.84 Cr</td><td class="mono small">AA270825008218</td><td>20-Aug-2025</td><td class="num">21.84 Cr</td><td class="num">6.18 Cr</td></tr>
+          <tr><td>Aug 2025</td><td class="mono small">AA270925004812</td><td>10-Sep-2025</td><td class="num">148.42 Cr</td><td class="mono small">AA270925009128</td><td>17-Sep-2025</td><td class="num">21.42 Cr</td><td class="num">6.41 Cr</td></tr>
+          <tr><td>Sep 2025</td><td class="mono small">AA271025005412</td><td>09-Oct-2025</td><td class="num">156.18 Cr</td><td class="mono small">AA271025009842</td><td>18-Oct-2025</td><td class="num">22.18 Cr</td><td class="num">6.18 Cr</td></tr>
+          <tr><td>Oct 2025</td><td class="mono small">AA271125006108</td><td>10-Nov-2025</td><td class="num">169.84 Cr</td><td class="mono small">AA271125010418</td><td>18-Nov-2025</td><td class="num">23.42 Cr</td><td class="num">6.41 Cr</td></tr>
+          <tr><td>Nov 2025</td><td class="mono small">AA271225006841</td><td>09-Dec-2025</td><td class="num">158.42 Cr</td><td class="mono small">AA271225010918</td><td>19-Dec-2025</td><td class="num">22.18 Cr</td><td class="num">6.42 Cr</td></tr>
+          <tr><td>Dec 2025</td><td class="mono small">AA270126007418</td><td>10-Jan-2026</td><td class="num">172.18 Cr</td><td class="mono small">AA270126011241</td><td>18-Jan-2026</td><td class="num">23.84 Cr</td><td class="num">6.84 Cr</td></tr>
+          <tr><td>Jan 2026</td><td class="mono small">AA270226007942</td><td>10-Feb-2026</td><td class="num">164.42 Cr</td><td class="mono small">AA270226011918</td><td>19-Feb-2026</td><td class="num">22.84 Cr</td><td class="num">6.18 Cr</td></tr>
+          <tr><td>Feb 2026</td><td class="mono small">AA270326008412</td><td>09-Mar-2026</td><td class="num">158.42 Cr</td><td class="mono small">AA270326012418</td><td>18-Mar-2026</td><td class="num">22.18 Cr</td><td class="num">6.42 Cr</td></tr>
+          <tr><td>Mar 2026</td><td class="mono small">AA270426009127</td><td>10-Apr-2026</td><td class="num">178.42 Cr</td><td class="mono small">AA270426006142M</td><td>18-Apr-2026</td><td class="num">23.84 Cr</td><td class="num">7.18 Cr</td></tr>
+          <tr style="background:var(--warning-bg);color:var(--warning)">
+            <td><strong>Apr 2026</strong></td>
+            <td colspan="2"><span class="badge warning"><span class="badge-dot"></span>GSTR-1 filed 10-May-2026</span></td>
+            <td class="num">148.74 Cr</td>
+            <td colspan="2"><span class="badge warning"><span class="badge-dot"></span>GSTR-3B due 20-May-2026 · ready to file</span></td>
+            <td class="num">22.31 Cr</td>
+            <td class="num">6.17 Cr</td>
+          </tr>
+          <tr style="background:var(--ey-black-deep);color:var(--ey-yellow);font-weight:700">
+            <td>FY Total (11M)</td>
+            <td colspan="2"></td>
+            <td class="num" style="color:var(--ey-yellow)">1,824.00 Cr</td>
+            <td colspan="2"></td>
+            <td class="num" style="color:var(--ey-yellow)">238.42 Cr</td>
+            <td class="num" style="color:var(--ey-yellow)">71.84 Cr</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- GSTR-9C SECTION -->
+    <div class="card mt-4">
+      <div class="card-head">
+        <div>
+          <h3 class="card-title">GSTR-9C · Reconciliation with Audited Financials</h3>
+          <p class="card-subtitle">Mandatory for entities with aggregate turnover &gt; ₹ 5 Cr</p>
+        </div>
+        <span class="badge warning"><span class="badge-dot"></span>Required · turnover ₹ 1,824 Cr</span>
+      </div>
+      <div style="padding:8px 4px 4px">
+        <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:14px;">
+          <a class="quick-action-card" style="cursor:pointer">
+            <div class="qa-icon" style="background:#FEF9E0;color:#9A5A00"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <div class="qa-title">Upload Audited P&amp;L</div>
+            <div class="qa-sub">Profit &amp; Loss · Balance Sheet · Schedules</div>
+            <div class="qa-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+          </a>
+          <a class="quick-action-card" style="cursor:pointer">
+            <div class="qa-icon" style="background:#E7EEFD;color:#155CDB"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></svg></div>
+            <div class="qa-title">Auto-reconcile</div>
+            <div class="qa-sub">Books vs. GSTR-9 figures · Variance report</div>
+            <div class="qa-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+          </a>
+          <a class="quick-action-card" style="cursor:pointer">
+            <div class="qa-icon" style="background:#ECFDF5;color:#0F5F26"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div class="qa-title">Auditor Certification</div>
+            <div class="qa-sub">Send to auditor · Receive signed GSTR-9C</div>
+            <div class="qa-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTION BAR -->
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-status">FY 2025-26 · 11 of 12 returns filed · Last refresh 14-May-2026</div>
+        <div class="action-bar-summary">File April 2026 GSTR-3B first, then generate annual return</div>
+      </div>
+      <div class="action-bar-actions">
+        <a href="gstr3b.html" class="btn btn-secondary cta-large">File Apr GSTR-3B first</a>
+        <button class="btn btn-primary cta-large" disabled style="opacity:0.6;cursor:not-allowed">Generate GSTR-9 Draft</button>
+      </div>
+    </div>
+
+    <div style="height: 40px"></div>
+  </main>
+</div>
+
+<script src="app.js"></script>
+<script>renderShell('gstr9', 'GSTR-9 Annual Return', 'FY 2025-26');</script>
+</body>
+</html>

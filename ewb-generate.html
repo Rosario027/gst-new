@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generate EWB &middot; E-Way Bill &middot; DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">
+          <a href="ewb.html" style="color:var(--text-muted);text-decoration:none;">&larr; E-Way Bill</a> &middot; Single entry
+        </div>
+        <h1 class="page-title">Generate single EWB</h1>
+        <p class="page-subtitle">Part A (invoice details) + Part B (transport details) &middot; submitting calls the EWB portal&apos;s GenEwayBill API and returns a 12-digit EWB no. with computed validity</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="ewb.html" class="btn btn-secondary">&larr; Back</a>
+      </div>
+    </div>
+
+    <!-- INFO -->
+    <div class="card" style="background:linear-gradient(135deg, #E0F2FE, var(--surface));border-left:4px solid #0BA5E9;padding:14px 18px;margin-bottom:20px;">
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#0BA5E9" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <div style="font-size:12.5px;line-height:1.55;color:var(--text);">
+          <strong>How fields flow into EWB:</strong> Sub-supply type + Document type + Reason for transport drive validation. From / To addresses set inter-state vs intra-state. Distance auto-computes validity (1 day per 200 km). Vehicle no. is mandatory for Road; for Rail/Air/Ship, the RR/AWB/BL number replaces it.
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 1: TRANSACTION DETAILS -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:16px 22px;border-bottom:1px solid var(--border);background:linear-gradient(135deg, #F5F8FA, var(--surface));">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">1 &middot; Transaction details</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">What kind of movement is this? Drives downstream validation rules.</div>
+      </div>
+      <div style="padding:22px;">
+        <div class="modal-field-grid">
+          <div class="modal-field">
+            <label class="modal-field-label">Transaction type</label>
+            <select class="modal-field-input">
+              <option>Regular</option>
+              <option>Bill to Ship to</option>
+              <option>Bill from Dispatch from</option>
+              <option>Combination of 2 &amp; 3</option>
+            </select>
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Sub-supply type</label>
+            <select class="modal-field-input">
+              <option>Supply</option>
+              <option>Export</option>
+              <option>Job Work</option>
+              <option>SKD / CKD</option>
+              <option>Recipient not known</option>
+              <option>For own use</option>
+              <option>Exhibition or Fair</option>
+              <option>Line sales</option>
+              <option>Import</option>
+              <option>Others</option>
+            </select>
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Document type</label>
+            <select class="modal-field-input">
+              <option>Tax Invoice</option>
+              <option>Bill of Supply</option>
+              <option>Bill of Entry</option>
+              <option>Delivery Challan</option>
+              <option>Credit Note</option>
+              <option>Debit Note</option>
+              <option>Others</option>
+            </select>
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Document no.</label>
+            <input class="modal-field-input" value="TS/26/02842" style="font-family:var(--font-mono);">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Document date</label>
+            <input class="modal-field-input" type="date" value="2026-05-15">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">IRN (if e-invoiced)</label>
+            <input class="modal-field-input" value="35dc4d8d2c6f8c3b91..." style="font-family:var(--font-mono);font-size:11px;" readonly>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: FROM (DISPATCH) -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:16px 22px;border-bottom:1px solid var(--border);background:linear-gradient(135deg, #F5F8FA, var(--surface));">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">2 &middot; From (dispatch)</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Address from which goods are being dispatched &middot; need not match supplier&apos;s GSTIN address (if Dispatch From different)</div>
+      </div>
+      <div style="padding:22px;">
+        <div class="modal-field-grid">
+          <div class="modal-field">
+            <label class="modal-field-label">Supplier GSTIN (auto)</label>
+            <input class="modal-field-input" value="27AABCT3518Q1ZV" readonly style="background:var(--bg);font-family:var(--font-mono);">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Legal name</label>
+            <input class="modal-field-input" value="Tata Steel Mumbai" readonly style="background:var(--bg);">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Dispatch from (address)</label>
+            <input class="modal-field-input" value="Bombay House, 24 Homi Mody Street, Mumbai 400001">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">PIN code</label>
+            <input class="modal-field-input" value="400001" style="font-family:var(--font-mono);">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">State</label>
+            <select class="modal-field-input">
+              <option>27 - Maharashtra</option>
+              <option>29 - Karnataka</option>
+              <option>33 - Tamil Nadu</option>
+              <option>07 - Delhi</option>
+              <option>24 - Gujarat</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 3: TO (DELIVERY) -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:16px 22px;border-bottom:1px solid var(--border);background:linear-gradient(135deg, #F5F8FA, var(--surface));">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">3 &middot; To (delivery)</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Recipient details &middot; address where goods will be delivered</div>
+      </div>
+      <div style="padding:22px;">
+        <div class="modal-field-grid">
+          <div class="modal-field">
+            <label class="modal-field-label">Recipient GSTIN</label>
+            <input class="modal-field-input" value="29AAACR5055K1Z1" placeholder="15-char GSTIN or URP if unregistered" style="font-family:var(--font-mono);">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Legal name</label>
+            <input class="modal-field-input" value="Reliance Industries Ltd">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Ship to (address)</label>
+            <input class="modal-field-input" value="JNPT Container Terminal, Plot B-7, Navi Mumbai">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">PIN code</label>
+            <input class="modal-field-input" value="560001" style="font-family:var(--font-mono);">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">State (Place of Supply)</label>
+            <select class="modal-field-input">
+              <option>29 - Karnataka</option>
+              <option>27 - Maharashtra</option>
+              <option>33 - Tamil Nadu</option>
+              <option>07 - Delhi</option>
+            </select>
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Inter / Intra state (auto)</label>
+            <input class="modal-field-input" value="Inter-state (27 &rarr; 29)" readonly style="background:var(--bg);">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 4: ITEM DETAILS -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:16px 22px;border-bottom:1px solid var(--border);background:linear-gradient(135deg, #F5F8FA, var(--surface));display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+        <div style="min-width:0;flex:1 1 240px;">
+          <div style="font-size:14px;font-weight:700;color:var(--text);">4 &middot; Item details</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">HSN-wise breakdown &middot; assessable value drives the consignment threshold check (&gt; &#8377; 50,000)</div>
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="if(window.showToast) window.showToast('Add new line item row...');">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add item
+        </button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table grid-lined compact">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th class="mono">HSN</th>
+              <th>UQC</th>
+              <th class="num">Qty</th>
+              <th class="num">Rate (&#8377;)</th>
+              <th class="num">Taxable (&#8377;)</th>
+              <th class="num">CGST %</th>
+              <th class="num">SGST %</th>
+              <th class="num">IGST %</th>
+              <th class="num">Cess</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Hot-rolled steel coil (Grade S275)</td>
+              <td class="mono">720839</td>
+              <td>MTS</td>
+              <td class="num">12.5</td>
+              <td class="num">67,360</td>
+              <td class="num">8,42,000</td>
+              <td class="num">&mdash;</td>
+              <td class="num">&mdash;</td>
+              <td class="num">18</td>
+              <td class="num">&mdash;</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="padding:14px 22px;background:rgba(11,165,233,0.04);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:14px;">
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">Total taxable</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);font-family:var(--font-mono);margin-top:2px;">&#8377; 8,42,000.00</div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">Total IGST</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);font-family:var(--font-mono);margin-top:2px;">&#8377; 1,51,560.00</div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">Cess</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text-muted);font-family:var(--font-mono);margin-top:2px;">&#8377; 0.00</div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">Total invoice value</div>
+          <div style="font-size:15px;font-weight:700;color:#0BA5E9;font-family:var(--font-mono);margin-top:2px;">&#8377; 9,93,560.00</div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">Threshold check</div>
+          <div style="font-size:13px;font-weight:700;color:var(--success);margin-top:2px;">&#10003; &gt; &#8377; 50k &middot; EWB required</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 5: TRANSPORTATION (PART B) -->
+    <div class="card" style="padding:0;margin-bottom:20px;border:2px solid #0BA5E9;">
+      <div style="padding:16px 22px;border-bottom:1px solid var(--border);background:linear-gradient(135deg, #E0F2FE, var(--surface));">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">5 &middot; Transportation (Part B)</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Vehicle / transport mode &middot; Part B can be updated multiple times during validity if vehicle changes mid-transit</div>
+      </div>
+      <div style="padding:22px;">
+        <div class="modal-field-grid">
+          <div class="modal-field">
+            <label class="modal-field-label">Transport mode</label>
+            <select class="modal-field-input">
+              <option>Road</option>
+              <option>Rail</option>
+              <option>Air</option>
+              <option>Ship</option>
+            </select>
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Vehicle type</label>
+            <select class="modal-field-input">
+              <option>Regular</option>
+              <option>Over Dimensional Cargo (ODC)</option>
+            </select>
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Vehicle no.</label>
+            <input class="modal-field-input" value="MH-04-AB-1234" placeholder="MH-04-AB-1234" style="font-family:var(--font-mono);">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Transporter ID / GSTIN</label>
+            <input class="modal-field-input" value="27AAGFT7841N1ZV" placeholder="TRANSIN or GSTIN" style="font-family:var(--font-mono);">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Transporter name</label>
+            <input class="modal-field-input" value="Tata Freight Logistics Pvt Ltd">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Transport doc no. (LR/RR/AWB/BL)</label>
+            <input class="modal-field-input" value="LR-26-04218" style="font-family:var(--font-mono);">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Transport doc date</label>
+            <input class="modal-field-input" type="date" value="2026-05-15">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Approx. distance (km)</label>
+            <input class="modal-field-input" value="982" style="text-align:right;font-family:var(--font-mono);">
+          </div>
+        </div>
+      </div>
+
+      <div style="background:linear-gradient(135deg, #FFFDF0, var(--surface));border-top:1px solid var(--border);padding:14px 22px;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;">Validity computation (preview)</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(170px, 1fr));gap:14px;">
+          <div>
+            <div style="font-size:11px;color:var(--text-muted);">Distance</div>
+            <div style="font-size:13px;font-weight:700;color:var(--text);font-family:var(--font-mono);">982 km</div>
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--text-muted);">Validity rule</div>
+            <div style="font-size:13px;font-weight:700;color:var(--text);">1 day / 200 km (regular)</div>
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--text-muted);">Computed validity</div>
+            <div style="font-size:13px;font-weight:700;color:var(--text);">982 / 200 = 5 days (ceil)</div>
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--text-muted);">Valid until (on generation)</div>
+            <div style="font-size:14px;font-weight:700;color:var(--success);font-family:var(--font-mono);">~20-May 23:59</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTION BAR -->
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">Invoice value &#8377; 9,93,560 &middot; consignment &gt; &#8377; 50k &middot; EWB mandatory</div>
+        <div class="action-bar-status">On generate: EWB no + valid till + downloadable PDF + JSON &middot; portal API call to ewaybillgst.gov.in</div>
+      </div>
+      <div class="action-bar-actions">
+        <a href="ewb.html" class="btn btn-secondary cta-large">&larr; Cancel</a>
+        <button class="btn btn-secondary cta-large">Save as draft</button>
+        <button class="btn btn-secondary cta-large">Validate JSON</button>
+        <button class="btn cta-large" style="background:linear-gradient(135deg,#0E6BA8,#0BA5E9);color:#fff;border:none;" onclick="if(window.showToast) window.showToast('EWB generated · 181 0042 8442 91 · valid till 20-May 23:59 · downloading PDF...');">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="14" height="14" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg>
+          Generate EWB &rarr;
+        </button>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('ewb', 'E-Way Bill', 'Generate single EWB');</script>
+</body>
+</html>

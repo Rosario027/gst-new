@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Books vs IMS (Invoice Management System) &middot; DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">
+          <a href="dashboard.html" style="color:var(--text-muted);text-decoration:none;">&larr; Dashboard</a> &middot; Reconciliation &middot; Books vs IMS
+        </div>
+        <h1 class="page-title">Books vs IMS (Invoice Management System)</h1>
+        <p class="page-subtitle">Books PR records cross-referenced with IMS &middot; ensures every IMS record has a Books entry and every Books entry that should be in IMS is &middot; drives the Accept/Reject/Pending decision</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="dashboard.html" class="btn btn-secondary">&larr; Back</a>
+      </div>
+    </div>
+
+    <!-- WHY THIS RECONCILIATION -->
+    <div class="card" style="background:linear-gradient(135deg, #E8F4F9, var(--surface));border-left:4px solid var(--info);padding:14px 18px;margin-bottom:20px;">
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--info)" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <div style="font-size:12.5px;line-height:1.55;color:var(--text);">
+          <strong>Why this reconciliation matters:</strong> IMS is the new (Oct-2024) workflow layer between supplier filings and your 2B. Each IMS record must be Accepted, Rejected, or kept Pending. Books vs IMS reconciliation tells you which IMS records align with what you&apos;ve actually booked &mdash; making the Accept/Reject decision data-driven instead of a guess. Un-actioned IMS records default to Accepted at 2B generation.
+        </div>
+      </div>
+    </div>
+
+    <!-- SOURCE CONFIGURATION -->
+    <div style="margin:8px 0 10px;">
+      <div style="font-size:15px;font-weight:700;color:var(--text);letter-spacing:-0.005em;">Source configuration</div>
+      <div style="font-size:12.5px;color:var(--text-muted);margin-top:3px;">Choose between manual template upload, auto-sync from ERP / GST portal, or a mix. The Run Reco button below will use whichever is freshest on each side.</div>
+    </div>
+
+    <div class="drop-zone-pair">
+
+      <!-- SOURCE A -->
+      <div class="drop-zone-single">
+        <div class="drop-zone-head">
+          <div>
+            <div class="drop-zone-eyebrow">Source A</div>
+            <div class="drop-zone-title">Books (Purchase Register)</div>
+            <div class="drop-zone-sub">ERP-pulled purchase entries up to GSTR-3B due date</div>
+          </div>
+          <span class="status-pill complete">Synced from SAP</span>
+        </div>
+
+        <div class="drop-zone-area">
+          <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="var(--text-muted)" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <div class="drop-zone-text">Drop PR Excel / CSV template here, or</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px;">
+            <button class="btn btn-secondary btn-sm">Browse manual upload</button>
+            <button class="btn btn-secondary btn-sm" onclick="if(window.showToast) window.showToast('Auto-syncing Books (Purchase Register) from SAP / Tally / Oracle...');">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              Auto-sync from SAP / Tally / Oracle
+            </button>
+          </div>
+        </div>
+
+        <div class="drop-zone-history">
+          <div class="drop-zone-history-row">
+            <span>Last refresh</span>
+            <span class="mono">15-May 14:22</span>
+          </div>
+          <div class="drop-zone-history-row">
+            <span>Records loaded</span>
+            <span class="mono">1,84,217 rows</span>
+          </div>
+          <div class="drop-zone-history-row">
+            <span>Method</span>
+            <span class="mono">SAP ECC connector</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SOURCE B -->
+      <div class="drop-zone-single">
+        <div class="drop-zone-head">
+          <div>
+            <div class="drop-zone-eyebrow">Source B</div>
+            <div class="drop-zone-title">IMS Records (GSTN)</div>
+            <div class="drop-zone-sub">6-section IMS pool &middot; B2B Inv + CDN + Amd + ECO + ECO-Amd</div>
+          </div>
+          <span class="status-pill complete">Auto-synced</span>
+        </div>
+
+        <div class="drop-zone-area">
+          <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="var(--text-muted)" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <div class="drop-zone-text">Drop IMS JSON / Excel template here, or</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px;">
+            <button class="btn btn-secondary btn-sm">Browse manual upload</button>
+            <button class="btn btn-secondary btn-sm" onclick="if(window.showToast) window.showToast('Auto-syncing IMS Records (GSTN) from GSTN portal...');">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              Auto-sync from GSTN portal
+            </button>
+          </div>
+        </div>
+
+        <div class="drop-zone-history">
+          <div class="drop-zone-history-row">
+            <span>Last refresh</span>
+            <span class="mono">15-May 18:38</span>
+          </div>
+          <div class="drop-zone-history-row">
+            <span>Records loaded</span>
+            <span class="mono">1,82,891 rows</span>
+          </div>
+          <div class="drop-zone-history-row">
+            <span>Method</span>
+            <span class="mono">GSTN portal API</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RUN RECO PROMINENT CTA -->
+    <div class="reco-run-card">
+      <div class="reco-run-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      </div>
+      <div>
+        <div class="reco-run-card-title">Run reconciliation now</div>
+        <div class="reco-run-card-sub">
+          Match 1,84,217 Books records &times; 1,82,891 IMS records using <strong>Supplier GSTIN + Doc no + Doc date</strong> &middot; tolerance &plusmn; &#8377;1 on taxable
+        </div>
+      </div>
+      <button class="reco-run-btn" onclick="if(window.showToast) window.showToast('Match engine running &middot; estimated 14 seconds...');">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Run reco
+      </button>
+    </div>
+
+    <!-- ENGINE STATUS / LAST RUN -->
+    <div class="card" style="padding:16px 22px;margin-bottom:20px;background:linear-gradient(135deg, #F5F8FA, var(--surface));">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));gap:14px;">
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);">Last run</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);margin-top:3px;">15-May 18:42</div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);">Records compared</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);margin-top:3px;">1,84,892</div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);">Matched</div>
+          <div style="font-size:13px;font-weight:600;color:var(--success);margin-top:3px;">1,82,218</div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);">Mismatched / one-sided</div>
+          <div style="font-size:13px;font-weight:600;color:var(--warning);margin-top:3px;">2,674</div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);">Match rate</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);margin-top:3px;">98.55%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BIG STATS / OUTCOMES -->
+    <div class="big-stat-grid" style="margin-bottom:20px;">
+      <div class="big-stat" style="border-left:3px solid var(--success);"><div class="big-stat-label">Auto-accept candidates</div><div class="big-stat-value">1,82,218</div><div class="big-stat-sub">Match found in Books &middot; safe to accept</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--error);"><div class="big-stat-label">Auto-reject candidates</div><div class="big-stat-value">673</div><div class="big-stat-sub">No Books entry &middot; investigate</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--warning);"><div class="big-stat-label">Value mismatch</div><div class="big-stat-value">675</div><div class="big-stat-sub">Action: accept-with-deviation or pending</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--warning);"><div class="big-stat-label">Pending CA review</div><div class="big-stat-value">1,326</div><div class="big-stat-sub">Books-only &middot; supplier may not file</div></div>
+    </div>
+
+    <!-- v2.0.36 — Reconciliation summary (per GSTR-3B pattern) -->
+    <div class="card" style="padding:0;margin-bottom:18px;border-left:4px solid var(--info);overflow:hidden;">
+      <div style="padding:16px 22px;background:linear-gradient(135deg,#F0F7FF,var(--surface));border-bottom:1px solid var(--border);">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+          <div>
+            <div style="font-size:14px;font-weight:700;color:var(--text);">Books vs IMS reconciliation summary</div>
+            <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">Books: Your purchase register &harr; IMS: GSTN IMS pool (live) &middot; for your internal reconciliation review</div>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="if(window.showToast)window.showToast('Downloading consolidated Books vs IMS reco summary (Excel)...');">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" stroke-width="2.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download summary (Excel)
+          </button>
+        </div>
+      </div>
+      <div style="padding:0;">
+        <table class="data-table grid-lined compact" style="margin:0;border:none;border-radius:0;">
+          <thead><tr><th>Bucket</th><th class="num">Records</th><th class="num">Taxable (&#8377;)</th><th class="num">Tax (&#8377;)</th><th>Action default</th><th>Download</th></tr></thead>
+          <tbody>
+              <tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--success);margin-right:8px;"></span>Matched (both sides)</td><td class="num mono">1,68,418</td><td class="num mono">38,42,18,000</td><td class="num mono">6,12,42,000</td><td>Auto-accept</td><td><button class="row-edit-btn">Excel</button></td></tr>
+              <tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--warning);margin-right:8px;"></span>In IMS, not in Books</td><td class="num mono">8,418</td><td class="num mono">2,42,18,000</td><td class="num mono">42,18,000</td><td>Pending review</td><td><button class="row-edit-btn">Excel</button></td></tr>
+              <tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--info);margin-right:8px;"></span>In Books, not in IMS</td><td class="num mono">1,128</td><td class="num mono">14,80,000</td><td class="num mono">2,66,400</td><td>Supplier delay</td><td><button class="row-edit-btn">Excel</button></td></tr>
+              <tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--error);margin-right:8px;"></span>Rejected in IMS</td><td class="num mono">228</td><td class="num mono">2,18,000</td><td class="num mono">39,240</td><td>Confirmed reject</td><td><button class="row-edit-btn">Excel</button></td></tr>
+              <tr style="background:rgba(255,230,0,0.10);font-weight:700;border-top:2px solid var(--ey-yellow);"><td>Final reconciled</td><td class="num mono">1,78,192</td><td colspan="3">Consolidated outcome &middot; download full report below</td><td><button class="row-edit-btn" style="background:rgba(255,230,0,0.20);color:var(--ey-black-deep);">Excel</button></td></tr>
+            </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- v2.0.36 — Show item-wise breakup toggle -->
+    <div style="text-align:center;margin:0 0 18px;">
+      <button class="btn btn-secondary" id="booksvsims-breakup-toggle" onclick="window.toggleReconBreakupGeneric &amp;&amp; window.toggleReconBreakupGeneric('booksvsims')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+        Show item-wise breakup (detailed table)
+      </button>
+    </div>
+
+    <div class="recon-breakup-generic" data-recon-breakup-generic="booksvsims" style="display:none;">
+
+    <!-- RESULTS TABLE (sample) -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">
+        <div style="min-width:0;flex:1 1 240px;">
+          <div style="font-size:13.5px;font-weight:700;color:var(--text);">Reconciliation results &middot; sample of 8 from 1,84,892</div>
+          <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">Status colours: <span style="color:var(--success);font-weight:600;">matched</span> &middot; <span style="color:var(--warning);font-weight:600;">value mismatch</span> &middot; <span style="color:var(--info);font-weight:600;">only in A</span> &middot; <span style="color:var(--error);font-weight:600;">only in B</span></div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="btn btn-secondary btn-sm">Download CSV</button>
+          <button class="btn btn-secondary btn-sm">Filter</button>
+          
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table grid-lined compact">
+          <thead><tr><th class="mono">Supplier GSTIN</th><th class="mono">Inv no</th><th>Date</th><th>Supplier</th><th class="num">Books Taxable</th><th class="num">IMS Taxable</th><th>Suggested IMS Action</th></tr></thead>
+          <tbody><tr><td class="mono">27AAACR5055K1Z1</td><td class="mono">RIL/26/2841</td><td>10-May</td><td>Reliance Industries</td><td class="num">42,18,000</td><td class="num">42,18,000</td><td><span class="action-status matched">Accept</span></td></tr><tr><td class="mono">27AABCM7841L1ZS</td><td class="mono">MM/26/00284</td><td>10-May</td><td>Maharashtra Mills</td><td class="num">8,42,000</td><td class="num">—</td><td><span class="action-status pending">Pending &middot; book exists no IMS</span></td></tr><tr><td class="mono">29AABCH4218Q1ZM</td><td class="mono">BF/26/01428</td><td>11-May</td><td>Bharat Forge</td><td class="num">28,38,000</td><td class="num">28,40,000</td><td><span class="action-status pending">Accept w/ deviation +&#8377;2k</span></td></tr><tr><td class="mono">33AABCA1948K1ZW</td><td class="mono">AT/26/00712</td><td>11-May</td><td>Apollo Tyres</td><td class="num">—</td><td class="num">12,18,000</td><td><span class="action-status reject">Reject &middot; no books</span></td></tr><tr><td class="mono">27AABCT9912R1ZP</td><td class="mono">TS/26/02418</td><td>12-May</td><td>Tata Stationers</td><td class="num">1,28,400</td><td class="num">1,28,400</td><td><span class="action-status matched">Accept</span></td></tr><tr><td class="mono">06AAACL3711J1ZB</td><td class="mono">LT/26/04218</td><td>12-May</td><td>L&amp;T Construction</td><td class="num">42,18,000</td><td class="num">42,18,000</td><td><span class="action-status matched">Accept</span></td></tr><tr><td class="mono">24AABCM4218R1ZK</td><td class="mono">MS/26/02841</td><td>13-May</td><td>Maruti Suzuki</td><td class="num">8,42,000</td><td class="num">—</td><td><span class="action-status pending">Pending</span></td></tr><tr><td class="mono">19AABCB3128J1ZP</td><td class="mono">BP/26/01428</td><td>13-May</td><td>Bengal Power</td><td class="num">18,40,000</td><td class="num">18,40,000</td><td><span class="action-status matched">Accept</span></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    </div>
+    <!-- /breakup -->
+
+    <!-- ACTION BAR -->
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">2,674 mismatches drive IMS actioning &middot; 1,82,218 auto-accept candidates</div>
+        <div class="action-bar-status">Bulk-apply suggested actions via IMS dashboard &middot; CA review queue: 1,326 items</div>
+      </div>
+      <div class="action-bar-actions">
+        <a href="dashboard.html" class="btn btn-secondary cta-large">&larr; Back</a>
+        <button class="btn btn-secondary cta-large">Export results</button>
+        <button class="btn btn-secondary cta-large" onclick="if(window.showToast) window.showToast('Reconciliation marked as reviewed for internal records.');">Mark reconciliation reviewed</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('recobooksims', 'Reconciliation', 'Books vs IMS');</script>
+</body>
+</html>

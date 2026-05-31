@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step 1 · Sales Data · GSTR-1 · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Step 1 · Obtain Our Sales Data</h1>
+        <p class="page-subtitle">GSTR-1 Preparation · May 2026 · GSTIN 27AABCT3518Q1ZV (Tata Steel · Maharashtra)</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="gstr1.html" class="btn btn-secondary back-arrow-link">Back to workflow</a>
+      </div>
+    </div>
+
+    <!-- STEP PROGRESS BAR -->
+
+    <div class="step-progress-bar">
+      <a href="gstr1-step1.html" class="step-pip current step-pip-link" title="Go to Step 1 · Sales data"><div class="step-pip-dot">1</div>Sales data</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr1-step2.html" class="step-pip step-pip-link" title="Go to Step 2 · IRN + Upload"><div class="step-pip-dot">2</div>IRN + Upload</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr1-step3.html" class="step-pip step-pip-link" title="Go to Step 3 · Outward summary"><div class="step-pip-dot">3</div>Outward summary</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr1-step4.html" class="step-pip step-pip-link" title="Go to Step 4 · HSN &amp; Docs"><div class="step-pip-dot">4</div>HSN &amp; Docs</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr1-step5.html" class="step-pip step-pip-link" title="Go to Step 5 · Preview &amp; File"><div class="step-pip-dot">5</div>Preview &amp; File</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr1a.html" class="step-pip step-pip-link" title="Go to Step 6 · GSTR-1A"><div class="step-pip-dot">6</div>GSTR-1A</a>
+    </div>
+
+    <!-- STEP FLOW MOUNT (v2.0.10) -->
+    <div id="step-flow"></div>
+
+
+    
+
+    <!-- VALIDATION RULES (OPTIONAL) -->
+    <div class="validation-rules-card">
+      <div class="validation-rules-header">
+        <div>
+          <div class="validation-rules-title">Optional validations to run on ingestion</div>
+          <div class="validation-rules-sub">Tick the checks you want to apply. All five are recommended for B2B-heavy filings. You can also skip and run them later.</div>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn btn-secondary btn-sm">Select all</button>
+          <button class="btn btn-secondary btn-sm">Clear</button>
+        </div>
+      </div>
+      <div class="validation-checks">
+
+        <label class="validation-check">
+          <input type="checkbox" checked>
+          <div class="validation-check-label">
+            <div class="validation-check-name">GSTIN format &amp; active-status check</div>
+            <div class="validation-check-desc">15-char structure, checksum digit, state code, PAN linkage, live status at GSTN.</div>
+          </div>
+        </label>
+
+        <label class="validation-check">
+          <input type="checkbox" checked>
+          <div class="validation-check-label">
+            <div class="validation-check-name">Place-of-supply consistency</div>
+            <div class="validation-check-desc">Recipient state code in GSTIN must match PoS field. Mismatches trigger IGST/CGST+SGST error.</div>
+          </div>
+        </label>
+
+        <label class="validation-check">
+          <input type="checkbox" checked>
+          <div class="validation-check-label">
+            <div class="validation-check-name">Reverse-arithmetic check</div>
+            <div class="validation-check-desc">Taxable value × applicable rate ≈ tax amount (tolerance ₹ 1). Catches rounding and rate errors.</div>
+          </div>
+        </label>
+
+        <label class="validation-check">
+          <input type="checkbox" checked>
+          <div class="validation-check-label">
+            <div class="validation-check-name">Invoice-number rules</div>
+            <div class="validation-check-desc">Max 16 chars, alphanumeric with <span class="mono">-</span> and <span class="mono">/</span> only. Duplicate check per supplier-FY.</div>
+          </div>
+        </label>
+
+        <label class="validation-check">
+          <input type="checkbox" checked>
+          <div class="validation-check-label">
+            <div class="validation-check-name">HSN master validation</div>
+            <div class="validation-check-desc">HSN code must exist in current master. 4-digit at AATO ≤ ₹ 5 Cr; 6-digit at AATO &gt; ₹ 5 Cr.</div>
+          </div>
+        </label>
+
+        <label class="validation-check">
+          <input type="checkbox">
+          <div class="validation-check-label">
+            <div class="validation-check-name">Round-off &amp; total cross-foot</div>
+            <div class="validation-check-desc">Invoice grand total = taxable + tax + cess. Round-off field within ±0.99.</div>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- INGESTION MODE -->
+    <div class="card" style="padding:20px 24px;margin-bottom:20px;">
+      <div class="card-section-header">
+        <div class="card-section-title">Choose how to ingest data</div>
+        <div class="card-section-sub">Switch any time — both modes write to the same record set.</div>
+      </div>
+
+      <div data-tab-group="ingest">
+      <div class="upload-mode-tabs" role="tablist">
+        <button class="upload-mode-tab active" data-tab="excel-mode">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Upload Excel file
+        </button>
+        <button class="upload-mode-tab" data-tab="manual-mode">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+          Enter manually
+        </button>
+        <button class="upload-mode-tab" data-tab="api-mode">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          Pull from ERP (API)
+        </button>
+      </div>
+
+      <!-- EXCEL MODE -->
+      <div class="tab-panel active" id="tab-excel">
+      <div data-tab-panel="excel-mode">
+        <div class="upload-zone-large" style="border:2px dashed var(--border);border-radius:var(--radius);padding:36px 24px;text-align:center;background:var(--bg);">
+          <div style="width:56px;height:56px;margin:0 auto 14px;background:var(--ey-yellow);color:var(--ey-black-deep);border-radius:14px;display:grid;place-items:center;">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <div style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:6px;">Drop your Excel workbook here, or click to browse</div>
+          <div style="font-size:12.5px;color:var(--text-muted);margin-bottom:18px;">.xlsx · .xls · .csv · Max 100 MB · Sheet must follow DigiGST template</div>
+          <div class="flex" style="justify-content:center;gap:10px;flex-wrap:wrap;">
+            <button class="btn btn-primary cta-large">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Browse files
+            </button>
+            <button class="btn btn-secondary cta-large">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download template
+            </button>
+          </div>
+        </div>
+
+        <!-- v2.0.33 — Run Validate INSIDE Excel mode (right after drop zone) -->
+        <div class="run-action-card" style="margin-top:18px;">
+          <div class="run-action-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="run-action-text">
+            <div class="run-action-title">Run validation on the latest upload</div>
+            <div class="run-action-sub">Applies 9 schema + business rule checks: GSTIN format, HSN granularity (6-digit), PoS state match, tax arithmetic, doc date sanity, B2B GSTIN lookup, line-item totals, mandatory fields, duplicate detection. Estimated 18 seconds for 2,84,217 records.</div>
+          </div>
+          <button class="run-action-btn" onclick="if(window.showToast) window.showToast('Validation engine started · processing 2,84,217 records · ETA 18 sec');">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Run validate
+          </button>
+        </div>
+
+        <div style="margin-top:18px;font-size:12px;color:var(--text-muted);text-align:center;">
+          Template includes 11 sheets: B2B, B2C Large, Exports, B2C Others, Nil/Exempt, CDN-Registered, CDN-Unregistered, Advances, Amendments, HSN Summary, Documents Issued.
+        </div>
+
+        <!-- v2.0.16 — UPLOAD PREVIEW TABLE -->
+        <div style="margin-top:22px;padding-top:18px;border-top:1px solid var(--border);">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:12px;">
+            <div style="min-width:0;flex:1 1 240px;">
+              <div style="font-size:13.5px;font-weight:700;color:var(--text);">Preview of uploaded rows &middot; sales-register-v4.xlsx</div>
+              <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">First 8 of 2,84,217 rows from the &quot;B2B&quot; sheet &middot; uploaded 14-May 18:08 by Jude Akash &middot; click <em>Open full preview</em> for the complete grid</div>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button class="btn btn-secondary btn-sm">Open full preview</button>
+              <button class="btn btn-secondary btn-sm">Switch sheet</button>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table class="data-table grid-lined compact">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Invoice no.</th>
+                  <th>Date</th>
+                  <th>Recipient GSTIN</th>
+                  <th>Recipient name</th>
+                  <th>PoS</th>
+                  <th class="num">Taxable (&#8377;)</th>
+                  <th class="num">Rate %</th>
+                  <th class="num">IGST (&#8377;)</th>
+                  <th class="num">CGST (&#8377;)</th>
+                  <th class="num">SGST (&#8377;)</th>
+                  <th>Validation</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>1</td><td class="mono">TS/26/02418</td><td>12-May</td><td class="mono">27AAACH7409R1ZX</td><td>Hindalco Industries</td><td>27-MH</td><td class="num">8,42,000.00</td><td class="num">18</td><td class="num">&mdash;</td><td class="num">75,780.00</td><td class="num">75,780.00</td><td><span class="action-status matched">OK</span></td></tr>
+                <tr><td>2</td><td class="mono">TS/26/02419</td><td>12-May</td><td class="mono">29AAACR5055K1Z1</td><td>Reliance Industries</td><td>29-KA</td><td class="num">12,84,000.00</td><td class="num">18</td><td class="num">2,31,120.00</td><td class="num">&mdash;</td><td class="num">&mdash;</td><td><span class="action-status matched">OK</span></td></tr>
+                <tr><td>3</td><td class="mono">TS/26/02420</td><td>12-May</td><td class="mono">33AABCA1948K1ZW</td><td>Apollo Tyres</td><td>33-TN</td><td class="num">3,84,200.00</td><td class="num">18</td><td class="num">69,156.00</td><td class="num">&mdash;</td><td class="num">&mdash;</td><td><span class="action-status matched">OK</span></td></tr>
+                <tr><td>4</td><td class="mono">TS/26/02421</td><td>12-May</td><td class="mono">07AABCH5181J1ZE</td><td>Honda Cars India</td><td>07-DL</td><td class="num">42,18,400.00</td><td class="num">18</td><td class="num">7,59,312.00</td><td class="num">&mdash;</td><td class="num">&mdash;</td><td><span class="action-status pending">Warn &middot; HSN missing</span></td></tr>
+                <tr><td>5</td><td class="mono">TS/26/02422</td><td>13-May</td><td class="mono">06AAACL3711J1ZB</td><td>L&amp;T Construction</td><td>06-HR</td><td class="num">82,40,000.00</td><td class="num">18</td><td class="num">14,83,200.00</td><td class="num">&mdash;</td><td class="num">&mdash;</td><td><span class="action-status matched">OK</span></td></tr>
+                <tr><td>6</td><td class="mono">TS/26/02423</td><td>13-May</td><td class="mono">27AAACT5511M1ZN</td><td>Tata Consumer</td><td>27-MH</td><td class="num">2,84,000.00</td><td class="num">18</td><td class="num">&mdash;</td><td class="num">25,560.00</td><td class="num">25,560.00</td><td><span class="action-status matched">OK</span></td></tr>
+                <tr><td>7</td><td class="mono">TS/26/02424</td><td>13-May</td><td class="mono">19AABCB3128J1ZP</td><td>Bharat Forge</td><td>29-KA</td><td class="num">5,18,400.00</td><td class="num">18</td><td class="num">93,312.00</td><td class="num">&mdash;</td><td class="num">&mdash;</td><td><span class="action-status reject">Fail &middot; PoS-GSTIN mismatch</span></td></tr>
+                <tr><td>8</td><td class="mono">TS/26/02425</td><td>13-May</td><td class="mono">24AABCM4218R1ZK</td><td>Maruti Suzuki</td><td>24-GJ</td><td class="num">18,42,000.00</td><td class="num">18</td><td class="num">3,31,560.00</td><td class="num">&mdash;</td><td class="num">&mdash;</td><td><span class="action-status matched">OK</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      <!-- MANUAL MODE -->
+      <div data-tab-panel="manual-mode" class="hidden">
+        <div class="filter-bar" style="margin-bottom:16px;">
+          <div class="field">
+            <label class="field-label">Document type</label>
+            <select class="select">
+              <option>B2B Invoice</option>
+              <option>B2C Large Invoice (&gt; ₹ 2.5 L · inter-state)</option>
+              <option>Export Invoice</option>
+              <option>Credit Note – Registered</option>
+              <option>Debit Note – Registered</option>
+              <option>Credit Note – Unregistered</option>
+              <option>Advance Receipt</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field-label">Supply type</label>
+            <select class="select">
+              <option>Regular</option>
+              <option>SEZ supplies with payment</option>
+              <option>SEZ supplies without payment</option>
+              <option>Deemed export</option>
+              <option>Reverse charge</option>
+            </select>
+          </div>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width:130px;">Invoice No.</th>
+              <th style="width:110px;">Invoice Date</th>
+              <th>Recipient GSTIN</th>
+              <th style="width:90px;">PoS</th>
+              <th class="num">Taxable Value</th>
+              <th class="num">Rate %</th>
+              <th class="num">IGST</th>
+              <th class="num">CGST</th>
+              <th class="num">SGST</th>
+              <th style="width:110px;">HSN</th>
+              <th style="width:60px;"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="text" class="input" placeholder="INV/26/00128" style="width:100%;"></td>
+              <td><input type="date" class="input" style="width:100%;"></td>
+              <td><input type="text" class="input mono" placeholder="27AABCT3518Q1ZV" style="width:100%;"></td>
+              <td><input type="text" class="input mono" placeholder="27" style="width:100%;"></td>
+              <td><input type="text" class="input num" placeholder="0.00" style="width:100%;text-align:right;"></td>
+              <td><input type="text" class="input num" placeholder="18" style="width:100%;text-align:right;"></td>
+              <td><input type="text" class="input num" placeholder="0.00" style="width:100%;text-align:right;"></td>
+              <td><input type="text" class="input num" placeholder="0.00" style="width:100%;text-align:right;"></td>
+              <td><input type="text" class="input num" placeholder="0.00" style="width:100%;text-align:right;"></td>
+              <td><input type="text" class="input mono" placeholder="998314" style="width:100%;"></td>
+              <td><button class="icon-btn" title="Remove row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top:14px;">
+          <button class="btn btn-secondary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add another row
+          </button>
+        </div>
+      </div>
+
+      <!-- API MODE -->
+      <div data-tab-panel="api-mode" class="hidden">
+        <div style="text-align:center;padding:24px 12px;">
+          <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px;">Connect your ERP for direct sync</div>
+          <div style="font-size:12.5px;color:var(--text-muted);margin-bottom:20px;">DigiGST connects to SAP, Oracle, Tally Prime, Zoho, Microsoft Dynamics, Sage and more via GSP-certified adapters.</div>
+          <button class="btn btn-primary cta-large">Configure ERP connection →</button>
+        </div>
+      </div>
+      </div>
+    </div>
+    </div>
+
+
+    <!-- CURRENT UPLOAD CARD MOUNT (v2.0.12) -->
+    <div id="current-upload-mount"></div>
+
+    <!-- ACTIVITY TRACKER (consolidated upload + validation history) -->
+    <div class="activity-tracker-card">
+      <div class="activity-tracker-head">
+        <div>
+          <div class="activity-tracker-head-title">Upload &amp; validation history</div>
+          <div class="activity-tracker-head-sub">All uploads for this step with current status &middot; download the validation-processed file (validated rows + failed rows in one workbook)</div>
+        </div>
+        <div class="activity-tracker-head-actions">
+          <button class="btn btn-secondary btn-sm">Filter by source</button>
+          <button class="btn btn-secondary btn-sm">Export full log (CSV)</button>
+        </div>
+      </div>
+
+      <div class="activity-row current">
+        <div class="activity-row-time">15-May 14:22</div>
+        <div class="activity-row-file">
+          <div class="activity-row-file-name">sales-may-w3.xlsx</div>
+          <div class="activity-row-file-meta">12.4 MB &middot; uploaded by Jude Akash</div>
+        </div>
+        <div class="activity-row-source">Manual upload</div>
+        <div class="activity-row-records">2,84,217</div>
+        <div class="activity-row-status">
+          <span class="activity-status-pill processing">Processing 46% &middot; 1,30,740 of 2,84,217</span>
+          <div class="activity-progress-line">
+            <div class="activity-progress-bar"><div class="activity-progress-bar-fill" style="width:46%;"></div></div>
+            <span>ETA 10s</span>
+          </div>
+        </div>
+        <div class="activity-row-actions">
+          <button class="row-edit-btn" title="Cancel processing">Cancel</button>
+        </div>
+      </div>
+
+      <div class="activity-row">
+        <div class="activity-row-time">15-May 09:48</div>
+        <div class="activity-row-file">
+          <div class="activity-row-file-name">sales-may-w2.xlsx</div>
+          <div class="activity-row-file-meta">9.8 MB &middot; uploaded by Jude Akash</div>
+        </div>
+        <div class="activity-row-source">SAP MM connector</div>
+        <div class="activity-row-records">1,82,418</div>
+        <div class="activity-row-status">
+          <span class="activity-status-pill success">Validated &middot; 1,80,200 OK &middot; 2,218 failed</span>
+          <div class="activity-progress-line">
+            <div class="activity-progress-bar"><div class="activity-progress-bar-fill success" style="width:100%;"></div></div>
+            <span>1m 24s</span>
+          </div>
+        </div>
+        <div class="activity-row-actions">
+          <button class="row-edit-btn" style="background:rgba(22,135,54,0.10);color:var(--success);" title="Download validation-processed file (OK + failed rows)">Download report</button>
+        </div>
+      </div>
+
+      <div class="activity-row">
+        <div class="activity-row-time">14-May 18:42</div>
+        <div class="activity-row-file">
+          <div class="activity-row-file-name">sales-may-w1.csv</div>
+          <div class="activity-row-file-meta">7.2 MB &middot; uploaded by Pooja Kamath</div>
+        </div>
+        <div class="activity-row-source">Manual upload</div>
+        <div class="activity-row-records">98,140</div>
+        <div class="activity-row-status">
+          <span class="activity-status-pill partial">Validated with warnings &middot; 33 errors</span>
+          <div class="activity-progress-line">
+            <div class="activity-progress-bar"><div class="activity-progress-bar-fill success" style="width:100%;"></div></div>
+            <span>52s</span>
+          </div>
+        </div>
+        <div class="activity-row-actions">
+          <button class="row-edit-btn">Download report</button>
+        </div>
+      </div>
+
+      <div class="activity-row">
+        <div class="activity-row-time">14-May 11:18</div>
+        <div class="activity-row-file">
+          <div class="activity-row-file-name">sales-apr-final.xlsx</div>
+          <div class="activity-row-file-meta">14.8 MB &middot; replaced by next upload</div>
+        </div>
+        <div class="activity-row-source">Manual upload</div>
+        <div class="activity-row-records">2,12,440</div>
+        <div class="activity-row-status">
+          <span class="activity-status-pill failed">Validation failed &middot; schema error in row 12</span>
+        </div>
+        <div class="activity-row-actions">
+          <button class="row-edit-btn" style="background:rgba(200,16,46,0.10);color:var(--error);">View errors</button>
+          <button class="row-edit-btn">Re-upload</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- OVERVIEW SUMMARY (v2.0.12 — extracted from inside Ingestion mode) -->
+    <div class="card" style="padding:20px 24px;margin-bottom:20px;">
+      <div class="card-section-header">
+        <div>
+          <div class="card-section-title">Overview summary</div>
+          <div class="card-section-sub">Total records ingested in this filing period and the validation outcome by count</div>
+        </div>
+      </div>
+<!-- TIME RANGE SELECTOR -->
+      <div class="period-selector">
+        <div class="period-selector-left">
+          <div class="period-selector-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <div>
+            <div class="period-selector-value">01-May-2026 → 14-May-2026</div>
+            <div class="period-selector-meta">14 days · GSTIN 27AABCT3518Q1ZV · Last refresh 14-May 09:48 AM</div>
+          </div>
+        </div>
+        <div class="period-presets">
+          <button class="period-preset active">This filing period (May-26)</button>
+          <button class="period-preset">Last 7 days</button>
+          <button class="period-preset">MTD</button>
+          <button class="period-preset">QTD</button>
+          <button class="period-preset">FYTD</button>
+          <button class="period-preset">Custom…</button>
+        </div>
+      </div>
+
+      <div class="big-stat-grid">
+        <div class="big-stat">
+          <div class="big-stat-label">Total records ingested</div>
+          <div class="big-stat-value">2,84,712</div>
+          <div class="big-stat-sub">Across 11 document types · 01–14 May</div>
+        </div>
+        <div class="big-stat" style="border-left:3px solid var(--success)">
+          <div class="big-stat-label">Validations passed</div>
+          <div class="big-stat-value" style="color:var(--success)">2,82,141</div>
+          <div class="big-stat-sub">99.1% clean — ready for next step</div>
+        </div>
+        <div class="big-stat" style="border-left:3px solid var(--warning)">
+          <div class="big-stat-label">Warnings</div>
+          <div class="big-stat-value" style="color:var(--warning)">2,538</div>
+          <div class="big-stat-sub">Filing allowed · Review recommended</div>
+        </div>
+        <div class="big-stat" style="border-left:3px solid var(--error)">
+          <div class="big-stat-label">Errors (blocking)</div>
+          <div class="big-stat-value" style="color:var(--error)">33</div>
+          <div class="big-stat-sub">Fix before moving to Step 2</div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- STICKY ACTION BAR -->
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">Ready to proceed</div>
+        <div class="action-bar-status">2,84,712 records · 33 errors must be resolved before Step 2</div>
+      </div>
+      <div class="action-bar-actions">
+        <button class="btn btn-secondary cta-large">Skip validation</button>
+        <button class="btn btn-secondary cta-large">Save &amp; close</button>
+        <a href="gstr1-step2.html" class="btn btn-primary cta-xlarge">Mark complete · Next: IRN auto-fetch &amp; upload →</a>
+      </div>
+    </div>
+
+    </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('gstr1', 'GSTR-1 Outward Supplies', 'Step 1 · Sales Data Ingestion');</script>
+
+<script>
+renderStepFlow({
+  anchor: "#step-flow",
+  currentUploadInline: "#current-upload-mount",
+  skipValidationInFooter: true,
+  intro: 'Ingest outward supply data from ERP, Excel, or manual entry. Validate GSTIN format, place-of-supply, tax arithmetic, HSN compliance, and e-invoice eligibility before passing it to IRN auto-fetch.',
+  status: {
+  "state": "In progress",
+  "period": "May 2026",
+  "today": "15-May-2026 (Fri)",
+  "due": "GSTR-1 by 11-Jun-2026",
+  "dueClass": "warn",
+  "lastAction": "14-May 18:08 by Aditya",
+  "nextMilestone": "Step 2: IRN auto-fetch"
+},
+  currentUpload: {
+  "fileName": "TS-Sales-May-26-v4.xlsx",
+  "fileType": "xlsx",
+  "size": "18.4 MB",
+  "source": "Excel upload + SAP ERP merge",
+  "uploadedBy": "Jude Akash",
+  "uploadedAt": "14-May 18:08:24",
+  "records": "2,84,217",
+  "pass": "2,83,452",
+  "warn": 742,
+  "fail": 23
+},
+  validations: [
+  {
+    "name": "Recipient GSTIN format",
+    "state": "pass",
+    "count": "✓ 2,84,217"
+  },
+  {
+    "name": "Place-of-supply consistency",
+    "state": "warn",
+    "count": "⚠ 412"
+  },
+  {
+    "name": "Tax arithmetic (rate × taxable)",
+    "state": "warn",
+    "count": "⚠ 23 fail"
+  },
+  {
+    "name": "Invoice number rules",
+    "state": "pass",
+    "count": "✓ 2,83,985"
+  },
+  {
+    "name": "HSN at 6-digit (Phase 3)",
+    "state": "pass",
+    "count": "✓ 2,84,084"
+  },
+  {
+    "name": "E-invoice mandate (>₹5Cr)",
+    "state": "pass",
+    "count": "✓ All eligible"
+  }
+],
+  history: [
+  {
+    "version": "v4",
+    "label": "Final after manager review",
+    "source": "Manager approval",
+    "by": "Aditya Krishnan",
+    "time": "14-May 18:08:24",
+    "records": "2,84,217",
+    "tag": "current"
+  },
+  {
+    "version": "v3",
+    "label": "Manual override — fix CGST on 12 rows",
+    "source": "Manual override",
+    "by": "Jude Akash",
+    "time": "14-May 16:24:18",
+    "records": "2,84,217",
+    "tag": "override"
+  },
+  {
+    "version": "v2",
+    "label": "SAP delta sync + 1,376 corrections",
+    "source": "ERP re-sync",
+    "by": "Jude Akash",
+    "time": "13-May 11:18:08",
+    "records": "2,82,841",
+    "tag": "resync"
+  },
+  {
+    "version": "v1",
+    "label": "Initial upload from Excel template",
+    "source": "Excel upload",
+    "by": "Jude Akash",
+    "time": "12-May 09:42:18",
+    "records": "2,81,465",
+    "tag": "initial"
+  }
+],
+  dispositions: [
+  {
+    "id": "continue",
+    "primary": true,
+    "title": "Continue with v4",
+    "desc": "Proceed to Step 2 (IRN auto-fetch) with the current payload. All 23 errors resolved; 742 warnings will be flagged but not blocking."
+  },
+  {
+    "id": "refresh",
+    "title": "Re-sync from SAP ERP",
+    "desc": "Pull the latest delta from SAP MM. Useful if invoices were posted after 18:08 yesterday. Creates a new version snapshot."
+  },
+  {
+    "id": "amend",
+    "title": "Amend prior period",
+    "desc": "Bring in amendments for April 2026 or earlier. They will be tagged Table 9 amendments and flow to GSTR-1A."
+  },
+  {
+    "id": "replace",
+    "title": "Replace upload entirely",
+    "desc": "Discard v4 and upload a brand-new Excel. v1–v4 stay in history and can be restored. Use only if the underlying source data was wrong."
+  },
+  {
+    "id": "manual",
+    "title": "Enter rows manually",
+    "desc": "Open the inline editor and add or fix individual invoice rows. Best for late corrections that don't justify a full re-sync."
+  },
+  {
+    "id": "skip",
+    "title": "Skip validation re-run",
+    "desc": "Trust the current validation pass and move on. Warnings persist but don't block. Errors must be resolved first."
+  }
+]
+});
+</script>
+</body>
+</html>

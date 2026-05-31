@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amendments of credit / debit notes by suppliers · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">
+          <a href="gstr3b-step2.html" style="color:var(--text-muted);text-decoration:none;">&larr; Step 2 (Auto IMS fetch)</a> &middot; Detail view
+        </div>
+        <h1 class="page-title">IMS &middot; B2B CDN-Amd &middot; Amendments of credit / debit notes by suppliers</h1>
+        <p class="page-subtitle">Supplier revised a previously-filed CN/DN &middot; affects your prior ITC reversal</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="gstr3b-step2.html" class="btn btn-secondary">&larr; Back to Step 2 (Auto IMS fetch)</a>
+      </div>
+    </div>
+
+    <div class="big-stat-grid" style="margin-bottom:20px;">
+      <div class="big-stat" style="border-left:3px solid var(--info);"><div class="big-stat-label">CDN amendments</div><div class="big-stat-value">418</div><div class="big-stat-sub">Mostly CN revisions</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--error);"><div class="big-stat-label">Net impact</div><div class="big-stat-value">&minus; &#8377; 1.8 L</div><div class="big-stat-sub">Net ITC reduction</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--warning);"><div class="big-stat-label">Pending review</div><div class="big-stat-value">418</div><div class="big-stat-sub">100% &middot; CA to action</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--info);"><div class="big-stat-label">Suppliers</div><div class="big-stat-value">128</div><div class="big-stat-sub">Unique GSTINs</div></div>
+    </div>
+
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">
+        <div style="min-width:0;flex:1 1 240px;">
+          <div style="font-size:13.5px;font-weight:700;color:var(--text);line-height:1.4;">CDN amendment records &middot; sample of 8 from 418</div>
+          <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">Original CN/DN was already accepted/rejected in a prior period; this row replaces it</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="btn btn-secondary btn-sm">Download CSV</button>
+          <button class="btn btn-secondary btn-sm">Filter</button>
+          <button class="btn btn-secondary btn-sm">Edit rows</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table grid-lined compact">
+          <thead><tr><th class="mono">Supplier</th><th class="mono">Note no.</th><th>Type</th><th>Orig period</th><th class="num">Orig change</th><th class="num">New change</th><th class="num">Diff</th><th>Action</th></tr></thead>
+          <tbody><tr><td class="mono">Reliance</td><td class="mono">RIL-CN/26/088</td><td>CN</td><td>Apr-26</td><td class="num">− 28,400</td><td class="num">− 32,000</td><td class="num">− 3,600</td><td><span class="action-status pending">No-action</span></td></tr><tr><td class="mono">MM</td><td class="mono">MM-CN/26/018</td><td>CN</td><td>Apr-26</td><td class="num">− 8,400</td><td class="num">− 7,200</td><td class="num">+ 1,200</td><td><span class="action-status pending">No-action</span></td></tr><tr><td class="mono">Bharat Forge</td><td class="mono">BF-DN/26/004</td><td>DN</td><td>Apr-26</td><td class="num">+ 5,400</td><td class="num">+ 7,800</td><td class="num">+ 2,400</td><td><span class="action-status pending">No-action</span></td></tr><tr><td class="mono">Apollo</td><td class="mono">AT-CN/26/006</td><td>CN</td><td>Apr-26</td><td class="num">− 12,800</td><td class="num">− 8,400</td><td class="num">+ 4,400</td><td><span class="action-status pending">No-action</span></td></tr><tr><td class="mono">TS</td><td class="mono">TS-CN/26/021</td><td>CN</td><td>Apr-26</td><td class="num">− 1,156</td><td class="num">− 1,200</td><td class="num">− 44</td><td><span class="action-status matched">Accepted</span></td></tr><tr><td class="mono">L&amp;T</td><td class="mono">LT-DN/26/041</td><td>DN</td><td>Apr-26</td><td class="num">+ 14,400</td><td class="num">+ 18,000</td><td class="num">+ 3,600</td><td><span class="action-status pending">No-action</span></td></tr><tr><td class="mono">Maruti</td><td class="mono">MS-CN/26/038</td><td>CN</td><td>Apr-26</td><td class="num">− 7,800</td><td class="num">− 9,000</td><td class="num">− 1,200</td><td><span class="action-status pending">No-action</span></td></tr><tr><td class="mono">Bengal</td><td class="mono">BP-CN/26/012</td><td>CN</td><td>Apr-26</td><td class="num">− 6,200</td><td class="num">− 6,600</td><td class="num">− 400</td><td><span class="action-status reject">Rejected</span></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">418 CDN amendments &middot; &minus; &#8377; 1.8 L net &middot; rare but high-impact rows</div>
+        <div class="action-bar-status">Carefully review &middot; affects prior-period closing balances and may need reversal</div>
+      </div>
+      <div class="action-bar-actions">
+        <a href="gstr3b-step2.html" class="btn btn-secondary cta-large">&larr; Back to Step 2 (Auto IMS fetch)</a>
+        <button class="btn btn-secondary cta-large">Save changes</button>
+        <a href="gstr3b-step2.html" class="btn btn-primary cta-large">Done &middot; return to Step 2 (Auto IMS fetch) &rarr;</a>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('gstr3b', 'GSTR-3B &middot; Step 2 detail', 'IMS &middot; B2B CDN-Amd detail');</script>
+</body>
+</html>

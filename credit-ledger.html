@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Credit (ITC) Ledger · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+    <div class="page-head">
+      <div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px;">
+          <a href="ledgers.html" class="back-arrow-link-inline" style="text-decoration:none;color:var(--text-muted);font-weight:600;">Ledgers &amp; Payments</a> &middot; <strong style="color:var(--text);">Credit (ITC) Ledger</strong>
+        </div>
+        <h1 class="page-title">Credit (ITC) Ledger</h1>
+        <p class="page-subtitle">Electronic credit ledger · Input Tax Credit availability, utilization and reversal history</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="itc-upload.html" class="btn btn-secondary cta-large">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></svg>
+          Match with 2B
+        </a>
+        <button class="btn btn-secondary cta-large">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/></svg>
+          Download Statement
+        </button>
+      </div>
+    </div>
+
+
+    <!-- LIFECYCLE / STATUS STRIP -->
+    <div class="lifecycle-strip">
+      <div class="lifecycle-header">
+        <div class="lifecycle-header-title">ITC credit position · Tied to GSTR-2B cycle</div>
+        <div class="lifecycle-header-help">ITC accrues via GSTR-2B → reconciled → utilized in GSTR-3B · Reversed credit can be re-claimed within 4 years</div>
+      </div>
+      <div class="lifecycle-body">
+        <div class="lifecycle-phase past">
+          <div class="phase-marker"><span class="marker-dot"></span>Previous cycle</div>
+          <div class="phase-title">March 2026 GSTR-2B</div>
+          <div class="phase-status success">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+            ₹ 5,42,18,732 ITC utilized in GSTR-3B
+          </div>
+          <div class="phase-due">
+            <span class="due-date mono">Filed 18-Apr-2026</span>
+            <span class="days-left onTrack">Cycle closed</span>
+          </div>
+        </div>
+        <div class="lifecycle-phase current">
+          <div class="phase-marker"><span class="marker-dot"></span>Available ITC</div>
+          <div class="phase-title">₹ 6,17,42,891</div>
+          <div class="phase-status">From April GSTR-2B · Ready to utilize in GSTR-3B</div>
+          <div class="phase-due">
+            <span class="due-date">Live balance · IGST + CGST + SGST</span>
+            <span class="days-left onTrack">Synced today</span>
+          </div>
+        </div>
+        <div class="lifecycle-phase upcoming">
+          <div class="phase-marker"><span class="marker-dot"></span>Next utilization</div>
+          <div class="phase-title">GSTR-3B Apr filing</div>
+          <div class="phase-status muted">Utilize ₹ 4,82,17,400 · Carry forward ₹ 1,35,25,491</div>
+          <div class="phase-due">
+            <span class="due-date">Due 20-May-2026</span>
+            <span class="days-left nearDue">6 days remaining · Action needed</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BALANCE HERO -->
+    <div class="card" style="background:linear-gradient(135deg, #0F5F26, #168736);color:#fff;border:none;">
+      <div style="display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:center;padding:6px 10px;">
+        <div class="ledger-icon" style="width:56px;height:56px;border-radius:14px;background:rgba(255,255,255,0.18);color:#fff;display:grid;place-items:center;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="26" height="26"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div>
+          <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.85);font-weight:600;margin-bottom:6px">Total ITC Available · GSTIN 27AABCT3518Q1ZV</div>
+          <div class="amount-display size-xl" style="color:#fff;font-size:42px;"><span class="currency-sym" style="color:rgba(255,255,255,0.6)">₹</span>6,17,42,891<span style="font-size:18px;color:rgba(255,255,255,0.6)">.00</span></div>
+          <div style="margin-top:8px;font-size:13px;color:rgba(255,255,255,0.85);">2B reconciled · 13-May-2026 · 4,82,941 invoices accounted</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:11px;color:rgba(255,255,255,0.7);letter-spacing:0.08em;text-transform:uppercase;font-weight:600;margin-bottom:4px">MTD Activity</div>
+          <div style="font-size:13.5px;color:#fff;line-height:1.7">
+            Claimed · <strong class="mono">₹ 56,72,418</strong><br>
+            Reversed · <strong class="mono">₹ 1,84,000</strong><br>
+            Re-claimed · <strong class="mono">₹ 42,000</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HEAD-WISE -->
+    <div class="section-banner" style="margin-top:24px">
+      <div class="section-banner-num">1</div>
+      <div>
+        <div class="section-banner-title">ITC Balance by Tax Head</div>
+        <div class="section-banner-sub">Available for set-off in next GSTR-3B</div>
+      </div>
+    </div>
+
+    <div class="big-stat-grid">
+      <div class="big-stat accent">
+        <div class="big-stat-label">IGST</div>
+        <div class="big-stat-value"><span class="cur">₹</span>4,12,18,734</div>
+        <div class="big-stat-sub">Set-off priority · against IGST, then CGST, then SGST</div>
+      </div>
+      <div class="big-stat">
+        <div class="big-stat-label">CGST</div>
+        <div class="big-stat-value"><span class="cur">₹</span>1,02,62,078</div>
+        <div class="big-stat-sub">Cannot cross-utilize with SGST</div>
+      </div>
+      <div class="big-stat">
+        <div class="big-stat-label">SGST</div>
+        <div class="big-stat-value"><span class="cur">₹</span>1,02,62,079</div>
+        <div class="big-stat-sub">Cannot cross-utilize with CGST</div>
+      </div>
+      <div class="big-stat">
+        <div class="big-stat-label">CESS</div>
+        <div class="big-stat-value"><span class="cur">₹</span>0</div>
+        <div class="big-stat-sub">No CESS credit accrued</div>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="section-banner" style="margin-top:24px">
+      <div class="section-banner-num">2</div>
+      <div>
+        <div class="section-banner-title">ITC Transactions</div>
+        <div class="section-banner-sub">Claimed, utilized, reversed and re-claimed entries</div>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="claimed">
+        <span class="tab-label">Available Credit</span>
+        <span class="tab-count">4,82,941</span>
+      </button>
+      <button class="tab" data-tab="utilized">
+        <span class="tab-label">Utilized</span>
+        <span class="tab-count">12</span>
+      </button>
+      <button class="tab" data-tab="reversed">
+        <span class="tab-label">Reversed (Rule 42/43)</span>
+        <span class="tab-count">817</span>
+      </button>
+      <button class="tab" data-tab="reclaimed">
+        <span class="tab-label">Re-claimed</span>
+        <span class="tab-count">42</span>
+      </button>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="filter-bar" style="margin-top:14px">
+      <div class="field">
+        <label class="field-label">Period</label>
+        <select class="select"><option>April 2026 (2B)</option><option>March 2026</option><option>FY 2025-26</option></select>
+      </div>
+      <div class="field">
+        <label class="field-label">Vendor GSTIN</label>
+        <select class="select"><option>All vendors</option><option>Reliance Industries</option><option>Schneider Electric</option></select>
+      </div>
+      <div class="field">
+        <label class="field-label">ITC Category</label>
+        <select class="select"><option>All</option><option>Inputs</option><option>Capital Goods</option><option>Input Services</option><option>Import of goods (BoE)</option><option>RCM (self-invoicing)</option></select>
+      </div>
+      <div class="filter-actions">
+        <button class="btn btn-primary">Apply</button>
+      </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-wrap">
+      <div class="table-toolbar">
+        <div class="table-toolbar-left">
+          <div class="table-count"><strong>4,82,941 records</strong> · Total ITC ₹ 6,17,42,891</div>
+        </div>
+        <button class="btn btn-secondary btn-sm">Export</button>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Document</th>
+            <th>Vendor</th>
+            <th>Vendor GSTIN</th>
+            <th class="num">Taxable Value</th>
+            <th class="num">IGST</th>
+            <th class="num">CGST</th>
+            <th class="num">SGST</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>11-May-2026</td>
+            <td><span class="badge success"><span class="badge-dot"></span>Claimed</span></td>
+            <td class="mono small">PUR/2026/04/2841</td>
+            <td>Reliance Industries Ltd.</td>
+            <td class="mono small">24AAACR5055K1Z7</td>
+            <td class="num">42,18,400.00</td>
+            <td class="num">7,59,312.00</td>
+            <td class="num muted">—</td>
+            <td class="num muted">—</td>
+            <td><span class="pill pill-isd" style="font-size:10px">2B Matched</span></td>
+          </tr>
+          <tr>
+            <td>10-May-2026</td>
+            <td><span class="badge success"><span class="badge-dot"></span>Claimed</span></td>
+            <td class="mono small">PUR/2026/04/2756</td>
+            <td>Schneider Electric India</td>
+            <td class="mono small">27AABCS1429B1Z1</td>
+            <td class="num">8,42,000.00</td>
+            <td class="num muted">—</td>
+            <td class="num">75,780.00</td>
+            <td class="num">75,780.00</td>
+            <td><span class="pill pill-isd" style="font-size:10px">2B Matched</span></td>
+          </tr>
+          <tr>
+            <td>08-May-2026</td>
+            <td><span class="badge success"><span class="badge-dot"></span>Claimed</span></td>
+            <td class="mono small">BOE-2026-04-0148</td>
+            <td>Customs · Import</td>
+            <td class="mono small">—</td>
+            <td class="num">2,18,42,000.00</td>
+            <td class="num">39,31,560.00</td>
+            <td class="num muted">—</td>
+            <td class="num muted">—</td>
+            <td><span class="pill pill-cr" style="font-size:10px">BoE</span></td>
+          </tr>
+          <tr>
+            <td>07-May-2026</td>
+            <td><span class="badge warning"><span class="badge-dot"></span>Reversed</span></td>
+            <td class="mono small">PUR/2026/03/8741</td>
+            <td>Genpact India Pvt. Ltd.</td>
+            <td class="mono small">06AAACG2115R1Z1</td>
+            <td class="num" style="color:var(--error)">−2,18,400.00</td>
+            <td class="num" style="color:var(--error)">−39,312.00</td>
+            <td class="num muted">—</td>
+            <td class="num muted">—</td>
+            <td><span class="pill pill-inv" style="font-size:10px">Rule 42</span></td>
+          </tr>
+          <tr>
+            <td>05-May-2026</td>
+            <td><span class="badge success"><span class="badge-dot"></span>Claimed</span></td>
+            <td class="mono small">PUR/2026/04/2418</td>
+            <td>Infosys Ltd.</td>
+            <td class="mono small">29AAACI3784L1Z1</td>
+            <td class="num">12,84,000.00</td>
+            <td class="num">2,31,120.00</td>
+            <td class="num muted">—</td>
+            <td class="num muted">—</td>
+            <td><span class="pill pill-isd" style="font-size:10px">2B Matched</span></td>
+          </tr>
+          <tr>
+            <td>03-May-2026</td>
+            <td><span class="badge info"><span class="badge-dot"></span>Re-claimed</span></td>
+            <td class="mono small">PUR/2026/02/1184</td>
+            <td>TVS Motor Co. Ltd.</td>
+            <td class="mono small">33AABCS4719Q1ZX</td>
+            <td class="num">2,33,000.00</td>
+            <td class="num muted">—</td>
+            <td class="num">20,970.00</td>
+            <td class="num">20,970.00</td>
+            <td><span class="pill pill-isd" style="font-size:10px">Within 4 yrs</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="table-footer">
+        <div class="pagination-info">Showing 1–6 of <strong>4,82,941 records</strong></div>
+        <div class="pagination">
+          <button class="page-btn" disabled>←</button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">…</button>
+          <button class="page-btn">80,490</button>
+          <button class="page-btn">→</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="help-strip" style="margin-top:24px">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <div><strong>4-year retention rule:</strong> ITC reversed under Rule 42 (common credit) or Rule 43 (capital goods) can be re-claimed within 4 years from end of FY of original invoice date. The system flags eligible reversals for re-claim.</div>
+    </div>
+
+    <div style="height: 40px"></div>
+  </main>
+</div>
+
+<script src="app.js"></script>
+<script>renderShell('credit', 'Credit (ITC) Ledger', '');</script>
+</body>
+</html>

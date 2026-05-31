@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Export Invoices vs Books / Shipping Bills &middot; DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">
+          <a href="dashboard.html" style="color:var(--text-muted);text-decoration:none;">&larr; Dashboard</a> &middot; Reconciliation &middot; Exports tie-out
+        </div>
+        <h1 class="page-title">Export Invoices vs Books / Shipping Bills</h1>
+        <p class="page-subtitle">Three-way tie-out for exports: Books export invoices &harr; e-invoice (IRN) &harr; Shipping Bill from ICEGATE &middot; drives IGST refund processing</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="dashboard.html" class="btn btn-secondary">&larr; Back</a>
+      </div>
+    </div>
+
+    <!-- WHY THIS RECONCILIATION -->
+    <div class="card" style="background:linear-gradient(135deg, #E8F4F9, var(--surface));border-left:4px solid var(--info);padding:14px 18px;margin-bottom:20px;">
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--info)" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <div style="font-size:12.5px;line-height:1.55;color:var(--text);">
+          <strong>Why this reconciliation matters:</strong> Export invoices need to tie across three systems for IGST refund to release: (1) Books / Sales register, (2) e-invoice IRN with EXP type and shipping bill no, (3) Shipping Bill in ICEGATE customs. The refund engine cross-references all three &mdash; any mismatch holds the refund. Even a 1-day date difference between IRN and Shipping Bill stalls the claim.
+        </div>
+      </div>
+    </div>
+
+    <!-- SOURCE CONFIGURATION -->
+    <div style="margin:8px 0 10px;">
+      <div style="font-size:15px;font-weight:700;color:var(--text);letter-spacing:-0.005em;">Source configuration</div>
+      <div style="font-size:12.5px;color:var(--text-muted);margin-top:3px;">Choose between manual template upload, auto-sync from ERP / GST portal, or a mix. The Run Reco button below will use whichever is freshest on each side.</div>
+    </div>
+
+    <div class="drop-zone-pair">
+
+      <!-- SOURCE A -->
+      <div class="drop-zone-single">
+        <div class="drop-zone-head">
+          <div>
+            <div class="drop-zone-eyebrow">Source A</div>
+            <div class="drop-zone-title">Books Export Register</div>
+            <div class="drop-zone-sub">Export invoices from Sales register &middot; LUT + IGST-paid</div>
+          </div>
+          <span class="status-pill complete">Synced from SAP</span>
+        </div>
+
+        <div class="drop-zone-area">
+          <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="var(--text-muted)" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <div class="drop-zone-text">Drop Export Excel / CSV template here, or</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px;">
+            <button class="btn btn-secondary btn-sm">Browse manual upload</button>
+            <button class="btn btn-secondary btn-sm" onclick="if(window.showToast) window.showToast('Auto-syncing Books Export Register from SAP / Tally...');">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              Auto-sync from SAP / Tally
+            </button>
+          </div>
+        </div>
+
+        <div class="drop-zone-history">
+          <div class="drop-zone-history-row">
+            <span>Last refresh</span>
+            <span class="mono">15-May 14:22</span>
+          </div>
+          <div class="drop-zone-history-row">
+            <span>Records loaded</span>
+            <span class="mono">1,247 export invoices</span>
+          </div>
+          <div class="drop-zone-history-row">
+            <span>Method</span>
+            <span class="mono">SAP SD connector</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SOURCE B -->
+      <div class="drop-zone-single">
+        <div class="drop-zone-head">
+          <div>
+            <div class="drop-zone-eyebrow">Source B</div>
+            <div class="drop-zone-title">E-invoice + ICEGATE Shipping Bills</div>
+            <div class="drop-zone-sub">IRN-issued EXP invoices + matched Shipping Bills from ICEGATE</div>
+          </div>
+          <span class="status-pill complete">Auto-synced</span>
+        </div>
+
+        <div class="drop-zone-area">
+          <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="var(--text-muted)" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <div class="drop-zone-text">Drop IRN JSON + SB CSV template here, or</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px;">
+            <button class="btn btn-secondary btn-sm">Browse manual upload</button>
+            <button class="btn btn-secondary btn-sm" onclick="if(window.showToast) window.showToast('Auto-syncing E-invoice + ICEGATE Shipping Bills from IRP + ICEGATE...');">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              Auto-sync from IRP + ICEGATE
+            </button>
+          </div>
+        </div>
+
+        <div class="drop-zone-history">
+          <div class="drop-zone-history-row">
+            <span>Last refresh</span>
+            <span class="mono">15-May 18:42</span>
+          </div>
+          <div class="drop-zone-history-row">
+            <span>Records loaded</span>
+            <span class="mono">1,235 IRN-issued</span>
+          </div>
+          <div class="drop-zone-history-row">
+            <span>Method</span>
+            <span class="mono">IRP API + ICEGATE</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RUN RECO PROMINENT CTA -->
+    <div class="reco-run-card">
+      <div class="reco-run-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      </div>
+      <div>
+        <div class="reco-run-card-title">Run reconciliation now</div>
+        <div class="reco-run-card-sub">
+          Match 1,247 Books records &times; 1,235 IRN + SB records using <strong>Inv no + Inv date + Buyer country</strong> &middot; tolerance &plusmn; 1 day on SB date
+        </div>
+      </div>
+      <button class="reco-run-btn" onclick="if(window.showToast) window.showToast('Match engine running &middot; estimated 9 seconds...');">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Run reco
+      </button>
+    </div>
+
+    <!-- ENGINE STATUS / LAST RUN -->
+    <div class="card" style="padding:16px 22px;margin-bottom:20px;background:linear-gradient(135deg, #F5F8FA, var(--surface));">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));gap:14px;">
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);">Last run</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);margin-top:3px;">15-May 18:42</div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);">Records compared</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);margin-top:3px;">1,247</div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);">Matched</div>
+          <div style="font-size:13px;font-weight:600;color:var(--success);margin-top:3px;">1,108</div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);">Mismatched / one-sided</div>
+          <div style="font-size:13px;font-weight:600;color:var(--warning);margin-top:3px;">139</div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);">Match rate</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);margin-top:3px;">88.85%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BIG STATS / OUTCOMES -->
+    <div class="big-stat-grid" style="margin-bottom:20px;">
+      <div class="big-stat" style="border-left:3px solid var(--success);"><div class="big-stat-label">Fully tied-out</div><div class="big-stat-value">1,108</div><div class="big-stat-sub">IRN + SB + Books all align</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--warning);"><div class="big-stat-label">SB pending</div><div class="big-stat-value">38</div><div class="big-stat-sub">ICEGATE has not received yet</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--error);"><div class="big-stat-label">IRN missing</div><div class="big-stat-value">12</div><div class="big-stat-sub">Books has it, no IRN generated</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--error);"><div class="big-stat-label">IGST refund stalled</div><div class="big-stat-value">&#8377; 4.18 Cr</div><div class="big-stat-sub">89 export invoices &middot; pending docs</div></div>
+    </div>
+
+    <!-- RESULTS TABLE (sample) -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">
+        <div style="min-width:0;flex:1 1 240px;">
+          <div style="font-size:13.5px;font-weight:700;color:var(--text);">Reconciliation results &middot; sample of 8 from 1,247</div>
+          <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">Status colours: <span style="color:var(--success);font-weight:600;">matched</span> &middot; <span style="color:var(--warning);font-weight:600;">value mismatch</span> &middot; <span style="color:var(--info);font-weight:600;">only in A</span> &middot; <span style="color:var(--error);font-weight:600;">only in B</span></div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="btn btn-secondary btn-sm">Download CSV</button>
+          <button class="btn btn-secondary btn-sm">Filter</button>
+          <button class="btn btn-secondary btn-sm">Bulk action</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table grid-lined compact">
+          <thead><tr><th class="mono">Inv no</th><th>Date</th><th>Country</th><th>Type</th><th class="num">FoB (₹)</th><th>IRN status</th><th class="mono">SB no</th><th>Status</th></tr></thead>
+          <tbody><tr><td class="mono">TS/26/EXP/0418</td><td>12-May</td><td>USA</td><td>LUT</td><td class="num">42,18,000</td><td><span class="action-status matched">IRN active</span></td><td class="mono">3147826</td><td><span class="action-status matched">matched</span></td></tr><tr><td class="mono">TS/26/EXP/0419</td><td>12-May</td><td>Singapore</td><td>LUT</td><td class="num">18,42,000</td><td><span class="action-status matched">IRN active</span></td><td class="mono">3147912</td><td><span class="action-status matched">matched</span></td></tr><tr><td class="mono">TS/26/EXP/0420</td><td>13-May</td><td>UK</td><td>IGST-paid</td><td class="num">2,84,000</td><td><span class="action-status matched">IRN active</span></td><td class="mono">—</td><td><span class="action-status pending">SB pending</span></td></tr><tr><td class="mono">TS/26/EXP/0421</td><td>13-May</td><td>Germany</td><td>LUT</td><td class="num">38,40,000</td><td><span class="action-status matched">IRN active</span></td><td class="mono">3148024</td><td><span class="action-status matched">matched</span></td></tr><tr><td class="mono">TS/26/EXP/0422</td><td>13-May</td><td>UAE</td><td>LUT</td><td class="num">22,18,000</td><td><span class="action-status matched">IRN active</span></td><td class="mono">3148201</td><td><span class="action-status matched">matched</span></td></tr><tr><td class="mono">TS/26/EXP/0423</td><td>14-May</td><td>Japan</td><td>IGST-paid</td><td class="num">5,42,000</td><td><span class="action-status reject">No IRN</span></td><td class="mono">—</td><td><span class="action-status pending">generate IRN</span></td></tr><tr><td class="mono">TS/26/EXP/0424</td><td>14-May</td><td>Vietnam</td><td>LUT</td><td class="num">48,40,000</td><td><span class="action-status matched">IRN active</span></td><td class="mono">3148428</td><td><span class="action-status matched">matched</span></td></tr><tr><td class="mono">TS/26/EXP/0425</td><td>14-May</td><td>Australia</td><td>LUT</td><td class="num">14,82,000</td><td><span class="action-status matched">IRN active</span></td><td class="mono">—</td><td><span class="action-status pending">SB pending</span></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ACTION BAR -->
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">89 exports stalled &middot; &#8377; 4.18 Cr refund pending &middot; clear bottlenecks</div>
+        <div class="action-bar-status">Generate 12 missing IRNs &middot; chase ICEGATE for 38 pending SB matches &middot; trigger refund app for tied-out</div>
+      </div>
+      <div class="action-bar-actions">
+        <a href="dashboard.html" class="btn btn-secondary cta-large">&larr; Back</a>
+        <button class="btn btn-secondary cta-large">Export results</button>
+        <button class="btn btn-primary cta-large" onclick="if(window.showToast) window.showToast('All reconciled rows posted to books journal...');">Post adjustments to books &rarr;</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('recoexport', 'Reconciliation', 'Exports tie-out');</script>
+</body>
+</html>

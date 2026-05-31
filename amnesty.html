@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>§128A Amnesty · SPL-01 / SPL-02 · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Section 128A · Amnesty Scheme</h1>
+        <p class="page-subtitle">SPL-01 / SPL-02 forms · Waiver of interest &amp; penalty on non-fraud Section 73 demands for FY 2017-18, 2018-19 &amp; 2019-20</p>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn btn-secondary">Eligibility checker</button>
+      </div>
+    </div>
+
+    <div class="help-strip">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <div><strong>About Section 128A:</strong> Inserted by Finance (No. 2) Act 2024 · effective 1-Nov-2024 (Notification 17/2024-CT). Rule 164 + FORMS SPL-01 / SPL-02 notified by Notification 20/2024-CT dated 8-Oct-2024. Covers <strong>non-fraud demands under Section 73</strong> for FY 2017-18, 2018-19 &amp; 2019-20. Pay tax in full by <strong>31-Mar-2025</strong> and apply within 3 months (<strong>30-Jun-2025</strong>) for waiver of interest and penalty.</div>
+    </div>
+
+    <!-- WHICH FORM -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;">
+
+      <div class="card" style="padding:22px 24px;border-left:4px solid var(--info);">
+        <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;">
+          <div style="width:44px;height:44px;border-radius:12px;background:var(--info);color:#fff;display:grid;place-items:center;flex-shrink:0;">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div>
+            <div style="font-size:16px;font-weight:700;color:var(--text);">FORM SPL-01</div>
+            <div style="font-size:12.5px;color:var(--text-muted);">When SCN has been issued but no order yet passed</div>
+          </div>
+        </div>
+        <ul style="margin:0 0 14px;padding-left:20px;font-size:12.5px;color:var(--text);line-height:1.7;">
+          <li>Show-cause notice (DRC-01) issued</li>
+          <li>Adjudicating authority has not passed order</li>
+          <li>You haven't filed any appeal</li>
+          <li>Demand is under Section 73 (not §74 fraud)</li>
+        </ul>
+        <button class="btn btn-primary cta-large" style="width:100%;">Start SPL-01 application →</button>
+      </div>
+
+      <div class="card" style="padding:22px 24px;border-left:4px solid var(--ey-yellow);">
+        <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;">
+          <div style="width:44px;height:44px;border-radius:12px;background:var(--ey-yellow);color:var(--ey-black-deep);display:grid;place-items:center;flex-shrink:0;">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+          </div>
+          <div>
+            <div style="font-size:16px;font-weight:700;color:var(--text);">FORM SPL-02</div>
+            <div style="font-size:12.5px;color:var(--text-muted);">When order has been passed (DRC-07 / 08 / APL-04)</div>
+          </div>
+        </div>
+        <ul style="margin:0 0 14px;padding-left:20px;font-size:12.5px;color:var(--text);line-height:1.7;">
+          <li>Order in original passed (DRC-07 / 08)</li>
+          <li>Or appeal order issued (APL-04)</li>
+          <li>Tax has been paid in full</li>
+          <li>You will withdraw any pending appeal</li>
+        </ul>
+        <button class="btn btn-primary cta-large" style="width:100%;">Start SPL-02 application →</button>
+      </div>
+    </div>
+
+    <!-- ELIGIBLE DEMANDS LIST -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:18px 22px;border-bottom:1px solid var(--border);">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">Demands eligible under §128A · 4 cases identified</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Auto-filtered from your demand register · only §73 / FY 17-18 to 19-20 / not under §74</div>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>FY</th>
+            <th>Demand stage</th>
+            <th>Order / SCN #</th>
+            <th>Date</th>
+            <th class="num">Tax demand</th>
+            <th class="num">Interest</th>
+            <th class="num">Penalty</th>
+            <th class="num">Waiver if applied</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>FY 2017-18</td>
+            <td><span class="ims-status-pill pending">SCN issued</span></td>
+            <td class="mono">DRC-01-2701/24</td>
+            <td>14-Aug-2024</td>
+            <td class="num">8,42,000</td>
+            <td class="num">4,82,000</td>
+            <td class="num">84,200</td>
+            <td class="num" style="color:var(--success);font-weight:700;">5,66,200</td>
+            <td><button class="btn btn-primary btn-sm">SPL-01</button></td>
+          </tr>
+          <tr>
+            <td>FY 2018-19</td>
+            <td><span class="ims-status-pill reject">Order passed</span></td>
+            <td class="mono">DRC-07-2701/24</td>
+            <td>22-Dec-2024</td>
+            <td class="num">12,84,000</td>
+            <td class="num">7,12,400</td>
+            <td class="num">1,28,400</td>
+            <td class="num" style="color:var(--success);font-weight:700;">8,40,800</td>
+            <td><button class="btn btn-primary btn-sm">SPL-02</button></td>
+          </tr>
+          <tr>
+            <td>FY 2019-20</td>
+            <td><span class="ims-status-pill pending">SCN issued</span></td>
+            <td class="mono">DRC-01-2701/24</td>
+            <td>09-Oct-2024</td>
+            <td class="num">4,18,000</td>
+            <td class="num">1,82,000</td>
+            <td class="num">41,800</td>
+            <td class="num" style="color:var(--success);font-weight:700;">2,23,800</td>
+            <td><button class="btn btn-primary btn-sm">SPL-01</button></td>
+          </tr>
+          <tr>
+            <td>FY 2019-20</td>
+            <td><span class="ims-status-pill reject">Appeal order</span></td>
+            <td class="mono">APL-04-2701/24</td>
+            <td>04-Nov-2024</td>
+            <td class="num">2,84,000</td>
+            <td class="num">1,12,000</td>
+            <td class="num">28,400</td>
+            <td class="num" style="color:var(--success);font-weight:700;">1,40,400</td>
+            <td><button class="btn btn-primary btn-sm">SPL-02</button></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr style="font-weight:700;background:var(--bg);">
+            <td colspan="4">TOTAL POTENTIAL WAIVER</td>
+            <td class="num">28,28,000</td>
+            <td class="num">14,88,400</td>
+            <td class="num">2,82,800</td>
+            <td class="num" style="color:var(--success);">₹ 17,71,200</td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <!-- DEADLINE BAR -->
+    <div class="card" style="padding:18px 22px;background:#FFF5F6;border-left:4px solid var(--error);">
+      <div style="display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;">
+        <div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">Key deadlines</div>
+          <div style="font-size:12.5px;color:var(--text-muted);line-height:1.7;">
+            <strong>Tax payment deadline:</strong> 31-Mar-2025 — pay the disputed tax in full (no waiver on tax itself)<br>
+            <strong>Application deadline:</strong> 30-Jun-2025 — file SPL-01 / SPL-02 within 3 months of paying<br>
+            Verify any extension on the GST portal before sunsetting this module.
+          </div>
+        </div>
+        <button class="btn btn-primary cta-large">Set deadline reminder</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('amnesty', 'Section 128A · Amnesty Scheme', 'Compliance · SPL-01 / SPL-02');</script>
+</body>
+</html>

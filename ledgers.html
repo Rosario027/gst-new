@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ledgers &amp; Payments · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Ledgers &amp; Payments</h1>
+        <p class="page-subtitle">All electronic ledgers, challans, voluntary payments and demand orders &middot; auto-synced from GSTN portal every 6 hours</p>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn btn-primary cta-large" onclick="if(window.showToast)window.showToast('Resyncing all 4 ledgers from GSTN portal &middot; ETA 12 sec');">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          Sync all from portal
+        </button>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 18px;margin-bottom:18px;background:rgba(22,135,54,0.06);border-left:3px solid var(--success);border-radius:6px;">
+      <div style="font-size:12px;color:var(--text);">
+        <strong>Last successful sync:</strong> 15-May-2026 09:18:42 IST &middot; all 4 ledgers up-to-date &middot; <a href="#" style="color:var(--info);">View sync log</a>
+      </div>
+      <div style="font-size:11px;color:var(--text-muted);font-family:var(--font-mono);">Next auto-sync: 15:18 IST</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));gap:14px;margin-bottom:24px;">
+
+      <a href="cash-ledger.html" class="card" style="padding:18px;text-decoration:none;color:inherit;transition:transform 0.12s, box-shadow 0.12s;border-top:3px solid var(--success);" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 16px rgba(0,0,0,0.08)';" onmouseout="this.style.transform='';this.style.boxShadow='';">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <div style="width:34px;height:34px;border-radius:8px;background:rgba(22,135,54,0.15);color:var(--success);display:grid;place-items:center;">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+          </div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);">Cash Ledger</div>
+        </div>
+        <div style="font-size:11.5px;color:var(--text-muted);line-height:1.45;margin-bottom:10px;">Electronic cash ledger &middot; tax / interest / fee / penalty buckets &middot; major + minor head split</div>
+        <div style="font-size:18px;font-weight:700;color:var(--text);font-family:var(--font-mono);">&#8377; 84.21 L</div>
+        <div style="font-size:10.5px;color:var(--success);margin-top:3px;">Available balance &middot; usable for setoff</div>
+        <div style="display:flex;gap:6px;margin-top:12px;">
+          <button class="btn btn-secondary btn-sm" style="font-size:10.5px;padding:5px 8px;flex:1;justify-content:center;" onclick="event.preventDefault();event.stopPropagation();if(window.showToast)window.showToast('Syncing Cash Ledger from portal...');">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="11" height="11" stroke-width="2.4"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            Sync
+          </button>
+          <button class="btn btn-secondary btn-sm" style="font-size:10.5px;padding:5px 8px;flex:1;justify-content:center;" onclick="event.preventDefault();event.stopPropagation();if(window.showToast)window.showToast('Downloading Cash Ledger statement (Excel)...');">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="11" height="11" stroke-width="2.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Excel
+          </button>
+        </div>
+      </a>
+
+      <a href="credit-ledger.html" class="card" style="padding:18px;text-decoration:none;color:inherit;transition:transform 0.12s, box-shadow 0.12s;border-top:3px solid var(--info);" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 16px rgba(0,0,0,0.08)';" onmouseout="this.style.transform='';this.style.boxShadow='';">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <div style="width:34px;height:34px;border-radius:8px;background:rgba(21,92,219,0.12);color:var(--info);display:grid;place-items:center;">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);">Credit Ledger (ITC)</div>
+        </div>
+        <div style="font-size:11.5px;color:var(--text-muted);line-height:1.45;margin-bottom:10px;">Electronic credit ledger &middot; IGST / CGST / SGST / Cess balances &middot; setoff hierarchy</div>
+        <div style="font-size:18px;font-weight:700;color:var(--text);font-family:var(--font-mono);">&#8377; 3.42 Cr</div>
+        <div style="font-size:10.5px;color:var(--info);margin-top:3px;">Available ITC &middot; usable post 3B filing</div>
+        <div style="display:flex;gap:6px;margin-top:12px;">
+          <button class="btn btn-secondary btn-sm" style="font-size:10.5px;padding:5px 8px;flex:1;justify-content:center;" onclick="event.preventDefault();event.stopPropagation();if(window.showToast)window.showToast('Syncing Credit Ledger from portal...');">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="11" height="11" stroke-width="2.4"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            Sync
+          </button>
+          <button class="btn btn-secondary btn-sm" style="font-size:10.5px;padding:5px 8px;flex:1;justify-content:center;" onclick="event.preventDefault();event.stopPropagation();if(window.showToast)window.showToast('Downloading Credit Ledger statement (Excel)...');">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="11" height="11" stroke-width="2.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Excel
+          </button>
+        </div>
+      </a>
+
+      <a href="challans.html" class="card" style="padding:18px;text-decoration:none;color:inherit;transition:transform 0.12s, box-shadow 0.12s;border-top:3px solid var(--ey-yellow);" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 16px rgba(0,0,0,0.08)';" onmouseout="this.style.transform='';this.style.boxShadow='';">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <div style="width:34px;height:34px;border-radius:8px;background:rgba(255,230,0,0.20);color:var(--ey-black-deep);display:grid;place-items:center;">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+          </div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);">Challans (PMT-06)</div>
+        </div>
+        <div style="font-size:11.5px;color:var(--text-muted);line-height:1.45;margin-bottom:10px;">Cash deposit challans &middot; 4 modes: NEFT, RTGS, OTC, internet banking &middot; CIN tracking</div>
+        <div style="font-size:18px;font-weight:700;color:var(--text);font-family:var(--font-mono);">12 pending</div>
+        <div style="font-size:10.5px;color:var(--warning);margin-top:3px;">2 expiring in 24 hrs &middot; <strong>action needed</strong></div>
+        <div style="display:flex;gap:6px;margin-top:12px;">
+          <button class="btn btn-secondary btn-sm" style="font-size:10.5px;padding:5px 8px;flex:1;justify-content:center;" onclick="event.preventDefault();event.stopPropagation();if(window.showToast)window.showToast('Syncing challan status from portal...');">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="11" height="11" stroke-width="2.4"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            Sync
+          </button>
+          <button class="btn btn-secondary btn-sm" style="font-size:10.5px;padding:5px 8px;flex:1;justify-content:center;" onclick="event.preventDefault();event.stopPropagation();if(window.showToast)window.showToast('Downloading challan list (Excel)...');">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="11" height="11" stroke-width="2.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Excel
+          </button>
+        </div>
+      </a>
+
+      <a href="drc03a.html" class="card" style="padding:18px;text-decoration:none;color:inherit;transition:transform 0.12s, box-shadow 0.12s;border-top:3px solid #7C3AED;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 16px rgba(0,0,0,0.08)';" onmouseout="this.style.transform='';this.style.boxShadow='';">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <div style="width:34px;height:34px;border-radius:8px;background:rgba(124,58,237,0.15);color:#7C3AED;display:grid;place-items:center;">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);">DRC-03A</div>
+        </div>
+        <div style="font-size:11.5px;color:var(--text-muted);line-height:1.45;margin-bottom:10px;">Link voluntary payment (DRC-03) to outstanding demand orders &middot; reduces demand balance</div>
+        <div style="font-size:18px;font-weight:700;color:var(--text);font-family:var(--font-mono);">4 unlinked</div>
+        <div style="font-size:10.5px;color:#7C3AED;margin-top:3px;">DRC-03s available to link &middot; <strong>review</strong></div>
+        <div style="display:flex;gap:6px;margin-top:12px;">
+          <button class="btn btn-secondary btn-sm" style="font-size:10.5px;padding:5px 8px;flex:1;justify-content:center;" onclick="event.preventDefault();event.stopPropagation();if(window.showToast)window.showToast('Syncing DRC-03A links from portal...');">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="11" height="11" stroke-width="2.4"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            Sync
+          </button>
+          <button class="btn btn-secondary btn-sm" style="font-size:10.5px;padding:5px 8px;flex:1;justify-content:center;" onclick="event.preventDefault();event.stopPropagation();if(window.showToast)window.showToast('Downloading DRC-03A linkage history (Excel)...');">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="11" height="11" stroke-width="2.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Excel
+          </button>
+        </div>
+      </a>
+
+    </div>
+
+    <div class="card" style="padding:20px 22px;margin-bottom:20px;background:linear-gradient(135deg,var(--ey-black-deep) 0%,#3A3A4D 100%);color:#fff;">
+      <div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.7);font-weight:700;margin-bottom:8px;">Combined ledger position</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:18px;">
+        <div>
+          <div style="font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.6);">Total cash</div>
+          <div style="font-size:24px;font-weight:700;color:#fff;font-family:var(--font-mono);margin-top:4px;">&#8377; 84.21 L</div>
+        </div>
+        <div>
+          <div style="font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.6);">Total ITC</div>
+          <div style="font-size:24px;font-weight:700;color:#fff;font-family:var(--font-mono);margin-top:4px;">&#8377; 3.42 Cr</div>
+        </div>
+        <div>
+          <div style="font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.6);">May 3B liability (est.)</div>
+          <div style="font-size:24px;font-weight:700;color:var(--ey-yellow);font-family:var(--font-mono);margin-top:4px;">&#8377; 1.84 Cr</div>
+        </div>
+        <div>
+          <div style="font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.6);">Net additional cash req.</div>
+          <div style="font-size:24px;font-weight:700;color:#fff;font-family:var(--font-mono);margin-top:4px;">&#8377; 0</div>
+          <div style="font-size:10.5px;color:rgba(255,255,255,0.7);margin-top:2px;">ITC + cash sufficient</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('ledgers', 'Ledgers &amp; Payments', 'Combined view &middot; auto-synced from GSTN portal');</script>
+</body>
+</html>

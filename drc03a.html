@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DRC-03A · Adjust Voluntary Payments · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px;">
+          <a href="ledgers.html" class="back-arrow-link-inline" style="text-decoration:none;color:var(--text-muted);font-weight:600;">Ledgers &amp; Payments</a> &middot; <strong style="color:var(--text);">DRC-03A</strong>
+        </div>
+        <h1 class="page-title">DRC-03A · Link voluntary payment to demand order</h1>
+        <p class="page-subtitle">Adjust an earlier DRC-03 voluntary payment against a subsequent demand · Rule 142(2B) · Notification 12/2024-CT</p>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn btn-secondary">Filing history</button>
+      </div>
+    </div>
+
+    <div class="help-strip">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <div><strong>What DRC-03A does:</strong> Earlier, taxpayers who paid tax voluntarily via DRC-03 and were later issued a demand order (DRC-07 / DRC-08 / MOV-09 / MOV-11 / APL-04) for the same liability had to pay again — the DRC-03 payment did not auto-offset against the demand. <strong>DRC-03A (available from Nov 2024)</strong> lets you formally link the earlier voluntary payment to the demand order so the electronic liability register marks it as discharged.</div>
+    </div>
+
+    <!-- 3-STEP FLOW -->
+    <div class="lifecycle-timeline">
+      <div class="lifecycle-phase current">
+        <div class="phase-icon-circle">1</div>
+        <div class="phase-content">
+          <div class="phase-label">Search DRC-03 ARN</div>
+          <div class="phase-meta">Find your earlier voluntary payment</div>
+        </div>
+      </div>
+      <div class="phase-connector"></div>
+      <div class="lifecycle-phase">
+        <div class="phase-icon-circle">2</div>
+        <div class="phase-content">
+          <div class="phase-label">Pick open demand order</div>
+          <div class="phase-meta">DRC-07 / 08 / MOV-09 / 11 / APL-04</div>
+        </div>
+      </div>
+      <div class="phase-connector"></div>
+      <div class="lifecycle-phase">
+        <div class="phase-icon-circle">3</div>
+        <div class="phase-content">
+          <div class="phase-label">Preview &amp; file with DSC</div>
+          <div class="phase-meta">Liability register auto-updates</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 1 - SEARCH DRC-03 -->
+    <div class="card" style="padding:22px 24px;margin-bottom:20px;">
+      <div class="card-section-header">
+        <div>
+          <div class="card-section-title">Step 1 · Search your DRC-03 voluntary payment</div>
+          <div class="card-section-sub">Enter the ARN or pick from your filed DRC-03 list</div>
+        </div>
+      </div>
+
+      <div class="filter-bar" style="margin-bottom:14px;">
+        <div class="field" style="flex:1.5;">
+          <label class="field-label">DRC-03 ARN</label>
+          <input type="text" class="input mono" value="AD2701241234567" placeholder="AD or AA-prefixed ARN" style="width:100%;">
+        </div>
+        <div class="field">
+          <label class="field-label">Filing date</label>
+          <input type="text" class="input" value="27-Jan-2025" readonly style="width:100%;">
+        </div>
+        <div class="field">
+          <label class="field-label">Amount paid</label>
+          <input type="text" class="input num" value="₹ 4,82,000" readonly style="width:100%;text-align:right;font-family:var(--font-mono);">
+        </div>
+        <div class="field" style="align-self:end;">
+          <button class="btn btn-primary cta-large">Fetch details</button>
+        </div>
+      </div>
+
+      <div style="background:#F0F7FF;border-left:3px solid var(--info);padding:14px 16px;border-radius:var(--radius-sm);">
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px;">DRC-03 found</div>
+        <div style="font-size:12.5px;color:var(--text-muted);line-height:1.7;">
+          <strong>ARN:</strong> <span class="mono">AD2701241234567</span> &middot; <strong>Filed:</strong> 27-Jan-2025 &middot; <strong>Cause:</strong> Voluntary (annual return scrutiny) &middot; <strong>Period:</strong> FY 2022-23<br>
+          <strong>Amount paid:</strong> ₹ 4,82,000 (Tax 3,60,000 + Interest 88,000 + Penalty 34,000)<br>
+          <strong>Currently:</strong> Available for adjustment · ₹ 4,82,000 unutilised
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2 - PICK DEMAND -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:18px 22px;border-bottom:1px solid var(--border);">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">Step 2 · Open demand orders for this GSTIN</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Select the demand you want to discharge using the DRC-03 payment</div>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width:36px;"></th>
+            <th>Order type</th>
+            <th>Order #</th>
+            <th>Order date</th>
+            <th>Period</th>
+            <th class="num">Demand · Tax</th>
+            <th class="num">Demand · Int</th>
+            <th class="num">Demand · Penalty</th>
+            <th class="num">Total open</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="radio" name="demand" checked></td>
+            <td><span class="ims-status-pill reject">DRC-07</span></td>
+            <td class="mono">ZD27042500842</td>
+            <td>02-Apr-2025</td>
+            <td>FY 2022-23</td>
+            <td class="num">3,60,000</td>
+            <td class="num">1,02,000</td>
+            <td class="num">36,000</td>
+            <td class="num">4,98,000</td>
+          </tr>
+          <tr>
+            <td><input type="radio" name="demand"></td>
+            <td><span class="ims-status-pill pending">DRC-08</span></td>
+            <td class="mono">ZD27062500128</td>
+            <td>14-Jun-2025</td>
+            <td>FY 2023-24</td>
+            <td class="num">1,20,000</td>
+            <td class="num">28,000</td>
+            <td class="num">12,000</td>
+            <td class="num">1,60,000</td>
+          </tr>
+          <tr>
+            <td><input type="radio" name="demand"></td>
+            <td><span class="ims-status-pill noaction">MOV-09</span></td>
+            <td class="mono">ZM27082500071</td>
+            <td>21-Aug-2025</td>
+            <td>EWB · Sep-2024</td>
+            <td class="num">18,000</td>
+            <td class="num">—</td>
+            <td class="num">18,000</td>
+            <td class="num">36,000</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ADJUSTMENT PREVIEW -->
+    <div class="card" style="padding:22px 24px;margin-bottom:20px;background:linear-gradient(135deg, #F0FFF4, var(--surface));border-left:4px solid var(--success);">
+      <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:14px;">Adjustment preview</div>
+      <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:16px;">
+        <div>
+          <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;font-weight:600;">Demand</div>
+          <div style="font-size:18px;font-weight:700;color:var(--text);font-family:var(--font-mono);">₹ 4,98,000</div>
+          <div style="font-size:11px;color:var(--text-muted);">DRC-07 · ZD27042500842</div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;font-weight:600;">DRC-03 paid</div>
+          <div style="font-size:18px;font-weight:700;color:var(--success);font-family:var(--font-mono);">− ₹ 4,82,000</div>
+          <div style="font-size:11px;color:var(--text-muted);">AD2701241234567</div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;font-weight:600;">Balance to pay</div>
+          <div style="font-size:18px;font-weight:700;color:var(--warning);font-family:var(--font-mono);">₹ 16,000</div>
+          <div style="font-size:11px;color:var(--text-muted);">Interest top-up</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">Step 3 · Sign and file</div>
+        <div class="action-bar-status">Electronic liability register updates within 30 minutes of filing</div>
+      </div>
+      <div class="action-bar-actions">
+        <button class="btn btn-secondary cta-large">Save draft</button>
+        <button class="btn btn-secondary cta-large">Preview PDF</button>
+        <button class="btn btn-primary cta-xlarge">File DRC-03A with DSC →</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('drc03a', 'DRC-03A · Adjust Voluntary Payment', 'Compliance · Demand &amp; Recovery');</script>
+</body>
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GSTR-6 Monthly Return · ISD · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">GSTR-6 · Monthly Return for Input Service Distributor</h1>
+        <p class="page-subtitle">Receive common-services ITC at the ISD GSTIN and distribute to recipient units (12) · Due 13th of following month · May 2026 filing</p>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn btn-secondary cta-large">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download JSON
+        </button>
+        <button class="btn btn-secondary cta-large">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Preview Return
+        </button>
+      </div>
+    </div>
+
+    <!-- ISD CONTEXT BANNER -->
+    <div class="card" style="background:linear-gradient(135deg, #4338CA 0%, #6366F1 100%);color:#fff;border:none;padding:20px 24px;margin-bottom:20px;">
+      <div style="display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;">
+        <div style="width:48px;height:48px;border-radius:12px;background:rgba(255,255,255,0.15);display:grid;place-items:center;">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
+        </div>
+        <div>
+          <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.85);font-weight:600;margin-bottom:4px">ISD Registration · Mandatory from 01-Apr-2025</div>
+          <div style="font-size:18px;font-weight:700;color:#fff;">Notification 16/2024-CT &middot; Common input services across multiple states under same PAN must be distributed via ISD</div>
+          <div style="margin-top:6px;font-size:12.5px;color:rgba(255,255,255,0.82);">As ISD, you receive invoices for shared services (corporate audit, legal, IT licenses, advertising) at this GSTIN. You then distribute eligible / ineligible ITC to recipient units in proportion to their turnover, per Rule 39.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4-STEP ISD WORKFLOW -->
+    <div class="workflow-lifecycle">
+      <div class="workflow-lifecycle-header">
+        <div>
+          <div class="workflow-lifecycle-title">Prepare GSTR-6 &middot; ISD distribution workflow</div>
+          <div class="workflow-lifecycle-sub">4 phases &middot; from auto-fetch GSTR-6A to filing with EVC &middot; due by 13th of next month</div>
+        </div>
+        <div class="workflow-progress-pill">2 of 4 complete</div>
+      </div>
+      <div class="step-cards">
+
+        <a href="gstr6-step1.html" class="step-card completed">
+          <div class="step-num">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="step-body">
+            <div class="step-card-title">
+              Auto-fetch GSTR-6A
+              <span class="step-pill completed">Completed</span>
+            </div>
+            <div class="step-card-desc">GSTR-6A is the auto-drafted document that pulls every invoice / debit / credit note where suppliers entered your ISD GSTIN in their GSTR-1 Table 4. View-only on portal &mdash; here you can also categorise as eligible / ineligible ITC.</div>
+            <div class="step-card-meta">3,418 supplier records pulled &middot; &#8377; 84.18 L ITC available &middot; Last sync 14-May 09:48 AM</div>
+          </div>
+          <div class="step-cta">Review &rarr;</div>
+        </a>
+
+        <a href="gstr6-step2.html" class="step-card completed">
+          <div class="step-num">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="step-body">
+            <div class="step-card-title">
+              Distribute ITC to Recipient Units
+              <span class="step-pill completed">Completed</span>
+            </div>
+            <div class="step-card-desc">Distribute eligible ITC across 12 recipient units in proportion to their last-FY turnover (Rule 39). Same-state units get CGST+SGST; other-state units get IGST. Ineligible ITC distributed proportionately but with ITC-blocked flag.</div>
+            <div class="step-card-meta">&#8377; 82.14 L distributed &middot; 12 unit GSTINs &middot; ineligible &#8377; 2.04 L flagged separately</div>
+          </div>
+          <div class="step-cta">Review &rarr;</div>
+        </a>
+
+        <a href="gstr6-step3.html" class="step-card current">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-card-title">
+              Preview, Submit &amp; File with DSC / EVC
+              <span class="step-pill current">In progress</span>
+            </div>
+            <div class="step-card-desc">Verify Tables 3 (ITC received), 5/8 (ITC distribution), 6 (amendments), 9 (re-distribution if needed). Submit (freezes values) and file with DSC (mandatory for companies / LLPs) or EVC. ARN issued instantly.</div>
+            <div class="step-card-meta">Draft ready &middot; &#8377; 82.14 L net to distribute &middot; recipient ISD-1 statements ready</div>
+          </div>
+          <div class="step-cta">Open Step &rarr;</div>
+        </a>
+
+        <a href="#amendments" class="step-card">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-card-title">
+              Amendments &amp; Re-distribution (if needed)
+              <span class="step-pill upcoming">Optional</span>
+            </div>
+            <div class="step-card-desc">Table 6 &middot; amend prior-period invoices. Table 9 &middot; re-distribute excess credit (e.g. a recipient unit closed or amalgamated). Both optional &mdash; use only if corrections are needed.</div>
+            <div class="step-card-meta">2 amendments queued from April-26 filing</div>
+          </div>
+          <div class="step-cta">Open Step &rarr;</div>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- LIFECYCLE STRIP -->
+    <div class="lifecycle-strip">
+      <div class="lifecycle-header">
+        <div class="lifecycle-header-title">GSTR-6 filing lifecycle &middot; Monthly &middot; Due 13th of following month</div>
+        <div class="lifecycle-header-help">Late fee &#8377; 50/day (max &#8377; 5,000) &middot; ITC distribution to recipients delayed until filed</div>
+      </div>
+      <div class="lifecycle-body">
+        <div class="lifecycle-phase past">
+          <div class="phase-marker"><span class="marker-dot"></span>Previous period</div>
+          <div class="phase-title">April 2026</div>
+          <div class="phase-status success">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+            Filed on 12-May-2026
+          </div>
+          <div class="phase-due">
+            <span class="due-date mono">ARN AA270526001284M</span>
+            <span class="days-left onTrack">1 day before due</span>
+          </div>
+        </div>
+        <div class="lifecycle-phase current">
+          <div class="phase-marker"><span class="marker-dot"></span>Current period &middot; in progress</div>
+          <div class="phase-title">May 2026</div>
+          <div class="phase-status">Steps 1-2 done &middot; ready to preview &amp; file</div>
+          <div class="phase-due">
+            <span class="due-date">Due 13-Jun-2026</span>
+            <span class="days-left onTrack">29 days remaining</span>
+          </div>
+        </div>
+        <div class="lifecycle-phase upcoming">
+          <div class="phase-marker"><span class="marker-dot"></span>Next period</div>
+          <div class="phase-title">June 2026</div>
+          <div class="phase-status">Records being captured from supplier filings</div>
+          <div class="phase-due">
+            <span class="due-date">Due 13-Jul-2026</span>
+            <span class="days-left">59 days</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KEY METRICS -->
+    <div class="big-stat-grid" style="margin-bottom:20px;">
+      <div class="big-stat accent">
+        <div class="big-stat-label">Total ITC received (May)</div>
+        <div class="big-stat-value">&#8377; 84.18 L</div>
+        <div class="big-stat-sub">3,418 supplier invoices in GSTR-6A</div>
+      </div>
+      <div class="big-stat" style="border-left:3px solid var(--success)">
+        <div class="big-stat-label">Eligible ITC</div>
+        <div class="big-stat-value" style="color:var(--success)">&#8377; 82.14 L</div>
+        <div class="big-stat-sub">97.6% &middot; to be distributed</div>
+      </div>
+      <div class="big-stat" style="border-left:3px solid var(--error)">
+        <div class="big-stat-label">Ineligible ITC</div>
+        <div class="big-stat-value" style="color:var(--error)">&#8377; 2.04 L</div>
+        <div class="big-stat-sub">&sect;17(5) blocked &middot; flagged separately</div>
+      </div>
+      <div class="big-stat">
+        <div class="big-stat-label">Recipient units</div>
+        <div class="big-stat-value">12</div>
+        <div class="big-stat-sub">Across 8 states &middot; same PAN</div>
+      </div>
+    </div>
+
+    <!-- ITC DISTRIBUTION SNAPSHOT (top 6 recipient units by share) -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:18px 22px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+        <div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);">ITC distribution snapshot &middot; May 2026</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Allocation ratio per Rule 39 based on prior-FY turnover &middot; top 6 of 12 recipient units shown</div>
+        </div>
+        <a href="gstr6-step2.html" class="btn btn-secondary btn-sm">View all 12 &rarr;</a>
+      </div>
+      <div class="table-wrap">
+<table class="data-table grid-lined">
+        <thead>
+          <tr>
+            <th>Recipient unit</th>
+            <th>GSTIN</th>
+            <th>State</th>
+            <th class="num">Turnover share</th>
+            <th class="num">IGST distributed</th>
+            <th class="num">CGST</th>
+            <th class="num">SGST</th>
+            <th class="num">Total ITC (&#8377;)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Tata Steel &middot; Maharashtra</td>
+            <td class="mono">27AABCT3518Q1ZV</td>
+            <td>Maharashtra (27)</td>
+            <td class="num">42.8%</td>
+            <td class="num">&mdash;</td>
+            <td class="num">17,57,592</td>
+            <td class="num">17,57,592</td>
+            <td class="num">35,15,184</td>
+          </tr>
+          <tr>
+            <td>Tata Steel &middot; Karnataka</td>
+            <td class="mono">29AABCT3518Q4ZY</td>
+            <td>Karnataka (29)</td>
+            <td class="num">18.2%</td>
+            <td class="num">14,94,948</td>
+            <td class="num">&mdash;</td>
+            <td class="num">&mdash;</td>
+            <td class="num">14,94,948</td>
+          </tr>
+          <tr>
+            <td>Tata Steel &middot; Tamil Nadu</td>
+            <td class="mono">33AABCT3518Q5ZX</td>
+            <td>Tamil Nadu (33)</td>
+            <td class="num">12.4%</td>
+            <td class="num">10,18,536</td>
+            <td class="num">&mdash;</td>
+            <td class="num">&mdash;</td>
+            <td class="num">10,18,536</td>
+          </tr>
+          <tr>
+            <td>Tata Motors &middot; Gujarat</td>
+            <td class="mono">24AABCT3518Q6ZW</td>
+            <td>Gujarat (24)</td>
+            <td class="num">9.8%</td>
+            <td class="num">8,04,972</td>
+            <td class="num">&mdash;</td>
+            <td class="num">&mdash;</td>
+            <td class="num">8,04,972</td>
+          </tr>
+          <tr>
+            <td>Tata Power &middot; Delhi</td>
+            <td class="mono">07AABCT3518Q7ZV</td>
+            <td>Delhi (07)</td>
+            <td class="num">6.4%</td>
+            <td class="num">5,25,696</td>
+            <td class="num">&mdash;</td>
+            <td class="num">&mdash;</td>
+            <td class="num">5,25,696</td>
+          </tr>
+          <tr>
+            <td>Tata Consumer &middot; West Bengal</td>
+            <td class="mono">19AABCT3518Q8ZU</td>
+            <td>West Bengal (19)</td>
+            <td class="num">4.2%</td>
+            <td class="num">3,44,988</td>
+            <td class="num">&mdash;</td>
+            <td class="num">&mdash;</td>
+            <td class="num">3,44,988</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr style="font-weight:700;background:var(--bg);">
+            <td colspan="3">Top 6 of 12 recipient units &middot; balance &#8377; 5.10 L across 6 smaller units</td>
+            <td class="num">93.8%</td>
+            <td class="num">41,89,140</td>
+            <td class="num">17,57,592</td>
+            <td class="num">17,57,592</td>
+            <td class="num">77,04,324</td>
+          </tr>
+        </tfoot>
+      </table>
+</div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('gstr6', 'GSTR-6 ISD', 'Monthly Return &middot; Due 13-Jun-2026');</script>
+</body>
+</html>

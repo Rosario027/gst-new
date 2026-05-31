@@ -1,0 +1,1815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step 3 · Confirm Inward Summary · GSTR-3B · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Step 3 · Confirm Inward Summary</h1>
+        <p class="page-subtitle">Reconcile your Purchase Register against the auto-fetched IMS data · take Accept / Reject / Pending decisions · finalise what flows into GSTR-2B and GSTR-3B Table 4</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="gstr3b.html" class="btn btn-secondary back-arrow-link">Back to GSTR-3B</a>
+      </div>
+    </div>
+
+    <!-- STEP PROGRESS BAR -->
+
+    <div class="step-progress-bar">
+      <a href="gstr3b-step1.html" class="step-pip done step-pip-link" title="Go to Purchase data"><div class="step-pip-dot"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Purchase data</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr3b-step2.html" class="step-pip done step-pip-link" title="Go to Auto IMS fetch"><div class="step-pip-dot"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Auto IMS fetch</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr3b-step3.html" class="step-pip current step-pip-link" title="Go to Confirm Inward"><div class="step-pip-dot">3</div>Confirm Inward</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr3b-step4.html" class="step-pip  step-pip-link" title="Go to Tax Summary"><div class="step-pip-dot">4</div>Tax Summary</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr3b-step5.html" class="step-pip  step-pip-link" title="Go to ITC &amp; Set-off"><div class="step-pip-dot">5</div>ITC &amp; Set-off</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr3b-step6.html" class="step-pip  step-pip-link" title="Go to Preview &amp; File"><div class="step-pip-dot">6</div>Preview &amp; File</a>
+    </div>
+
+    <!-- STEP FLOW MOUNT (v2.0.10) -->
+    <div id="step-flow"></div>
+
+    <!-- RECONCILIATION SOURCES (v2.0.28 — IMS or 2B selectable) -->
+    <div style="margin:8px 0 10px;">
+      <div style="font-size:15px;font-weight:700;color:var(--text);letter-spacing:-0.005em;">Reconciliation sources · <span data-recon-label data-ims="IMS vs Books" data-b2b="GSTR-2B vs Books">IMS vs Books</span></div>
+      <div style="font-size:12.5px;color:var(--text-muted);margin-top:3px;"><span data-recon-label data-ims="The match engine pairs IMS records (from Step 2, locked) with your Books / PR data. Choose 2B if you prefer the static snapshot view." data-b2b="The match engine pairs the static GSTR-2B snapshot with your Books / PR data. Choose IMS for the actionable workflow view.">The match engine pairs IMS records (from Step 2, locked) with your Books / PR data. Choose 2B if you prefer the static snapshot view.</span></div>
+    </div>
+
+    <div class="drop-zone-pair">
+
+      <!-- v2.0.28: SOURCE SELECTOR (IMS or 2B) -->
+      <div class="drop-zone has-file" style="border-color:var(--info);">
+        <div class="drop-zone-head">
+          <div>
+            <div class="drop-zone-title">Choose reconciliation source</div>
+            <div class="drop-zone-sub">Pick the supplier-reported side to match against your books. IMS is workflow-actionable (Accept/Reject); 2B is the locked snapshot that drives ITC eligibility.</div>
+          </div>
+          <span class="drop-zone-source-pill auto" style="background:rgba(21,92,219,0.12);color:var(--info);">Auto-synced from GSTN</span>
+        </div>
+
+        <div class="source-toggle-group" role="radiogroup" aria-label="Reconciliation source">
+          <button class="source-toggle-btn active" data-source="ims" type="button" onclick="window.setReconSource && window.setReconSource('ims')" role="radio" aria-checked="true">
+            <div class="source-toggle-icon" style="background:rgba(21,92,219,0.12);color:var(--info);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <div class="source-toggle-text">
+              <div class="source-toggle-title">IMS &middot; <span class="mono">1,82,891</span> records</div>
+              <div class="source-toggle-sub">Dynamic workflow &middot; Accept / Reject / Pending per row</div>
+            </div>
+            <div class="source-toggle-check">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+          </button>
+          <button class="source-toggle-btn" data-source="2b" type="button" onclick="window.setReconSource && window.setReconSource('2b')" role="radio" aria-checked="false">
+            <div class="source-toggle-icon" style="background:rgba(124,58,237,0.12);color:#7C3AED;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+            </div>
+            <div class="source-toggle-text">
+              <div class="source-toggle-title">GSTR-2B &middot; <span class="mono">1,82,418</span> records</div>
+              <div class="source-toggle-sub">Static snapshot &middot; read-only ITC pool &middot; locked on 14th</div>
+            </div>
+            <div class="source-toggle-check">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+          </button>
+        </div>
+
+        <div class="source-active-info" data-active-info="ims">
+          <div class="drop-zone-file" style="margin-top:0;">
+            <div class="drop-zone-file-icon" style="background:rgba(21,92,219,0.12);color:var(--info);">JSON</div>
+            <div style="min-width:0;">
+              <div class="drop-zone-file-name">ims-fetch-v4.json</div>
+              <div class="drop-zone-file-meta">14.2 MB &middot; 6 IMS sections &middot; cut-off 14-Jun-2026</div>
+            </div>
+            <button class="row-edit-btn" title="Download IMS data">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              DL
+            </button>
+          </div>
+          <div class="drop-zone-actions" style="margin-top:14px;">
+            <a href="gstr3b-step2.html" class="btn btn-secondary btn-sm">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+              Back to Step 2 to re-sync IMS
+            </a>
+          </div>
+        </div>
+
+        <div class="source-active-info" data-active-info="2b" style="display:none;">
+          <div class="drop-zone-file" style="margin-top:0;">
+            <div class="drop-zone-file-icon" style="background:rgba(124,58,237,0.12);color:#7C3AED;">JSON</div>
+            <div style="min-width:0;">
+              <div class="drop-zone-file-name">gstr2b-snapshot-14Jun.json</div>
+              <div class="drop-zone-file-meta">12.8 MB &middot; locked snapshot &middot; generated 14-Jun-2026 23:59 by GSTN</div>
+            </div>
+            <button class="row-edit-btn" title="Download 2B data">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              DL
+            </button>
+          </div>
+          <div class="drop-zone-actions" style="margin-top:14px;">
+            <button class="btn btn-secondary btn-sm" onclick="if(window.showToast) window.showToast('Re-syncing GSTR-2B snapshot from GSTN portal...');">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              Re-sync 2B from GSTN
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Books side · uploadable -->
+      <div class="drop-zone has-file">
+        <div class="drop-zone-head">
+          <div>
+            <div class="drop-zone-title">Books / PR side · 1,84,217 records</div>
+            <div class="drop-zone-sub">From Step 1 &middot; can be overridden with a fresh upload if your books changed</div>
+          </div>
+          <span class="drop-zone-source-pill manual">From Step 1</span>
+        </div>
+
+        <div class="drop-zone-file">
+          <div class="drop-zone-file-icon" style="background:rgba(199,119,0,0.15);color:var(--warning);">XLSX</div>
+          <div style="min-width:0;">
+            <div class="drop-zone-file-name">purchase-register-v3.xlsx</div>
+            <div class="drop-zone-file-meta">9.8 MB &middot; from Step 1 &middot; 14-May 09:48:02</div>
+          </div>
+          <button class="row-edit-btn" title="Download Books data">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            DL
+          </button>
+        </div>
+
+        <div class="drop-zone-divider">or override with fresh upload</div>
+
+        <div class="drop-zone-area">
+          <div class="drop-zone-area-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <div class="drop-zone-area-cta">Drop new Books file to re-reconcile</div>
+          <div class="drop-zone-area-formats">.xlsx .csv .json &middot; will trigger re-match against IMS</div>
+        </div>
+
+        <div class="drop-zone-actions">
+          <button class="btn btn-secondary btn-sm">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            Re-sync from SAP MM
+          </button>
+        </div>
+      </div>
+
+    </div>
+    <!-- v2.0.28 — Run Reco prominent CTA, moved BELOW drop zones -->
+    <div class="reco-run-card">
+      <div class="reco-run-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-4"/><polyline points="9 11 12 8 15 11"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+      </div>
+      <div>
+        <div class="reco-run-card-title">Run reconciliation now</div>
+        <div class="reco-run-card-sub" data-recon-label data-ims="Match 1,82,891 IMS records × 1,84,217 Books records using Supplier GSTIN + Doc no + Doc date + Taxable value (±₹1 tolerance) · results populate the 6 sub-tables below" data-b2b="Match 1,82,418 GSTR-2B records × 1,84,217 Books records using Supplier GSTIN + Doc no + Doc date + Taxable value (±₹1 tolerance) · results populate 2B-vs-Books summary below">
+          Match 1,82,891 IMS records × 1,84,217 Books records using Supplier GSTIN + Doc no + Doc date + Taxable value (±&#8377;1 tolerance) · results populate the 6 sub-tables below
+        </div>
+      </div>
+      <button class="reco-run-btn" onclick="if(window.showToast) window.showToast('Match engine running · estimated 12 seconds...');">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Run reco
+      </button>
+    </div>
+
+    <!-- v2.0.40 — PR/Books template download + upload history -->
+    <div class="card" style="padding:14px 18px;margin-bottom:16px;background:linear-gradient(135deg,#FFFDF0,var(--surface));border-left:4px solid var(--ey-yellow);">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
+        <div style="min-width:0;">
+          <div style="font-size:13px;font-weight:700;color:var(--text);">Download Books / PR reco template for reupload</div>
+          <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">If you reconcile offline (Excel), download the template, fill A/R/P decisions per line, then re-upload to the drop zone above &middot; covers all 6 IMS sections + reco buckets</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0;">
+          <button class="btn btn-secondary btn-sm" onclick="if(window.showToast)window.showToast('Downloading Books/PR reco template &middot; pre-populated with current PR data...');">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" stroke-width="2.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download pre-filled template
+          </button>
+          <button class="btn btn-secondary btn-sm" onclick="if(window.showToast)window.showToast('Downloading blank Books/PR reco template (Excel)...');">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" stroke-width="2.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download blank template
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- v2.0.40 — Upload & reco history below drop box -->
+    <div class="activity-tracker-card" style="margin-bottom:18px;">
+      <div class="activity-tracker-head">
+        <div>
+          <div class="activity-tracker-head-title">Upload &amp; reconciliation history &middot; PR / Books side</div>
+          <div class="activity-tracker-head-sub">All PR/Books reco uploads with current status &middot; download the validation-processed file (validated + failed rows in one workbook)</div>
+        </div>
+        <div class="activity-tracker-head-actions">
+          <button class="btn btn-secondary btn-sm">Export log (CSV)</button>
+        </div>
+      </div>
+
+      <table class="data-table grid-lined compact" style="margin-bottom:0;border:none;border-radius:0;">
+        <thead>
+          <tr>
+            <th style="width:120px;">Time</th>
+            <th>File</th>
+            <th style="width:130px;">Source</th>
+            <th class="num" style="width:110px;">Records</th>
+            <th style="width:220px;">Status</th>
+            <th style="width:140px;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background:rgba(255,230,0,0.04);">
+            <td class="mono" style="font-size:11.5px;color:var(--text-muted);">15-May 11:24</td>
+            <td>
+              <div style="font-family:var(--font-mono);font-weight:600;font-size:12px;">pr-reco-v4-decisions.xlsx</div>
+              <div style="font-size:10.5px;color:var(--text-muted);margin-top:2px;">8.4 MB &middot; uploaded by Jude Akash &middot; pre-filled template</div>
+            </td>
+            <td style="font-size:11.5px;color:var(--text-muted);">Manual upload</td>
+            <td class="num mono" style="font-size:11.5px;">1,82,891</td>
+            <td>
+              <span class="activity-status-pill processing">Reconciling 56%</span>
+              <div style="display:flex;align-items:center;gap:6px;margin-top:6px;">
+                <div class="activity-progress-bar" style="flex:1;"><div class="activity-progress-bar-fill" style="width:56%;"></div></div>
+                <span style="font-size:10px;color:var(--text-muted);font-family:var(--font-mono);">ETA 6s</span>
+              </div>
+            </td>
+            <td><button class="row-edit-btn">Cancel</button></td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:11.5px;color:var(--text-muted);">14-May 18:42</td>
+            <td>
+              <div style="font-family:var(--font-mono);font-weight:600;font-size:12px;">pr-reco-v3-decisions.xlsx</div>
+              <div style="font-size:10.5px;color:var(--text-muted);margin-top:2px;">8.1 MB &middot; SAP MM connector export</div>
+            </td>
+            <td style="font-size:11.5px;color:var(--text-muted);">SAP MM connector</td>
+            <td class="num mono" style="font-size:11.5px;">1,82,418</td>
+            <td><span class="activity-status-pill success">Reconciled &middot; 1,68,418 matched &middot; 8,418 pending</span></td>
+            <td>
+              <button class="row-edit-btn" style="background:rgba(22,135,54,0.10);color:var(--success);">Download</button>
+              <button class="row-edit-btn">Reco report</button>
+            </td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:11.5px;color:var(--text-muted);">14-May 11:18</td>
+            <td>
+              <div style="font-family:var(--font-mono);font-weight:600;font-size:12px;">pr-reco-v2-decisions.csv</div>
+              <div style="font-size:10.5px;color:var(--text-muted);margin-top:2px;">5.8 MB &middot; replaced by next upload</div>
+            </td>
+            <td style="font-size:11.5px;color:var(--text-muted);">Manual upload</td>
+            <td class="num mono" style="font-size:11.5px;">1,42,818</td>
+            <td><span class="activity-status-pill partial">Partial reco &middot; 1,082 conflicts to resolve</span></td>
+            <td>
+              <button class="row-edit-btn">Download</button>
+              <button class="row-edit-btn" style="background:rgba(199,119,0,0.10);color:var(--warning);">Resolve</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- RECONCILIATION ENGINE STATUS -->
+    <div class="card" style="background:linear-gradient(135deg, #FFFDF0, var(--surface));border-left:4px solid var(--ey-yellow);padding:18px 22px;margin-bottom:20px;">
+      <div style="display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;">
+        <div style="width:42px;height:42px;border-radius:10px;background:var(--ey-yellow);color:var(--ey-black-deep);display:grid;place-items:center;">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div>
+          <div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);font-weight:700">Match engine run &middot; 14-May 10:02:18</div>
+          <div style="font-size:15px;font-weight:700;color:var(--text);">1,84,217 PR records &times; 1,82,891 IMS records &rarr; 1,79,418 matched (97.6%)</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Match keys: Supplier GSTIN + Doc number + Doc date + Taxable value (&plusmn; &#8377;1 tolerance). Six outcome tables below &middot; bulk Accept / Reject / Pending per table.</div>
+        </div>
+        <button class="btn btn-secondary cta-large">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          Re-run reconciliation
+        </button>
+      </div>
+    </div>
+
+
+
+    
+
+    <!-- OVERALL STATUS STRIP -->
+    <div class="big-stat-grid" style="margin-bottom:20px;">
+      <div class="big-stat" style="border-left:3px solid var(--success);">
+        <div class="big-stat-label">Matched (PR ↔ IMS)</div>
+        <div class="big-stat-value" style="color:var(--success)">1,79,418</div>
+        <div class="big-stat-sub">98.1% · ready for bulk Accept</div>
+      </div>
+      <div class="big-stat" style="border-left:3px solid var(--warning);">
+        <div class="big-stat-label">Non-matched IMS</div>
+        <div class="big-stat-value" style="color:var(--warning)">3,473</div>
+        <div class="big-stat-sub">In IMS · missing from your PR</div>
+      </div>
+      <div class="big-stat" style="border-left:3px solid var(--info);">
+        <div class="big-stat-label">Currently pending</div>
+        <div class="big-stat-value" style="color:var(--info)">142</div>
+        <div class="big-stat-sub">Awaiting your action · 31 days to cut-off</div>
+      </div>
+      <div class="big-stat" style="border-left:3px solid var(--error);">
+        <div class="big-stat-label">Currently rejected</div>
+        <div class="big-stat-value" style="color:var(--error)">18</div>
+        <div class="big-stat-sub">Wrong-GSTIN postings · ₹ 8.4 L excluded</div>
+      </div>
+    </div>
+
+
+    <!-- v2.0.29: IMS VIEW container (visible only when source=ims) -->
+    <div class="recon-view recon-view-ims" data-recon-view="ims">
+
+      <!-- v2.0.35 — Skip note (if IMS already actioned in IMS module) -->
+      <div style="padding:12px 18px;margin-bottom:16px;background:rgba(124,58,237,0.06);border-left:3px solid #7C3AED;border-radius:6px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#7C3AED" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <div style="flex:1;min-width:0;font-size:12px;color:var(--text);">
+          <strong>Already actioned IMS records elsewhere?</strong> If you completed A/R/P decisions via the <a href="ims.html" style="color:#7C3AED;font-weight:600;">IMS module</a> (sidebar &rarr; Reconciliation &rarr; IMS) or via the GSTN portal directly, those actions are already applied &mdash; you can <strong>skip the IMS workflow here</strong> and proceed to ITC &amp; Set-off (Step 4).
+        </div>
+        <a href="gstr3b-step4.html" class="btn btn-secondary btn-sm" style="flex-shrink:0;">Skip to Step 4 &rarr;</a>
+      </div>
+
+      <!-- v2.0.31 — IMS RECO SUMMARY (top-level) -->
+      <div class="card" style="padding:0;margin-bottom:18px;border-left:4px solid var(--info);overflow:hidden;">
+        <div style="padding:16px 22px;background:linear-gradient(135deg,#F0F7FF,var(--surface));border-bottom:1px solid var(--border);">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+            <div>
+              <div style="font-size:14px;font-weight:700;color:var(--text);">IMS reconciliation summary &middot; PR &harr; IMS</div>
+              <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">Match engine output &middot; 1,82,891 IMS records &times; 1,84,217 PR records &middot; 14-May 18:42:08</div>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="if(window.showToast)window.showToast('Downloading consolidated IMS reco summary (Excel)...');">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" stroke-width="2.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download summary (Excel)
+            </button>
+          </div>
+        </div>
+        <div style="padding:0;">
+          <table class="data-table grid-lined compact" style="margin:0;border:none;border-radius:0;">
+            <thead><tr><th>Bucket</th><th class="num">Records</th><th class="num">Taxable (&#8377;)</th><th class="num">IGST (&#8377;)</th><th class="num">CGST+SGST (&#8377;)</th><th>Action default</th><th>Download</th></tr></thead>
+            <tbody>
+              <tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--success);margin-right:8px;"></span>Matched (PR &harr; IMS)</td><td class="num mono">1,68,418</td><td class="num mono">38,42,18,000</td><td class="num mono">6,12,42,000</td><td class="num mono">3,68,18,000</td><td>Accept (auto)</td><td><button class="row-edit-btn">Excel</button></td></tr>
+              <tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--warning);margin-right:8px;"></span>Non-matched IMS</td><td class="num mono">8,418</td><td class="num mono">2,42,18,000</td><td class="num mono">42,18,000</td><td class="num mono">28,42,000</td><td>Pending review</td><td><button class="row-edit-btn">Excel</button></td></tr>
+              <tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--info);margin-right:8px;"></span>Prior-period matches</td><td class="num mono">1,128</td><td class="num mono">14,80,000</td><td class="num mono">2,66,400</td><td class="num mono">1,48,000</td><td>Carry-fwd accept</td><td><button class="row-edit-btn">Excel</button></td></tr>
+              <tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#7C3AED;margin-right:8px;"></span>Pending IMS</td><td class="num mono">2,418</td><td class="num mono">8,42,18,000</td><td class="num mono">1,51,59,240</td><td class="num mono">84,21,800</td><td>Manual decide</td><td><button class="row-edit-btn">Excel</button></td></tr>
+              <tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--error);margin-right:8px;"></span>Rejected IMS</td><td class="num mono">228</td><td class="num mono">2,18,000</td><td class="num mono">39,240</td><td class="num mono">21,800</td><td>Confirmed reject</td><td><button class="row-edit-btn">Excel</button></td></tr>
+              <tr style="background:rgba(255,230,0,0.10);font-weight:700;border-top:2px solid var(--ey-yellow);"><td>Final reconciled (PR &harr; IMS)</td><td class="num mono">1,69,546</td><td class="num mono">38,57,00,000</td><td class="num mono">6,15,08,400</td><td class="num mono">3,69,68,000</td><td>Flows to 3B Table 4(A)</td><td><button class="row-edit-btn" style="background:rgba(255,230,0,0.20);color:var(--ey-black-deep);">Excel</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- v2.0.33 — IMS response file upload + sync -->
+      <div class="card" style="padding:0;margin-bottom:18px;border-left:4px solid #7C3AED;overflow:hidden;">
+        <div style="padding:16px 22px;background:linear-gradient(135deg,#F5F0FF,var(--surface));border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+          <div style="min-width:0;">
+            <div style="font-size:14px;font-weight:700;color:var(--text);">Upload IMS response file &middot; sync for next step</div>
+            <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">Optional &middot; if you took A/R/P actions offline (Excel), upload the response file to apply per-line decisions in one shot &middot; or proceed with the auto-defaults shown above</div>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button class="btn btn-secondary btn-sm" onclick="if(window.showToast)window.showToast('Downloading IMS response template (Excel)');">Download template</button>
+            <button class="btn btn-secondary btn-sm" style="background:#7C3AED;color:#fff;border-color:#7C3AED;" onclick="if(window.showToast)window.showToast('Upload IMS response file (.xlsx) — A/R/P decisions per line item');">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" stroke-width="2.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Upload response file
+            </button>
+          </div>
+        </div>
+        <div style="padding:10px 22px;font-size:11px;color:var(--text-muted);background:rgba(124,58,237,0.04);">
+          Last upload: <strong>15-May 09:18</strong> &middot; ims-response-v2.xlsx &middot; 1,82,891 lines applied &middot; <a href="#" style="color:#7C3AED;">View sync log</a>
+        </div>
+      </div>
+
+            <div style="text-align:center;margin:0 0 18px;">
+        <button class="btn btn-secondary" id="ims-breakup-toggle" onclick="window.toggleReconBreakup &amp;&amp; window.toggleReconBreakup('ims')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+          Show item-wise breakup (6 sub-tables)
+        </button>
+      </div>
+
+      <div class="recon-breakup-content" data-recon-breakup="ims" style="display:none;">
+
+    <!-- ============ TABLE 1 · MATCHED (PR ↔ IMS) ============ -->
+    <div class="recon-section matched">
+      <div class="recon-section-head">
+        <div>
+          <div class="recon-section-title">
+            <span class="recon-section-title-icon">1</span>
+            Matched · Purchase Register ↔ IMS
+          </div>
+          <div class="recon-section-sub">Records where your PR fully matches a supplier-reported IMS record · all 4 keys aligned (GSTIN + doc no + date + taxable value within tolerance)</div>
+        </div>
+        <div style="font-size:13px;color:var(--text);text-align:right;">
+          <div><strong class="mono">1,79,418</strong> records · <strong class="mono">₹ 58.42 Cr</strong> taxable</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">ITC impact ₹ 6.17 Cr</div>
+        </div>
+      </div>
+      <div class="bulk-action-toolbar">
+        <div class="bulk-action-left">
+          <input type="checkbox" checked> <strong>Select all 1,79,418 records</strong>
+          <span class="selected-count-chip">All 1,79,418 selected</span>
+        </div>
+        <div class="bulk-action-buttons">
+          <button class="bulk-btn accept">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+            Bulk Accept (recommended)
+          </button>
+          <button class="bulk-btn reject">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Bulk Reject
+          </button>
+          <button class="bulk-btn pending">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Bulk Pending
+          </button>
+        </div>
+      </div>
+      <div class="table-wrap">
+<table class="data-table grid-lined compact">
+        <thead>
+          <tr>
+            <th style="width:28px;"><input type="checkbox" checked></th>
+            <th>Supplier GSTIN</th>
+            <th>Supplier name</th>
+            <th>Doc no.</th>
+            <th>Doc date</th>
+            <th>Type</th>
+            <th class="num">Taxable (₹)</th>
+            <th class="num">IGST</th>
+            <th class="num">CGST</th>
+            <th class="num">SGST</th>
+            <th>Match</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="checkbox" checked></td>
+            <td class="mono">27AAACR5055K1Z1</td>
+            <td>Reliance Industries</td>
+            <td class="mono">RIL/26/8841</td>
+            <td>12-May-26</td>
+            <td>INV</td>
+            <td class="num">14,82,000.00</td>
+            <td class="num">—</td>
+            <td class="num">1,33,380.00</td>
+            <td class="num">1,33,380.00</td>
+            <td><span class="action-status matched">✓ Exact</span></td>
+            <td>
+              <div class="row-action-group">
+                <button class="row-action-btn accept" title="Accept"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></button>
+                <button class="row-action-btn reject" title="Reject"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                <button class="row-action-btn pending" title="Pending"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" checked></td>
+            <td class="mono">29AAFCS5638E1ZW</td>
+            <td>Schneider Electric India</td>
+            <td class="mono">SE/26/02841</td>
+            <td>12-May-26</td>
+            <td>INV</td>
+            <td class="num">8,42,118.00</td>
+            <td class="num">1,51,581.24</td>
+            <td class="num">—</td>
+            <td class="num">—</td>
+            <td><span class="action-status matched">✓ Exact</span></td>
+            <td>
+              <div class="row-action-group">
+                <button class="row-action-btn accept" title="Accept"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></button>
+                <button class="row-action-btn reject" title="Reject"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                <button class="row-action-btn pending" title="Pending"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" checked></td>
+            <td class="mono">29AABCI9912A1ZW</td>
+            <td>Infosys Ltd</td>
+            <td class="mono">INF/26/12841</td>
+            <td>13-May-26</td>
+            <td>INV</td>
+            <td class="num">18,42,000.00</td>
+            <td class="num">3,31,560.00</td>
+            <td class="num">—</td>
+            <td class="num">—</td>
+            <td><span class="action-status matched">✓ Exact</span></td>
+            <td>
+              <div class="row-action-group">
+                <button class="row-action-btn accept" title="Accept"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></button>
+                <button class="row-action-btn reject" title="Reject"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                <button class="row-action-btn pending" title="Pending"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" checked></td>
+            <td class="mono">06AAACG2115R1ZP</td>
+            <td>Genpact India</td>
+            <td class="mono">GEN/CN/26/0247</td>
+            <td>13-May-26</td>
+            <td>CN</td>
+            <td class="num">2,84,000.00</td>
+            <td class="num">51,120.00</td>
+            <td class="num">—</td>
+            <td class="num">—</td>
+            <td><span class="action-status matched">✓ Exact</span></td>
+            <td>
+              <div class="row-action-group">
+                <button class="row-action-btn accept" title="Accept"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></button>
+                <button class="row-action-btn reject" title="Reject"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                <button class="row-action-btn pending" title="Pending"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" checked></td>
+            <td class="mono">27AAACB5305H1Z6</td>
+            <td>Bharat Petroleum</td>
+            <td class="mono">BPC/26/02184</td>
+            <td>13-May-26</td>
+            <td>INV</td>
+            <td class="num">42,18,000.00</td>
+            <td class="num">—</td>
+            <td class="num">3,79,620.00</td>
+            <td class="num">3,79,620.00</td>
+            <td><span class="action-status matched">✓ Exact</span></td>
+            <td>
+              <div class="row-action-group">
+                <button class="row-action-btn accept" title="Accept"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></button>
+                <button class="row-action-btn reject" title="Reject"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                <button class="row-action-btn pending" title="Pending"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" checked></td>
+            <td class="mono">33AAACT1681M1ZD</td>
+            <td>TVS Motor Co</td>
+            <td class="mono">TVS/26/4218</td>
+            <td>13-May-26</td>
+            <td>INV</td>
+            <td class="num">6,84,200.00</td>
+            <td class="num">1,23,156.00</td>
+            <td class="num">—</td>
+            <td class="num">—</td>
+            <td><span class="action-status matched">✓ Tolerance ₹ 1.20</span></td>
+            <td>
+              <div class="row-action-group">
+                <button class="row-action-btn accept" title="Accept"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></button>
+                <button class="row-action-btn reject" title="Reject"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                <button class="row-action-btn pending" title="Pending"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+      <div class="pagination">
+        <span style="font-size:12px;color:var(--text-muted);">Showing 1–6 of 1,79,418 matched records</span>
+        <div class="flex gap-1">
+          <button class="page-btn" disabled>‹ Prev</button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn">…</button>
+          <button class="page-btn">29,903</button>
+          <button class="page-btn">Next ›</button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ============ TABLE 2 · NON-MATCHED IMS DATA ============ -->
+    <div class="recon-section unmatched">
+      <div class="recon-section-head">
+        <div>
+          <div class="recon-section-title">
+            <span class="recon-section-title-icon">2</span>
+            Non-matched IMS data
+          </div>
+          <div class="recon-section-sub">Records the supplier reported (in IMS) but your PR doesn't have · most are wrong-GSTIN postings or genuinely missed in PR · 3 action options per row</div>
+        </div>
+        <div style="font-size:13px;color:var(--text);text-align:right;">
+          <div><strong class="mono">3,473</strong> records · <strong class="mono">₹ 1.84 Cr</strong> taxable</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">ITC impact ₹ 22.8 L at stake</div>
+        </div>
+      </div>
+      <div class="bulk-action-toolbar">
+        <div class="bulk-action-left">
+          <input type="checkbox"> <strong>Select all 3,473 records</strong>
+          <span style="font-size:11.5px;color:var(--text-muted);">or filter by reason</span>
+          <select class="select" style="font-size:11.5px;padding:5px 10px;">
+            <option>All reasons</option>
+            <option>Wrong GSTIN at supplier (suspected)</option>
+            <option>Genuinely missed in PR</option>
+            <option>Recipient PoS mismatch</option>
+            <option>Duplicate from supplier</option>
+          </select>
+        </div>
+        <div class="bulk-action-buttons">
+          <button class="bulk-btn accept">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+            Accept selected
+          </button>
+          <button class="bulk-btn reject">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Reject selected
+          </button>
+          <button class="bulk-btn pending">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Mark pending
+          </button>
+        </div>
+      </div>
+      <div class="table-wrap">
+<table class="data-table grid-lined compact">
+        <thead>
+          <tr>
+            <th style="width:28px;"><input type="checkbox"></th>
+            <th>Supplier GSTIN</th>
+            <th>Supplier name</th>
+            <th>Doc no.</th>
+            <th>Doc date</th>
+            <th class="num">Taxable (IMS)</th>
+            <th class="num">IGST</th>
+            <th class="num">CGST</th>
+            <th class="num">SGST</th>
+            <th>Reason</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="checkbox"></td>
+            <td class="mono">27AAACT6541N1ZP</td>
+            <td>Tata Communications</td>
+            <td class="mono">TCL/26/00841</td>
+            <td>13-May-26</td>
+            <td class="num">28,000.00</td>
+            <td class="num">—</td>
+            <td class="num">2,520.00</td>
+            <td class="num">2,520.00</td>
+            <td><span class="action-status missing-pr">Wrong-GSTIN suspected</span></td>
+            <td>
+              <div class="row-action-group">
+                <button class="row-action-btn accept" title="Accept"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></button>
+                <button class="row-action-btn reject selected" title="Reject"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                <button class="row-action-btn pending" title="Pending"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="checkbox"></td>
+            <td class="mono">06AAACG2115R1ZP</td>
+            <td>Genpact India</td>
+            <td class="mono">GEN/26/14821</td>
+            <td>14-May-26</td>
+            <td class="num">2,84,000.00</td>
+            <td class="num">51,120.00</td>
+            <td class="num">—</td>
+            <td class="num">—</td>
+            <td><span class="action-status missing-pr">Genuinely missed in PR</span></td>
+            <td>
+              <div class="row-action-group">
+                <button class="row-action-btn accept selected" title="Accept"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></button>
+                <button class="row-action-btn reject" title="Reject"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                <button class="row-action-btn pending" title="Pending"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="checkbox"></td>
+            <td class="mono">19AAJCV3517N1ZH</td>
+            <td>Voltas Ltd</td>
+            <td class="mono">VLT/26/3217</td>
+            <td>13-May-26</td>
+            <td class="num">42,18,000.00</td>
+            <td class="num">7,59,240.00</td>
+            <td class="num">—</td>
+            <td class="num">—</td>
+            <td><span class="action-status missing-pr">Need supplier confirmation</span></td>
+            <td>
+              <div class="row-action-group">
+                <button class="row-action-btn accept" title="Accept"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></button>
+                <button class="row-action-btn reject" title="Reject"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                <button class="row-action-btn pending selected" title="Pending"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="checkbox"></td>
+            <td class="mono">29AABCI9912A1ZW</td>
+            <td>Infosys Ltd</td>
+            <td class="mono">INF/26/12842</td>
+            <td>14-May-26</td>
+            <td class="num">8,42,000.00</td>
+            <td class="num">1,51,560.00</td>
+            <td class="num">—</td>
+            <td class="num">—</td>
+            <td><span class="action-status missing-pr">Duplicate (also at 12841)</span></td>
+            <td>
+              <div class="row-action-group">
+                <button class="row-action-btn accept" title="Accept"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></button>
+                <button class="row-action-btn reject selected" title="Reject"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                <button class="row-action-btn pending" title="Pending"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="checkbox"></td>
+            <td class="mono">29AAACA8689Q1ZB</td>
+            <td>Amazon Seller Svcs</td>
+            <td class="mono">ASN-26-118427</td>
+            <td>14-May-26</td>
+            <td class="num">12,841.00</td>
+            <td class="num">2,311.38</td>
+            <td class="num">—</td>
+            <td class="num">—</td>
+            <td><span class="action-status missing-pr">ECO supply · check PR</span></td>
+            <td>
+              <div class="row-action-group">
+                <button class="row-action-btn accept selected" title="Accept"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></button>
+                <button class="row-action-btn reject" title="Reject"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                <button class="row-action-btn pending" title="Pending"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+      <div class="pagination">
+        <span style="font-size:12px;color:var(--text-muted);">Showing 1–5 of 3,473 non-matched records</span>
+        <div class="flex gap-1">
+          <button class="page-btn" disabled>‹ Prev</button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn">…</button>
+          <button class="page-btn">579</button>
+          <button class="page-btn">Next ›</button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ============ TABLE 3 · MATCHED FROM PRIOR PENDING PERIODS ============ -->
+    <div class="recon-section prior-pending">
+      <div class="recon-section-head">
+        <div>
+          <div class="recon-section-title">
+            <span class="recon-section-title-icon">3</span>
+            Matched IMS data · from prior pending periods
+          </div>
+          <div class="recon-section-sub">Records you kept Pending in earlier months that now have a matching PR row · auto-discovered by the reconciler · these should typically be Accepted</div>
+        </div>
+        <div style="font-size:13px;color:var(--text);text-align:right;">
+          <div><strong class="mono">87</strong> records · <strong class="mono">₹ 12.84 L</strong> taxable</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">ITC catch-up ₹ 2.31 L recoverable</div>
+        </div>
+      </div>
+      <div class="bulk-action-toolbar">
+        <div class="bulk-action-left">
+          <input type="checkbox" checked> <strong>Select all 87 records</strong>
+          <span class="selected-count-chip">All 87 selected</span>
+        </div>
+        <div class="bulk-action-buttons">
+          <button class="bulk-btn accept">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+            Bulk Accept (catch up ITC)
+          </button>
+          <button class="bulk-btn reject">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Reject &amp; close
+          </button>
+        </div>
+      </div>
+      <div class="table-wrap">
+<table class="data-table grid-lined compact">
+        <thead>
+          <tr>
+            <th style="width:28px;"><input type="checkbox" checked></th>
+            <th>Originally pending in</th>
+            <th>Supplier GSTIN</th>
+            <th>Supplier</th>
+            <th>Doc no.</th>
+            <th>Doc date</th>
+            <th class="num">Taxable (₹)</th>
+            <th class="num">ITC impact</th>
+            <th>Match found</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="checkbox" checked></td>
+            <td>Mar 2026</td>
+            <td class="mono">29AAFCS5638E1ZW</td>
+            <td>Schneider Electric</td>
+            <td class="mono">SE/26/00128</td>
+            <td>22-Mar-26</td>
+            <td class="num">2,84,000.00</td>
+            <td class="num" style="color:var(--success)">+51,120.00</td>
+            <td><span class="action-status matched">✓ PR added 09-May</span></td>
+            <td>
+              <div class="row-action-group">
+                <button class="row-action-btn accept selected" title="Accept"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></button>
+                <button class="row-action-btn reject" title="Reject"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" checked></td>
+            <td>Apr 2026</td>
+            <td class="mono">33AAACT1681M1ZD</td>
+            <td>TVS Motor Co</td>
+            <td class="mono">TVS/26/3128</td>
+            <td>18-Apr-26</td>
+            <td class="num">4,18,000.00</td>
+            <td class="num" style="color:var(--success)">+75,240.00</td>
+            <td><span class="action-status matched">✓ PR added 11-May</span></td>
+            <td>
+              <div class="row-action-group">
+                <button class="row-action-btn accept selected" title="Accept"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></button>
+                <button class="row-action-btn reject" title="Reject"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" checked></td>
+            <td>Apr 2026</td>
+            <td class="mono">27AAACT6541N1ZP</td>
+            <td>Tata Communications</td>
+            <td class="mono">TCL/26/00428</td>
+            <td>25-Apr-26</td>
+            <td class="num">1,84,000.00</td>
+            <td class="num" style="color:var(--success)">+33,120.00</td>
+            <td><span class="action-status matched">✓ PR added 13-May</span></td>
+            <td>
+              <div class="row-action-group">
+                <button class="row-action-btn accept selected" title="Accept"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></button>
+                <button class="row-action-btn reject" title="Reject"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" checked></td>
+            <td>Feb 2026</td>
+            <td class="mono">06AAACG2115R1ZP</td>
+            <td>Genpact India</td>
+            <td class="mono">GEN/26/00081</td>
+            <td>08-Feb-26</td>
+            <td class="num">3,98,000.00</td>
+            <td class="num" style="color:var(--success)">+71,640.00</td>
+            <td><span class="action-status matched">✓ PR added 14-May</span></td>
+            <td>
+              <div class="row-action-group">
+                <button class="row-action-btn accept selected" title="Accept"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></button>
+                <button class="row-action-btn reject" title="Reject"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+      <div class="pagination">
+        <span style="font-size:12px;color:var(--text-muted);">Showing 1–4 of 87 prior-pending matches</span>
+        <div class="flex gap-1">
+          <button class="page-btn" disabled>‹ Prev</button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">…</button>
+          <button class="page-btn">15</button>
+          <button class="page-btn">Next ›</button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ============ TABLE 4 · PENDING IMS DATA (with timeline filter) ============ -->
+    <div class="recon-section pending">
+      <div class="recon-section-head">
+        <div>
+          <div class="recon-section-title">
+            <span class="recon-section-title-icon">4</span>
+            Pending IMS data
+          </div>
+          <div class="recon-section-sub">Records you marked Pending — they don't flow into the current 2B; they roll forward and re-appear next period until you Accept or Reject</div>
+        </div>
+        <div style="font-size:13px;color:var(--text);text-align:right;">
+          <div><strong class="mono">142</strong> records · <strong class="mono">₹ 84.18 L</strong> taxable</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">ITC parked ₹ 15.15 L</div>
+        </div>
+      </div>
+      <div class="bulk-action-toolbar">
+        <div class="timeline-filter">
+          <span class="timeline-filter-label">Timeline:</span>
+          <button class="timeline-chip active">Current period (May-26)</button>
+          <button class="timeline-chip">Last 3 months</button>
+          <button class="timeline-chip">Last 6 months</button>
+          <button class="timeline-chip">FYTD</button>
+          <button class="timeline-chip">All time</button>
+          <button class="timeline-chip">Custom…</button>
+        </div>
+        <div class="bulk-action-buttons">
+          <button class="bulk-btn accept">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+            Accept selected
+          </button>
+          <button class="bulk-btn reject">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Reject selected
+          </button>
+        </div>
+      </div>
+      <div class="table-wrap">
+<table class="data-table grid-lined compact">
+        <thead>
+          <tr>
+            <th style="width:28px;"><input type="checkbox"></th>
+            <th>Pending since</th>
+            <th>Supplier GSTIN</th>
+            <th>Supplier</th>
+            <th>Doc no.</th>
+            <th>Doc date</th>
+            <th class="num">Taxable (₹)</th>
+            <th class="num">ITC impact</th>
+            <th>Reason kept pending</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="checkbox"></td>
+            <td>May 2026</td>
+            <td class="mono">19AAJCV3517N1ZH</td>
+            <td>Voltas Ltd</td>
+            <td class="mono">VLT/26/3217</td>
+            <td>13-May-26</td>
+            <td class="num">42,18,000.00</td>
+            <td class="num" style="color:var(--info)">7,59,240.00</td>
+            <td>Awaiting supplier confirmation</td>
+            <td>
+              <div class="row-action-group">
+                <button class="row-action-btn accept" title="Accept"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></button>
+                <button class="row-action-btn reject" title="Reject"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="checkbox"></td>
+            <td>May 2026</td>
+            <td class="mono">27AAACB5305H1Z6</td>
+            <td>Bharat Petroleum</td>
+            <td class="mono">BPC/26/02184-A</td>
+            <td>13-May-26</td>
+            <td class="num">8,42,000.00</td>
+            <td class="num" style="color:var(--info)">75,780.00</td>
+            <td>Tax rate disputed (5% vs 12%)</td>
+            <td>
+              <div class="row-action-group">
+                <button class="row-action-btn accept" title="Accept"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></button>
+                <button class="row-action-btn reject" title="Reject"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="checkbox"></td>
+            <td>Apr 2026</td>
+            <td class="mono">07AAACL5847R1ZC</td>
+            <td>L&amp;T Construction</td>
+            <td class="mono">LTC/26/00284</td>
+            <td>28-Apr-26</td>
+            <td class="num">18,42,000.00</td>
+            <td class="num" style="color:var(--info)">3,31,560.00</td>
+            <td>PoS query · Karnataka vs Maharashtra</td>
+            <td>
+              <div class="row-action-group">
+                <button class="row-action-btn accept" title="Accept"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></button>
+                <button class="row-action-btn reject" title="Reject"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="checkbox"></td>
+            <td>Mar 2026</td>
+            <td class="mono">29AAACA8689Q1ZB</td>
+            <td>Amazon Seller Svcs</td>
+            <td class="mono">ASN-26-088421</td>
+            <td>14-Mar-26</td>
+            <td class="num">14,820.00</td>
+            <td class="num" style="color:var(--info)">2,667.60</td>
+            <td>Goods returned · CN expected</td>
+            <td>
+              <div class="row-action-group">
+                <button class="row-action-btn accept" title="Accept"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></button>
+                <button class="row-action-btn reject" title="Reject"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+      <div class="pagination">
+        <span style="font-size:12px;color:var(--text-muted);">Showing 1–4 of 142 pending records (current period filter)</span>
+        <div class="flex gap-1">
+          <button class="page-btn" disabled>‹ Prev</button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">…</button>
+          <button class="page-btn">24</button>
+          <button class="page-btn">Next ›</button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ============ TABLE 5 · REJECTED IMS DATA (with timeline filter) ============ -->
+    <div class="recon-section rejected">
+      <div class="recon-section-head">
+        <div>
+          <div class="recon-section-title">
+            <span class="recon-section-title-icon">5</span>
+            Rejected IMS data
+          </div>
+          <div class="recon-section-sub">Records you Rejected — excluded from your GSTR-2B · the supplier will see the rejection and can amend or accept the loss · timeline filter to view rejections across periods</div>
+        </div>
+        <div style="font-size:13px;color:var(--text);text-align:right;">
+          <div><strong class="mono">18</strong> records · <strong class="mono">₹ 8.42 L</strong> taxable</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">ITC excluded ₹ 1.52 L</div>
+        </div>
+      </div>
+      <div class="bulk-action-toolbar">
+        <div class="timeline-filter">
+          <span class="timeline-filter-label">Timeline:</span>
+          <button class="timeline-chip active">Current period (May-26)</button>
+          <button class="timeline-chip">Last 3 months</button>
+          <button class="timeline-chip">Last 6 months</button>
+          <button class="timeline-chip">FYTD</button>
+          <button class="timeline-chip">All time</button>
+          <button class="timeline-chip">Custom…</button>
+        </div>
+        <div class="bulk-action-buttons">
+          <button class="bulk-btn pending">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            Re-open · move to Pending
+          </button>
+        </div>
+      </div>
+      <div class="table-wrap">
+<table class="data-table grid-lined compact">
+        <thead>
+          <tr>
+            <th style="width:28px;"><input type="checkbox"></th>
+            <th>Rejected on</th>
+            <th>Rejected by</th>
+            <th>Supplier GSTIN</th>
+            <th>Supplier</th>
+            <th>Doc no.</th>
+            <th class="num">Taxable (₹)</th>
+            <th class="num">ITC excluded</th>
+            <th>Reason</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="checkbox"></td>
+            <td>14-May 16:22</td>
+            <td>Jude Akash</td>
+            <td class="mono">27AAACT6541N1ZP</td>
+            <td>Tata Communications</td>
+            <td class="mono">TCL/26/00841</td>
+            <td class="num">28,000.00</td>
+            <td class="num" style="color:var(--error)">5,040.00</td>
+            <td>Wrong GSTIN at supplier (should be Maharashtra not Karnataka)</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox"></td>
+            <td>14-May 16:24</td>
+            <td>Jude Akash</td>
+            <td class="mono">29AABCI9912A1ZW</td>
+            <td>Infosys Ltd</td>
+            <td class="mono">INF/26/12842</td>
+            <td class="num">8,42,000.00</td>
+            <td class="num" style="color:var(--error)">1,51,560.00</td>
+            <td>Duplicate (already in INF/26/12841)</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox"></td>
+            <td>13-May 18:42</td>
+            <td>Arjun Mehra</td>
+            <td class="mono">27AABCD1234E1ZK</td>
+            <td>Unknown supplier (D&amp;G Trading)</td>
+            <td class="mono">DGT/26/00012</td>
+            <td class="num">12,841.00</td>
+            <td class="num" style="color:var(--error)">2,311.38</td>
+            <td>Wrong-GSTIN posting · we never bought from them</td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+      <div class="pagination">
+        <span style="font-size:12px;color:var(--text-muted);">Showing 1–3 of 18 rejected (current period filter)</span>
+        <div class="flex gap-1">
+          <button class="page-btn" disabled>‹ Prev</button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn">Next ›</button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ============ TABLE 6 · FINAL IMS vs PR (reconciled view) ============ -->
+    <div class="recon-section final">
+      <div class="recon-section-head">
+        <div>
+          <div class="recon-section-title">
+            <span class="recon-section-title-icon">6</span>
+            Final reconciled view · IMS vs PR
+          </div>
+          <div class="recon-section-sub">This is what will flow into GSTR-2B and feed Section 4 of GSTR-3B · all decisions from tables 1–5 applied · review before marking step complete</div>
+        </div>
+        <div style="font-size:13px;color:var(--text);text-align:right;">
+          <div><strong class="mono">1,79,505</strong> Accepted · flow into 2B</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">ITC computed ₹ 6.17 Cr</div>
+        </div>
+      </div>
+      <div class="table-wrap">
+<table class="data-table grid-lined">
+        <thead>
+          <tr>
+            <th>Outcome</th>
+            <th class="num">Records</th>
+            <th class="num">Taxable value (₹)</th>
+            <th class="num">IGST (₹)</th>
+            <th class="num">CGST (₹)</th>
+            <th class="num">SGST (₹)</th>
+            <th class="num">ITC impact (₹)</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Accepted · current period match</strong></td>
+            <td class="num">1,79,418</td>
+            <td class="num">58,42,18,400.00</td>
+            <td class="num">3,84,21,840.00</td>
+            <td class="num">1,16,46,158.00</td>
+            <td class="num">1,16,46,158.00</td>
+            <td class="num" style="color:var(--success)">+6,17,14,156.00</td>
+            <td><span class="action-status matched">→ GSTR-2B</span></td>
+          </tr>
+          <tr>
+            <td><strong>Accepted · from prior pending</strong></td>
+            <td class="num">87</td>
+            <td class="num">12,84,000.00</td>
+            <td class="num">1,12,560.00</td>
+            <td class="num">59,712.00</td>
+            <td class="num">59,712.00</td>
+            <td class="num" style="color:var(--success)">+2,31,984.00</td>
+            <td><span class="action-status matched">→ GSTR-2B (catch-up)</span></td>
+          </tr>
+          <tr>
+            <td><strong>Pending · rolls to next period</strong></td>
+            <td class="num">142</td>
+            <td class="num">84,18,000.00</td>
+            <td class="num">10,90,440.00</td>
+            <td class="num">2,12,490.00</td>
+            <td class="num">2,12,490.00</td>
+            <td class="num" style="color:var(--info)">15,15,420.00 parked</td>
+            <td><span class="action-status value-diff">Carry forward</span></td>
+          </tr>
+          <tr>
+            <td><strong>Rejected · excluded from 2B</strong></td>
+            <td class="num">18</td>
+            <td class="num">8,42,841.00</td>
+            <td class="num">1,51,711.38</td>
+            <td class="num">—</td>
+            <td class="num">—</td>
+            <td class="num" style="color:var(--error)">−1,52,000.00 excluded</td>
+            <td><span class="action-status missing-pr">Not in 2B</span></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr style="font-weight:700;background:var(--bg);">
+            <td>Net into GSTR-2B</td>
+            <td class="num">1,79,505</td>
+            <td class="num">58,55,02,400.00</td>
+            <td class="num">3,85,34,400.00</td>
+            <td class="num">1,17,05,870.00</td>
+            <td class="num">1,17,05,870.00</td>
+            <td class="num" style="color:var(--success)">+6,19,46,140.00</td>
+            <td>Ready</td>
+          </tr>
+        </tfoot>
+      </table>
+</div>
+    </div>
+
+
+    
+
+      </div>
+      <!-- /IMS breakup -->
+
+      <!-- v2.0.31 — IMS Final action sync -->
+      <div class="card" style="padding:0;margin-top:18px;margin-bottom:18px;border:2px solid var(--ey-yellow);overflow:hidden;">
+        <div style="padding:16px 22px;background:linear-gradient(135deg,#FFFDF0,var(--surface));border-bottom:1px solid var(--border);">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+            <div>
+              <div style="font-size:14px;font-weight:700;color:var(--text);">Sync IMS actions to GSTN portal</div>
+              <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">No upload needed for IMS &middot; Accept/Reject/Pending decisions taken above are pushed live to GSTN per line item &middot; portal updates Day-T+1</div>
+            </div>
+            <button class="run-action-btn" onclick="if(window.showToast)window.showToast('Syncing 1,82,891 IMS line-item actions to GSTN portal...');">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              Sync to GSTN portal
+            </button>
+          </div>
+        </div>
+        <div style="padding:12px 22px;font-size:12px;color:var(--text-muted);background:rgba(21,92,219,0.04);">
+          Sync history: 14-May 21:48 (full) &middot; 15-May 09:18 (incremental) &middot; <a href="#" style="color:var(--info);">View sync log</a>
+        </div>
+      </div>
+
+    </div>
+    <!-- /IMS view -->
+
+    <!-- v2.0.29: 2B VIEW container (visible only when source=2b) -->
+    <div class="recon-view recon-view-2b" data-recon-view="2b">
+
+      <!-- v2.0.31 — 2B RECO SUMMARY -->
+      <div class="card" style="padding:0;margin-bottom:18px;border-left:4px solid #7C3AED;overflow:hidden;">
+        <div style="padding:16px 22px;background:linear-gradient(135deg,#F5F0FF,var(--surface));border-bottom:1px solid var(--border);">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+            <div>
+              <div style="font-size:14px;font-weight:700;color:var(--text);">GSTR-2B reconciliation summary &middot; PR &harr; 2B</div>
+              <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">Static snapshot match &middot; 1,82,418 2B records &times; 1,84,217 PR records &middot; cut-off 14-May-2026</div>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="if(window.showToast)window.showToast('Downloading consolidated 2B reco summary (Excel)...');">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" stroke-width="2.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download summary (Excel)
+            </button>
+          </div>
+        </div>
+        <div style="padding:0;">
+          <table class="data-table grid-lined compact" style="margin:0;border:none;border-radius:0;">
+            <thead><tr><th>Bucket</th><th class="num">Records</th><th class="num">Taxable (&#8377;)</th><th class="num">IGST (&#8377;)</th><th class="num">CGST+SGST (&#8377;)</th><th>Effect on ITC</th><th>Download</th></tr></thead>
+            <tbody>
+              <tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--success);margin-right:8px;"></span>2B Matched</td><td class="num mono">1,78,892</td><td class="num mono">38,42,18,000</td><td class="num mono">6,12,42,000</td><td class="num mono">3,68,18,000</td><td style="color:var(--success);">Clean claim</td><td><button class="row-edit-btn">Excel</button></td></tr>
+              <tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--error);margin-right:8px;"></span>Excess in Books</td><td class="num mono">1,799</td><td class="num mono">8,42,18,000</td><td class="num mono">3,18,18,000</td><td class="num mono">28,42,000</td><td style="color:var(--error);">Reverse Rule 36(4)</td><td><button class="row-edit-btn">Excel</button></td></tr>
+              <tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--info);margin-right:8px;"></span>Unclaimed in 2B</td><td class="num mono">473</td><td class="num mono">84,20,000</td><td class="num mono">15,15,600</td><td class="num mono">8,42,000</td><td style="color:var(--info);">Book &amp; claim</td><td><button class="row-edit-btn">Excel</button></td></tr>
+              <tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--warning);margin-right:8px;"></span>Value mismatches</td><td class="num mono">675</td><td class="num mono">&plusmn; 8,40,000</td><td class="num mono">&mdash;</td><td class="num mono">&mdash;</td><td style="color:var(--warning);">Investigate</td><td><button class="row-edit-btn">Excel</button></td></tr>
+              <tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#7C3AED;margin-right:8px;"></span>Carry-fwd from prior</td><td class="num mono">84</td><td class="num mono">14,80,000</td><td class="num mono">2,66,400</td><td class="num mono">1,48,000</td><td style="color:#7C3AED;">Unlocked ITC</td><td><button class="row-edit-btn">Excel</button></td></tr>
+              <tr style="background:rgba(255,230,0,0.10);font-weight:700;border-top:2px solid var(--ey-yellow);"><td>Net 2B-eligible ITC</td><td class="num mono">1,78,976</td><td class="num mono">35,40,18,000</td><td class="num mono">3,12,55,400</td><td class="num mono">3,49,66,000</td><td>Flows to 3B Table 4(A)</td><td><button class="row-edit-btn" style="background:rgba(255,230,0,0.20);color:var(--ey-black-deep);">Excel</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- v2.0.33 — 2B response file upload + sync -->
+      <div class="card" style="padding:0;margin-bottom:18px;border-left:4px solid #7C3AED;overflow:hidden;">
+        <div style="padding:16px 22px;background:linear-gradient(135deg,#F5F0FF,var(--surface));border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+          <div style="min-width:0;">
+            <div style="font-size:14px;font-weight:700;color:var(--text);">Upload 2B reco response &middot; sync for next step</div>
+            <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">Optional &middot; if you reviewed buckets offline (Excel) and want to override book/reverse decisions, upload the response &middot; or proceed with the auto-computed Net ITC of &#8377; 35.40 Cr</div>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button class="btn btn-secondary btn-sm" onclick="if(window.showToast)window.showToast('Downloading 2B response template (Excel)');">Download template</button>
+            <button class="btn btn-secondary btn-sm" style="background:#7C3AED;color:#fff;border-color:#7C3AED;" onclick="if(window.showToast)window.showToast('Upload 2B response file — bucket-level decisions');">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" stroke-width="2.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Upload response file
+            </button>
+          </div>
+        </div>
+        <div style="padding:10px 22px;font-size:11px;color:var(--text-muted);background:rgba(124,58,237,0.04);">
+          Last upload: <strong>14-May 23:18</strong> &middot; b2b-response-v1.xlsx &middot; 1,82,418 lines applied &middot; <a href="#" style="color:#7C3AED;">View sync log</a>
+        </div>
+      </div>
+
+            <div style="text-align:center;margin:0 0 18px;">
+        <button class="btn btn-secondary" id="b2b-breakup-toggle" onclick="window.toggleReconBreakup &amp;&amp; window.toggleReconBreakup('b2b')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+          Show item-wise breakup (6 sub-tables)
+        </button>
+      </div>
+
+      <div class="recon-breakup-content" data-recon-breakup="b2b" style="display:none;">
+
+      <!-- ============ 2B TABLE 1 · MATCHED (PR ↔ 2B) ============ -->
+      <div class="recon-section matched">
+        <div class="recon-section-head">
+          <div>
+            <div class="recon-section-title">
+              <span class="recon-section-title-icon">1</span>
+              <span>2B Matched · PR &harr; GSTR-2B &middot; 1,78,892 records</span>
+            </div>
+            <div class="recon-section-sub">Records where your PR fully matches an entry in the locked 2B snapshot &middot; all 4 keys aligned (Supplier GSTIN + Doc no + Doc date + Taxable within tolerance) &middot; these are <strong>clean ITC claims</strong> &mdash; flow directly into GSTR-3B Table 4(A)</div>
+          </div>
+          <div class="recon-section-stat">
+            <div class="recon-section-stat-label">Clean ITC</div>
+            <div class="recon-section-stat-value">&#8377; 38.42 Cr</div>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table grid-lined compact">
+            <thead>
+              <tr>
+                <th>Supplier GSTIN</th>
+                <th class="mono">Doc no.</th>
+                <th>Date</th>
+                <th>Supplier name</th>
+                <th class="num">PR Taxable (&#8377;)</th>
+                <th class="num">2B Taxable (&#8377;)</th>
+                <th class="num">IGST (&#8377;)</th>
+                <th>Match status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="mono">27AAACR5055K1Z1</td><td class="mono">RIL/26/2841</td><td>10-May</td><td>Reliance Industries</td><td class="num">42,18,000</td><td class="num">42,18,000</td><td class="num">7,59,240</td><td><span class="action-status matched">Exact match</span></td></tr>
+              <tr><td class="mono">27AABCT9912R1ZP</td><td class="mono">TS/26/02418</td><td>12-May</td><td>Tata Stationers</td><td class="num">1,28,400</td><td class="num">1,28,400</td><td class="num">23,112</td><td><span class="action-status matched">Exact match</span></td></tr>
+              <tr><td class="mono">06AAACL3711J1ZB</td><td class="mono">LT/26/04218</td><td>12-May</td><td>L&amp;T Construction</td><td class="num">42,18,000</td><td class="num">42,18,000</td><td class="num">7,59,240</td><td><span class="action-status matched">Exact match</span></td></tr>
+              <tr><td class="mono">19AABCB3128J1ZP</td><td class="mono">BP/26/01428</td><td>13-May</td><td>Bengal Power</td><td class="num">18,40,000</td><td class="num">18,40,000</td><td class="num">3,31,200</td><td><span class="action-status matched">Exact match</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="padding:12px 22px;background:rgba(22,135,54,0.04);border-top:1px solid var(--border);font-size:12px;color:var(--text-muted);">
+          Showing 4 of 1,78,892 matched records &middot; <a href="#" style="color:var(--info);text-decoration:none;">View all in 2B Matched Detail &rarr;</a>
+        </div>
+      </div>
+
+      <!-- ============ 2B TABLE 2 · EXCESS ITC IN BOOKS (PR > 2B) ============ -->
+      <div class="recon-section unmatched">
+        <div class="recon-section-head">
+          <div>
+            <div class="recon-section-title">
+              <span class="recon-section-title-icon" style="background:rgba(200,16,46,0.15);color:var(--error);">2</span>
+              <span>Excess ITC in Books &middot; Books &gt; 2B &middot; 1,799 records</span>
+            </div>
+            <div class="recon-section-sub">Records in your PR that don&apos;t appear in 2B snapshot &middot; <strong style="color:var(--error);">&#8377; 3.18 Cr ITC at risk of reversal under Rule 36(4)</strong> &middot; supplier hasn&apos;t filed yet, filed late, or invoice was incorrectly booked</div>
+          </div>
+          <div class="recon-section-stat">
+            <div class="recon-section-stat-label">Reversal risk</div>
+            <div class="recon-section-stat-value" style="color:var(--error);">&#8377; 3.18 Cr</div>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table grid-lined compact">
+            <thead>
+              <tr>
+                <th>Supplier GSTIN</th>
+                <th class="mono">Doc no.</th>
+                <th>Date</th>
+                <th>Supplier</th>
+                <th class="num">PR Taxable (&#8377;)</th>
+                <th class="num">PR IGST (&#8377;)</th>
+                <th>Action options</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="mono">27AABCM7841L1ZS</td><td class="mono">MM/26/00284</td><td>10-May</td><td>Maharashtra Mills</td><td class="num">8,42,000</td><td class="num">1,51,560</td><td><div style="display:flex;gap:4px;flex-wrap:wrap;"><button class="row-edit-btn" style="background:rgba(199,119,0,0.10);color:var(--warning);">Carry-fwd to next 2B</button><button class="row-edit-btn" style="background:rgba(200,16,46,0.10);color:var(--error);">Reverse via DRC-03</button></div></td></tr>
+              <tr><td class="mono">29AABCM4218R1ZK</td><td class="mono">MS/26/02841</td><td>13-May</td><td>Maruti Suzuki</td><td class="num">8,42,000</td><td class="num">1,51,560</td><td><div style="display:flex;gap:4px;flex-wrap:wrap;"><button class="row-edit-btn" style="background:rgba(199,119,0,0.10);color:var(--warning);">Carry-fwd</button><button class="row-edit-btn">Chase supplier</button></div></td></tr>
+              <tr><td class="mono">07AABCH5181J1ZE</td><td class="mono">HC/26/00418</td><td>11-May</td><td>Hindalco Carbon</td><td class="num">28,40,000</td><td class="num">5,11,200</td><td><div style="display:flex;gap:4px;flex-wrap:wrap;"><button class="row-edit-btn" style="background:rgba(199,119,0,0.10);color:var(--warning);">Carry-fwd</button><button class="row-edit-btn">Chase supplier</button></div></td></tr>
+              <tr><td class="mono">33AABCA7128K1ZW</td><td class="mono">AC/26/00942</td><td>14-May</td><td>Adani Cement TN</td><td class="num">12,18,400</td><td class="num">2,19,312</td><td><div style="display:flex;gap:4px;flex-wrap:wrap;"><button class="row-edit-btn" style="background:rgba(200,16,46,0.10);color:var(--error);">Reverse via DRC-03</button></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="padding:12px 22px;background:rgba(200,16,46,0.04);border-top:1px solid var(--border);font-size:12px;color:var(--text-muted);">
+          Showing 4 of 1,799 records &middot; bulk action: <button class="btn btn-secondary btn-sm" style="margin-left:6px;">Carry-forward all to next 2B</button>
+        </div>
+      </div>
+
+      <!-- ============ 2B TABLE 3 · UNCLAIMED ITC IN 2B (2B > PR) ============ -->
+      <div class="recon-section prior-pending">
+        <div class="recon-section-head">
+          <div>
+            <div class="recon-section-title">
+              <span class="recon-section-title-icon" style="background:rgba(21,92,219,0.15);color:var(--info);">3</span>
+              <span>Unclaimed in 2B &middot; 2B &gt; Books &middot; 473 records</span>
+            </div>
+            <div class="recon-section-sub">Records present in 2B snapshot but missing from your PR &middot; <strong style="color:var(--info);">&#8377; 84.2 L claimable ITC opportunity</strong> &middot; supplier filed but you haven&apos;t booked &mdash; investigate then add to PR</div>
+          </div>
+          <div class="recon-section-stat">
+            <div class="recon-section-stat-label">Missed claim</div>
+            <div class="recon-section-stat-value" style="color:var(--info);">&#8377; 84.2 L</div>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table grid-lined compact">
+            <thead>
+              <tr>
+                <th>Supplier GSTIN</th>
+                <th class="mono">Doc no.</th>
+                <th>Date</th>
+                <th>Supplier</th>
+                <th class="num">2B Taxable (&#8377;)</th>
+                <th class="num">2B IGST (&#8377;)</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="mono">33AABCA1948K1ZW</td><td class="mono">AT/26/00712</td><td>11-May</td><td>Apollo Tyres</td><td class="num">12,18,000</td><td class="num">2,19,240</td><td><button class="row-edit-btn" style="background:rgba(21,92,219,0.10);color:var(--info);">Book in PR &amp; claim</button></td></tr>
+              <tr><td class="mono">29AABCI3128R1ZK</td><td class="mono">IC/26/00128</td><td>11-May</td><td>Infosys Compute</td><td class="num">4,84,200</td><td class="num">87,156</td><td><button class="row-edit-btn" style="background:rgba(21,92,219,0.10);color:var(--info);">Book in PR &amp; claim</button></td></tr>
+              <tr><td class="mono">06AABCB1828N1ZQ</td><td class="mono">BS/26/02841</td><td>12-May</td><td>Bharti Services</td><td class="num">2,18,400</td><td class="num">39,312</td><td><button class="row-edit-btn" style="background:rgba(21,92,219,0.10);color:var(--info);">Book &amp; claim</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ============ 2B TABLE 4 · VALUE MISMATCHES ============ -->
+      <div class="recon-section pending">
+        <div class="recon-section-head">
+          <div>
+            <div class="recon-section-title">
+              <span class="recon-section-title-icon" style="background:rgba(199,119,0,0.15);color:var(--warning);">4</span>
+              <span>Value mismatches &middot; PR &harr; 2B differ &middot; 675 records</span>
+            </div>
+            <div class="recon-section-sub">Same invoice exists on both sides but values don&apos;t match within tolerance &middot; common causes: discount applied differently, tax rate change, exchange rate variance &middot; <strong>net diff: &#8377; 8.4 L</strong></div>
+          </div>
+          <div class="recon-section-stat">
+            <div class="recon-section-stat-label">Net diff</div>
+            <div class="recon-section-stat-value" style="color:var(--warning);">&#8377; 8.4 L</div>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table grid-lined compact">
+            <thead>
+              <tr>
+                <th>Supplier GSTIN</th>
+                <th class="mono">Doc no.</th>
+                <th>Date</th>
+                <th class="num">PR Value (&#8377;)</th>
+                <th class="num">2B Value (&#8377;)</th>
+                <th class="num">Diff (&#8377;)</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="mono">29AABCH4218Q1ZM</td><td class="mono">BF/26/01428</td><td>11-May</td><td class="num">28,38,000</td><td class="num">28,40,000</td><td class="num" style="color:var(--warning);">&minus; 2,000</td><td><button class="row-edit-btn">Accept 2B value</button></td></tr>
+              <tr><td class="mono">27AAACR5055K1Z1</td><td class="mono">RIL/26/2912</td><td>13-May</td><td class="num">15,84,000</td><td class="num">15,84,200</td><td class="num" style="color:var(--warning);">&minus; 200</td><td><button class="row-edit-btn">Accept 2B value</button></td></tr>
+              <tr><td class="mono">27AAACS1289H1ZP</td><td class="mono">SF/26/00284</td><td>14-May</td><td class="num">8,42,000</td><td class="num">8,40,000</td><td class="num" style="color:var(--success);">+ 2,000</td><td><button class="row-edit-btn">Reverse excess</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ============ 2B TABLE 5 · CARRY-FORWARD FROM PRIOR ============ -->
+      <div class="recon-section prior-pending">
+        <div class="recon-section-head">
+          <div>
+            <div class="recon-section-title">
+              <span class="recon-section-title-icon" style="background:rgba(124,58,237,0.15);color:#7C3AED;">5</span>
+              <span>Carry-forward from prior 2B &middot; 84 records</span>
+            </div>
+            <div class="recon-section-sub">Records from earlier 2B snapshots that you couldn&apos;t claim then (supplier hadn&apos;t filed) &middot; now appearing in current 2B as catch-up &middot; <strong style="color:#7C3AED;">&#8377; 14.8 L ITC unlocked</strong></div>
+          </div>
+          <div class="recon-section-stat">
+            <div class="recon-section-stat-label">Unlocked ITC</div>
+            <div class="recon-section-stat-value" style="color:#7C3AED;">&#8377; 14.8 L</div>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table grid-lined compact">
+            <thead>
+              <tr>
+                <th>Supplier GSTIN</th>
+                <th class="mono">Doc no.</th>
+                <th>Orig date</th>
+                <th>Carry-fwd since</th>
+                <th class="num">Taxable (&#8377;)</th>
+                <th class="num">IGST (&#8377;)</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="mono">27AABCM7841L1ZS</td><td class="mono">MM/26/00128</td><td>15-Mar</td><td>Apr-26 2B</td><td class="num">8,42,000</td><td class="num">1,51,560</td><td><button class="row-edit-btn" style="background:rgba(22,135,54,0.10);color:var(--success);">Claim now</button></td></tr>
+              <tr><td class="mono">29AABCH4218Q1ZM</td><td class="mono">BF/26/00984</td><td>22-Mar</td><td>Apr-26 2B</td><td class="num">4,18,000</td><td class="num">75,240</td><td><button class="row-edit-btn" style="background:rgba(22,135,54,0.10);color:var(--success);">Claim now</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ============ 2B TABLE 6 · FINAL 2B ITC POOL ============ -->
+      <div class="recon-section final">
+        <div class="recon-section-head" style="background:linear-gradient(135deg, #F5F8FA, var(--surface));">
+          <div>
+            <div class="recon-section-title">
+              <span class="recon-section-title-icon" style="background:linear-gradient(135deg,#4338CA,#7C3AED);color:#fff;">6</span>
+              <span>Final 2B-eligible ITC pool &middot; ready for GSTR-3B</span>
+            </div>
+            <div class="recon-section-sub">Net ITC available after reconciliation &middot; flows into <strong>GSTR-3B Table 4(A)</strong> in Step 4 &middot; you can still adjust before filing</div>
+          </div>
+          <div class="recon-section-stat">
+            <div class="recon-section-stat-label">Net eligible ITC</div>
+            <div class="recon-section-stat-value" style="color:#7C3AED;">&#8377; 38.42 Cr</div>
+          </div>
+        </div>
+        <div style="padding:18px 22px;">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:14px;">
+            <div style="padding:12px 16px;background:rgba(22,135,54,0.06);border-radius:8px;border-left:3px solid var(--success);">
+              <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">2B Matched (clean)</div>
+              <div style="font-size:16px;font-weight:700;color:var(--success);font-family:var(--font-mono);margin-top:3px;">+ &#8377; 38.42 Cr</div>
+              <div style="font-size:11px;color:var(--text-muted);">1,78,892 records</div>
+            </div>
+            <div style="padding:12px 16px;background:rgba(124,58,237,0.06);border-radius:8px;border-left:3px solid #7C3AED;">
+              <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">Carry-fwd unlocked</div>
+              <div style="font-size:16px;font-weight:700;color:#7C3AED;font-family:var(--font-mono);margin-top:3px;">+ &#8377; 14.8 L</div>
+              <div style="font-size:11px;color:var(--text-muted);">84 records from prior</div>
+            </div>
+            <div style="padding:12px 16px;background:rgba(199,119,0,0.06);border-radius:8px;border-left:3px solid var(--warning);">
+              <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">Value adjustments</div>
+              <div style="font-size:16px;font-weight:700;color:var(--warning);font-family:var(--font-mono);margin-top:3px;">&minus; &#8377; 8.4 L</div>
+              <div style="font-size:11px;color:var(--text-muted);">675 records</div>
+            </div>
+            <div style="padding:12px 16px;background:rgba(200,16,46,0.06);border-radius:8px;border-left:3px solid var(--error);">
+              <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">Excess reversed</div>
+              <div style="font-size:16px;font-weight:700;color:var(--error);font-family:var(--font-mono);margin-top:3px;">&minus; &#8377; 3.18 Cr</div>
+              <div style="font-size:11px;color:var(--text-muted);">1,799 records</div>
+            </div>
+            <div style="padding:14px 18px;background:linear-gradient(135deg, #FFFDF0, var(--surface));border-radius:8px;border:2px solid var(--ey-yellow);">
+              <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ey-black-deep);">Net eligible ITC</div>
+              <div style="font-size:20px;font-weight:700;color:var(--ey-black-deep);font-family:var(--font-mono);margin-top:3px;">&#8377; 35.40 Cr</div>
+              <div style="font-size:11px;color:var(--text-muted);">flows to 3B Table 4(A)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      </div>
+      <!-- /2B breakup -->
+
+      <!-- v2.0.31 — 2B Final ITC upload + history -->
+      <div class="card" style="padding:0;margin-top:18px;margin-bottom:18px;border:2px solid var(--ey-yellow);overflow:hidden;">
+        <div style="padding:16px 22px;background:linear-gradient(135deg,#FFFDF0,var(--surface));border-bottom:1px solid var(--border);">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+            <div>
+              <div style="font-size:14px;font-weight:700;color:var(--text);">Final ITC availment &middot; upload GSTR-3B-4A format</div>
+              <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">Download template, fill the eligible ITC values, upload to confirm &middot; or continue with auto-computed ITC of &#8377; 35.40 Cr</div>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button class="btn btn-secondary btn-sm">Download template</button>
+              <button class="run-action-btn" onclick="if(window.showToast)window.showToast('Upload final 2B ITC template Excel...');">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                Upload final ITC
+              </button>
+            </div>
+          </div>
+        </div>
+        <div style="padding:12px 22px;font-size:12px;color:var(--text-muted);background:rgba(124,58,237,0.04);">
+          Upload history: 14-May 23:18 v1 &middot; 15-May 09:24 v2 (current) &middot; <a href="#" style="color:#7C3AED;">View versions</a>
+        </div>
+      </div>
+
+    </div>
+    <!-- /2B view -->
+
+    <!-- ACTION BAR -->
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">Final ITC computed · ₹ 6.19 Cr</div>
+        <div class="action-bar-status">1,79,505 records will flow into GSTR-2B · 142 pending roll forward · 18 rejected excluded</div>
+      </div>
+      <div class="action-bar-actions">
+        <a href="gstr3b-step2.html" class="btn btn-secondary cta-large back-arrow-link">Step 2</a>
+        <button class="btn btn-secondary cta-large">Save &amp; close</button>
+        <a href="gstr3b-step4.html" class="btn btn-primary cta-xlarge">Mark complete · Next: Tax Summary →</a>
+      </div>
+    </div>
+
+    <!-- ACTIVITY LOG -->
+    <div class="activity-log-card">
+      <div class="activity-log-header">
+        <div>
+          <div class="activity-log-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            Activity log · Step 3 · Confirm Inward Summary
+          </div>
+          <div class="activity-log-sub">Every match run, every Accept / Reject / Pending action, every supplier outreach — captured for ITC audit defence</div>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn btn-secondary btn-sm">Export full log (CSV)</button>
+          <button class="btn btn-secondary btn-sm">Filter by action</button>
+        </div>
+      </div>
+      <div class="activity-log-summary">
+        <div class="activity-log-stat"><div class="activity-log-stat-label">Total events</div><div class="activity-log-stat-value">9</div></div>
+        <div class="activity-log-stat success"><div class="activity-log-stat-label">Accepted</div><div class="activity-log-stat-value">1,79,505</div></div>
+        <div class="activity-log-stat error"><div class="activity-log-stat-label">Rejected</div><div class="activity-log-stat-value">18</div></div>
+        <div class="activity-log-stat" style="color:var(--info)"><div class="activity-log-stat-label">Pending</div><div class="activity-log-stat-value">142</div></div>
+        <div class="activity-log-stat success"><div class="activity-log-stat-label">Final ITC</div><div class="activity-log-stat-value">₹ 6.19 Cr</div></div>
+      </div>
+      <div class="table-wrap">
+<table class="data-table grid-lined">
+        <thead>
+          <tr>
+            <th style="width:135px;">Timestamp</th>
+            <th>User</th>
+            <th>Action</th>
+            <th>Sub-table</th>
+            <th class="num">Records</th>
+            <th class="num">ITC impact</th>
+            <th>Files</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono">14-May 10:02:18</td>
+            <td>System</td>
+            <td><span class="log-action-pill system">Match engine run</span></td>
+            <td>All</td>
+            <td class="num">1,84,217 PR × 1,82,891 IMS</td>
+            <td class="num">—</td>
+            <td><a class="file-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Match report</a></td>
+          </tr>
+          <tr>
+            <td class="mono">14-May 10:24:42</td>
+            <td>Jude Akash</td>
+            <td><span class="log-action-pill complete">Bulk Accept</span></td>
+            <td>Matched (table 1)</td>
+            <td class="num">1,79,418</td>
+            <td class="num" style="color:var(--success)">+6,17,14,156</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td class="mono">14-May 11:18:08</td>
+            <td>Jude Akash</td>
+            <td><span class="log-action-pill complete">Accept selected</span></td>
+            <td>Non-matched IMS (table 2)</td>
+            <td class="num">2,418</td>
+            <td class="num" style="color:var(--success)">+8,42,420</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td class="mono">14-May 14:08:42</td>
+            <td>Jude Akash</td>
+            <td><span class="log-action-pill complete">Bulk Accept · prior-period catch-up</span></td>
+            <td>Prior-pending matches (table 3)</td>
+            <td class="num">87</td>
+            <td class="num" style="color:var(--success)">+2,31,984</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td class="mono">14-May 16:18:14</td>
+            <td>Jude Akash</td>
+            <td><span class="log-action-pill edit">Mark pending</span></td>
+            <td>Non-matched IMS (table 2)</td>
+            <td class="num">142</td>
+            <td class="num" style="color:var(--info)">15,15,420 parked</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td class="mono">14-May 16:22:18</td>
+            <td>Jude Akash</td>
+            <td><span class="log-action-pill edit">Reject (wrong-GSTIN)</span></td>
+            <td>Non-matched IMS (table 2)</td>
+            <td class="num">18</td>
+            <td class="num" style="color:var(--error)">−1,52,000 excluded</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td class="mono">14-May 16:42:08</td>
+            <td>System</td>
+            <td><span class="log-action-pill system">Final reconciliation run</span></td>
+            <td>Final view (table 6)</td>
+            <td class="num">1,79,505 → 2B</td>
+            <td class="num" style="color:var(--success)">+6,19,46,140</td>
+            <td><a class="file-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Final recon</a></td>
+          </tr>
+          <tr>
+            <td class="mono">14-May 18:08:24</td>
+            <td>Aditya Krishnan</td>
+            <td><span class="log-action-pill complete">Manager review · approved</span></td>
+            <td>All sub-tables</td>
+            <td class="num">1,79,505</td>
+            <td class="num">₹ 6.19 Cr</td>
+            <td>—</td>
+          </tr>
+          <tr style="background:#FFFDF0;">
+            <td class="mono">14-May 18:14:42</td>
+            <td>Jude Akash</td>
+            <td><span class="log-action-pill complete">Mark step complete</span></td>
+            <td>All</td>
+            <td class="num">1,79,505</td>
+            <td class="num">₹ 6.19 Cr → Section 4</td>
+            <td><a class="file-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>2B preview</a></td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('gstr3b', 'GSTR-3B Inward', 'Step 3 · Confirm Inward Summary');</script>
+
+<script>
+renderStepFlow({
+  anchor: "#step-flow",
+  intro: 'Reconcile Purchase Register against the auto-fetched IMS data. Six sub-tables: Matched, Non-matched IMS, Matched from prior pending, Pending (with timeline filter), Rejected (with timeline filter), and the Final reconciled view that feeds GSTR-2B.',
+  status: {
+  "state": "In progress",
+  "period": "May 2026",
+  "today": "15-May-2026 (Fri)",
+  "due": "GSTR-3B by 20-Jun-2026",
+  "dueClass": "",
+  "lastAction": "14-May 18:08 by Aditya",
+  "nextMilestone": "Step 4: ITC & Set-off"
+},
+  currentUpload: {
+  "fileName": "inward-final-v2.json",
+  "fileType": "json",
+  "size": "11.4 MB",
+  "source": "Match engine output from Steps 1 + 2",
+  "uploadedBy": "Aditya Krishnan (approved)",
+  "uploadedAt": "14-May 18:08:24",
+  "records": "1,79,505 → 2B",
+  "pass": "1,79,505",
+  "warn": 142,
+  "fail": 18
+},
+  validations: [
+  {
+    "name": "Matched rows tie-out",
+    "state": "pass",
+    "count": "✓ 1,79,418"
+  },
+  {
+    "name": "Prior-pending catch-ups",
+    "state": "pass",
+    "count": "✓ 87"
+  },
+  {
+    "name": "Pending rolls to next period",
+    "state": "warn",
+    "count": "⚠ 142 parked"
+  },
+  {
+    "name": "Rejected excluded from 2B",
+    "state": "pass",
+    "count": "✗ 18 excluded"
+  },
+  {
+    "name": "ITC computation",
+    "state": "pass",
+    "count": "✓ ₹ 6.19 Cr"
+  },
+  {
+    "name": "Manager approval",
+    "state": "pass",
+    "count": "✓ Aditya 18:08"
+  }
+],
+  history: [
+  {
+    "version": "v2",
+    "label": "Final after manager review approval",
+    "source": "Manager approval",
+    "by": "Aditya Krishnan",
+    "time": "14-May 18:08:24",
+    "records": "1,79,505",
+    "tag": "current"
+  },
+  {
+    "version": "v1",
+    "label": "Initial match-engine run",
+    "source": "Match engine",
+    "by": "System",
+    "time": "14-May 10:02:18",
+    "records": "1,79,418",
+    "tag": "initial"
+  }
+],
+  dispositions: [
+  {
+    "id": "continue",
+    "primary": true,
+    "title": "Continue with v2",
+    "desc": "ITC ₹ 6.19 Cr approved by Aditya. Proceed to Step 4 (ITC & Set-off computation)."
+  },
+  {
+    "id": "refresh",
+    "title": "Re-run match engine",
+    "desc": "Re-run if Step 1 PR or Step 2 IMS changed. Creates a new version snapshot."
+  },
+  {
+    "id": "amend",
+    "title": "Revisit rejected/pending rows",
+    "desc": "Open the rejected (18) or pending (142) tables to re-classify. Useful if supplier confirms a disputed invoice."
+  }
+]
+});
+</script>
+</body>
+</html>

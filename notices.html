@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notices &amp; Orders &middot; DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">Common across all registrations &middot; auto-synced from GSTN portal</div>
+        <h1 class="page-title">Notices &amp; Orders</h1>
+        <p class="page-subtitle">Fetch notices &amp; orders from GSTN portal &middot; mark internal stage (Read / Working / Closed) &middot; for analysis &amp; reply, export to <strong style="color:#6366F1;">Digilimm+</strong></p>
+      </div>
+      <div class="flex gap-2">
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+          <button class="btn btn-primary cta-large" style="background:var(--ey-yellow);color:var(--ey-black-deep);border-color:var(--ey-yellow);font-weight:700;padding:10px 18px;" onclick="if(window.showToast) window.showToast('Syncing notices &amp; orders from GSTN portal · 6 new found');">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            Sync from portal
+          </button>
+          <div style="font-size:11px;color:var(--text-muted);font-family:var(--font-mono);text-align:right;">
+            <span style="color:var(--success);">&#9679;</span> Last sync: <strong>15-May 09:18:42</strong> &middot; next in 5h 12m
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WHAT THIS MODULE IS / IS NOT -->
+    <div class="card" style="background:linear-gradient(135deg, #EEF2FF, var(--surface));border-left:4px solid #6366F1;padding:16px 20px;margin-bottom:24px;">
+      <div style="display:flex;gap:14px;align-items:flex-start;">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#6366F1" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <div style="font-size:12.5px;line-height:1.6;color:var(--text);">
+          <strong>What this module does:</strong> Just <em>fetches</em> notices &amp; orders from your GSTN portal account (auto-poll + manual sync) and lets you tag the internal handling stage (Read / Working / Closed). <strong>It does NOT do reply analysis or drafting</strong> &mdash; that lives in <span style="color:#6366F1;font-weight:700;">Digilimm+</span>, our specialised notice-response tool. From any notice row, click the bright <em>Open in Digilimm+</em> button to deep-link into Digilimm+ with the notice pre-loaded.
+        </div>
+      </div>
+    </div>
+
+    <!-- COUNTER STRIP -->
+    <div class="big-stat-grid" style="margin-bottom:24px;">
+      <div class="big-stat" style="border-left:3px solid var(--error);">
+        <div class="big-stat-label">Immediate attention</div>
+        <div class="big-stat-value" style="color:var(--error);">3</div>
+        <div class="big-stat-sub">ASMT-10 / DRC-01 / Adjudication &middot; reply &lt; 7 days</div>
+      </div>
+      <div class="big-stat" style="border-left:3px solid var(--warning);">
+        <div class="big-stat-label">Working in progress</div>
+        <div class="big-stat-value" style="color:var(--warning);">5</div>
+        <div class="big-stat-sub">Under reply prep in Digilimm+</div>
+      </div>
+      <div class="big-stat" style="border-left:3px solid var(--info);">
+        <div class="big-stat-label">Unread</div>
+        <div class="big-stat-value" style="color:var(--info);">6</div>
+        <div class="big-stat-sub">Pulled by sync · not yet reviewed</div>
+      </div>
+      <div class="big-stat" style="border-left:3px solid var(--success);">
+        <div class="big-stat-label">Closed (FY 26-27)</div>
+        <div class="big-stat-value" style="color:var(--success);">42</div>
+        <div class="big-stat-sub">Replied &amp; accepted by dept</div>
+      </div>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="card" style="padding:14px 22px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;">
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <button class="status-pill complete" style="cursor:pointer;border:2px solid #6366F1;background:rgba(99,102,241,0.15);color:#6366F1;font-weight:700;">All (56)</button>
+        <button class="status-pill error" style="cursor:pointer;">Immediate (3)</button>
+        <button class="status-pill warn" style="cursor:pointer;">Working (5)</button>
+        <button class="status-pill" style="cursor:pointer;">Unread (6)</button>
+        <button class="status-pill" style="cursor:pointer;">Read (0)</button>
+        <button class="status-pill complete" style="cursor:pointer;">Closed (42)</button>
+        <button class="status-pill" style="cursor:pointer;">Additional notice (4)</button>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <input class="modal-field-input" placeholder="Search by notice no, type, RFN..." style="font-size:12px;width:240px;">
+        <select class="modal-field-input" style="font-size:12px;width:140px;">
+          <option>All entities</option>
+          <option>Tata Steel · Normal</option>
+          <option>Tata Services · ISD</option>
+          <option>Tata Traders · Composition</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- LIST -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div class="table-wrap">
+        <table class="data-table grid-lined compact">
+          <thead>
+            <tr>
+              <th class="mono">RFN / Notice no</th>
+              <th>Type</th>
+              <th>Period</th>
+              <th>Issued</th>
+              <th>Due</th>
+              <th>Entity</th>
+              <th>Internal stage</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <!-- IMMEDIATE / ASMT-10 -->
+            <tr style="background:rgba(200,16,46,0.04);">
+              <td class="mono">ZA270526001428C</td>
+              <td><strong>ASMT-10</strong><br><span style="font-size:10.5px;color:var(--text-muted);">Scrutiny &middot; discrepancy notice</span></td>
+              <td>Apr 2026</td>
+              <td>15-May 11:24</td>
+              <td><span style="font-family:var(--font-mono);color:var(--error);font-weight:700;">22-May (6d left)</span></td>
+              <td>Tata Steel · Normal</td>
+              <td>
+                <select class="modal-field-input" style="font-size:11px;padding:4px 6px;">
+                  <option style="color:var(--info);">Unread (default)</option>
+                  <option>Read</option>
+                  <option>Working</option>
+                  <option>Closed</option>
+                </select>
+              </td>
+              <td>
+                <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                  <button class="row-edit-btn" title="View attachment PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <button class="row-edit-btn" title="Download PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+                  <a href="https://digilimm.ey.com/notice/ZA270526001428C" target="_blank" class="row-edit-btn" style="background:linear-gradient(135deg,#4338CA,#6366F1);color:#fff;border:none;font-weight:700;padding:6px 12px;text-decoration:none;display:inline-flex;align-items:center;gap:4px;" title="Open in Digilimm+ for analysis &amp; reply drafting">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" stroke-width="2.4"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    Open in Digilimm+
+                  </a>
+                </div>
+              </td>
+            </tr>
+
+            <!-- DRC-01A -->
+            <tr style="background:rgba(199,119,0,0.04);">
+              <td class="mono">ZA270526001518D</td>
+              <td><strong>DRC-01A</strong><br><span style="font-size:10.5px;color:var(--text-muted);">Pre-show-cause &middot; intimation</span></td>
+              <td>Q4 FY25-26</td>
+              <td>13-May 09:18</td>
+              <td><span style="font-family:var(--font-mono);color:var(--warning);font-weight:700;">28-May (12d left)</span></td>
+              <td>Tata Steel · Normal</td>
+              <td>
+                <select class="modal-field-input" style="font-size:11px;padding:4px 6px;">
+                  <option>Unread</option>
+                  <option>Read</option>
+                  <option style="color:var(--warning);" selected>Working (default)</option>
+                  <option>Closed</option>
+                </select>
+              </td>
+              <td>
+                <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                  <button class="row-edit-btn" title="View PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <button class="row-edit-btn" title="Download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+                  <a href="https://digilimm.ey.com/notice/ZA270526001518D" target="_blank" class="row-edit-btn" style="background:linear-gradient(135deg,#4338CA,#6366F1);color:#fff;border:none;font-weight:700;padding:6px 12px;text-decoration:none;display:inline-flex;align-items:center;gap:4px;" title="Continue reply prep in Digilimm+">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" stroke-width="2.4"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    Continue in Digilimm+
+                  </a>
+                </div>
+              </td>
+            </tr>
+
+            <!-- ADT-01 audit -->
+            <tr>
+              <td class="mono">ZA270526000832A</td>
+              <td><strong>ADT-01</strong><br><span style="font-size:10.5px;color:var(--text-muted);">Audit notice &middot; sec 65</span></td>
+              <td>FY 2024-25</td>
+              <td>08-May 14:42</td>
+              <td><span style="font-family:var(--font-mono);">08-Jun (24d left)</span></td>
+              <td>Tata Steel · Normal</td>
+              <td>
+                <select class="modal-field-input" style="font-size:11px;padding:4px 6px;">
+                  <option>Unread</option>
+                  <option style="color:var(--text);" selected>Read</option>
+                  <option>Working</option>
+                  <option>Closed</option>
+                </select>
+              </td>
+              <td>
+                <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                  <button class="row-edit-btn" title="View"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <button class="row-edit-btn" title="Download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+                  <a href="https://digilimm.ey.com/notice/ZA270526000832A" target="_blank" class="row-edit-btn" style="background:linear-gradient(135deg,#4338CA,#6366F1);color:#fff;border:none;font-weight:700;padding:6px 12px;text-decoration:none;display:inline-flex;align-items:center;gap:4px;" title="Analyse audit notice in Digilimm+">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" stroke-width="2.4"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    Analyse in Digilimm+
+                  </a>
+                </div>
+              </td>
+            </tr>
+
+            <!-- RFD-02 acknowledgment -->
+            <tr>
+              <td class="mono">ZA270526001218R</td>
+              <td><strong>RFD-02</strong><br><span style="font-size:10.5px;color:var(--text-muted);">Refund acknowledgement</span></td>
+              <td>Mar 2026</td>
+              <td>10-May 16:22</td>
+              <td><span style="font-family:var(--font-mono);color:var(--text-muted);">No reply required</span></td>
+              <td>Tata Steel · Normal</td>
+              <td>
+                <select class="modal-field-input" style="font-size:11px;padding:4px 6px;">
+                  <option>Unread</option>
+                  <option>Read</option>
+                  <option>Working</option>
+                  <option style="color:var(--success);" selected>Closed</option>
+                </select>
+              </td>
+              <td>
+                <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                  <button class="row-edit-btn" title="View"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <button class="row-edit-btn" title="Download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Additional notice -->
+            <tr style="background:rgba(99,102,241,0.04);">
+              <td class="mono">ZA270526001628X &middot; <em style="font-size:10px;color:#6366F1;">+ additional</em></td>
+              <td><strong>DRC-01 (additional)</strong><br><span style="font-size:10.5px;color:var(--text-muted);">Follow-up after ASMT-10</span></td>
+              <td>Apr 2026</td>
+              <td>15-May 18:08</td>
+              <td><span style="font-family:var(--font-mono);color:var(--warning);font-weight:700;">14-Jun (29d left)</span></td>
+              <td>Tata Steel · Normal</td>
+              <td>
+                <select class="modal-field-input" style="font-size:11px;padding:4px 6px;">
+                  <option style="color:var(--info);" selected>Unread (default)</option>
+                  <option>Read</option>
+                  <option>Working</option>
+                  <option>Closed</option>
+                </select>
+              </td>
+              <td>
+                <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                  <button class="row-edit-btn" title="View"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <button class="row-edit-btn" title="Download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+                  <a href="https://digilimm.ey.com/notice/ZA270526001628X" target="_blank" class="row-edit-btn" style="background:linear-gradient(135deg,#4338CA,#6366F1);color:#fff;border:none;font-weight:700;padding:6px 12px;text-decoration:none;display:inline-flex;align-items:center;gap:4px;" title="Open in Digilimm+">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" stroke-width="2.4"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    Open in Digilimm+
+                  </a>
+                </div>
+              </td>
+            </tr>
+
+            <!-- ISD notice -->
+            <tr>
+              <td class="mono">ZA270526000418I</td>
+              <td><strong>DRC-01C</strong><br><span style="font-size:10.5px;color:var(--text-muted);">ITC distribution discrepancy</span></td>
+              <td>Mar 2026</td>
+              <td>04-May 10:18</td>
+              <td><span style="font-family:var(--font-mono);">04-Jun (20d left)</span></td>
+              <td>Tata Services · ISD</td>
+              <td>
+                <select class="modal-field-input" style="font-size:11px;padding:4px 6px;">
+                  <option>Unread</option>
+                  <option>Read</option>
+                  <option style="color:var(--warning);" selected>Working</option>
+                  <option>Closed</option>
+                </select>
+              </td>
+              <td>
+                <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                  <button class="row-edit-btn" title="View"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <button class="row-edit-btn" title="Download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+                  <a href="https://digilimm.ey.com/notice/ZA270526000418I" target="_blank" class="row-edit-btn" style="background:linear-gradient(135deg,#4338CA,#6366F1);color:#fff;border:none;font-weight:700;padding:6px 12px;text-decoration:none;display:inline-flex;align-items:center;gap:4px;" title="Continue in Digilimm+">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" stroke-width="2.4"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    Continue in Digilimm+
+                  </a>
+                </div>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- BOTTOM CTA -->
+    <div class="card" style="padding:20px 24px;background:linear-gradient(135deg, #4338CA, #6366F1);color:#fff;display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;margin-bottom:20px;">
+      <div style="width:48px;height:48px;border-radius:12px;background:#fff;color:#6366F1;display:grid;place-items:center;">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </div>
+      <div>
+        <div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.7);font-weight:700;">Need to analyse / draft reply?</div>
+        <div style="font-size:15px;font-weight:700;color:#fff;">Open the notice in Digilimm+ &mdash; AI-assisted analysis + reply drafting</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.85);margin-top:3px;">Notice metadata + attached PDF + your books data are pre-loaded · saves 6-8 hours per reply</div>
+      </div>
+      <a href="https://digilimm.ey.com" target="_blank" class="btn cta-large" style="background:#fff;color:#6366F1;border:none;font-weight:700;">Launch Digilimm+ &rarr;</a>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('notices', 'Notices &amp; Orders', 'Common &middot; all entities');</script>
+</body>
+</html>

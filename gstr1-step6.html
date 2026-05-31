@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step 6 · GSTR-1A · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Step 6 · GSTR-1A Correction Window <span style="font-size:12px;background:rgba(21,92,219,0.1);color:var(--info);padding:3px 9px;border-radius:4px;font-weight:600;margin-left:8px;vertical-align:middle;">OPTIONAL</span></h1>
+        <p class="page-subtitle">Add missed invoices or amend particulars — same period · before GSTR-3B filing · one amendment per period</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="gstr1.html" class="btn btn-secondary back-arrow-link">Back to workflow</a>
+      </div>
+    </div>
+
+    <div class="step-progress-bar">
+      <a href="gstr1-step1.html" class="step-pip done step-pip-link" title="Go to Sales data"><div class="step-pip-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></div>Sales data</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr1-step2.html" class="step-pip done step-pip-link" title="Go to IRN + Upload"><div class="step-pip-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></div>IRN + Upload</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr1-step3.html" class="step-pip done step-pip-link" title="Go to Outward summary"><div class="step-pip-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></div>Outward summary</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr1-step4.html" class="step-pip done step-pip-link" title="Go to HSN &amp; Docs"><div class="step-pip-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></div>HSN &amp; Docs</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr1-step5.html" class="step-pip done step-pip-link" title="Go to Preview &amp; File"><div class="step-pip-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></div>Preview &amp; File</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr1a.html" class="step-pip current step-pip-link" title="Go to Step 6 · GSTR-1A"><div class="step-pip-dot">6</div>GSTR-1A</a>
+    </div>
+
+
+
+    <!-- STEP FLOW MOUNT (v2.0.10) -->
+    <div id="step-flow"></div>
+
+
+    
+
+    <!-- AMENDMENT WINDOW STATUS -->
+    <div class="card" style="padding:18px 22px;margin-bottom:20px;background:linear-gradient(135deg, #F0F8FF, var(--surface));border-left:4px solid var(--info);">
+      <div style="display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;">
+        <div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">Amendment window is OPEN</div>
+          <div style="font-size:12.5px;color:var(--text-muted);">
+            GSTR-1 was filed on 11-Jun-2026 (ARN: <span class="mono">AA270525036294Z</span>). GSTR-3B due 20-Jun-2026. You have <strong>9 days</strong> to file one GSTR-1A if needed.
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:24px;font-weight:700;color:var(--info);font-family:var(--font-mono);">9 days</div>
+          <div style="font-size:11px;color:var(--text-muted);">until GSTR-3B due</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WHAT YOU CAN AMEND -->
+    <div class="card" style="padding:20px 24px;margin-bottom:20px;">
+      <div class="card-section-header">
+        <div>
+          <div class="card-section-title">What can you do in GSTR-1A?</div>
+          <div class="card-section-sub">Same-period corrections only — flows into the same period's GSTR-3B Table 3</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:14px;">
+
+        <div style="border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;background:var(--surface);">
+          <div style="font-size:13px;font-weight:700;color:var(--success);margin-bottom:6px;">✓ Allowed</div>
+          <ul style="font-size:12.5px;color:var(--text);margin:0;padding-left:20px;line-height:1.7;">
+            <li>Add missed invoices (B2B / B2C / Export / CDN)</li>
+            <li>Amend invoice value, tax rate, taxable value</li>
+            <li>Amend invoice date (within same FY)</li>
+            <li>Amend Place of Supply</li>
+            <li>Amend HSN code</li>
+            <li>Add or correct credit / debit notes</li>
+          </ul>
+        </div>
+
+        <div style="border:1.5px solid rgba(200, 16, 46, 0.25);border-radius:var(--radius);padding:16px;background:#FFF5F6;">
+          <div style="font-size:13px;font-weight:700;color:var(--error);margin-bottom:6px;">✗ NOT allowed</div>
+          <ul style="font-size:12.5px;color:var(--text);margin:0;padding-left:20px;line-height:1.7;">
+            <li><strong>Recipient GSTIN</strong> cannot be amended here</li>
+            <li>Invoices from prior periods (use 9A/9B/9C)</li>
+            <li>Cannot reverse a filed GSTR-1A — only one per period</li>
+            <li>Cannot change export indicator (with-pay / without-pay)</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ADD MISSED INVOICE FORM -->
+    <div class="card" style="padding:20px 24px;margin-bottom:20px;">
+      <div class="card-section-header">
+        <div>
+          <div class="card-section-title">Add missed invoice / amend record</div>
+          <div class="card-section-sub">Select the action type and the table. Same validations as Step 1 apply.</div>
+        </div>
+      </div>
+
+      <div class="filter-bar" style="margin-bottom:16px;">
+        <div class="field">
+          <label class="field-label">Action</label>
+          <select class="select">
+            <option>Add new invoice (missed)</option>
+            <option>Amend existing invoice</option>
+            <option>Add credit / debit note</option>
+            <option>Amend HSN</option>
+            <option>Amend document series</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label">Target table</label>
+          <select class="select">
+            <option>Table 4A · B2B Regular</option>
+            <option>Table 5A · B2C Large</option>
+            <option>Table 6A · Exports</option>
+            <option>Table 9B · Credit / Debit Notes</option>
+            <option>Table 11 · Advances</option>
+            <option>Table 12 · HSN</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label">Reason for amendment</label>
+          <select class="select">
+            <option>Invoice missed in original GSTR-1</option>
+            <option>Value correction</option>
+            <option>Rate correction</option>
+            <option>PoS correction</option>
+            <option>HSN correction</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="btn btn-primary cta-large">Open amendment form →</button>
+    </div>
+
+    <!-- AMENDMENTS QUEUED -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:18px 22px;border-bottom:1px solid var(--border);">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">Amendments queued in this GSTR-1A · 0 records</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">No corrections added yet. The form above stages amendments before filing.</div>
+      </div>
+      <div style="padding:36px 22px;text-align:center;color:var(--text-muted);font-size:13px;">
+        Once you add records, they'll appear here for review before signing.
+      </div>
+    </div>
+
+    
+
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">Optional · skip if no corrections needed</div>
+        <div class="action-bar-status">You can come back to this step anytime before GSTR-3B is filed</div>
+      </div>
+      <div class="action-bar-actions">
+        <a href="gstr1-step5.html" class="btn btn-secondary cta-large back-arrow-link">Step 5</a>
+        <button class="btn btn-secondary cta-large">Save draft</button>
+        <button class="btn btn-primary cta-xlarge">File GSTR-1A with DSC →</button>
+      </div>
+    </div>
+
+    <!-- ACTIVITY LOG -->
+    <div class="activity-log-card">
+      <div class="activity-log-header">
+        <div>
+          <div class="activity-log-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            Activity log · Step 6 · GSTR-1A amendments
+          </div>
+          <div class="activity-log-sub">Every amendment, every approval, the final filing — captured for audit</div>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn btn-secondary btn-sm">Export full log (CSV)</button>
+          <button class="btn btn-secondary btn-sm">Filter</button>
+        </div>
+      </div>
+      <div class="activity-log-summary">
+        <div class="activity-log-stat"><div class="activity-log-stat-label">Total events</div><div class="activity-log-stat-value">5</div></div>
+        <div class="activity-log-stat"><div class="activity-log-stat-label">Amendments</div><div class="activity-log-stat-value">3</div></div>
+        <div class="activity-log-stat success"><div class="activity-log-stat-label">Net liability change</div><div class="activity-log-stat-value">+ ₹ 18,420</div></div>
+        <div class="activity-log-stat success"><div class="activity-log-stat-label">Status</div><div class="activity-log-stat-value">Filed</div></div>
+        <div class="activity-log-stat"><div class="activity-log-stat-label">ARN</div><div class="activity-log-stat-value" style="font-size:11px">AA270525038217B</div></div>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width:135px;">Timestamp</th>
+            <th>User</th>
+            <th>Action</th>
+            <th>Amendment</th>
+            <th class="num">Net change</th>
+            <th>Status</th>
+            <th>Files</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono">14-Jun 10:22:08</td>
+            <td>Jude Akash</td>
+            <td><span class="log-action-pill edit">Added missed invoice</span></td>
+            <td class="mono">Apollo Tyres · TS/26/02788</td>
+            <td class="num" style="color:var(--success)">+14,832.00</td>
+            <td><span class="ims-status-pill pending">Draft</span></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td class="mono">14-Jun 10:42:18</td>
+            <td>Jude Akash</td>
+            <td><span class="log-action-pill edit">Amended invoice value</span></td>
+            <td class="mono">Hindalco · TS/26/02451 (rate fix)</td>
+            <td class="num" style="color:var(--success)">+2,160.00</td>
+            <td><span class="ims-status-pill pending">Draft</span></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td class="mono">14-Jun 11:08:42</td>
+            <td>Jude Akash</td>
+            <td><span class="log-action-pill edit">Added credit note</span></td>
+            <td class="mono">Tata Consumer · CN/26/0089</td>
+            <td class="num" style="color:var(--success)">+1,428.00</td>
+            <td><span class="ims-status-pill pending">Draft</span></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td class="mono">14-Jun 14:18:22</td>
+            <td>Aditya Krishnan</td>
+            <td><span class="log-action-pill complete">Manager review · approved</span></td>
+            <td>3 amendments</td>
+            <td class="num" style="color:var(--success)">+18,420.00</td>
+            <td><span class="ims-status-pill accept">Approved</span></td>
+            <td>—</td>
+          </tr>
+          <tr style="background:#FFFDF0;">
+            <td class="mono">16-Jun 09:18:48</td>
+            <td>Jude Akash</td>
+            <td><span class="log-action-pill file">File GSTR-1A with DSC</span></td>
+            <td>3 amendments · DSC Class-3</td>
+            <td class="num" style="color:var(--success)">+18,420.00</td>
+            <td><span class="ims-status-pill accept">Filed · ARN AA270525038217B</span></td>
+            <td>
+              <a class="file-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Filed 1A.pdf</a>
+              <a class="file-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>ARN receipt</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('gstr1', 'GSTR-1 Outward Supplies', 'Step 6 · GSTR-1A Correction');</script>
+
+<script>
+renderStepFlow({
+  anchor: "#step-flow",
+  intro: 'Optional GSTR-1A amendments — amend filed values before the recipient downloads their GSTR-2B. Max 100 amendments per cycle.',
+  status: {
+  "state": "Draft",
+  "period": "May 2026",
+  "today": "15-May-2026 (Fri)",
+  "due": "Before next GSTR-3B",
+  "dueClass": "",
+  "lastAction": "14-May 17:48 by Jude",
+  "nextMilestone": "File GSTR-1A amendment"
+},
+  currentUpload: {
+  "fileName": "gstr1a-v1.json",
+  "fileType": "json",
+  "size": "1.8 MB",
+  "source": "Manual amendments to filed GSTR-1",
+  "uploadedBy": "Jude Akash",
+  "uploadedAt": "14-May 17:48:18",
+  "records": "12 amendments",
+  "pass": 12,
+  "warn": 0,
+  "fail": 0
+},
+  validations: [
+  {
+    "name": "Amendment count limit",
+    "state": "pass",
+    "count": "✓ 12/100"
+  },
+  {
+    "name": "Amendment timing window",
+    "state": "pass",
+    "count": "✓ Within window"
+  },
+  {
+    "name": "Recipient consent received",
+    "state": "pass",
+    "count": "✓ 12/12"
+  }
+],
+  history: [
+  {
+    "version": "v1",
+    "label": "Draft amendments",
+    "source": "Manual edit",
+    "by": "Jude Akash",
+    "time": "14-May 17:48:18",
+    "records": "12 amendments",
+    "tag": "current"
+  }
+],
+  dispositions: [
+  {
+    "id": "continue",
+    "primary": true,
+    "title": "Submit amendments",
+    "desc": "File GSTR-1A — amendments propagate to recipient GSTR-2B in next cycle."
+  },
+  {
+    "id": "manual",
+    "title": "Add more amendments",
+    "desc": "Up to 100 amendments per GSTR-1A filing."
+  },
+  {
+    "id": "skip",
+    "title": "Skip GSTR-1A this cycle",
+    "desc": "Roll amendments into next month's GSTR-1 Table 9 instead."
+  }
+]
+});
+</script>
+</body>
+</html>

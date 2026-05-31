@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reports · E-Invoice & EWB · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">E-Invoice & EWB</h1>
+        <p class="page-subtitle">Generate, schedule and download statutory and operational reports</p>
+      </div>
+      <button class="btn btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Custom Report
+      </button>
+    </div>
+
+
+    <!-- LIFECYCLE STRIP -->
+    <div class="lifecycle-strip">
+      <div class="lifecycle-header">
+        <div class="lifecycle-header-title">E-Invoice & EWB cycle · Feeds into GSTR-1</div>
+        <div class="lifecycle-header-help">IRN cancellation window: 24 hours · EWB validity: 1 day per 200 km</div>
+      </div>
+      <div class="lifecycle-body">
+        <div class="lifecycle-phase past">
+          <div class="phase-marker"><span class="marker-dot"></span>Previous month</div>
+          <div class="phase-title">April 2026</div>
+          <div class="phase-status success">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+            2,68,419 IRNs · GSTR-1 filed
+          </div>
+          <div class="phase-due">
+            <span class="due-date mono">ARN AA270526009287N</span>
+            <span class="days-left onTrack">Cycle closed 10-May-2026</span>
+          </div>
+        </div>
+        <div class="lifecycle-phase current">
+          <div class="phase-marker"><span class="marker-dot"></span>Current month</div>
+          <div class="phase-title">May 2026</div>
+          <div class="phase-status">2,84,712 IRNs generated MTD · Feeds GSTR-1 May</div>
+          <div class="phase-due">
+            <span class="due-date">GSTR-1 due 11-Jun-2026</span>
+            <span class="days-left onTrack">28 days remaining · On track</span>
+          </div>
+        </div>
+        <div class="lifecycle-phase upcoming">
+          <div class="phase-marker"><span class="marker-dot"></span>Next month</div>
+          <div class="phase-title">June 2026</div>
+          <div class="phase-status muted">Cycle opens 1-Jun-2026</div>
+          <div class="phase-due">
+            <span class="due-date">GSTR-1 due 11-Jul-2026</span>
+            <span class="days-left">58 days from today</span>
+          </div>
+        </div>
+      </div>
+
+    <!-- v2.0.21 — Cross-link to Books vs E-invoice reconciliation + Generate IRN CTA -->
+    <div class="card" style="display:grid;grid-template-columns:auto 1fr auto auto;gap:16px;align-items:center;padding:16px 22px;margin-bottom:20px;background:linear-gradient(135deg, #FFFDF0, var(--surface));border:1px solid var(--ey-yellow);">
+      <div style="width:42px;height:42px;border-radius:10px;background:var(--ey-yellow);color:var(--ey-black-deep);display:grid;place-items:center;">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+      </div>
+      <div>
+        <div style="font-size:13.5px;font-weight:700;color:var(--text);">Generate single IRN or reconcile outward flow</div>
+        <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px;">Issue an IRN ad-hoc (B2B / Export / CN / DN) or open the Books vs E-invoice reconciliation to surface missing IRNs.</div>
+      </div>
+      <button class="btn btn-secondary cta-large" onclick="window.openIrnPopup()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Generate IRN
+      </button>
+      <a href="reco-books-vs-einv.html" class="btn btn-primary cta-large">Books vs E-invoice reco &rarr;</a>
+    </div>
+
+    </div>
+
+    <!-- Workflow Stepper -->
+    <div class="workflow">
+      <div class="workflow-step completed"><div class="step-dot"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><div class="step-label">Upload File</div></div>
+      <div class="workflow-step completed"><div class="step-dot"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><div class="step-label">Check Processing</div></div>
+      <div class="workflow-step completed"><div class="step-dot"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><div class="step-label">Review & Manage</div></div>
+      <div class="workflow-step completed"><div class="step-dot"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><div class="step-label">Cancel / Action</div></div>
+      <div class="workflow-step active"><div class="step-dot">5</div><div class="step-label">Run Reports</div></div>
+    </div>
+
+    <!-- Sub tabs -->
+    <div class="tabs">
+      <a href="einvoice-upload.html" class="tab"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Upload Data</a>
+      <a href="einvoice-management.html" class="tab"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/></svg>Invoice Management<span class="tab-count">12,847</span></a>
+      <a href="einvoice-reports.html" class="tab active"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Reports</a>
+    </div>
+
+    <!-- Inner tabs for report sub-sections -->
+    <div data-tab-group>
+      <div class="tabs" style="border-bottom: 1px solid var(--border); margin-bottom: 18px;">
+        <div class="tab active" data-tab="catalogue">Report Catalogue <span class="tab-count">14</span></div>
+        <div class="tab" data-tab="scheduled">Scheduled Jobs <span class="tab-count">6</span></div>
+        <div class="tab" data-tab="generated">Generated Reports <span class="tab-count">142</span></div>
+      </div>
+
+      <!-- CATALOGUE -->
+      <div data-tab-panel="catalogue">
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;">
+          <!-- Report Card -->
+          <div class="card">
+            <div style="padding: 18px 20px; display: flex; gap: 14px;">
+              <div style="width: 40px; height: 40px; background: var(--info-bg); color: var(--info); border-radius: 8px; display: grid; place-items: center; flex-shrink: 0;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </div>
+              <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+                  <div>
+                    <div style="font-size: 14px; font-weight: 600;">GSTR-1 Outward Supplies</div>
+                    <div class="text-xs text-muted" style="margin-top: 2px;">Statutory · Monthly</div>
+                  </div>
+                  <div class="flex gap-2">
+                    <span class="format-tag">XLSX</span>
+                    <span class="format-tag">CSV</span>
+                  </div>
+                </div>
+                <p style="font-size: 12.5px; color: var(--text-muted); margin: 10px 0 14px; line-height: 1.5;">Complete outward supplies for the period with HSN summary, B2B, B2C, and amended invoices ready for GSTN portal upload.</p>
+                <div class="flex gap-2">
+                  <button class="btn btn-dark btn-sm">Generate Now</button>
+                  <button class="btn btn-secondary btn-sm" data-modal-open="schedule-modal">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    Schedule
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div style="padding: 18px 20px; display: flex; gap: 14px;">
+              <div style="width: 40px; height: 40px; background: var(--pill-isd-bg); color: var(--pill-isd); border-radius: 8px; display: grid; place-items: center; flex-shrink: 0;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              </div>
+              <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+                  <div>
+                    <div style="font-size: 14px; font-weight: 600;">IRN Register</div>
+                    <div class="text-xs text-muted" style="margin-top: 2px;">Operational · On demand</div>
+                  </div>
+                  <div class="flex gap-2"><span class="format-tag">XLSX</span><span class="format-tag">CSV</span></div>
+                </div>
+                <p style="font-size: 12.5px; color: var(--text-muted); margin: 10px 0 14px; line-height: 1.5;">All generated IRNs with full invoice details, signed QR data, and acknowledgement metadata for audit purposes.</p>
+                <div class="flex gap-2">
+                  <button class="btn btn-dark btn-sm">Generate Now</button>
+                  <button class="btn btn-secondary btn-sm" data-modal-open="schedule-modal"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Schedule</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div style="padding: 18px 20px; display: flex; gap: 14px;">
+              <div style="width: 40px; height: 40px; background: var(--warning-bg); color: var(--warning); border-radius: 8px; display: grid; place-items: center; flex-shrink: 0;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              </div>
+              <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+                  <div>
+                    <div style="font-size: 14px; font-weight: 600;">Error & Exception Report</div>
+                    <div class="text-xs text-muted" style="margin-top: 2px;">Operational · Daily</div>
+                  </div>
+                  <div class="flex gap-2"><span class="format-tag">XLSX</span></div>
+                </div>
+                <p style="font-size: 12.5px; color: var(--text-muted); margin: 10px 0 14px; line-height: 1.5;">All failed records grouped by error code with root cause analysis and suggested remediation actions for compliance teams.</p>
+                <div class="flex gap-2">
+                  <button class="btn btn-dark btn-sm">Generate Now</button>
+                  <button class="btn btn-secondary btn-sm" data-modal-open="schedule-modal"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Schedule</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div style="padding: 18px 20px; display: flex; gap: 14px;">
+              <div style="width: 40px; height: 40px; background: var(--pill-cr-bg); color: var(--pill-cr); border-radius: 8px; display: grid; place-items: center; flex-shrink: 0;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              </div>
+              <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+                  <div>
+                    <div style="font-size: 14px; font-weight: 600;">E-Way Bill Register</div>
+                    <div class="text-xs text-muted" style="margin-top: 2px;">Operational · On demand</div>
+                  </div>
+                  <div class="flex gap-2"><span class="format-tag">XLSX</span><span class="format-tag">CSV</span></div>
+                </div>
+                <p style="font-size: 12.5px; color: var(--text-muted); margin: 10px 0 14px; line-height: 1.5;">Detailed EWB report with vehicle details, transporter info, route, validity windows and Part-B updates.</p>
+                <div class="flex gap-2">
+                  <button class="btn btn-dark btn-sm">Generate Now</button>
+                  <button class="btn btn-secondary btn-sm" data-modal-open="schedule-modal"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Schedule</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div style="padding: 18px 20px; display: flex; gap: 14px;">
+              <div style="width: 40px; height: 40px; background: var(--neutral-bg); color: var(--text-muted); border-radius: 8px; display: grid; place-items: center; flex-shrink: 0;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              </div>
+              <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+                  <div>
+                    <div style="font-size: 14px; font-weight: 600;">HSN-wise Summary</div>
+                    <div class="text-xs text-muted" style="margin-top: 2px;">Statutory · Monthly</div>
+                  </div>
+                  <div class="flex gap-2"><span class="format-tag">XLSX</span></div>
+                </div>
+                <p style="font-size: 12.5px; color: var(--text-muted); margin: 10px 0 14px; line-height: 1.5;">HSN code-wise aggregation of supplies with quantity, taxable value and tax amounts split by tax type.</p>
+                <div class="flex gap-2">
+                  <button class="btn btn-dark btn-sm">Generate Now</button>
+                  <button class="btn btn-secondary btn-sm" data-modal-open="schedule-modal"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Schedule</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div style="padding: 18px 20px; display: flex; gap: 14px;">
+              <div style="width: 40px; height: 40px; background: var(--pill-inv-bg); color: var(--pill-inv); border-radius: 8px; display: grid; place-items: center; flex-shrink: 0;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </div>
+              <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+                  <div>
+                    <div style="font-size: 14px; font-weight: 600;">Cancellation Audit Trail</div>
+                    <div class="text-xs text-muted" style="margin-top: 2px;">Audit · On demand</div>
+                  </div>
+                  <div class="flex gap-2"><span class="format-tag">XLSX</span><span class="format-tag">CSV</span></div>
+                </div>
+                <p style="font-size: 12.5px; color: var(--text-muted); margin: 10px 0 14px; line-height: 1.5;">Comprehensive log of all cancelled IRNs and EWBs with reason codes, cancellation timestamps and approver details.</p>
+                <div class="flex gap-2">
+                  <button class="btn btn-dark btn-sm">Generate Now</button>
+                  <button class="btn btn-secondary btn-sm" data-modal-open="schedule-modal"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Schedule</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCHEDULED JOBS -->
+      <div data-tab-panel="scheduled" class="hidden">
+        <div class="table-wrap">
+          <div class="table-toolbar">
+            <div class="table-toolbar-left">
+              <div class="card-title">Active Schedules</div>
+              <span class="table-count"><strong>6</strong> scheduled jobs</span>
+            </div>
+            <button class="btn btn-primary btn-sm">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              New Schedule
+            </button>
+          </div>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Report</th>
+                  <th>Frequency</th>
+                  <th>Next Run</th>
+                  <th>Scheduled By</th>
+                  <th>Last Run</th>
+                  <th>Trail</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="font-medium">GSTR-1 Outward Supplies</td>
+                  <td><span class="badge info">Monthly · 10th, 09:00</span></td>
+                  <td class="text-sm">10-Jun-2026, 09:00</td>
+                  <td>Jude Akash</td>
+                  <td class="text-sm">10-May-2026, 09:00</td>
+                  <td><button class="icon-btn" data-modal-open="trail-modal" title="View trail">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                  </button></td>
+                  <td><span class="badge success"><span class="badge-dot"></span>Active</span></td>
+                  <td><div class="row-actions"><button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="icon-btn danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button></div></td>
+                </tr>
+                <tr>
+                  <td class="font-medium">Error & Exception Report</td>
+                  <td><span class="badge info">Daily · 18:00</span></td>
+                  <td class="text-sm">Today, 18:00</td>
+                  <td>Amit Sharma</td>
+                  <td class="text-sm">Yesterday, 18:00</td>
+                  <td><button class="icon-btn" data-modal-open="trail-modal" title="View trail">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                  </button></td>
+                  <td><span class="badge success"><span class="badge-dot"></span>Active</span></td>
+                  <td><div class="row-actions"><button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="icon-btn danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button></div></td>
+                </tr>
+                <tr>
+                  <td class="font-medium">IRN Register</td>
+                  <td><span class="badge info">Weekly · Mon, 08:00</span></td>
+                  <td class="text-sm">Mon, 18-May, 08:00</td>
+                  <td>Jude Akash</td>
+                  <td class="text-sm">Mon, 11-May, 08:00</td>
+                  <td><button class="icon-btn" data-modal-open="trail-modal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg></button></td>
+                  <td><span class="badge success"><span class="badge-dot"></span>Active</span></td>
+                  <td><div class="row-actions"><button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="icon-btn danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button></div></td>
+                </tr>
+                <tr>
+                  <td class="font-medium">E-Way Bill Register</td>
+                  <td><span class="badge info">Daily · 23:30</span></td>
+                  <td class="text-sm">Today, 23:30</td>
+                  <td>Rohit Verma</td>
+                  <td class="text-sm">Yesterday, 23:30</td>
+                  <td><button class="icon-btn" data-modal-open="trail-modal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg></button></td>
+                  <td><span class="badge warning"><span class="badge-dot"></span>Paused</span></td>
+                  <td><div class="row-actions"><button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="icon-btn danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- GENERATED -->
+      <div data-tab-panel="generated" class="hidden">
+        <div class="table-wrap">
+          <div class="table-toolbar">
+            <div class="table-toolbar-left">
+              <div class="card-title">Generated Reports</div>
+              <span class="table-count"><strong>142</strong> reports · last 90 days</span>
+            </div>
+            <div class="flex gap-2">
+              <select class="select" style="width: 160px;"><option>All Report Types</option></select>
+              <input type="text" class="input" placeholder="Search…" style="width: 200px;">
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Report Name</th>
+                  <th>Period</th>
+                  <th>Entity / GSTIN</th>
+                  <th>Generated By</th>
+                  <th>Timestamp</th>
+                  <th class="num">File Size</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="font-medium">GSTR-1 Outward Supplies</td>
+                  <td class="text-sm">Apr 2026</td>
+                  <td class="text-sm">All entities · All GSTINs</td>
+                  <td>Jude Akash</td>
+                  <td class="text-sm">10-May-2026, 09:02</td>
+                  <td class="num">4.2 MB</td>
+                  <td><span class="badge success"><span class="badge-dot"></span>Ready</span></td>
+                  <td><button class="btn btn-secondary btn-sm"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/></svg>Download</button></td>
+                </tr>
+                <tr>
+                  <td class="font-medium">Error & Exception Report</td>
+                  <td class="text-sm">12-May-2026</td>
+                  <td class="text-sm">Tata Steel · 27AABCT3518Q1ZV</td>
+                  <td>System (Scheduled)</td>
+                  <td class="text-sm">Today, 18:00</td>
+                  <td class="num">218 KB</td>
+                  <td><span class="badge success"><span class="badge-dot"></span>Ready</span></td>
+                  <td><button class="btn btn-secondary btn-sm"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/></svg>Download</button></td>
+                </tr>
+                <tr>
+                  <td class="font-medium">IRN Register</td>
+                  <td class="text-sm">May W1-W2</td>
+                  <td class="text-sm">All entities · 12 GSTINs</td>
+                  <td>Amit Sharma</td>
+                  <td class="text-sm">Today, 11:14</td>
+                  <td class="num">12.7 MB</td>
+                  <td><span class="badge info"><span class="badge-dot" style="animation: pulse 1.5s infinite;"></span>Generating</span></td>
+                  <td><button class="btn btn-ghost btn-sm" disabled>In progress…</button></td>
+                </tr>
+                <tr>
+                  <td class="font-medium">HSN-wise Summary</td>
+                  <td class="text-sm">Q4 FY2025-26</td>
+                  <td class="text-sm">All entities</td>
+                  <td>Jude Akash</td>
+                  <td class="text-sm">May 8, 16:30</td>
+                  <td class="num">1.8 MB</td>
+                  <td><span class="badge success"><span class="badge-dot"></span>Ready</span></td>
+                  <td><button class="btn btn-secondary btn-sm"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/></svg>Download</button></td>
+                </tr>
+                <tr>
+                  <td class="font-medium">E-Way Bill Register</td>
+                  <td class="text-sm">May 1-12</td>
+                  <td class="text-sm">Tata Motors · 07AABCT4862Q1ZK</td>
+                  <td>Rohit Verma</td>
+                  <td class="text-sm">May 8, 09:20</td>
+                  <td class="num">3.1 MB</td>
+                  <td><span class="badge error"><span class="badge-dot"></span>Failed</span></td>
+                  <td><button class="btn btn-secondary btn-sm">Retry</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Schedule Modal -->
+<div class="modal-backdrop" id="schedule-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <div style="font-size: 15px; font-weight: 600;">Schedule Report</div>
+        <div class="text-xs text-muted" style="margin-top: 2px;">Set up automatic recurring generation</div>
+      </div>
+      <button class="icon-btn" data-modal-close="schedule-modal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="field mb-3">
+        <label class="field-label">Report Name (override)</label>
+        <input type="text" class="input" value="GSTR-1 Outward Supplies — Monthly Auto">
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+        <div class="field">
+          <label class="field-label">Frequency</label>
+          <select class="select"><option>Monthly</option><option>Weekly</option><option>Daily</option><option>Custom Cron</option></select>
+        </div>
+        <div class="field">
+          <label class="field-label">Day of Month</label>
+          <select class="select"><option>10th</option><option>1st</option><option>Last day</option></select>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+        <div class="field">
+          <label class="field-label">Start Date</label>
+          <input type="date" class="input" value="2026-06-10">
+        </div>
+        <div class="field">
+          <label class="field-label">Run Time</label>
+          <input type="time" class="input" value="09:00">
+        </div>
+      </div>
+      <div class="field mb-3">
+        <label class="field-label">Output Format</label>
+        <div class="radio-group">
+          <label class="radio"><input type="radio" name="fmt" checked> Excel (.xlsx)</label>
+          <label class="radio"><input type="radio" name="fmt"> CSV (.csv)</label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label">Notify on completion</label>
+        <input type="text" class="input" value="priya.ramesh@tata.com, compliance.in@tata.com">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" data-modal-close="schedule-modal">Cancel</button>
+      <button class="btn btn-primary" data-modal-close="schedule-modal">Save Schedule</button>
+    </div>
+  </div>
+</div>
+
+<!-- Trail Modal -->
+<div class="modal-backdrop" id="trail-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <div style="font-size: 15px; font-weight: 600;">Schedule Run Trail</div>
+        <div class="text-xs text-muted" style="margin-top: 2px;">GSTR-1 Outward Supplies · Monthly</div>
+      </div>
+      <button class="icon-btn" data-modal-close="trail-modal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body" style="padding: 0;">
+      <table class="data-table" style="width: 100%;">
+        <thead>
+          <tr><th>Run Date</th><th>Duration</th><th>Records</th><th>Status</th><th></th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="mono">10-May-2026, 09:02</td><td class="text-sm">2m 14s</td><td class="num">12,847</td><td><span class="badge success"><span class="badge-dot"></span>Success</span></td><td><button class="icon-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/></svg></button></td></tr>
+          <tr><td class="mono">10-Apr-2026, 09:01</td><td class="text-sm">1m 58s</td><td class="num">11,402</td><td><span class="badge success"><span class="badge-dot"></span>Success</span></td><td><button class="icon-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/></svg></button></td></tr>
+          <tr><td class="mono">10-Mar-2026, 09:04</td><td class="text-sm">3m 41s</td><td class="num">14,219</td><td><span class="badge error"><span class="badge-dot"></span>Failed</span></td><td><button class="icon-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/></svg></button></td></tr>
+          <tr><td class="mono">10-Feb-2026, 09:00</td><td class="text-sm">2m 02s</td><td class="num">10,847</td><td><span class="badge success"><span class="badge-dot"></span>Success</span></td><td><button class="icon-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/></svg></button></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" data-modal-close="trail-modal">Close</button>
+    </div>
+  </div>
+</div>
+
+<style>@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }</style>
+<script src="app.js"></script>
+<script>renderShell('einvoice', 'E-Invoice & EWB', 'Reports');</script>
+</body>
+</html>

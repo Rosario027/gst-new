@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GSTR-1 Outward Supplies · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">GSTR-1 · Outward Supplies</h1>
+        <p class="page-subtitle">Monthly return of outward supplies — invoices, credit notes, exports and B2C transactions</p>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn btn-secondary cta-large">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download JSON
+        </button>
+        <button class="btn btn-secondary cta-large">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Preview Return
+        </button>
+      </div>
+    </div>
+
+    <!-- LIFECYCLE STRIP — process timeline -->
+    <div class="lifecycle-strip">
+      <div class="lifecycle-header">
+        <div class="lifecycle-header-title">GSTR-1 filing lifecycle · Monthly</div>
+        <div class="lifecycle-header-help">Filed by 11th of following month · ARN issued on submission</div>
+      </div>
+      <div class="lifecycle-body">
+        <div class="lifecycle-phase past">
+          <div class="phase-marker"><span class="marker-dot"></span>Previous period</div>
+          <div class="phase-title">April 2026</div>
+          <div class="phase-status success">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+            Filed on 10-May-2026
+          </div>
+          <div class="phase-due">
+            <span class="due-date mono">ARN AA270526009287N</span>
+            <span class="days-left onTrack">Filed 1 day before due date</span>
+          </div>
+        </div>
+        <div class="lifecycle-phase current">
+          <div class="phase-marker"><span class="marker-dot"></span>Current period</div>
+          <div class="phase-title">May 2026</div>
+          <div class="phase-status">In preparation · 2,84,712 invoices auto-populated</div>
+          <div class="phase-due">
+            <span class="due-date">Due 11-Jun-2026</span>
+            <span class="days-left onTrack">28 days remaining · On track</span>
+          </div>
+        </div>
+        <div class="lifecycle-phase upcoming">
+          <div class="phase-marker"><span class="marker-dot"></span>Next period</div>
+          <div class="phase-title">June 2026</div>
+          <div class="phase-status muted">Opens 1-Jul-2026</div>
+          <div class="phase-due">
+            <span class="due-date">Due 11-Jul-2026</span>
+            <span class="days-left">58 days from today</span>
+          </div>
+        </div>
+        <div class="lifecycle-action">
+          <a href="gstr1-step1.html" class="btn btn-primary cta-large">Continue Preparing →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6-STEP PREPARATION WORKFLOW -->
+    <div class="workflow-lifecycle">
+      <div class="workflow-lifecycle-header">
+        <div>
+          <div class="workflow-lifecycle-title">Prepare GSTR-1 · Step-by-step workflow</div>
+          <div class="workflow-lifecycle-sub">Follow these 6 phases in order · each opens its own dedicated screen · progress saves automatically · activity log captured per step</div>
+        </div>
+        <div class="workflow-progress-pill">2 of 6 complete</div>
+      </div>
+      <div class="step-cards">
+
+        <a href="gstr1-step1.html" class="step-card completed">
+          <div class="step-num">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="step-body">
+            <div class="step-card-title">
+              Obtain our sales data
+              <span class="step-pill completed">Completed</span>
+            </div>
+            <div class="step-card-desc">Bring in your outward supply data — sales register, B2B / B2C invoices, credit &amp; debit notes, advances — from your ERP, an Excel template, or manual entry. Optional validations: GSTIN format, place-of-supply, reverse arithmetic, invoice-number rules, HSN master lookup.</div>
+            <div class="step-card-meta">2,84,712 records ingested · 13/13 validations passed · Completed 13-May-2026</div>
+          </div>
+          <div class="step-cta">Review →</div>
+        </a>
+
+        <a href="gstr1-step2.html" class="step-card completed">
+          <div class="step-num">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="step-body">
+            <div class="step-card-title">
+              IRN auto-fetch &amp; complete outward register
+              <span class="step-pill completed">Completed</span>
+            </div>
+            <div class="step-card-desc">Auto-fetch IRN-stamped invoices from the IRP via GSP (B2B, exports with IGST, CDN to registered). Reconcile against sales register from Step 1. Top up the categories that don't have IRNs — B2C Large, B2C Others, Nil / Exempt, Advances — via Excel upload, ERP connector, or manual entry.</div>
+            <div class="step-card-meta">2,68,419 IRNs auto-fetched · 17,379 records added via upload / ERP / manual · 18 mismatches resolved</div>
+          </div>
+          <div class="step-cta">Review →</div>
+        </a>
+
+        <a href="gstr1-step3.html" class="step-card current">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-card-title">
+              Review of outward summary
+              <span class="step-pill current">In progress</span>
+            </div>
+            <div class="step-card-desc">Walk through every GSTR-1 table tile-by-tile: 4A/4B B2B, 5A B2C Large, 6A Exports, 7 B2C Others, 8 Nil/Exempt, 9A/9B/9C Amendments &amp; CDN, 11 Advances. Verify totals match Steps 1 + 2 and resolve any warnings before HSN.</div>
+            <div class="step-card-meta">8 of 9 sections reviewed · 2 warnings open · Started 14-May-2026 10:02 AM</div>
+          </div>
+          <div class="step-cta">Open Step →</div>
+        </a>
+
+        <a href="gstr1-step4.html" class="step-card">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-card-title">
+              HSN Summary (Table 12) &amp; Documents Issued (Table 13)
+              <span class="step-pill upcoming">Upcoming</span>
+            </div>
+            <div class="step-card-desc">Table 12: bifurcated B2B / B2C tabs, HSN selectable from master dropdown only (manual entry blocked under Phase-3). 6-digit HSN mandatory at AATO &gt; ₹ 5 Cr. Cross-validates against other tables. Table 13: document series — mandatory disclosure.</div>
+            <div class="step-card-meta">2,471 unique HSN codes used · 8 document series across GSTINs</div>
+          </div>
+          <div class="step-cta">Open Step →</div>
+        </a>
+
+        <a href="gstr1-step5.html" class="step-card">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <div class="step-card-title">
+              Preview, submit &amp; file with DSC / EVC
+              <span class="step-pill upcoming">Upcoming</span>
+            </div>
+            <div class="step-card-desc">Generate draft PDF preview. Confirm summary totals. Submit (freeze values) and file with DSC (mandatory for companies / LLPs) or EVC (others). ARN issued instantly.</div>
+            <div class="step-card-meta">Due 11-Jun-2026 · 28 days remaining · Recommended file-by date: 09-Jun-2026</div>
+          </div>
+          <div class="step-cta">Open Step →</div>
+        </a>
+
+        <a href="gstr1-step6.html" class="step-card">
+          <div class="step-num">6</div>
+          <div class="step-body">
+            <div class="step-card-title">
+              GSTR-1A correction window (if needed)
+              <span class="step-pill upcoming">Upcoming</span>
+              <span class="step-pill" style="background:rgba(21, 92, 219, 0.1);color:var(--info);">Optional</span>
+            </div>
+            <div class="step-card-desc">Between GSTR-1 filing and GSTR-3B filing, file <strong>one</strong> GSTR-1A to add missed invoices or amend particulars for the same period. Corrected values flow into the same period's GSTR-3B Table 3. Recipient GSTIN cannot be amended here.</div>
+            <div class="step-card-meta">Available after Step 5 · Filing window: post GSTR-1 file → before GSTR-3B file · One amendment per period</div>
+          </div>
+          <div class="step-cta">Open Step →</div>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- FILING CONTEXT BAR -->
+    <div class="filter-bar">
+      <div class="field">
+        <label class="field-label">Filing Period</label>
+        <select class="select">
+          <option>May 2026 (current)</option>
+          <option>April 2026 (filed)</option>
+          <option>March 2026 (filed)</option>
+          <option>February 2026 (filed)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="field-label">Entity</label>
+        <select class="select">
+          <option>All Entities (consolidated)</option>
+          <option>Tata Steel Ltd.</option>
+          <option>Tata Motors Ltd.</option>
+          <option>Tata Consumer Products</option>
+          <option>Tata Power Co.</option>
+          <option>Tata Chemicals Ltd.</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="field-label">GSTIN</label>
+        <select class="select">
+          <option>All 47 GSTINs</option>
+          <option>27AABCT3518Q1ZV — Maharashtra</option>
+          <option>06AABCT3518Q1Z2 — Haryana</option>
+          <option>33AABCT3518Q1ZN — Tamil Nadu</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="field-label">Frequency</label>
+        <select class="select">
+          <option>Monthly (turnover &gt; ₹ 5 Cr)</option>
+          <option>Quarterly (QRMP)</option>
+        </select>
+      </div>
+      <div class="filter-actions">
+        <button class="btn btn-ghost">Reset</button>
+        <button class="btn btn-primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+          Apply
+        </button>
+      </div>
+    </div>
+
+    <!-- BIG STATS — return-level totals -->
+    <div class="big-stat-grid">
+      <div class="big-stat accent">
+        <div class="big-stat-label"><span class="big-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>Total Taxable Value</div>
+        <div class="big-stat-value"><span class="cur">₹</span>148.74 Cr</div>
+        <div class="big-stat-sub">Across 13 tables · 2,84,712 documents</div>
+      </div>
+      <div class="big-stat">
+        <div class="big-stat-label"><span class="big-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg></span>Total Tax Liability</div>
+        <div class="big-stat-value"><span class="cur">₹</span>22.31 Cr</div>
+        <div class="big-stat-sub">IGST 12.84 Cr · CGST 4.74 Cr · SGST 4.74 Cr</div>
+      </div>
+      <div class="big-stat">
+        <div class="big-stat-label"><span class="big-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></span>Validation Status</div>
+        <div class="big-stat-value">12<span class="cur">/13</span></div>
+        <div class="big-stat-sub success-text">12 tables passed · 1 has 3 warnings</div>
+      </div>
+      <div class="big-stat">
+        <div class="big-stat-label"><span class="big-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>Due In</div>
+        <div class="big-stat-value">28<span class="cur"> days</span></div>
+        <div class="big-stat-sub">Due date · 11-Jun-2026</div>
+      </div>
+    </div>
+
+    <!-- HELP STRIP -->
+    <div class="help-strip" style="margin-top:24px">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <div><strong>How this works:</strong> Each section below maps to a table in the GSTR-1 return. Data is auto-populated from your e-invoices, IRNs and accounting feed. Click any section to review or edit, then click <strong>Validate &amp; Preview</strong> at the bottom.</div>
+    </div>
+
+    <!-- SECTION TABS — every GSTR-1 table at a glance -->
+    <div id="sections"></div>
+    <div class="section-banner">
+      <div class="section-banner-num">§</div>
+      <div>
+        <div class="section-banner-title">Return Sections (Tables 4–13)</div>
+        <div class="section-banner-sub">Click a section to view, edit and validate. Status dot shows completeness.</div>
+      </div>
+    </div>
+
+    <div class="gstr-sections">
+      <div class="gstr-section-tab active">
+        <div class="gst-tab-status complete"></div>
+        <div class="gst-tab-label">Table 4A &amp; 4B</div>
+        <div class="gst-tab-title">B2B Invoices</div>
+        <div class="gst-tab-meta">2,18,419 docs · <strong style="color:var(--text)">₹ 128.42 Cr</strong></div>
+      </div>
+      <div class="gstr-section-tab">
+        <div class="gst-tab-status complete"></div>
+        <div class="gst-tab-label">Table 5</div>
+        <div class="gst-tab-title">B2C (Large) &gt; ₹ 2.5 L</div>
+        <div class="gst-tab-meta">1,847 docs · <strong style="color:var(--text)">₹ 4.18 Cr</strong></div>
+      </div>
+      <div class="gstr-section-tab">
+        <div class="gst-tab-status complete"></div>
+        <div class="gst-tab-label">Table 6A</div>
+        <div class="gst-tab-title">Exports</div>
+        <div class="gst-tab-meta">412 docs · <strong style="color:var(--text)">₹ 8.84 Cr</strong></div>
+      </div>
+      <div class="gstr-section-tab">
+        <div class="gst-tab-status pending"></div>
+        <div class="gst-tab-label">Table 7</div>
+        <div class="gst-tab-title">B2C (Others)</div>
+        <div class="gst-tab-meta">Rate-wise summary · <strong style="color:var(--text)">₹ 4.12 Cr</strong></div>
+      </div>
+      <div class="gstr-section-tab">
+        <div class="gst-tab-status complete"></div>
+        <div class="gst-tab-label">Table 8</div>
+        <div class="gst-tab-title">Nil / Exempted</div>
+        <div class="gst-tab-meta">628 docs · <strong style="color:var(--text)">₹ 1.84 Cr</strong></div>
+      </div>
+      <div class="gstr-section-tab">
+        <div class="gst-tab-status complete"></div>
+        <div class="gst-tab-label">Table 9A/9B</div>
+        <div class="gst-tab-title">Credit / Debit Notes</div>
+        <div class="gst-tab-meta">3,418 docs · <strong style="color:var(--text)">−₹ 1.42 Cr</strong></div>
+      </div>
+      <div class="gstr-section-tab">
+        <div class="gst-tab-status complete"></div>
+        <div class="gst-tab-label">Table 11</div>
+        <div class="gst-tab-title">Advances</div>
+        <div class="gst-tab-meta">217 receipts · <strong style="color:var(--text)">₹ 84.21 L</strong></div>
+      </div>
+      <div class="gstr-section-tab">
+        <div class="gst-tab-status complete"></div>
+        <div class="gst-tab-label">Table 12</div>
+        <div class="gst-tab-title">HSN Summary</div>
+        <div class="gst-tab-meta">147 HSN codes</div>
+      </div>
+      <div class="gstr-section-tab">
+        <div class="gst-tab-status complete"></div>
+        <div class="gst-tab-label">Table 13</div>
+        <div class="gst-tab-title">Documents Issued</div>
+        <div class="gst-tab-meta">14 series · 2,84,712 nums</div>
+      </div>
+    </div>
+
+    <!-- ACTIVE SECTION CONTENT (Table 4 B2B) -->
+    <div class="card mt-4">
+      <div class="card-head">
+        <div>
+          <h3 class="card-title">Table 4 — B2B Invoices (May 2026)</h3>
+          <p class="card-subtitle">Invoices issued to registered taxpayers. Auto-populated from IRNs.</p>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn btn-ghost btn-sm">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+            Filter
+          </button>
+          <button class="btn btn-ghost btn-sm">Refresh from IRNs</button>
+          <button class="btn btn-secondary btn-sm">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Manual Entry
+          </button>
+        </div>
+      </div>
+
+      <div class="table-wrap" style="border-radius:0;border:none;box-shadow:none;">
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th class="th-check"><input type="checkbox"></th>
+                <th>Recipient GSTIN</th>
+                <th>Recipient Name</th>
+                <th>Invoice #</th>
+                <th>Date</th>
+                <th>Invoice Type</th>
+                <th>POS</th>
+                <th class="num">Taxable Value</th>
+                <th class="num">IGST</th>
+                <th class="num">CGST</th>
+                <th class="num">SGST</th>
+                <th>Source</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td class="mono small">24AAACR5055K1Z7</td>
+                <td>Reliance Industries Ltd.</td>
+                <td class="mono small">INV/2026/05/0012</td>
+                <td>02-May-2026</td>
+                <td>Regular</td>
+                <td>24-Gujarat</td>
+                <td class="num">12,84,500.00</td>
+                <td class="num">2,31,210.00</td>
+                <td class="num muted">—</td>
+                <td class="num muted">—</td>
+                <td><span class="pill pill-isd" style="font-size:10px">IRN</span></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td class="mono small">27AABCS1429B1Z1</td>
+                <td>Schneider Electric India</td>
+                <td class="mono small">INV/2026/05/0028</td>
+                <td>04-May-2026</td>
+                <td>Regular</td>
+                <td>27-Maharashtra</td>
+                <td class="num">3,42,180.00</td>
+                <td class="num muted">—</td>
+                <td class="num">30,796.20</td>
+                <td class="num">30,796.20</td>
+                <td><span class="pill pill-isd" style="font-size:10px">IRN</span></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td class="mono small">29AAACI3784L1Z1</td>
+                <td>Infosys Ltd.</td>
+                <td class="mono small">INV/2026/05/0094</td>
+                <td>07-May-2026</td>
+                <td>SEZWP</td>
+                <td>29-Karnataka</td>
+                <td class="num">8,42,400.00</td>
+                <td class="num">1,51,632.00</td>
+                <td class="num muted">—</td>
+                <td class="num muted">—</td>
+                <td><span class="pill pill-isd" style="font-size:10px">IRN</span></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td class="mono small">06AAACG2115R1Z1</td>
+                <td>Genpact India Pvt. Ltd.</td>
+                <td class="mono small">INV/2026/05/0148</td>
+                <td>09-May-2026</td>
+                <td>Regular</td>
+                <td>06-Haryana</td>
+                <td class="num">4,72,400.00</td>
+                <td class="num">85,032.00</td>
+                <td class="num muted">—</td>
+                <td class="num muted">—</td>
+                <td><span class="pill pill-isd" style="font-size:10px">IRN</span></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td class="mono small">33AABCS4719Q1ZX</td>
+                <td>TVS Motor Co. Ltd.</td>
+                <td class="mono small">INV/2026/05/0247</td>
+                <td>12-May-2026</td>
+                <td>Regular</td>
+                <td>33-Tamil Nadu</td>
+                <td class="num">9,84,200.00</td>
+                <td class="num muted">—</td>
+                <td class="num">88,578.00</td>
+                <td class="num">88,578.00</td>
+                <td><span class="pill pill-isd" style="font-size:10px">IRN</span></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td class="mono small">24AAACE1234N1Z9</td>
+                <td>Essar Steel India Ltd.</td>
+                <td class="mono small">INV/2026/05/0318</td>
+                <td>13-May-2026</td>
+                <td>Regular</td>
+                <td>24-Gujarat</td>
+                <td class="num">21,42,800.00</td>
+                <td class="num">3,85,704.00</td>
+                <td class="num muted">—</td>
+                <td class="num muted">—</td>
+                <td><span class="pill pill-isd" style="font-size:10px">IRN</span></td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr style="background:var(--ey-black-deep);color:var(--ey-yellow)">
+                <td colspan="7" style="font-weight:600;padding:14px 16px">Section Total — Table 4 B2B (May 2026)</td>
+                <td class="num" style="color:var(--ey-yellow);font-weight:700">1,28,41,24,718.00</td>
+                <td class="num" style="color:var(--ey-yellow);font-weight:700">12,84,12,471.00</td>
+                <td class="num" style="color:var(--ey-yellow);font-weight:700">4,74,21,807.00</td>
+                <td class="num" style="color:var(--ey-yellow);font-weight:700">4,74,21,807.00</td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <div class="table-footer">
+          <div class="pagination-info">Showing 1–6 of <strong>2,18,419 invoices</strong> in Table 4 (B2B)</div>
+          <div class="pagination">
+            <button class="page-btn" disabled>←</button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">…</button>
+            <button class="page-btn">36,404</button>
+            <button class="page-btn">→</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VALIDATION SUMMARY -->
+    <div class="card mt-4">
+      <div class="card-head">
+        <div>
+          <h3 class="card-title">Validation Summary</h3>
+          <p class="card-subtitle">12 of 13 sections passed validation. Address the 3 warnings to file cleanly.</p>
+        </div>
+        <button class="btn btn-secondary">Run Validation</button>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Section</th>
+            <th>Check</th>
+            <th>Status</th>
+            <th>Affected</th>
+            <th class="th-actions">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Table 6A — Exports</strong></td>
+            <td>Shipping bill number missing</td>
+            <td><span class="badge warning"><span class="badge-dot"></span>Warning</span></td>
+            <td>3 invoices · ₹ 4.18 L</td>
+            <td><button class="btn btn-primary btn-sm">Fix</button></td>
+          </tr>
+          <tr>
+            <td><strong>Table 12 — HSN</strong></td>
+            <td>HSN code length below 6 digits (Apr 2023+ rule)</td>
+            <td><span class="badge warning"><span class="badge-dot"></span>Warning</span></td>
+            <td>12 line-items</td>
+            <td><button class="btn btn-primary btn-sm">Fix</button></td>
+          </tr>
+          <tr>
+            <td><strong>Table 9A — CR Notes</strong></td>
+            <td>Original invoice reference not matched in earlier period</td>
+            <td><span class="badge info"><span class="badge-dot"></span>Info</span></td>
+            <td>1 credit note · ₹ 12,400</td>
+            <td><button class="btn btn-ghost btn-sm">Review</button></td>
+          </tr>
+          <tr>
+            <td>Tables 4, 5, 7, 8, 11, 13</td>
+            <td>All format, totals and GSTIN checks</td>
+            <td><span class="badge success"><span class="badge-dot"></span>Passed</span></td>
+            <td>All clear</td>
+            <td><span class="muted small">No action</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ACTION BAR — sticky primary action -->
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-status">Last saved 2 minutes ago · Auto-save on</div>
+        <div class="action-bar-summary">Ready to validate &amp; file · 3 warnings to address first</div>
+      </div>
+      <div class="action-bar-actions">
+        <button class="btn btn-secondary cta-large">Save as Draft</button>
+        <button class="btn btn-dark cta-large">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+          Validate &amp; Preview
+        </button>
+        <button class="btn btn-primary cta-xlarge">
+          File GSTR-1 →
+        </button>
+      </div>
+    </div>
+
+    <div style="height: 40px"></div>
+  </main>
+</div>
+
+<script src="app.js"></script>
+<script>renderShell('gstr1', 'GSTR-1 Outward Supplies', 'May 2026 · In Preparation');</script>
+</body>
+</html>

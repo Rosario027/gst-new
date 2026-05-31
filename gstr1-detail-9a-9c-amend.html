@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amendments (prior period) &middot; B2B + B2C-L + Notes &middot; DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">
+          <a href="gstr1-step3.html" style="color:var(--text-muted);text-decoration:none;">&larr; Step 3 (Outward summary)</a> &middot; Detail view
+        </div>
+        <h1 class="page-title">9A &amp; 9C &middot; Amendments (prior period) &middot; B2B + B2C-L + Notes</h1>
+        <p class="page-subtitle">Revisions to invoices, CNs, DNs reported in earlier filed GSTR-1 &middot; flows to recipient&apos;s GSTR-2B in the next cycle</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="gstr1-step3.html" class="btn btn-secondary">&larr; Back to Step 3</a>
+      </div>
+    </div>
+
+    <div class="big-stat-grid" style="margin-bottom:20px;">
+      <div class="big-stat" style="border-left:3px solid var(--info);"><div class="big-stat-label">Total amendments</div><div class="big-stat-value">1,847</div><div class="big-stat-sub">9A (invoice) + 9C (note)</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--warning);"><div class="big-stat-label">Net taxable change</div><div class="big-stat-value">+ &#8377; 24.8 L</div><div class="big-stat-sub">Net upward</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--warning);"><div class="big-stat-label">Net tax change</div><div class="big-stat-value">+ &#8377; 4.46 L</div><div class="big-stat-sub">IGST + CGST + SGST</div></div>
+      <div class="big-stat"><div class="big-stat-label">Periods touched</div><div class="big-stat-value">6</div><div class="big-stat-sub">Nov-25 through Apr-26</div></div>
+    </div>
+
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">
+        <div style="min-width:0;flex:1 1 240px;">
+          <div style="font-size:13.5px;font-weight:700;color:var(--text);line-height:1.4;">Sample of 8 amendments from 1,847</div>
+          <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">Each row shows original period, original value, revised value, and net change &middot; recipient ITC adjusts in their next 2B</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="btn btn-secondary btn-sm">Download CSV</button>
+          <button class="btn btn-secondary btn-sm">Filter</button>
+          <button class="btn btn-secondary btn-sm">Edit rows</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table grid-lined compact">
+          <thead><tr><th class="mono">Doc no.</th><th>Type</th><th>Orig period</th><th>Recipient</th><th class="num">Orig taxable (&#8377;)</th><th class="num">New taxable (&#8377;)</th><th class="num">Net change (&#8377;)</th></tr></thead>
+          <tbody><tr><td class="mono">TS/26/01418</td><td>9A Inv</td><td>Apr-26</td><td>Hindalco</td><td class="num">8,42,000</td><td class="num">8,54,000</td><td class="num">+ 12,000</td></tr><tr><td class="mono">TS/26/01419</td><td>9A Inv</td><td>Apr-26</td><td>Reliance</td><td class="num">12,84,000</td><td class="num">12,80,000</td><td class="num">&minus; 4,000</td></tr><tr><td class="mono">TS-CN/26/812</td><td>9C CN</td><td>Apr-26</td><td>Apollo Tyres</td><td class="num">&minus; 38,420</td><td class="num">&minus; 42,180</td><td class="num">&minus; 3,760</td></tr><tr><td class="mono">TS/25/12418</td><td>9A Inv</td><td>Mar-26</td><td>L&amp;T Construction</td><td class="num">82,40,000</td><td class="num">82,42,000</td><td class="num">+ 2,000</td></tr><tr><td class="mono">TS-DN/26/118</td><td>9C DN</td><td>Apr-26</td><td>Honda Cars</td><td class="num">+ 42,180</td><td class="num">+ 51,840</td><td class="num">+ 9,660</td></tr><tr><td class="mono">TS/25/11842</td><td>9A Inv</td><td>Feb-26</td><td>Tata Consumer</td><td class="num">2,84,000</td><td class="num">2,82,000</td><td class="num">&minus; 2,000</td></tr><tr><td class="mono">TS/26/01428</td><td>9A Inv</td><td>Apr-26</td><td>Bharat Forge</td><td class="num">5,18,400</td><td class="num">5,22,000</td><td class="num">+ 3,600</td></tr><tr><td class="mono">TS-CN/26/828</td><td>9C CN</td><td>Apr-26</td><td>Maruti Suzuki</td><td class="num">&minus; 18,400</td><td class="num">&minus; 22,000</td><td class="num">&minus; 3,600</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">1,847 amendments &middot; net + &#8377; 4.46 L tax liability &middot; recipient GSTR-2B re-fetch needed</div>
+        <div class="action-bar-status">Each amendment supersedes the original line in 2B &middot; reconcile with recipient before filing</div>
+      </div>
+      <div class="action-bar-actions">
+        <a href="gstr1-step3.html" class="btn btn-secondary cta-large">&larr; Back to Step 3</a>
+        <button class="btn btn-secondary cta-large">Save changes</button>
+        <a href="gstr1-step3.html" class="btn btn-primary cta-large">Done &middot; return to Step 3 &rarr;</a>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('gstr1', 'GSTR-1 &middot; Step 3 detail', '9A &amp; 9C detail');</script>
+</body>
+</html>

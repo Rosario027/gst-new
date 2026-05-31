@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supplies through E-commerce operator &middot; &sect;9(5) · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">
+          <a href="gstr3b-step2.html" style="color:var(--text-muted);text-decoration:none;">&larr; Step 2 (Auto IMS fetch)</a> &middot; Detail view
+        </div>
+        <h1 class="page-title">IMS &middot; ECO &middot; Supplies through E-commerce operator &middot; &sect;9(5)</h1>
+        <p class="page-subtitle">Supplies on which ECO pays tax under &sect;9(5) (cab/hotel/courier) &middot; recipient claims no ITC</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="gstr3b-step2.html" class="btn btn-secondary">&larr; Back to Step 2 (Auto IMS fetch)</a>
+      </div>
+    </div>
+
+    <div class="big-stat-grid" style="margin-bottom:20px;">
+      <div class="big-stat" style="border-left:3px solid var(--info);"><div class="big-stat-label">ECO records</div><div class="big-stat-value">1,841</div><div class="big-stat-sub">Cab + courier + hotel</div></div>
+      <div class="big-stat"><div class="big-stat-label">Value</div><div class="big-stat-value">&#8377; 4.18 Cr</div><div class="big-stat-sub">Aggregated</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--error);"><div class="big-stat-label">ITC available</div><div class="big-stat-value">&#8377; 0</div><div class="big-stat-sub">&sect;9(5) blocks ITC</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--warning);"><div class="big-stat-label">Action expected</div><div class="big-stat-value">No-action</div><div class="big-stat-sub">CA confirms blocked ITC</div></div>
+    </div>
+
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">
+        <div style="min-width:0;flex:1 1 240px;">
+          <div style="font-size:13.5px;font-weight:700;color:var(--text);line-height:1.4;">ECO records &middot; sample of 8 from 1,841</div>
+          <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">ECO operator pays tax on these supplies; recipient cannot claim ITC under &sect;9(5)</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="btn btn-secondary btn-sm">Download CSV</button>
+          <button class="btn btn-secondary btn-sm">Filter</button>
+          <button class="btn btn-secondary btn-sm">Edit rows</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table grid-lined compact">
+          <thead><tr><th class="mono">ECO GSTIN</th><th>ECO</th><th>Supply type</th><th class="mono">Doc no.</th><th>Doc date</th><th class="num">Taxable (₹)</th><th class="num">Tax</th><th>Action</th></tr></thead>
+          <tbody><tr><td class="mono">29AAACU2901P1Z2</td><td>Uber India</td><td>Cab</td><td class="mono">UBE/26/8141</td><td>10-May</td><td class="num">1,200</td><td class="num">60</td><td><span class="action-status pending">No-action</span></td></tr><tr><td class="mono">27AAACO8918K1Z9</td><td>Ola Cabs</td><td>Cab</td><td class="mono">OLA/26/4128</td><td>11-May</td><td class="num">1,800</td><td class="num">90</td><td><span class="action-status pending">No-action</span></td></tr><tr><td class="mono">29AAGCS5878M1ZV</td><td>Swiggy</td><td>Restaurant</td><td class="mono">SWG/26/8412</td><td>11-May</td><td class="num">850</td><td class="num">43</td><td><span class="action-status pending">No-action</span></td></tr><tr><td class="mono">29AAFCZ3038F1ZR</td><td>Zomato</td><td>Restaurant</td><td class="mono">ZOM/26/4218</td><td>12-May</td><td class="num">1,420</td><td class="num">71</td><td><span class="action-status pending">No-action</span></td></tr><tr><td class="mono">27AAFCM7841L1ZS</td><td>MakeMyTrip</td><td>Hotel</td><td class="mono">MMT/26/0418</td><td>12-May</td><td class="num">48,200</td><td class="num">5,784</td><td><span class="action-status pending">No-action</span></td></tr><tr><td class="mono">29AABCD7841R1ZV</td><td>Dunzo</td><td>Courier</td><td class="mono">DNZ/26/8412</td><td>13-May</td><td class="num">420</td><td class="num">21</td><td><span class="action-status pending">No-action</span></td></tr><tr><td class="mono">27AAQCB5818L1ZQ</td><td>BlueDart</td><td>Courier</td><td class="mono">BD/26/0412</td><td>13-May</td><td class="num">1,840</td><td class="num">331</td><td><span class="action-status pending">No-action</span></td></tr><tr><td class="mono">29AAKCR9181N1ZJ</td><td>Rapido</td><td>Cab</td><td class="mono">RPD/26/2841</td><td>14-May</td><td class="num">420</td><td class="num">21</td><td><span class="action-status pending">No-action</span></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">1,841 ECO records &middot; &#8377; 4.18 Cr value &middot; &#8377; 0 ITC (blocked)</div>
+        <div class="action-bar-status">&sect;9(5) ECO supplies &middot; no ITC ever &middot; review for accuracy but no liability impact</div>
+      </div>
+      <div class="action-bar-actions">
+        <a href="gstr3b-step2.html" class="btn btn-secondary cta-large">&larr; Back to Step 2 (Auto IMS fetch)</a>
+        <button class="btn btn-secondary cta-large">Save changes</button>
+        <a href="gstr3b-step2.html" class="btn btn-primary cta-large">Done &middot; return to Step 2 (Auto IMS fetch) &rarr;</a>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('gstr3b', 'GSTR-3B &middot; Step 2 detail', 'IMS &middot; ECO detail');</script>
+</body>
+</html>

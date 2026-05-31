@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2B Invoices &middot; supplies to registered persons · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">
+          <a href="gstr1-step3.html" style="color:var(--text-muted);text-decoration:none;">&larr; Step 3 (Outward summary)</a> &middot; Detail view
+        </div>
+        <h1 class="page-title">4A &amp; 4B &middot; B2B Invoices &middot; supplies to registered persons</h1>
+        <p class="page-subtitle">Regular taxable B2B outward supplies for May 2026 &middot; flows into recipient&apos;s GSTR-2B Section 1</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="gstr1-step3.html" class="btn btn-secondary">&larr; Back to Step 3 (Outward summary)</a>
+      </div>
+    </div>
+
+    <div class="big-stat-grid" style="margin-bottom:20px;">
+      <div class="big-stat" style="border-left:3px solid var(--success);"><div class="big-stat-label">Total invoices</div><div class="big-stat-value">2,42,118</div><div class="big-stat-sub">B2B regular</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--success);"><div class="big-stat-label">Taxable value</div><div class="big-stat-value">&#8377; 128.4 Cr</div><div class="big-stat-sub">99.8% of outward</div></div>
+      <div class="big-stat"><div class="big-stat-label">Tax payable</div><div class="big-stat-value">&#8377; 23.1 Cr</div><div class="big-stat-sub">IGST + CGST + SGST</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--info);"><div class="big-stat-label">Recipients</div><div class="big-stat-value">1,418</div><div class="big-stat-sub">Unique GSTINs</div></div>
+    </div>
+
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">
+        <div style="min-width:0;flex:1 1 240px;">
+          <div style="font-size:13.5px;font-weight:700;color:var(--text);line-height:1.4;">B2B invoices &middot; sample of 8 from 2,42,118 records</div>
+          <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">Open the full register from the Edit toolbar &middot; values flow into Table 4A (B2B regular) and 4B (B2B reverse charge)</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="btn btn-secondary btn-sm">Download CSV</button>
+          <button class="btn btn-secondary btn-sm">Filter</button>
+          <button class="btn btn-secondary btn-sm">Edit rows</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table grid-lined compact">
+          <thead><tr><th>Inv no.</th><th>Inv date</th><th>Recipient GSTIN</th><th>Recipient</th><th>PoS</th><th class="num">Taxable (₹)</th><th class="num">IGST</th><th class="num">CGST</th><th class="num">SGST</th><th>Status</th></tr></thead>
+          <tbody><tr><td class="mono">TS/26/02418</td><td>12-May</td><td class="mono">27AAACH7409R1ZX</td><td>Hindalco Industries</td><td>27-MH</td><td class="num">8,42,000</td><td class="num">—</td><td class="num">75,780</td><td class="num">75,780</td><td><span class="action-status matched">Reported</span></td></tr><tr><td class="mono">TS/26/02419</td><td>12-May</td><td class="mono">29AAACR5055K1Z1</td><td>Reliance Industries</td><td>29-KA</td><td class="num">12,84,000</td><td class="num">2,31,120</td><td class="num">—</td><td class="num">—</td><td><span class="action-status matched">Reported</span></td></tr><tr><td class="mono">TS/26/02420</td><td>12-May</td><td class="mono">33AABCA1948K1ZW</td><td>Apollo Tyres</td><td>33-TN</td><td class="num">3,84,200</td><td class="num">69,156</td><td class="num">—</td><td class="num">—</td><td><span class="action-status matched">Reported</span></td></tr><tr><td class="mono">TS/26/02421</td><td>12-May</td><td class="mono">07AABCH5181J1ZE</td><td>Honda Cars India</td><td>07-DL</td><td class="num">42,18,400</td><td class="num">7,59,312</td><td class="num">—</td><td class="num">—</td><td><span class="action-status matched">Reported</span></td></tr><tr><td class="mono">TS/26/02422</td><td>13-May</td><td class="mono">06AAACL3711J1ZB</td><td>L&amp;T Construction</td><td>06-HR</td><td class="num">82,40,000</td><td class="num">14,83,200</td><td class="num">—</td><td class="num">—</td><td><span class="action-status matched">Reported</span></td></tr><tr><td class="mono">TS/26/02423</td><td>13-May</td><td class="mono">27AAACT5511M1ZN</td><td>Tata Consumer</td><td>27-MH</td><td class="num">2,84,000</td><td class="num">—</td><td class="num">25,560</td><td class="num">25,560</td><td><span class="action-status matched">Reported</span></td></tr><tr><td class="mono">TS/26/02424</td><td>13-May</td><td class="mono">29AABCB3128J1ZP</td><td>Bharat Forge</td><td>29-KA</td><td class="num">5,18,400</td><td class="num">93,312</td><td class="num">—</td><td class="num">—</td><td><span class="action-status pending">Warn &middot; PoS</span></td></tr><tr><td class="mono">TS/26/02425</td><td>14-May</td><td class="mono">24AABCM4218R1ZK</td><td>Maruti Suzuki</td><td>24-GJ</td><td class="num">18,42,000</td><td class="num">3,31,560</td><td class="num">—</td><td class="num">—</td><td><span class="action-status matched">Reported</span></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">2,42,118 B2B invoices &middot; &#8377; 23.1 Cr tax &middot; ready for filing</div>
+        <div class="action-bar-status">No errors &middot; 1,432 warnings (informational) &middot; will flow into 4A and 4B of GSTR-1</div>
+      </div>
+      <div class="action-bar-actions">
+        <a href="gstr1-step3.html" class="btn btn-secondary cta-large">&larr; Back to Step 3 (Outward summary)</a>
+        <button class="btn btn-secondary cta-large">Save changes</button>
+        <a href="gstr1-step3.html" class="btn btn-primary cta-large">Done &middot; return to Step 3 (Outward summary) &rarr;</a>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('gstr1', 'GSTR-1 &middot; Step 3 detail', '4A &amp; 4B detail');</script>
+</body>
+</html>

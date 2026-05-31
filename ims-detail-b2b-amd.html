@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amendments of B2B invoices by suppliers · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">
+          <a href="gstr3b-step2.html" style="color:var(--text-muted);text-decoration:none;">&larr; Step 2 (Auto IMS fetch)</a> &middot; Detail view
+        </div>
+        <h1 class="page-title">IMS &middot; B2B Amd &middot; Amendments of B2B invoices by suppliers</h1>
+        <p class="page-subtitle">Supplier revised an invoice already pulled in a prior period &middot; replaces the original in 2B</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="gstr3b-step2.html" class="btn btn-secondary">&larr; Back to Step 2 (Auto IMS fetch)</a>
+      </div>
+    </div>
+
+    <div class="big-stat-grid" style="margin-bottom:20px;">
+      <div class="big-stat" style="border-left:3px solid var(--info);"><div class="big-stat-label">Amendment records</div><div class="big-stat-value">4,128</div><div class="big-stat-sub">From supplier GSTR-1A</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--success);"><div class="big-stat-label">Value impact</div><div class="big-stat-value">+ &#8377; 12.4 L</div><div class="big-stat-sub">Net upward</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--warning);"><div class="big-stat-label">Pending review</div><div class="big-stat-value">4,128</div><div class="big-stat-sub">100% &middot; all default No-action</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--info);"><div class="big-stat-label">Suppliers involved</div><div class="big-stat-value">418</div><div class="big-stat-sub">Unique GSTINs</div></div>
+    </div>
+
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">
+        <div style="min-width:0;flex:1 1 240px;">
+          <div style="font-size:13.5px;font-weight:700;color:var(--text);line-height:1.4;">B2B amendment records &middot; sample of 8 from 4,128</div>
+          <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">Each row shows original value (period being amended) and the revised value supplier just filed</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="btn btn-secondary btn-sm">Download CSV</button>
+          <button class="btn btn-secondary btn-sm">Filter</button>
+          <button class="btn btn-secondary btn-sm">Edit rows</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table grid-lined compact">
+          <thead><tr><th class="mono">Supplier</th><th class="mono">Inv no.</th><th>Original period</th><th class="num">Orig taxable</th><th class="num">New taxable</th><th class="num">Tax diff</th><th>Action</th></tr></thead>
+          <tbody><tr><td class="mono">Reliance</td><td class="mono">RIL/26/2418</td><td>Apr-26</td><td class="num">38,40,000</td><td class="num">42,18,000</td><td class="num">+ 68,040</td><td><span class="action-status pending">No-action</span></td></tr><tr><td class="mono">Maharashtra Mills</td><td class="mono">MM/26/00141</td><td>Apr-26</td><td class="num">8,40,000</td><td class="num">8,42,000</td><td class="num">+ 360</td><td><span class="action-status pending">No-action</span></td></tr><tr><td class="mono">Bharat Forge</td><td class="mono">BF/26/01228</td><td>Apr-26</td><td class="num">28,40,000</td><td class="num">26,80,000</td><td class="num">− 28,800</td><td><span class="action-status pending">No-action</span></td></tr><tr><td class="mono">Apollo Tyres</td><td class="mono">AT/26/00482</td><td>Apr-26</td><td class="num">12,18,000</td><td class="num">12,84,000</td><td class="num">+ 11,880</td><td><span class="action-status pending">No-action</span></td></tr><tr><td class="mono">Tata Stationers</td><td class="mono">TS/26/02141</td><td>Apr-26</td><td class="num">1,28,400</td><td class="num">1,32,000</td><td class="num">+ 648</td><td><span class="action-status matched">Accepted</span></td></tr><tr><td class="mono">L&amp;T</td><td class="mono">LT/26/04018</td><td>Apr-26</td><td class="num">40,18,000</td><td class="num">42,18,000</td><td class="num">+ 36,000</td><td><span class="action-status pending">No-action</span></td></tr><tr><td class="mono">Maruti</td><td class="mono">MS/26/02418</td><td>Apr-26</td><td class="num">8,42,000</td><td class="num">8,18,000</td><td class="num">− 4,320</td><td><span class="action-status pending">No-action</span></td></tr><tr><td class="mono">Bengal Power</td><td class="mono">BP/26/01228</td><td>Apr-26</td><td class="num">18,40,000</td><td class="num">18,42,000</td><td class="num">+ 360</td><td><span class="action-status reject">Rejected</span></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">4,128 amendment records &middot; + &#8377; 12.4 L net change &middot; supplier-side GSTR-1A</div>
+        <div class="action-bar-status">Amendment supersedes original in next 2B &middot; rejecting reverts to original</div>
+      </div>
+      <div class="action-bar-actions">
+        <a href="gstr3b-step2.html" class="btn btn-secondary cta-large">&larr; Back to Step 2 (Auto IMS fetch)</a>
+        <button class="btn btn-secondary cta-large">Save changes</button>
+        <a href="gstr3b-step2.html" class="btn btn-primary cta-large">Done &middot; return to Step 2 (Auto IMS fetch) &rarr;</a>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('gstr3b', 'GSTR-3B &middot; Step 2 detail', 'IMS &middot; B2B Amd detail');</script>
+</body>
+</html>

@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generate IRN &middot; E-Invoice &middot; DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">
+          <a href="einvoice.html" style="color:var(--text-muted);text-decoration:none;">&larr; E-Invoice</a> &middot; Single IRN
+        </div>
+        <h1 class="page-title">Generate single IRN (e-invoice)</h1>
+        <p class="page-subtitle">JSON schema v1.1 &middot; on submit, signed JSON sent to IRP and 64-char IRN returned with QR code &middot; deterministic hash from Supplier GSTIN + Doc no + Doc date + Doc type + FY</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="einvoice.html" class="btn btn-secondary">&larr; Back</a>
+      </div>
+    </div>
+
+    <!-- INFO -->
+    <div class="card" style="background:linear-gradient(135deg, #F3E8FF, var(--surface));border-left:4px solid #7C3AED;padding:14px 18px;margin-bottom:20px;">
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#7C3AED" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <div style="font-size:12.5px;line-height:1.55;color:var(--text);">
+          <strong>Field flow into IRP:</strong> Document type drives schema variant (Tax Invoice / CN / DN / Export). Buyer GSTIN format check + PoS code validation are runs client-side first. HSN must be 6-digit (Phase 3, AATO &gt; &#8377; 5 Cr). On submit: routing to least-loaded IRP &middot; signed JSON + IRN returned in &lt; 200ms typically.
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 1: DOCUMENT DETAILS -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:16px 22px;border-bottom:1px solid var(--border);background:linear-gradient(135deg, #F5F8FA, var(--surface));">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">1 &middot; Document details</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Drives the IRN hash &middot; doc no + doc date + doc type uniquely identify this invoice within the FY</div>
+      </div>
+      <div style="padding:22px;">
+        <div class="modal-field-grid">
+          <div class="modal-field">
+            <label class="modal-field-label">Document type</label>
+            <select class="modal-field-input">
+              <option>Tax Invoice (INV)</option>
+              <option>Credit Note (CRN)</option>
+              <option>Debit Note (DBN)</option>
+              <option>Export Invoice &middot; LUT (EXP-LUT)</option>
+              <option>Export Invoice &middot; IGST paid (EXP-IGST)</option>
+              <option>SEZ supply &middot; zero-rated (SEZ)</option>
+              <option>Deemed export (DEXP)</option>
+              <option>RCM invoice (RCM)</option>
+            </select>
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Document no.</label>
+            <input class="modal-field-input" value="TS/26/02842" style="font-family:var(--font-mono);">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Document date</label>
+            <input class="modal-field-input" type="date" value="2026-05-15">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Reverse charge applicable?</label>
+            <select class="modal-field-input">
+              <option>No</option>
+              <option>Yes</option>
+            </select>
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Supply type</label>
+            <select class="modal-field-input">
+              <option>B2B</option>
+              <option>SEZWP &middot; SEZ with payment of IGST</option>
+              <option>SEZWOP &middot; SEZ without payment</option>
+              <option>EXPWP &middot; Export with IGST</option>
+              <option>EXPWOP &middot; Export without IGST (LUT)</option>
+              <option>DEXP &middot; Deemed export</option>
+            </select>
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">IGST on intra-state?</label>
+            <select class="modal-field-input">
+              <option>No (default)</option>
+              <option>Yes (special cases)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: SELLER (auto) -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:16px 22px;border-bottom:1px solid var(--border);background:linear-gradient(135deg, #F5F8FA, var(--surface));">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">2 &middot; Seller details (your details, auto-filled)</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Pulled from your GSTIN registration &middot; address can be overridden if dispatched from a different location</div>
+      </div>
+      <div style="padding:22px;">
+        <div class="modal-field-grid">
+          <div class="modal-field">
+            <label class="modal-field-label">Supplier GSTIN</label>
+            <input class="modal-field-input" value="27AABCT3518Q1ZV" readonly style="background:var(--bg);font-family:var(--font-mono);">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Legal name</label>
+            <input class="modal-field-input" value="Tata Steel Mumbai" readonly style="background:var(--bg);">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Trade name</label>
+            <input class="modal-field-input" value="Tata Steel">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Address line 1</label>
+            <input class="modal-field-input" value="Bombay House, 24 Homi Mody Street">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Location (city)</label>
+            <input class="modal-field-input" value="Mumbai">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">PIN code</label>
+            <input class="modal-field-input" value="400001" style="font-family:var(--font-mono);">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">State</label>
+            <select class="modal-field-input">
+              <option>27 - Maharashtra</option>
+              <option>29 - Karnataka</option>
+              <option>33 - Tamil Nadu</option>
+            </select>
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Phone (optional)</label>
+            <input class="modal-field-input" value="+91 22 6665 8282">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 3: BUYER -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:16px 22px;border-bottom:1px solid var(--border);background:linear-gradient(135deg, #F5F8FA, var(--surface));">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">3 &middot; Buyer details</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Buyer GSTIN drives IGST vs CGST+SGST split &middot; PoS state code must match buyer&apos;s GSTIN state for B2B</div>
+      </div>
+      <div style="padding:22px;">
+        <div class="modal-field-grid">
+          <div class="modal-field">
+            <label class="modal-field-label">Buyer GSTIN</label>
+            <input class="modal-field-input" value="27AAACH7409R1ZX" style="font-family:var(--font-mono);">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Legal name</label>
+            <input class="modal-field-input" value="Hindalco Industries Ltd">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Trade name</label>
+            <input class="modal-field-input" value="Hindalco">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Address line 1</label>
+            <input class="modal-field-input" value="Birla Centurion, P B Marg, Worli">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Location (city)</label>
+            <input class="modal-field-input" value="Mumbai">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">PIN code</label>
+            <input class="modal-field-input" value="400030" style="font-family:var(--font-mono);">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Place of Supply (PoS)</label>
+            <select class="modal-field-input">
+              <option>27 - Maharashtra</option>
+              <option>29 - Karnataka</option>
+              <option>33 - Tamil Nadu</option>
+              <option>07 - Delhi</option>
+              <option>24 - Gujarat</option>
+            </select>
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Inter / Intra (auto)</label>
+            <input class="modal-field-input" value="Intra-state (27 = 27) &middot; CGST + SGST" readonly style="background:var(--bg);">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 4: ITEM DETAILS -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:16px 22px;border-bottom:1px solid var(--border);background:linear-gradient(135deg, #F5F8FA, var(--surface));display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+        <div style="min-width:0;flex:1 1 240px;">
+          <div style="font-size:14px;font-weight:700;color:var(--text);">4 &middot; Item / line details</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">HSN must be 6-digit (AATO &gt; &#8377; 5 Cr). Up to 1,000 line items per invoice. Tax rate computed from buyer-PoS (intra-state = CGST+SGST, inter-state = IGST).</div>
+        </div>
+        <button class="btn btn-secondary btn-sm">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add line item
+        </button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table grid-lined compact">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Product</th>
+              <th class="mono">HSN</th>
+              <th>UQC</th>
+              <th class="num">Qty</th>
+              <th class="num">Unit price</th>
+              <th class="num">Discount</th>
+              <th class="num">Taxable</th>
+              <th class="num">CGST %</th>
+              <th class="num">SGST %</th>
+              <th class="num">Cess</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Hot-rolled steel coil &middot; Grade S275</td>
+              <td class="mono">720839</td>
+              <td>MTS</td>
+              <td class="num">12.500</td>
+              <td class="num">67,800.00</td>
+              <td class="num">5,500.00</td>
+              <td class="num">8,42,000.00</td>
+              <td class="num">9</td>
+              <td class="num">9</td>
+              <td class="num">&mdash;</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Galvanised steel sheet &middot; 0.5mm</td>
+              <td class="mono">721049</td>
+              <td>MTS</td>
+              <td class="num">3.200</td>
+              <td class="num">82,400.00</td>
+              <td class="num">&mdash;</td>
+              <td class="num">2,63,680.00</td>
+              <td class="num">9</td>
+              <td class="num">9</td>
+              <td class="num">&mdash;</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="padding:14px 22px;background:rgba(124,58,237,0.04);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(auto-fit, minmax(120px, 1fr));gap:14px;">
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">Total taxable</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);font-family:var(--font-mono);margin-top:2px;">&#8377; 11,05,680</div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">CGST</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);font-family:var(--font-mono);margin-top:2px;">&#8377; 99,511</div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">SGST</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);font-family:var(--font-mono);margin-top:2px;">&#8377; 99,511</div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">IGST</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text-muted);font-family:var(--font-mono);margin-top:2px;">&#8377; 0</div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">Round-off</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);font-family:var(--font-mono);margin-top:2px;">&minus; 0.98</div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">Invoice total</div>
+          <div style="font-size:15px;font-weight:700;color:#7C3AED;font-family:var(--font-mono);margin-top:2px;">&#8377; 13,04,701</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 5: ADDITIONAL (Payment + Transport) -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:16px 22px;border-bottom:1px solid var(--border);background:linear-gradient(135deg, #F5F8FA, var(--surface));">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">5 &middot; Additional details (optional)</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Payment terms drive due-date workflow &middot; transport details lets the same submission also generate an EWB (Part B)</div>
+      </div>
+      <div style="padding:22px;">
+        <div class="modal-field-grid">
+          <div class="modal-field">
+            <label class="modal-field-label">Payment terms</label>
+            <input class="modal-field-input" value="Net 30 days from invoice date">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Payment due date</label>
+            <input class="modal-field-input" type="date" value="2026-06-14">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">PO number (optional)</label>
+            <input class="modal-field-input" value="HIND-PO-26-04218" style="font-family:var(--font-mono);">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">PO date</label>
+            <input class="modal-field-input" type="date" value="2026-05-08">
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">E-invoice + EWB together?</label>
+            <select class="modal-field-input">
+              <option>Yes &middot; auto-generate EWB with same submission</option>
+              <option>No &middot; IRN only (generate EWB separately later)</option>
+            </select>
+          </div>
+          <div class="modal-field">
+            <label class="modal-field-label">Routing IRP</label>
+            <select class="modal-field-input">
+              <option>Auto &middot; route to least-loaded IRP</option>
+              <option>NIC-IRP1</option>
+              <option>NIC-IRP2</option>
+              <option>GSP-1 (ClearTax)</option>
+              <option>GSP-2 (Defmacro)</option>
+              <option>GSP-3 (IRISGST)</option>
+              <option>GSP-4 (Cygnet)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VALIDATION SUMMARY -->
+    <div class="card" style="padding:16px 22px;margin-bottom:20px;background:linear-gradient(135deg, #FFFDF0, var(--surface));border:1px solid var(--ey-yellow);">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;">Pre-submit validation (5 checks, run client-side)</div>
+      <div class="validation-strip-grid">
+        <div class="validation-badge pass">
+          <div class="validation-badge-dot"></div>
+          <div class="validation-badge-name">Buyer GSTIN format + active</div>
+          <div class="validation-badge-count">&#10003; valid</div>
+        </div>
+        <div class="validation-badge pass">
+          <div class="validation-badge-dot"></div>
+          <div class="validation-badge-name">HSN 6-digit (Phase 3)</div>
+          <div class="validation-badge-count">&#10003; both lines OK</div>
+        </div>
+        <div class="validation-badge pass">
+          <div class="validation-badge-dot"></div>
+          <div class="validation-badge-name">PoS matches buyer state</div>
+          <div class="validation-badge-count">&#10003; 27 = 27</div>
+        </div>
+        <div class="validation-badge pass">
+          <div class="validation-badge-dot"></div>
+          <div class="validation-badge-name">Tax arithmetic (rate &times; taxable)</div>
+          <div class="validation-badge-count">&#10003; all lines match</div>
+        </div>
+        <div class="validation-badge pass">
+          <div class="validation-badge-dot"></div>
+          <div class="validation-badge-name">Doc date &lt; 30 days old</div>
+          <div class="validation-badge-count">&#10003; today (0 days)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTION BAR -->
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">2 line items &middot; intra-state (CGST + SGST) &middot; invoice total &#8377; 13,04,701</div>
+        <div class="action-bar-status">On generate: signed JSON sent to NIC-IRP1 &middot; 64-char IRN + QR returned in &lt; 200ms &middot; auto-pushed to your GSTR-1</div>
+      </div>
+      <div class="action-bar-actions">
+        <a href="einvoice.html" class="btn btn-secondary cta-large">&larr; Cancel</a>
+        <button class="btn btn-secondary cta-large">Save as draft</button>
+        <button class="btn btn-secondary cta-large">Validate JSON</button>
+        <button class="btn cta-large" style="background:linear-gradient(135deg,#4338CA,#7C3AED);color:#fff;border:none;" onclick="if(window.showToast) window.showToast('IRN issued &middot; 35dc4d8d2c6f8c3b91... &middot; signed by NIC-IRP1 in 142ms &middot; QR ready &middot; auto-pushed to GSTR-1');">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="14" height="14" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg>
+          Generate IRN &rarr;
+        </button>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('einvoice', 'E-Invoice (IRN)', 'Generate single IRN');</script>
+</body>
+</html>

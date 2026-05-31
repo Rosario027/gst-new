@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GSTR-3B Step 4 · Tax Summary · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <a href="gstr3b.html" class="btn btn-secondary cta-large back-arrow-link">GSTR-3B</a>
+        <h1 class="page-title" style="margin-top:10px;">Step 4 · Tax Summary</h1>
+        <p class="page-subtitle">GSTN portal-style tile view &middot; click any tile to drill into the line-wise data &middot; values auto-computed from Step 1 PR + Step 3 IMS/2B reco</p>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn btn-secondary cta-large" onclick="if(window.showToast)window.showToast('Downloading entire tax summary as Excel...');">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download summary (Excel)
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP PROGRESS BAR (6 steps) -->
+    <div class="step-progress-bar">
+      <a href="gstr3b-step1.html" class="step-pip done step-pip-link" title="Go to Purchase data"><div class="step-pip-dot"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Purchase data</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr3b-step2.html" class="step-pip done step-pip-link" title="Go to Auto IMS fetch"><div class="step-pip-dot"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Auto IMS fetch</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr3b-step3.html" class="step-pip done step-pip-link" title="Go to Confirm Inward"><div class="step-pip-dot"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Confirm Inward</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr3b-step4.html" class="step-pip current step-pip-link" title="Go to Tax Summary"><div class="step-pip-dot">4</div>Tax Summary</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr3b-step5.html" class="step-pip step-pip-link" title="Go to ITC &amp; Set-off"><div class="step-pip-dot">5</div>ITC &amp; Set-off</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr3b-step6.html" class="step-pip step-pip-link" title="Go to Preview &amp; File"><div class="step-pip-dot">6</div>Preview &amp; File</a>
+    </div>
+
+    <!-- INFO BANNER -->
+    <div style="padding:14px 18px;margin-bottom:18px;background:linear-gradient(135deg,#F0F7FF,var(--surface));border-left:4px solid var(--info);border-radius:8px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+      <div style="min-width:0;">
+        <div style="font-size:13px;font-weight:700;color:var(--text);">Portal-style tile view &middot; clickable line-wise drill-down</div>
+        <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">Mirrors the GSTN portal's GSTR-3B summary layout exactly &middot; click any tile to expand the underlying invoice/document lines &middot; figures lock when you proceed to Step 5</div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <button class="btn btn-secondary btn-sm" onclick="if(window.showToast)window.showToast('Recomputing tile values from Step 1+2+3 sources...');">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" stroke-width="2.4"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          Recompute all
+        </button>
+        <button class="btn btn-secondary btn-sm">Expand all</button>
+        <button class="btn btn-secondary btn-sm" onclick="document.querySelectorAll('.tile-detail').forEach(function(el){el.style.display='none'});document.querySelectorAll('.tile-chevron').forEach(function(el){el.style.transform='rotate(0deg)'});">Collapse all</button>
+      </div>
+    </div>
+
+    <!-- PORTAL-STYLE TILE GRID (3-col responsive) -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(360px, 1fr));gap:16px;margin-bottom:20px;">
+
+      <!-- TILE 3.1 — Tax on outward + RCM inward -->
+      <div class="portal-tile">
+        <div class="portal-tile-head" onclick="window.togglePortalTile &amp;&amp; window.togglePortalTile('t31')" style="background:#1B3A5C;color:#fff;cursor:pointer;">
+          <div style="font-size:13px;font-weight:700;">3.1 Tax on outward and reverse charge inward supplies</div>
+          <svg class="tile-chevron" data-tile="t31" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" style="transition:transform 0.2s;"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="portal-tile-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <div><div class="ptv-label">Integrated Tax</div><div class="ptv-num">&#8377;6,49,898.52</div></div>
+            <div><div class="ptv-label">Central Tax</div><div class="ptv-num">&#8377;4,144.32</div></div>
+            <div><div class="ptv-label">State/UT Tax</div><div class="ptv-num">&#8377;4,144.32</div></div>
+            <div><div class="ptv-label">CESS (&#8377;)</div><div class="ptv-num">&#8377;0.00</div></div>
+          </div>
+        </div>
+        <div class="tile-detail" data-tile="t31" style="display:none;">
+          <div style="padding:14px 18px;background:rgba(0,0,0,0.02);border-top:1px solid var(--border);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+              <div style="font-size:11.5px;color:var(--text-muted);font-weight:600;">Line-wise breakup &middot; auto-derived from Step 1 sales register</div>
+              <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();if(window.showToast)window.showToast('Downloading 3.1 line-wise (Excel)...');">Excel</button>
+            </div>
+            <table class="data-table grid-lined compact" style="margin:0;font-size:11.5px;">
+              <thead><tr><th>Nature of supplies</th><th class="num">Taxable (&#8377;)</th><th class="num">IGST</th><th class="num">CGST</th><th class="num">SGST</th><th class="num">CESS</th></tr></thead>
+              <tbody>
+                <tr><td>(a) Outward taxable supplies (other than zero rated, nil rated, exempted)</td><td class="num mono">36,10,547</td><td class="num mono">6,49,898</td><td class="num mono">4,144</td><td class="num mono">4,144</td><td class="num mono">0</td></tr>
+                <tr><td>(b) Outward taxable supplies (zero rated)</td><td class="num mono">12,42,000</td><td class="num mono">0</td><td class="num mono">0</td><td class="num mono">0</td><td class="num mono">0</td></tr>
+                <tr><td>(c) Other outward supplies (nil rated, exempted)</td><td class="num mono">8,42,000</td><td class="num mono">0</td><td class="num mono">0</td><td class="num mono">0</td><td class="num mono">0</td></tr>
+                <tr><td>(d) Inward supplies (liable to reverse charge)</td><td class="num mono">2,18,400</td><td class="num mono">0</td><td class="num mono">0</td><td class="num mono">0</td><td class="num mono">0</td></tr>
+                <tr><td>(e) Non-GST outward supplies</td><td class="num mono">0</td><td class="num mono">0</td><td class="num mono">0</td><td class="num mono">0</td><td class="num mono">0</td></tr>
+                <tr style="background:rgba(255,230,0,0.10);font-weight:700;border-top:2px solid var(--ey-yellow);"><td>Total</td><td class="num mono">59,12,947</td><td class="num mono">6,49,898</td><td class="num mono">4,144</td><td class="num mono">4,144</td><td class="num mono">0</td></tr>
+              </tbody>
+            </table>
+            <div style="font-size:10.5px;color:var(--text-muted);margin-top:8px;">Source: Step 1 sales register &middot; 1,82,847 invoices aggregated</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TILE 3.1.1 — Supplies u/s 9(5) -->
+      <div class="portal-tile">
+        <div class="portal-tile-head" onclick="window.togglePortalTile &amp;&amp; window.togglePortalTile('t311')" style="background:#1B3A5C;color:#fff;cursor:pointer;">
+          <div style="font-size:13px;font-weight:700;">3.1.1 Supplies notified under section 9(5) of the CGST Act, 2017</div>
+          <svg class="tile-chevron" data-tile="t311" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" style="transition:transform 0.2s;"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="portal-tile-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <div><div class="ptv-label">Integrated Tax</div><div class="ptv-num">&#8377;0.00</div></div>
+            <div><div class="ptv-label">Central Tax</div><div class="ptv-num">&#8377;0.00</div></div>
+            <div><div class="ptv-label">State/UT Tax</div><div class="ptv-num">&#8377;0.00</div></div>
+            <div><div class="ptv-label">CESS (&#8377;)</div><div class="ptv-num">&#8377;0.00</div></div>
+          </div>
+        </div>
+        <div class="tile-detail" data-tile="t311" style="display:none;">
+          <div style="padding:14px 18px;background:rgba(0,0,0,0.02);border-top:1px solid var(--border);">
+            <div style="font-size:11.5px;color:var(--text-muted);margin-bottom:8px;">No e-commerce operator activity reported for this period &middot; if ECO transactions exist, they're disclosed in Section 5 of GSTR-1 and auto-flow here.</div>
+            <div style="font-size:10.5px;color:var(--text-muted);">Section 9(5) covers services through ECO (Ola/Uber-like) where the operator is liable</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TILE 3.2 — Inter-state -->
+      <div class="portal-tile">
+        <div class="portal-tile-head" onclick="window.togglePortalTile &amp;&amp; window.togglePortalTile('t32')" style="background:#1B3A5C;color:#fff;cursor:pointer;">
+          <div style="font-size:13px;font-weight:700;">3.2 Inter-state supplies</div>
+          <svg class="tile-chevron" data-tile="t32" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" style="transition:transform 0.2s;"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="portal-tile-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <div><div class="ptv-label">Taxable Value</div><div class="ptv-num">&#8377;0.00</div></div>
+            <div><div class="ptv-label">Integrated Tax</div><div class="ptv-num">&#8377;0.00</div></div>
+          </div>
+        </div>
+        <div class="tile-detail" data-tile="t32" style="display:none;">
+          <div style="padding:14px 18px;background:rgba(0,0,0,0.02);border-top:1px solid var(--border);">
+            <div style="font-size:11.5px;color:var(--text-muted);margin-bottom:8px;">Inter-state supplies made to (a) Unregistered persons (b) Composition taxable persons (c) UIN holders &middot; place-of-supply state-wise</div>
+            <div style="font-size:10.5px;color:var(--text-muted);">All inter-state activity in this period is to registered taxpayers (B2B) &middot; falls under 3.1 not 3.2</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TILE 4 — Eligible ITC (RED CRITICAL) -->
+      <div class="portal-tile">
+        <div class="portal-tile-head" onclick="window.togglePortalTile &amp;&amp; window.togglePortalTile('t4')" style="background:#E97A7A;color:#fff;cursor:pointer;">
+          <div style="font-size:13px;font-weight:700;">4. Eligible ITC</div>
+          <svg class="tile-chevron" data-tile="t4" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" style="transition:transform 0.2s;"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="portal-tile-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <div><div class="ptv-label">Integrated Tax</div><div class="ptv-num">&#8377;11,27,293.24</div></div>
+            <div><div class="ptv-label">Central Tax</div><div class="ptv-num">&#8377;92,251.11</div></div>
+            <div><div class="ptv-label">State/UT Tax</div><div class="ptv-num">&#8377;92,251.11</div></div>
+            <div><div class="ptv-label">CESS (&#8377;)</div><div class="ptv-num">&#8377;0.00</div></div>
+          </div>
+        </div>
+        <div class="tile-detail" data-tile="t4" style="display:none;">
+          <div style="padding:14px 18px;background:rgba(0,0,0,0.02);border-top:1px solid var(--border);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+              <div style="font-size:11.5px;color:var(--text-muted);font-weight:600;">ITC composition table &middot; line-wise click-through</div>
+              <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();if(window.showToast)window.showToast('Downloading Section 4 line-wise (Excel)...');">Excel</button>
+            </div>
+            <table class="data-table grid-lined compact" style="margin:0;font-size:11.5px;">
+              <thead><tr><th>Details</th><th class="num">IGST</th><th class="num">CGST</th><th class="num">SGST</th><th class="num">CESS</th><th>Drill</th></tr></thead>
+              <tbody>
+                <tr><td><strong>(A) ITC Available (whether in full or part)</strong></td><td class="num mono"></td><td class="num mono"></td><td class="num mono"></td><td class="num mono"></td><td></td></tr>
+                <tr><td style="padding-left:24px;">(1) Import of goods</td><td class="num mono">42,18,000</td><td class="num mono">0</td><td class="num mono">0</td><td class="num mono">0</td><td><button class="row-edit-btn" onclick="event.stopPropagation();">View 28 BoE</button></td></tr>
+                <tr><td style="padding-left:24px;">(2) Import of services</td><td class="num mono">2,18,400</td><td class="num mono">0</td><td class="num mono">0</td><td class="num mono">0</td><td><button class="row-edit-btn" onclick="event.stopPropagation();">View 14 lines</button></td></tr>
+                <tr><td style="padding-left:24px;">(3) Inward supplies liable to RCM (other than 1 &amp; 2 above)</td><td class="num mono">0</td><td class="num mono">8,247</td><td class="num mono">8,247</td><td class="num mono">0</td><td><button class="row-edit-btn" onclick="event.stopPropagation();">View 6 lines</button></td></tr>
+                <tr><td style="padding-left:24px;">(4) Inward supplies from ISD</td><td class="num mono">8,42,000</td><td class="num mono">0</td><td class="num mono">0</td><td class="num mono">0</td><td><button class="row-edit-btn" onclick="event.stopPropagation();">View ISD-04</button></td></tr>
+                <tr><td style="padding-left:24px;">(5) All other ITC</td><td class="num mono">10,72,656</td><td class="num mono">84,004</td><td class="num mono">84,004</td><td class="num mono">0</td><td><button class="row-edit-btn" onclick="event.stopPropagation();">View 1,68,418 lines</button></td></tr>
+                <tr><td><strong>(B) ITC Reversed</strong></td><td class="num mono"></td><td class="num mono"></td><td class="num mono"></td><td class="num mono"></td><td></td></tr>
+                <tr><td style="padding-left:24px;">(1) As per Rule 38, 42 &amp; 43 of CGST Rules and sub-section (5) of section 17</td><td class="num mono" style="color:var(--error);">(42,000)</td><td class="num mono" style="color:var(--error);">(0)</td><td class="num mono" style="color:var(--error);">(0)</td><td class="num mono">0</td><td><button class="row-edit-btn" onclick="event.stopPropagation();">View 4 entries</button></td></tr>
+                <tr><td style="padding-left:24px;">(2) Others</td><td class="num mono">0</td><td class="num mono">0</td><td class="num mono">0</td><td class="num mono">0</td><td>&mdash;</td></tr>
+                <tr style="background:rgba(255,230,0,0.10);font-weight:700;border-top:2px solid var(--ey-yellow);"><td>(C) Net ITC available (A) - (B)</td><td class="num mono">11,27,293</td><td class="num mono">92,251</td><td class="num mono">92,251</td><td class="num mono">0</td><td></td></tr>
+                <tr><td><strong>(D) Other Details</strong></td><td class="num mono"></td><td class="num mono"></td><td class="num mono"></td><td class="num mono"></td><td></td></tr>
+                <tr><td style="padding-left:24px;">(1) ITC reclaimed which was reversed under Table 4(B)(2) in earlier tax period</td><td class="num mono">0</td><td class="num mono">0</td><td class="num mono">0</td><td class="num mono">0</td><td>&mdash;</td></tr>
+                <tr><td style="padding-left:24px;">(2) Ineligible ITC under section 16(4) &amp; ITC restricted due to PoS rules</td><td class="num mono">14,000</td><td class="num mono">0</td><td class="num mono">0</td><td class="num mono">0</td><td><button class="row-edit-btn" onclick="event.stopPropagation();">View 2 lines</button></td></tr>
+              </tbody>
+            </table>
+            <div style="font-size:10.5px;color:var(--text-muted);margin-top:8px;">Source: Step 3 IMS/2B reco &middot; 1,68,418 matched + 8,418 pending IMS + adjustments</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TILE 5 — Exempt nil non-GST inward -->
+      <div class="portal-tile">
+        <div class="portal-tile-head" onclick="window.togglePortalTile &amp;&amp; window.togglePortalTile('t5')" style="background:#1B3A5C;color:#fff;cursor:pointer;">
+          <div style="font-size:13px;font-weight:700;">5. Exempt, nil and Non GST inward supplies</div>
+          <svg class="tile-chevron" data-tile="t5" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" style="transition:transform 0.2s;"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="portal-tile-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <div><div class="ptv-label">Inter-state supplies</div><div class="ptv-num">&#8377;0.00</div></div>
+            <div><div class="ptv-label">Intra-state supplies</div><div class="ptv-num">&#8377;0.00</div></div>
+          </div>
+        </div>
+        <div class="tile-detail" data-tile="t5" style="display:none;">
+          <div style="padding:14px 18px;background:rgba(0,0,0,0.02);border-top:1px solid var(--border);font-size:11.5px;color:var(--text-muted);">
+            No exempt, nil or non-GST inward supplies identified for this period in PR. If applicable, this would include items like petrol/diesel, alcohol, electricity, fresh produce purchases.
+          </div>
+        </div>
+      </div>
+
+      <!-- TILE 5.1 — Interest + late fee prior period -->
+      <div class="portal-tile">
+        <div class="portal-tile-head" onclick="window.togglePortalTile &amp;&amp; window.togglePortalTile('t51')" style="background:#1B3A5C;color:#fff;cursor:pointer;">
+          <div style="font-size:13px;font-weight:700;">5.1 Interest and Late fee for previous tax period</div>
+          <svg class="tile-chevron" data-tile="t51" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" style="transition:transform 0.2s;"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="portal-tile-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <div><div class="ptv-label">Integrated Tax</div><div class="ptv-num">&#8377;0.00</div></div>
+            <div><div class="ptv-label">Central Tax</div><div class="ptv-num">&#8377;0.00</div></div>
+            <div><div class="ptv-label">State/UT Tax</div><div class="ptv-num">&#8377;0.00</div></div>
+            <div><div class="ptv-label">CESS (&#8377;)</div><div class="ptv-num">&#8377;0.00</div></div>
+          </div>
+        </div>
+        <div class="tile-detail" data-tile="t51" style="display:none;">
+          <div style="padding:14px 18px;background:rgba(0,0,0,0.02);border-top:1px solid var(--border);font-size:11.5px;color:var(--text-muted);">
+            April 2026 GSTR-3B filed on time (20-May-2026) &middot; no interest or late fee carryover from previous period.
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TILE 6.1 — Payment of tax (full-width on its own row) -->
+    <div class="portal-tile" style="margin-bottom:20px;">
+      <div class="portal-tile-head" onclick="window.togglePortalTile &amp;&amp; window.togglePortalTile('t61')" style="background:#1B3A5C;color:#fff;cursor:pointer;">
+        <div style="font-size:13px;font-weight:700;">6.1 Payment of tax</div>
+        <svg class="tile-chevron" data-tile="t61" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" style="transition:transform 0.2s;"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="portal-tile-body">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));gap:14px;">
+          <div><div class="ptv-label">Balance Liability</div><div class="ptv-num">&#8377;0.00</div></div>
+          <div><div class="ptv-label">Paid through Cash</div><div class="ptv-num">&#8377;2,160.00</div></div>
+          <div><div class="ptv-label">Paid through Credit</div><div class="ptv-num">&#8377;6,56,027.00</div></div>
+          <div><div class="ptv-label">Total tax payable</div><div class="ptv-num">&#8377;6,58,187.00</div></div>
+        </div>
+      </div>
+      <div class="tile-detail" data-tile="t61" style="display:none;">
+        <div style="padding:14px 18px;background:rgba(0,0,0,0.02);border-top:1px solid var(--border);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <div style="font-size:11.5px;color:var(--text-muted);font-weight:600;">Payment breakup &middot; settled via ITC + Cash</div>
+            <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();if(window.showToast)window.showToast('Downloading 6.1 setoff breakup (Excel)...');">Excel</button>
+          </div>
+          <table class="data-table grid-lined compact" style="margin:0;font-size:11.5px;">
+            <thead><tr><th>Description</th><th class="num">Tax Payable (&#8377;)</th><th class="num">Paid via ITC (&#8377;)</th><th class="num">Paid via Cash (&#8377;)</th><th class="num">Balance (&#8377;)</th></tr></thead>
+            <tbody>
+              <tr><td>IGST</td><td class="num mono">6,49,898</td><td class="num mono">6,49,898</td><td class="num mono">0</td><td class="num mono">0</td></tr>
+              <tr><td>CGST</td><td class="num mono">4,144</td><td class="num mono">3,064</td><td class="num mono">1,080</td><td class="num mono">0</td></tr>
+              <tr><td>SGST</td><td class="num mono">4,144</td><td class="num mono">3,064</td><td class="num mono">1,080</td><td class="num mono">0</td></tr>
+              <tr><td>CESS</td><td class="num mono">0</td><td class="num mono">0</td><td class="num mono">0</td><td class="num mono">0</td></tr>
+              <tr style="background:rgba(255,230,0,0.10);font-weight:700;border-top:2px solid var(--ey-yellow);"><td>Total</td><td class="num mono">6,58,187</td><td class="num mono">6,56,026</td><td class="num mono">2,160</td><td class="num mono">0</td></tr>
+            </tbody>
+          </table>
+          <div style="font-size:10.5px;color:var(--text-muted);margin-top:8px;">Setoff hierarchy as per Sec 49(5) &middot; locked when proceeding to Step 5 &middot; cash component requires PMT-06 challan</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTION BAR -->
+    <div class="action-bar">
+      <div class="action-bar-status">
+        <strong>Tax summary computed.</strong> All 7 sections auto-populated. Total payable &#8377; 6,58,187 &middot; via ITC &#8377; 6,56,027 &middot; via Cash &#8377; 2,160.
+      </div>
+      <div class="flex gap-2">
+        <a href="gstr3b-step3.html" class="btn btn-secondary cta-large back-arrow-link">Back to Step 3</a>
+        <button class="btn btn-secondary cta-large">Save &amp; close</button>
+        <a href="gstr3b-step5.html" class="btn btn-primary cta-xlarge">Lock summary &amp; proceed to ITC &amp; Set-off &rarr;</a>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('gstr3b', 'GSTR-3B Inward', 'Step 4 · Tax Summary');</script>
+<script>
+// Tile expand/collapse
+window.togglePortalTile = function(tileId) {
+  var detail = document.querySelector('.tile-detail[data-tile="' + tileId + '"]');
+  var chevron = document.querySelector('.tile-chevron[data-tile="' + tileId + '"]');
+  if (!detail) return;
+  var isHidden = detail.style.display === 'none' || !detail.style.display;
+  detail.style.display = isHidden ? 'block' : 'none';
+  if (chevron) chevron.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+};
+</script>
+</body>
+</html>

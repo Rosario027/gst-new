@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step 5 · Preview &amp; File · GSTR-1 · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Step 5 · Preview, Submit &amp; File</h1>
+        <p class="page-subtitle">Final check before filing GSTR-1 · DSC mandatory for companies / LLPs · EVC for others</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="gstr1.html" class="btn btn-secondary back-arrow-link">Back to workflow</a>
+      </div>
+    </div>
+
+    <div class="step-progress-bar">
+      <a href="gstr1-step1.html" class="step-pip done step-pip-link" title="Go to Sales data"><div class="step-pip-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></div>Sales data</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr1-step2.html" class="step-pip done step-pip-link" title="Go to IRN + Upload"><div class="step-pip-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></div>IRN + Upload</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr1-step3.html" class="step-pip done step-pip-link" title="Go to Outward summary"><div class="step-pip-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></div>Outward summary</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr1-step4.html" class="step-pip done step-pip-link" title="Go to HSN &amp; Docs"><div class="step-pip-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></div>HSN &amp; Docs</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr1-step5.html" class="step-pip current step-pip-link" title="Go to Step 5 · Preview &amp; File"><div class="step-pip-dot">5</div>Preview &amp; File</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr1a.html" class="step-pip step-pip-link" title="Go to Step 6 · GSTR-1A"><div class="step-pip-dot">6</div>GSTR-1A</a>
+    </div>
+
+
+
+    <!-- STEP FLOW MOUNT (v2.0.10) -->
+    <div id="step-flow"></div>
+
+
+    
+
+    <!-- DRAFT PREVIEW -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div>
+          <div style="font-size:15px;font-weight:700;color:var(--text);">Draft GSTR-1 · Summary preview</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Generated 14-May-2026 11:24 AM · Snapshot — re-generate if you make changes</div>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn btn-secondary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Open full PDF
+          </button>
+          <button class="btn btn-secondary">Regenerate</button>
+        </div>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Table</th>
+            <th>Description</th>
+            <th class="num">Records</th>
+            <th class="num">Taxable</th>
+            <th class="num">IGST</th>
+            <th class="num">CGST</th>
+            <th class="num">SGST</th>
+            <th class="num">Cess</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="mono">4A · 4B</td><td>B2B (regular)</td><td class="num">2,42,118</td><td class="num">1,28,40,12,000</td><td class="num">21,12,18,000</td><td class="num">1,00,56,000</td><td class="num">1,00,56,000</td><td class="num">12,84,000</td></tr>
+          <tr><td class="mono">5A</td><td>B2C Large (inter-state &gt; ₹ 2.5 L)</td><td class="num">84</td><td class="num">4,18,42,000</td><td class="num">75,31,560</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr><td class="mono">6A</td><td>Exports</td><td class="num">1,247</td><td class="num">18,72,40,000</td><td class="num">1,18,40,000</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr><td class="mono">7</td><td>B2C Others (summary)</td><td class="num">38 rows</td><td class="num">9,42,18,000</td><td class="num">84,12,000</td><td class="num">42,18,000</td><td class="num">42,18,000</td><td class="num">—</td></tr>
+          <tr><td class="mono">8</td><td>Nil / Exempt / Non-GST</td><td class="num">412</td><td class="num">2,84,12,000</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr><td class="mono">9B</td><td>Credit / Debit Notes</td><td class="num">970</td><td class="num">−1,40,18,000</td><td class="num">−21,16,000</td><td class="num">−2,84,000</td><td class="num">−2,84,000</td><td class="num">—</td></tr>
+          <tr><td class="mono">11</td><td>Advances received</td><td class="num">24</td><td class="num">22,84,000</td><td class="num">4,11,120</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr><td class="mono">12</td><td>HSN summary</td><td class="num">2,471 HSN</td><td class="num">1,62,40,30,000</td><td class="num" colspan="4" style="text-align:right;">Tax cross-validated · matches above</td></tr>
+          <tr><td class="mono">13</td><td>Documents issued</td><td class="num">4,300</td><td colspan="5" style="text-align:right;font-size:12px;color:var(--text-muted);">Series ranges declared · 18 cancelled / void</td></tr>
+        </tbody>
+        <tfoot>
+          <tr style="font-weight:700;background:var(--bg);">
+            <td colspan="2">TOTAL OUTWARD LIABILITY</td>
+            <td class="num">2,44,893</td>
+            <td class="num">1,62,40,30,000</td>
+            <td class="num">23,73,16,680</td>
+            <td class="num">1,42,08,000</td>
+            <td class="num">1,42,08,000</td>
+            <td class="num">12,84,000</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <!-- SIGN & FILE -->
+    <div class="card" style="padding:24px 26px;margin-bottom:20px;background:linear-gradient(135deg, #FFFDF0, var(--surface));border:1.5px solid rgba(255, 230, 0, 0.4);">
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:14px;">Authentication · Choose signing method</div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;">
+        <label style="border:2px solid var(--ey-black-deep);background:var(--surface);padding:16px 18px;border-radius:var(--radius);cursor:pointer;display:flex;align-items:center;gap:12px;">
+          <input type="radio" name="sign" checked style="accent-color:var(--ey-black-deep);width:18px;height:18px;">
+          <div>
+            <div style="font-weight:700;font-size:14px;color:var(--text);">DSC · Digital Signature Certificate</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Mandatory for companies and LLPs (Class-3 token required). emSigner utility must be running.</div>
+          </div>
+        </label>
+
+        <label style="border:1.5px solid var(--border);background:var(--surface);padding:16px 18px;border-radius:var(--radius);cursor:pointer;display:flex;align-items:center;gap:12px;opacity:0.7;">
+          <input type="radio" name="sign" disabled style="accent-color:var(--ey-black-deep);width:18px;height:18px;">
+          <div>
+            <div style="font-weight:700;font-size:14px;color:var(--text);">EVC · Electronic Verification Code</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Not available for companies / LLPs. OTP to authorised signatory's registered mobile + email.</div>
+          </div>
+        </label>
+      </div>
+
+      <div class="flex gap-2" style="flex-wrap:wrap;">
+        <button class="btn btn-secondary cta-large">Submit (freeze values)</button>
+        <button class="btn btn-primary cta-xlarge" style="background:var(--success);color:#fff;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+          File GSTR-1 with DSC
+        </button>
+      </div>
+    </div>
+
+    
+
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">Ready to file</div>
+        <div class="action-bar-status">Due date 11-Jun-2026 · 28 days remaining</div>
+      </div>
+      <div class="action-bar-actions">
+        <a href="gstr1-step4.html" class="btn btn-secondary cta-large back-arrow-link">Step 4</a>
+        <a href="gstr1-step6.html" class="btn btn-secondary cta-large">Skip to GSTR-1A →</a>
+      </div>
+    </div>
+
+    <!-- ACTIVITY LOG -->
+    <div class="activity-log-card">
+      <div class="activity-log-header">
+        <div>
+          <div class="activity-log-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            Activity log · Step 5 · Preview, Submit &amp; File
+          </div>
+          <div class="activity-log-sub">Preview generations, approvals, submission and filing — full audit trail with ARN</div>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn btn-secondary btn-sm">Export full log (CSV)</button>
+          <button class="btn btn-secondary btn-sm">Filter by user</button>
+        </div>
+      </div>
+      <div class="activity-log-summary">
+        <div class="activity-log-stat"><div class="activity-log-stat-label">Total events</div><div class="activity-log-stat-value">5</div></div>
+        <div class="activity-log-stat"><div class="activity-log-stat-label">Draft versions</div><div class="activity-log-stat-value">2</div></div>
+        <div class="activity-log-stat success"><div class="activity-log-stat-label">Final liability</div><div class="activity-log-stat-value">₹ 26.99 Cr</div></div>
+        <div class="activity-log-stat success"><div class="activity-log-stat-label">Filing status</div><div class="activity-log-stat-value">Filed</div></div>
+        <div class="activity-log-stat"><div class="activity-log-stat-label">ARN</div><div class="activity-log-stat-value" style="font-size:11px">AA270525036294Z</div></div>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width:135px;">Timestamp</th>
+            <th>User</th>
+            <th>Action</th>
+            <th>Summary version</th>
+            <th class="num">Total liability</th>
+            <th>Status</th>
+            <th>Files</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono">14-May 11:42:08</td>
+            <td>Jude Akash</td>
+            <td><span class="log-action-pill system">Generated draft PDF</span></td>
+            <td class="mono">v1</td>
+            <td class="num">26,99,16,400</td>
+            <td><span class="ims-status-pill pending">Draft</span></td>
+            <td><a class="file-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Draft v1.pdf</a></td>
+          </tr>
+          <tr>
+            <td class="mono">14-May 11:58:42</td>
+            <td>Jude Akash</td>
+            <td><span class="log-action-pill system">Regenerated after edits</span></td>
+            <td class="mono">v2</td>
+            <td class="num">26,99,16,400</td>
+            <td><span class="ims-status-pill pending">Draft</span></td>
+            <td><a class="file-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Draft v2.pdf</a></td>
+          </tr>
+          <tr>
+            <td class="mono">14-May 14:18:22</td>
+            <td>Aditya Krishnan</td>
+            <td><span class="log-action-pill complete">Manager review · approved</span></td>
+            <td class="mono">v2</td>
+            <td class="num">26,99,16,400</td>
+            <td><span class="ims-status-pill accept">Approved</span></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td class="mono">11-Jun 09:18:42</td>
+            <td>Jude Akash</td>
+            <td><span class="log-action-pill system">Submit (freeze values)</span></td>
+            <td class="mono">v2</td>
+            <td class="num">26,99,16,400</td>
+            <td><span class="ims-status-pill pending">Submitted</span></td>
+            <td><a class="file-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Frozen summary</a></td>
+          </tr>
+          <tr style="background:#FFFDF0;">
+            <td class="mono">11-Jun 09:22:18</td>
+            <td>Jude Akash</td>
+            <td><span class="log-action-pill file">File with DSC</span></td>
+            <td class="mono">v2 · DSC: Class-3 P.RAMESH</td>
+            <td class="num">26,99,16,400</td>
+            <td><span class="ims-status-pill accept">Filed · ARN AA270525036294Z</span></td>
+            <td>
+              <a class="file-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Filed return.pdf</a>
+              <a class="file-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>ARN receipt</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('gstr1', 'GSTR-1 Outward Supplies', 'Step 5 · Preview, Submit &amp; File');</script>
+
+<script>
+renderStepFlow({
+  anchor: "#step-flow",
+  intro: 'Final preview of the GSTR-1 filing JSON. Cross-table tie-outs, late-fee and interest checks, DSC/EVC signing. Once submitted, ARN issued instantly and values freeze.',
+  status: {
+  "state": "In progress",
+  "period": "May 2026",
+  "today": "15-May-2026 (Fri)",
+  "due": "GSTR-1 by 11-Jun-2026",
+  "dueClass": "warn",
+  "lastAction": "14-May 18:14 by System",
+  "nextMilestone": "Submit & file with DSC"
+},
+  currentUpload: {
+  "fileName": "gstr1-final-v1.json",
+  "fileType": "json",
+  "size": "28.4 MB",
+  "source": "Final consolidation of Steps 1–4",
+  "uploadedBy": "System",
+  "uploadedAt": "14-May 18:14:42",
+  "records": "Full GSTR-1",
+  "pass": "All sections clean",
+  "warn": 0,
+  "fail": 0
+},
+  validations: [
+  {
+    "name": "JSON GSTN-spec validation",
+    "state": "pass",
+    "count": "✓ Schema OK"
+  },
+  {
+    "name": "Late-fee calc",
+    "state": "pass",
+    "count": "✓ ₹ 0 (on time)"
+  },
+  {
+    "name": "Interest calc",
+    "state": "pass",
+    "count": "✓ ₹ 0 (no cash)"
+  },
+  {
+    "name": "Cross-table tie-outs",
+    "state": "pass",
+    "count": "✓ All 13 tables"
+  }
+],
+  history: [
+  {
+    "version": "v1",
+    "label": "Final consolidation • ready to file",
+    "source": "System consolidation",
+    "by": "System",
+    "time": "14-May 18:14:42",
+    "records": "Full GSTR-1",
+    "tag": "current"
+  }
+],
+  dispositions: [
+  {
+    "id": "continue",
+    "primary": true,
+    "title": "Submit & file with DSC",
+    "desc": "Final submit creates the ARN immediately. DSC mandatory for Tata Steel (company). Cannot be undone."
+  },
+  {
+    "id": "refresh",
+    "title": "Re-run pre-file checks",
+    "desc": "Verify JSON schema, late fee, interest one more time before submitting."
+  },
+  {
+    "id": "replace",
+    "title": "Go back to Step 1 to fix",
+    "desc": "If you spotted an issue, jump back to Step 1 and re-validate. The chain re-runs forward automatically."
+  }
+]
+});
+</script>
+</body>
+</html>

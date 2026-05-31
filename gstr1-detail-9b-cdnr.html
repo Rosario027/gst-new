@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Credit / Debit notes to registered persons · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">
+          <a href="gstr1-step3.html" style="color:var(--text-muted);text-decoration:none;">&larr; Step 3 (Outward summary)</a> &middot; Detail view
+        </div>
+        <h1 class="page-title">9B &middot; Credit / Debit notes to registered persons</h1>
+        <p class="page-subtitle">Notes against B2B invoices &middot; reduces or increases value reported in Table 4</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="gstr1-step3.html" class="btn btn-secondary">&larr; Back to Step 3 (Outward summary)</a>
+      </div>
+    </div>
+
+    <div class="big-stat-grid" style="margin-bottom:20px;">
+      <div class="big-stat" style="border-left:3px solid var(--info);"><div class="big-stat-label">Total notes</div><div class="big-stat-value">847</div><div class="big-stat-sub">CN: 612 &middot; DN: 235</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--error);"><div class="big-stat-label">Net value impact</div><div class="big-stat-value">&minus; &#8377; 1.42 Cr</div><div class="big-stat-sub">CN dominant</div></div>
+      <div class="big-stat"><div class="big-stat-label">Net tax impact</div><div class="big-stat-value">&minus; &#8377; 25.6 L</div><div class="big-stat-sub">IGST + CGST + SGST</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--info);"><div class="big-stat-label">Recipients impacted</div><div class="big-stat-value">218</div><div class="big-stat-sub">Across 9B notes</div></div>
+    </div>
+
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">
+        <div style="min-width:0;flex:1 1 240px;">
+          <div style="font-size:13.5px;font-weight:700;color:var(--text);line-height:1.4;">9B notes &middot; sample of 8 from 847</div>
+          <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">CN reduces recipient ITC; DN increases it &middot; both flow to recipient&apos;s GSTR-2B</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="btn btn-secondary btn-sm">Download CSV</button>
+          <button class="btn btn-secondary btn-sm">Filter</button>
+          <button class="btn btn-secondary btn-sm">Edit rows</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table grid-lined compact">
+          <thead><tr><th class="mono">Note no.</th><th>Type</th><th>Note date</th><th class="mono">Orig inv no.</th><th>Recipient</th><th>Reason</th><th class="num">Taxable change (₹)</th><th class="num">Tax change (₹)</th></tr></thead>
+          <tbody><tr><td class="mono">TS-CN/26/843</td><td>CN</td><td>13-May</td><td class="mono">TS/26/02418</td><td>Hindalco</td><td>Sales return</td><td class="num">− 84,200</td><td class="num">− 15,156</td></tr><tr><td class="mono">TS-CN/26/844</td><td>CN</td><td>13-May</td><td class="mono">TS/26/02419</td><td>Reliance</td><td>Post-sale discount</td><td class="num">− 1,28,400</td><td class="num">− 23,112</td></tr><tr><td class="mono">TS-CN/26/845</td><td>CN</td><td>13-May</td><td class="mono">TS/26/02420</td><td>Apollo Tyres</td><td>Price reduction</td><td class="num">− 38,420</td><td class="num">− 6,916</td></tr><tr><td class="mono">TS-DN/26/127</td><td>DN</td><td>13-May</td><td class="mono">TS/26/02421</td><td>Honda Cars</td><td>Under-billing</td><td class="num">+ 42,180</td><td class="num">+ 7,592</td></tr><tr><td class="mono">TS-CN/26/846</td><td>CN</td><td>14-May</td><td class="mono">TS/26/02422</td><td>L&amp;T Construction</td><td>Deficiency in service</td><td class="num">− 8,24,000</td><td class="num">− 1,48,320</td></tr><tr><td class="mono">TS-CN/26/847</td><td>CN</td><td>14-May</td><td class="mono">TS/26/02423</td><td>Tata Consumer</td><td>Sales return</td><td class="num">− 28,400</td><td class="num">− 5,112</td></tr><tr><td class="mono">TS-DN/26/128</td><td>DN</td><td>14-May</td><td class="mono">TS/26/02424</td><td>Bharat Forge</td><td>Rate revision</td><td class="num">+ 51,840</td><td class="num">+ 9,331</td></tr><tr><td class="mono">TS-CN/26/848</td><td>CN</td><td>14-May</td><td class="mono">TS/26/02425</td><td>Maruti Suzuki</td><td>Quality claim</td><td class="num">− 1,84,200</td><td class="num">− 33,156</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">847 9B notes &middot; net &minus; &#8377; 25.6 L tax impact &middot; recipients re-fetch GSTR-2B</div>
+        <div class="action-bar-status">Each note linked to its original invoice &middot; reason codes per CGST &sect;34</div>
+      </div>
+      <div class="action-bar-actions">
+        <a href="gstr1-step3.html" class="btn btn-secondary cta-large">&larr; Back to Step 3 (Outward summary)</a>
+        <button class="btn btn-secondary cta-large">Save changes</button>
+        <a href="gstr1-step3.html" class="btn btn-primary cta-large">Done &middot; return to Step 3 (Outward summary) &rarr;</a>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('gstr1', 'GSTR-1 &middot; Step 3 detail', '9B detail');</script>
+</body>
+</html>

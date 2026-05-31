@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2C Large Invoices &middot; inter-state to unregistered &gt; &#8377; 2.5 L · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">
+          <a href="gstr1-step3.html" style="color:var(--text-muted);text-decoration:none;">&larr; Step 3 (Outward summary)</a> &middot; Detail view
+        </div>
+        <h1 class="page-title">5A &middot; B2C Large Invoices &middot; inter-state to unregistered &gt; &#8377; 2.5 L</h1>
+        <p class="page-subtitle">High-value inter-state supplies to consumers without GSTIN &middot; IGST applicable</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="gstr1-step3.html" class="btn btn-secondary">&larr; Back to Step 3 (Outward summary)</a>
+      </div>
+    </div>
+
+    <div class="big-stat-grid" style="margin-bottom:20px;">
+      <div class="big-stat" style="border-left:3px solid var(--warning);"><div class="big-stat-label">Large invoices</div><div class="big-stat-value">84</div><div class="big-stat-sub">Above &#8377; 2.5 L threshold</div></div>
+      <div class="big-stat"><div class="big-stat-label">Taxable value</div><div class="big-stat-value">&#8377; 4.18 Cr</div><div class="big-stat-sub">Inter-state only</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--success);"><div class="big-stat-label">IGST collected</div><div class="big-stat-value">&#8377; 75.2 L</div><div class="big-stat-sub">No CGST/SGST split</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--info);"><div class="big-stat-label">States covered</div><div class="big-stat-value">14</div><div class="big-stat-sub">Recipient states</div></div>
+    </div>
+
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">
+        <div style="min-width:0;flex:1 1 240px;">
+          <div style="font-size:13.5px;font-weight:700;color:var(--text);line-height:1.4;">B2C Large &middot; 8 of 84 records</div>
+          <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">Reported state-wise &middot; recipient PAN optional; some carry passport / Aadhaar id</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="btn btn-secondary btn-sm">Download CSV</button>
+          <button class="btn btn-secondary btn-sm">Filter</button>
+          <button class="btn btn-secondary btn-sm">Edit rows</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table grid-lined compact">
+          <thead><tr><th class="mono">Inv no.</th><th>Inv date</th><th>Recipient name</th><th>PoS</th><th class="num">Taxable (₹)</th><th class="num">Rate %</th><th class="num">IGST</th><th>Status</th></tr></thead>
+          <tbody><tr><td class="mono">TS/26/B2CL/0118</td><td>12-May</td><td>Mr. Anand Kapoor</td><td>06-HR</td><td class="num">4,84,000</td><td class="num">18</td><td class="num">87,120</td><td><span class="action-status matched">Reported</span></td></tr><tr><td class="mono">TS/26/B2CL/0119</td><td>12-May</td><td>Ms. Jude Sharma</td><td>07-DL</td><td class="num">6,12,000</td><td class="num">18</td><td class="num">1,10,160</td><td><span class="action-status matched">Reported</span></td></tr><tr><td class="mono">TS/26/B2CL/0120</td><td>13-May</td><td>M/s. Bharti Enterprises (unreg)</td><td>29-KA</td><td class="num">3,82,000</td><td class="num">18</td><td class="num">68,760</td><td><span class="action-status matched">Reported</span></td></tr><tr><td class="mono">TS/26/B2CL/0121</td><td>13-May</td><td>Mr. Rakesh Iyer</td><td>33-TN</td><td class="num">2,90,500</td><td class="num">18</td><td class="num">52,290</td><td><span class="action-status matched">Reported</span></td></tr><tr><td class="mono">TS/26/B2CL/0122</td><td>14-May</td><td>Mr. Ramesh Patel</td><td>24-GJ</td><td class="num">3,18,000</td><td class="num">18</td><td class="num">57,240</td><td><span class="action-status pending">Warn &middot; PAN missing</span></td></tr><tr><td class="mono">TS/26/B2CL/0123</td><td>14-May</td><td>Ms. Sunita Devi</td><td>01-JK</td><td class="num">2,84,000</td><td class="num">18</td><td class="num">51,120</td><td><span class="action-status matched">Reported</span></td></tr><tr><td class="mono">TS/26/B2CL/0124</td><td>14-May</td><td>Mr. Hari Krishnan</td><td>32-KL</td><td class="num">4,42,000</td><td class="num">18</td><td class="num">79,560</td><td><span class="action-status matched">Reported</span></td></tr><tr><td class="mono">TS/26/B2CL/0125</td><td>14-May</td><td>Mrs. Lata Iyer</td><td>19-WB</td><td class="num">2,68,000</td><td class="num">18</td><td class="num">48,240</td><td><span class="action-status matched">Reported</span></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">84 B2C Large invoices &middot; &#8377; 75.2 L IGST &middot; all reported</div>
+        <div class="action-bar-status">&#8377; 2.5 L threshold checks done &middot; 3 entries missing PAN (warning, not blocking)</div>
+      </div>
+      <div class="action-bar-actions">
+        <a href="gstr1-step3.html" class="btn btn-secondary cta-large">&larr; Back to Step 3 (Outward summary)</a>
+        <button class="btn btn-secondary cta-large">Save changes</button>
+        <a href="gstr1-step3.html" class="btn btn-primary cta-large">Done &middot; return to Step 3 (Outward summary) &rarr;</a>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('gstr1', 'GSTR-1 &middot; Step 3 detail', '5A detail');</script>
+</body>
+</html>

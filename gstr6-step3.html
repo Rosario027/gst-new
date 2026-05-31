@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step 3 · Preview & File · ISD · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Step 3 &middot; Preview, Submit &amp; File GSTR-6</h1>
+        <p class="page-subtitle">Review all 9 tables of GSTR-6 &middot; submit to freeze values &middot; file with DSC (companies / LLPs) or EVC (others)</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="gstr6.html" class="btn btn-secondary">&larr; Back to GSTR-6</a>
+      </div>
+    </div>
+
+    <div class="step-progress-bar">
+      <a href="gstr6-step1.html" class="step-pip done step-pip-link" title="Go to Auto-fetch GSTR-6A"><div class="step-pip-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></div>Auto-fetch GSTR-6A</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr6-step2.html" class="step-pip done step-pip-link" title="Go to Distribute ITC"><div class="step-pip-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></div>Distribute ITC</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr6-step3.html" class="step-pip current step-pip-link" title="Go to Preview &amp; File"><div class="step-pip-dot">3</div>Preview &amp; File</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr6-step3.html" class="step-pip step-pip-link" title="Go to Amendments"><div class="step-pip-dot">4</div>Amendments</a>
+    </div>
+
+
+
+    <!-- STEP FLOW MOUNT (v2.0.10) -->
+    <div id="step-flow"></div>
+
+
+    <!-- TABLE 3 — INPUT TAX CREDIT RECEIVED -->
+    <div class="card" style="padding:0;margin-bottom:18px;">
+      <div style="padding:18px 22px;border-bottom:1px solid var(--border);">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">Table 3 &middot; Input tax credit received for distribution</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Auto-populated from GSTR-6A &middot; reconciled with eligibility tagging</div>
+      </div>
+      <div class="table-wrap">
+<table class="data-table grid-lined">
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th class="num">No. of vouchers</th>
+            <th class="num">Taxable value (&#8377;)</th>
+            <th class="num">IGST (&#8377;)</th>
+            <th class="num">CGST (&#8377;)</th>
+            <th class="num">SGST (&#8377;)</th>
+            <th class="num">Total tax (&#8377;)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Input services received</td>
+            <td class="num">3,418</td>
+            <td class="num">4,68,55,100.00</td>
+            <td class="num">75,10,284.00</td>
+            <td class="num">8,46,927.00</td>
+            <td class="num">8,46,927.00</td>
+            <td class="num">92,04,138.00</td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+    </div>
+
+    <!-- TABLE 4 — ELIGIBLE / INELIGIBLE -->
+    <div class="card" style="padding:0;margin-bottom:18px;">
+      <div style="padding:18px 22px;border-bottom:1px solid var(--border);">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">Table 4 &middot; Total ITC / Eligible ITC / Ineligible ITC</div>
+      </div>
+      <div class="table-wrap">
+<table class="data-table grid-lined">
+        <thead>
+          <tr>
+            <th>Particulars</th>
+            <th class="num">IGST (&#8377;)</th>
+            <th class="num">CGST (&#8377;)</th>
+            <th class="num">SGST (&#8377;)</th>
+            <th class="num">Total (&#8377;)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Total ITC available</td>
+            <td class="num">75,10,284</td>
+            <td class="num">8,46,927</td>
+            <td class="num">8,46,927</td>
+            <td class="num">92,04,138</td>
+          </tr>
+          <tr style="background:rgba(22,135,54,0.05);">
+            <td><strong>Eligible ITC (for distribution)</strong></td>
+            <td class="num">73,57,890</td>
+            <td class="num">8,32,851</td>
+            <td class="num">8,32,851</td>
+            <td class="num">90,23,592</td>
+          </tr>
+          <tr style="background:rgba(200,16,46,0.05);">
+            <td><strong>Ineligible ITC &sect;17(5)</strong></td>
+            <td class="num">1,52,394</td>
+            <td class="num">14,076</td>
+            <td class="num">14,076</td>
+            <td class="num">1,80,546</td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+    </div>
+
+    <!-- TABLE 5 — DISTRIBUTION OF ITC -->
+    <div class="card" style="padding:0;margin-bottom:18px;">
+      <div style="padding:18px 22px;border-bottom:1px solid var(--border);">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">Table 5 &middot; Distribution of ITC to recipient units (ISD invoices issued)</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">12 ISD invoices generated &middot; one per recipient GSTIN &middot; from Step 2</div>
+      </div>
+      <div class="table-wrap">
+<table class="data-table grid-lined">
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th class="num">No. of ISD invoices</th>
+            <th class="num">IGST (&#8377;)</th>
+            <th class="num">CGST (&#8377;)</th>
+            <th class="num">SGST (&#8377;)</th>
+            <th class="num">Total (&#8377;)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Eligible ITC distributed</td>
+            <td class="num">12</td>
+            <td class="num">46,98,408</td>
+            <td class="num">17,57,592</td>
+            <td class="num">17,57,592</td>
+            <td class="num">82,13,592</td>
+          </tr>
+          <tr style="background:rgba(200,16,46,0.05);">
+            <td>Ineligible ITC distributed (flagged blocked)</td>
+            <td class="num">12</td>
+            <td class="num">1,52,394</td>
+            <td class="num">25,803</td>
+            <td class="num">25,803</td>
+            <td class="num">2,04,000</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr style="font-weight:700;background:var(--bg);">
+            <td>Total distributed</td>
+            <td class="num">24 ISD inv</td>
+            <td class="num">48,50,802</td>
+            <td class="num">17,83,395</td>
+            <td class="num">17,83,395</td>
+            <td class="num">84,17,592</td>
+          </tr>
+        </tfoot>
+      </table>
+</div>
+    </div>
+
+    <!-- FILE SIGN -->
+    <div class="card" style="padding:24px;margin-bottom:20px;background:linear-gradient(135deg, #FFFDF0, #FFF);border-left:4px solid var(--ey-yellow);">
+      <div style="display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;">
+        <div style="width:48px;height:48px;border-radius:12px;background:var(--ey-yellow);color:var(--ey-black-deep);display:grid;place-items:center;">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div>
+          <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);font-weight:600">All checks passed &middot; ready to file</div>
+          <div style="font-size:16px;font-weight:700;color:var(--text);">Pool tie-out: &#8377; 84.18 L received = &#8377; 84.18 L distributed (&#8377; 82.14 elig + &#8377; 2.04 inelig)</div>
+          <div style="font-size:12.5px;color:var(--text-muted);margin-top:4px">12 ISD-1 statements (one per recipient unit) will be issued on filing &middot; flows into recipients' GSTR-2B in next cycle</div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-secondary cta-large">Download draft JSON</button>
+          <button class="btn btn-primary cta-xlarge">File with EVC &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+    
+
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">Final preview &middot; ready for filing</div>
+        <div class="action-bar-status">Due 13-Jun-2026 &middot; 29 days remaining &middot; auto-DSC available</div>
+      </div>
+      <div class="action-bar-actions">
+        <a href="gstr6-step2.html" class="btn btn-secondary cta-large">&larr; Step 2</a>
+        <button class="btn btn-secondary cta-large">Submit (freeze values)</button>
+        <button class="btn btn-primary cta-xlarge">File with DSC &rarr;</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('gstr6', 'GSTR-6 ISD', 'Step 3 &middot; Preview &amp; File');</script>
+
+<script>
+renderStepFlow({
+  anchor: "#step-flow",
+  intro: 'Final preview of GSTR-6 covering Tables 3, 4, 5, 6, 8 and 9. Pool tie-out check, 12 ISD-1 statements generated, ready for DSC/EVC filing.',
+  status: {
+  "state": "In progress",
+  "period": "May 2026",
+  "today": "15-May-2026 (Fri)",
+  "due": "GSTR-6 by 13-Jun-2026",
+  "dueClass": "warn",
+  "lastAction": "14-May 16:08 by System",
+  "nextMilestone": "Submit & file with DSC"
+},
+  currentUpload: {
+  "fileName": "gstr6-final-v1.json",
+  "fileType": "json",
+  "size": "2.8 MB",
+  "source": "Consolidation of Steps 1 + 2",
+  "uploadedBy": "System",
+  "uploadedAt": "14-May 16:08:42",
+  "records": "Full GSTR-6 • 9 tables",
+  "pass": "All tables clean",
+  "warn": 0,
+  "fail": 0
+},
+  validations: [
+  {
+    "name": "JSON GSTN-spec validation",
+    "state": "pass",
+    "count": "✓ Schema OK"
+  },
+  {
+    "name": "Pool tie-out",
+    "state": "pass",
+    "count": "✓ ₹ 84.18 L"
+  },
+  {
+    "name": "ISD-1 statements generated",
+    "state": "pass",
+    "count": "✓ 12 statements"
+  },
+  {
+    "name": "Late-fee calc",
+    "state": "pass",
+    "count": "✓ ₹ 0 (on time)"
+  }
+],
+  history: [
+  {
+    "version": "v1",
+    "label": "Final consolidation • ready to file",
+    "source": "System consolidation",
+    "by": "System",
+    "time": "14-May 16:08:42",
+    "records": "Full GSTR-6",
+    "tag": "current"
+  }
+],
+  dispositions: [
+  {
+    "id": "continue",
+    "primary": true,
+    "title": "Submit & file with DSC",
+    "desc": "Final submit issues 12 ISD-1 statements and creates the ARN. DSC mandatory for company / LLP."
+  },
+  {
+    "id": "refresh",
+    "title": "Re-run pre-file checks",
+    "desc": "Verify schema, pool tie-out, ISD-1 generation one more time."
+  },
+  {
+    "id": "replace",
+    "title": "Go back to Step 1 to fix",
+    "desc": "If eligibility tagging or distribution needs a change, jump back. Chain re-runs forward."
+  }
+]
+});
+</script>
+</body>
+</html>

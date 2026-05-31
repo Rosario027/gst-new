@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upload Data · E-Invoice & EWB · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">E-Invoice & EWB</h1>
+        <p class="page-subtitle">Generate, cancel and reconcile IRNs and E-Way Bills across all GSTINs</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="einvoice-reports.html" class="btn btn-secondary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Reports
+        </a>
+        <a href="einvoice-management.html" class="btn btn-secondary">
+          Invoice Management →
+        </a>
+      </div>
+    </div>
+
+
+    <!-- LIFECYCLE STRIP -->
+    <div class="lifecycle-strip">
+      <div class="lifecycle-header">
+        <div class="lifecycle-header-title">E-Invoice & EWB cycle · Feeds into GSTR-1</div>
+        <div class="lifecycle-header-help">IRN cancellation window: 24 hours · EWB validity: 1 day per 200 km</div>
+      </div>
+      <div class="lifecycle-body">
+        <div class="lifecycle-phase past">
+          <div class="phase-marker"><span class="marker-dot"></span>Previous month</div>
+          <div class="phase-title">April 2026</div>
+          <div class="phase-status success">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+            2,68,419 IRNs · GSTR-1 filed
+          </div>
+          <div class="phase-due">
+            <span class="due-date mono">ARN AA270526009287N</span>
+            <span class="days-left onTrack">Cycle closed 10-May-2026</span>
+          </div>
+        </div>
+        <div class="lifecycle-phase current">
+          <div class="phase-marker"><span class="marker-dot"></span>Current month</div>
+          <div class="phase-title">May 2026</div>
+          <div class="phase-status">2,84,712 IRNs generated MTD · Feeds GSTR-1 May</div>
+          <div class="phase-due">
+            <span class="due-date">GSTR-1 due 11-Jun-2026</span>
+            <span class="days-left onTrack">28 days remaining · On track</span>
+          </div>
+        </div>
+        <div class="lifecycle-phase upcoming">
+          <div class="phase-marker"><span class="marker-dot"></span>Next month</div>
+          <div class="phase-title">June 2026</div>
+          <div class="phase-status muted">Cycle opens 1-Jun-2026</div>
+          <div class="phase-due">
+            <span class="due-date">GSTR-1 due 11-Jul-2026</span>
+            <span class="days-left">58 days from today</span>
+          </div>
+        </div>
+      </div>
+
+    <!-- v2.0.21 — Cross-link to Books vs E-invoice reconciliation + Generate IRN CTA -->
+    <div class="card" style="display:grid;grid-template-columns:auto 1fr auto auto;gap:16px;align-items:center;padding:16px 22px;margin-bottom:20px;background:linear-gradient(135deg, #FFFDF0, var(--surface));border:1px solid var(--ey-yellow);">
+      <div style="width:42px;height:42px;border-radius:10px;background:var(--ey-yellow);color:var(--ey-black-deep);display:grid;place-items:center;">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+      </div>
+      <div>
+        <div style="font-size:13.5px;font-weight:700;color:var(--text);">Generate single IRN or reconcile outward flow</div>
+        <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px;">Issue an IRN ad-hoc (B2B / Export / CN / DN) or open the Books vs E-invoice reconciliation to surface missing IRNs.</div>
+      </div>
+      <button class="btn btn-secondary cta-large" onclick="window.openIrnPopup()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Generate IRN
+      </button>
+      <a href="reco-books-vs-einv.html" class="btn btn-primary cta-large">Books vs E-invoice reco &rarr;</a>
+    </div>
+
+    </div>
+
+    <!-- Workflow Stepper -->
+    <div class="workflow">
+      <div class="workflow-step active">
+        <div class="step-dot">1</div>
+        <div class="step-label">Upload File</div>
+      </div>
+      <div class="workflow-step">
+        <div class="step-dot">2</div>
+        <div class="step-label">Check Processing</div>
+      </div>
+      <div class="workflow-step">
+        <div class="step-dot">3</div>
+        <div class="step-label">Review & Manage</div>
+      </div>
+      <div class="workflow-step">
+        <div class="step-dot">4</div>
+        <div class="step-label">Cancel / Action</div>
+      </div>
+      <div class="workflow-step">
+        <div class="step-dot">5</div>
+        <div class="step-label">Run Reports</div>
+      </div>
+    </div>
+
+    <!-- Sub tabs -->
+    <div class="tabs">
+      <a href="einvoice-upload.html" class="tab active">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Upload Data
+      </a>
+      <a href="einvoice-management.html" class="tab">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        Invoice Management
+        <span class="tab-count">12,847</span>
+      </a>
+      <a href="einvoice-reports.html" class="tab">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Reports
+      </a>
+    </div>
+
+    <!-- Upload Section -->
+    <div class="card mb-3">
+      <div class="card-head">
+        <div>
+          <div class="card-title">Upload Invoice File</div>
+          <div class="card-subtitle">Bulk generate or cancel IRNs and E-Way Bills</div>
+        </div>
+        <a class="template-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download Template</a>
+      </div>
+      <div class="card-body">
+        <!-- Operation config -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+          <div class="field">
+            <label class="field-label">Processing Mode</label>
+            <div class="radio-group" style="padding: 8px 0;">
+              <label class="radio">
+                <input type="radio" name="mode" checked> Non-Transformation
+              </label>
+              <label class="radio">
+                <input type="radio" name="mode"> Transformation
+              </label>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Mapping Rule</label>
+            <select class="select" disabled>
+              <option>Enabled with Transformation mode</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field-label">Operation</label>
+            <select class="select">
+              <option>Generate IRN</option>
+              <option>Cancel IRN</option>
+              <option>Generate EWB</option>
+              <option>Cancel EWB</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Upload zone -->
+        <div class="upload-grid">
+          <div class="upload-zone">
+            <div class="upload-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            </div>
+            <strong>Drag and drop your file here</strong>
+            <p>or click to browse from your computer · Max 50 MB</p>
+            <button class="btn btn-dark">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="5 12 19 12"/><polyline points="12 5 19 12 12 19"/></svg>
+              Choose File
+            </button>
+            <div class="formats">
+              <span class="format-tag">.xlsx</span>
+              <span class="format-tag">.xls</span>
+              <span class="format-tag">.csv</span>
+            </div>
+          </div>
+          <div class="file-type-panel" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <h4>Configuration Summary</h4>
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div style="display: flex; justify-content: space-between; font-size: 12px;"><span class="text-muted">Mode</span><strong>Non-Transformation</strong></div>
+                <div style="display: flex; justify-content: space-between; font-size: 12px;"><span class="text-muted">Operation</span><strong>Generate IRN</strong></div>
+                <div style="display: flex; justify-content: space-between; font-size: 12px;"><span class="text-muted">Target GSTINs</span><strong>All Active (34)</strong></div>
+                <div style="display: flex; justify-content: space-between; font-size: 12px;"><span class="text-muted">Auto E-Way Bill</span><strong>Enabled</strong></div>
+              </div>
+            </div>
+            <button class="btn btn-primary" style="width: 100%; justify-content: center; padding: 10px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Start Upload
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upload History -->
+    <div class="table-wrap">
+      <div class="table-toolbar">
+        <div class="table-toolbar-left">
+          <div class="card-title">Upload History</div>
+          <span class="table-count"><strong>247</strong> files · last 30 days</span>
+        </div>
+        <div class="flex gap-2">
+          <div class="search-input">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" class="input" placeholder="Search file name..." style="width: 220px;">
+          </div>
+          <select class="select" style="width: 140px;"><option>All Operations</option></select>
+          <select class="select" style="width: 140px;"><option>All Status</option></select>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>File Name</th>
+              <th>Operation</th>
+              <th>Uploaded</th>
+              <th class="num">Total Records</th>
+              <th class="num">Succeeded</th>
+              <th class="num">Errored</th>
+              <th>Progress</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+                  <span class="font-medium">May_W2_Sales_Batch01.xlsx</span>
+                </div>
+              </td>
+              <td><span class="pill pill-inv">Generate IRN</span></td>
+              <td class="text-sm text-muted">Today, 14:22</td>
+              <td class="num">8,421</td>
+              <td class="num" style="color: var(--success);">8,397</td>
+              <td class="num" style="color: var(--error); font-weight: 600;">24</td>
+              <td>
+                <div class="progress-row">
+                  <div class="progress"><div class="progress-bar warn" style="width: 100%;"></div></div>
+                  <span class="pct">100%</span>
+                </div>
+              </td>
+              <td><span class="badge warning"><span class="badge-dot"></span>Partial</span></td>
+              <td>
+                <div class="row-actions">
+                  <button class="icon-btn" title="Summary View"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <button class="icon-btn danger" title="Download Error Report"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+                  <span class="font-medium">B2C_April_Final_v2.xlsx</span>
+                </div>
+              </td>
+              <td><span class="pill pill-inv">Generate IRN</span></td>
+              <td class="text-sm text-muted">Today, 13:48</td>
+              <td class="num">12,892</td>
+              <td class="num" style="color: var(--success);">9,124</td>
+              <td class="num text-muted">—</td>
+              <td>
+                <div class="progress-row">
+                  <div class="progress"><div class="progress-bar" style="width: 71%;"></div></div>
+                  <span class="pct">71%</span>
+                </div>
+              </td>
+              <td><span class="badge info"><span class="badge-dot" style="animation: pulse 1.5s infinite;"></span>Processing</span></td>
+              <td>
+                <div class="row-actions">
+                  <button class="icon-btn" title="Summary View"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--error)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+                  <span class="font-medium">Cancel_IRN_Mar_Batch.xlsx</span>
+                </div>
+              </td>
+              <td><span class="pill pill-cr">Cancel IRN</span></td>
+              <td class="text-sm text-muted">Today, 11:14</td>
+              <td class="num">342</td>
+              <td class="num">0</td>
+              <td class="num" style="color: var(--error); font-weight: 600;">342</td>
+              <td>
+                <div class="progress-row">
+                  <div class="progress"><div class="progress-bar err" style="width: 100%;"></div></div>
+                  <span class="pct">100%</span>
+                </div>
+              </td>
+              <td><span class="badge error"><span class="badge-dot"></span>Failed</span></td>
+              <td>
+                <div class="row-actions">
+                  <button class="icon-btn" title="Summary View"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <button class="icon-btn danger" title="Download Error Report"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+                  <span class="font-medium">EWB_Maharashtra_May09.csv</span>
+                </div>
+              </td>
+              <td><span class="pill pill-isd">Generate EWB</span></td>
+              <td class="text-sm text-muted">Yesterday, 18:02</td>
+              <td class="num">1,847</td>
+              <td class="num" style="color: var(--success);">1,847</td>
+              <td class="num">0</td>
+              <td>
+                <div class="progress-row">
+                  <div class="progress"><div class="progress-bar" style="width: 100%;"></div></div>
+                  <span class="pct">100%</span>
+                </div>
+              </td>
+              <td><span class="badge success"><span class="badge-dot"></span>Completed</span></td>
+              <td>
+                <div class="row-actions">
+                  <button class="icon-btn" title="Summary View"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+                  <span class="font-medium">Sales_Apr_Tata_Karnataka.xlsx</span>
+                </div>
+              </td>
+              <td><span class="pill pill-inv">Generate IRN</span></td>
+              <td class="text-sm text-muted">Yesterday, 14:30</td>
+              <td class="num">4,128</td>
+              <td class="num" style="color: var(--success);">4,128</td>
+              <td class="num">0</td>
+              <td>
+                <div class="progress-row">
+                  <div class="progress"><div class="progress-bar" style="width: 100%;"></div></div>
+                  <span class="pct">100%</span>
+                </div>
+              </td>
+              <td><span class="badge success"><span class="badge-dot"></span>Completed</span></td>
+              <td>
+                <div class="row-actions">
+                  <button class="icon-btn" title="Summary View"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+                  <span class="font-medium">Multi_State_Apr_Sales.xlsx</span>
+                </div>
+              </td>
+              <td><span class="pill pill-inv">Generate IRN</span></td>
+              <td class="text-sm text-muted">May 8, 10:12</td>
+              <td class="num">9,847</td>
+              <td class="num" style="color: var(--success);">9,623</td>
+              <td class="num" style="color: var(--error); font-weight: 600;">224</td>
+              <td>
+                <div class="progress-row">
+                  <div class="progress"><div class="progress-bar warn" style="width: 100%;"></div></div>
+                  <span class="pct">100%</span>
+                </div>
+              </td>
+              <td><span class="badge warning"><span class="badge-dot"></span>Partial</span></td>
+              <td>
+                <div class="row-actions">
+                  <button class="icon-btn" title="Summary View"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <button class="icon-btn danger" title="Download Error Report"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<style>@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }</style>
+<script src="app.js"></script>
+<script>renderShell('einvoice', 'E-Invoice & EWB', 'Upload Data');</script>
+</body>
+</html>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PMT-09 &middot; Transfer of Cash Ledger Balance &middot; DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">
+          <a href="cash-ledger.html" style="color:var(--text-muted);text-decoration:none;">&larr; Cash Ledger</a> &middot; Inter-head transfer
+        </div>
+        <h1 class="page-title">PMT-09 &middot; Transfer of amount within Cash Ledger</h1>
+        <p class="page-subtitle">Move cash between major heads (IGST / CGST / SGST / Cess) or minor heads (Tax / Interest / Fee / Penalty / Other) when payment was made under the wrong head &middot; Rule 87(13) &middot; no refund, balance simply re-allocated</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="cash-ledger.html" class="btn btn-secondary">&larr; Back to Cash Ledger</a>
+      </div>
+    </div>
+
+    <!-- INFO BANNER -->
+    <div class="card" style="background:linear-gradient(135deg, #E8F4F9, var(--surface));border-left:4px solid var(--info);padding:14px 18px;margin-bottom:20px;">
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--info)" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <div style="font-size:12.5px;line-height:1.55;color:var(--text);">
+          <strong>How PMT-09 works:</strong> If a cash deposit was made under the wrong head (e.g., paid CGST-Tax but should have been SGST-Tax), use PMT-09 to transfer the balance without re-depositing. Source amount must not exceed available balance in the source major+minor cell. Transfer is instant on GSTN portal &middot; updates the electronic cash ledger immediately &middot; <strong>does NOT</strong> trigger refund or reverse the original payment receipt.
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION A: CURRENT BALANCES -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:18px 22px;border-bottom:1px solid var(--border);">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">A &middot; Current cash ledger balances</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">As on 15-May-2026 14:42 &middot; matrix shows the cell-level break-up by major head &times; minor head &middot; pick source from cells with non-zero balance</div>
+      </div>
+      <div style="padding:18px 22px;">
+        <div class="table-wrap">
+          <table class="pmt09-matrix">
+            <thead>
+              <tr>
+                <th style="text-align:left;">Major head &dArr; / Minor head &rArr;</th>
+                <th>Tax (&#8377;)</th>
+                <th>Interest (&#8377;)</th>
+                <th>Penalty (&#8377;)</th>
+                <th>Fee (&#8377;)</th>
+                <th>Other (&#8377;)</th>
+                <th>Total (&#8377;)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>IGST</th>
+                <td class="nonzero">17,450.00</td>
+                <td class="zero">0.00</td>
+                <td class="zero">0.00</td>
+                <td class="zero">0.00</td>
+                <td class="zero">0.00</td>
+                <td><strong>17,450.00</strong></td>
+              </tr>
+              <tr>
+                <th>CGST</th>
+                <td class="nonzero">42,000.00</td>
+                <td class="zero">0.00</td>
+                <td class="zero">0.00</td>
+                <td class="zero">0.00</td>
+                <td class="zero">0.00</td>
+                <td><strong>42,000.00</strong></td>
+              </tr>
+              <tr>
+                <th>SGST / UTGST</th>
+                <td class="nonzero">20.00</td>
+                <td class="zero">0.00</td>
+                <td class="zero">0.00</td>
+                <td class="zero">0.00</td>
+                <td class="zero">0.00</td>
+                <td><strong>20.00</strong></td>
+              </tr>
+              <tr>
+                <th>Cess</th>
+                <td class="zero">0.00</td>
+                <td class="zero">0.00</td>
+                <td class="zero">0.00</td>
+                <td class="zero">0.00</td>
+                <td class="zero">0.00</td>
+                <td><strong>0.00</strong></td>
+              </tr>
+              <tr style="background:rgba(255,230,0,0.10);font-weight:700;">
+                <th>Total available for transfer</th>
+                <td>59,470.00</td>
+                <td>0.00</td>
+                <td>0.00</td>
+                <td>0.00</td>
+                <td>0.00</td>
+                <td>59,470.00</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION B: TRANSFER ROWS -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:18px 22px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
+        <div style="min-width:0;flex:1 1 240px;">
+          <div style="font-size:14px;font-weight:700;color:var(--text);">B &middot; Transfer rows</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Each row: pick source (major + minor) and destination (major + minor) plus amount &middot; multiple transfers can be filed in one PMT-09</div>
+        </div>
+        <button class="btn btn-secondary cta-large" id="pmt09-add-row">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add transfer row
+        </button>
+      </div>
+
+      <div style="padding:14px 22px;">
+        <div style="display:grid;grid-template-columns:1.4fr 1.4fr auto 1.4fr 1.4fr 1.2fr auto;gap:8px;padding-bottom:8px;border-bottom:2px solid var(--border);font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">
+          <div>From &middot; Major head</div>
+          <div>From &middot; Minor head</div>
+          <div style="text-align:center;">&nbsp;</div>
+          <div>To &middot; Major head</div>
+          <div>To &middot; Minor head</div>
+          <div>Amount (&#8377;)</div>
+          <div>&nbsp;</div>
+        </div>
+
+        <div id="pmt09-rows">
+          <!-- Row 1: Pre-filled demo -->
+          <div class="pmt09-transfer-row">
+            <select class="modal-field-input">
+              <option>CGST &middot; Bal &#8377; 42,000</option>
+              <option>IGST &middot; Bal &#8377; 17,450</option>
+              <option>SGST/UTGST &middot; Bal &#8377; 20</option>
+              <option>Cess &middot; Bal &#8377; 0</option>
+            </select>
+            <select class="modal-field-input">
+              <option>Tax</option>
+              <option>Interest</option>
+              <option>Penalty</option>
+              <option>Fee</option>
+              <option>Other</option>
+            </select>
+            <div class="pmt09-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </div>
+            <select class="modal-field-input">
+              <option>SGST / UTGST</option>
+              <option>IGST</option>
+              <option>CGST</option>
+              <option>Cess</option>
+            </select>
+            <select class="modal-field-input">
+              <option>Tax</option>
+              <option>Interest</option>
+              <option>Penalty</option>
+              <option>Fee</option>
+              <option>Other</option>
+            </select>
+            <input type="text" class="modal-field-input" value="20,000.00" style="text-align:right;font-family:var(--font-mono);">
+            <button class="pmt09-delete-btn" title="Remove row" onclick="this.parentElement.remove();">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+            </button>
+          </div>
+
+          <!-- Row 2: Another pre-filled demo -->
+          <div class="pmt09-transfer-row">
+            <select class="modal-field-input">
+              <option>IGST &middot; Bal &#8377; 17,450</option>
+              <option>CGST &middot; Bal &#8377; 42,000</option>
+              <option>SGST/UTGST &middot; Bal &#8377; 20</option>
+              <option>Cess &middot; Bal &#8377; 0</option>
+            </select>
+            <select class="modal-field-input">
+              <option>Tax</option>
+              <option>Interest</option>
+              <option>Penalty</option>
+              <option>Fee</option>
+              <option>Other</option>
+            </select>
+            <div class="pmt09-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </div>
+            <select class="modal-field-input">
+              <option>CGST</option>
+              <option>IGST</option>
+              <option>SGST / UTGST</option>
+              <option>Cess</option>
+            </select>
+            <select class="modal-field-input">
+              <option>Interest</option>
+              <option>Tax</option>
+              <option>Penalty</option>
+              <option>Fee</option>
+              <option>Other</option>
+            </select>
+            <input type="text" class="modal-field-input" value="5,000.00" style="text-align:right;font-family:var(--font-mono);">
+            <button class="pmt09-delete-btn" title="Remove row" onclick="this.parentElement.remove();">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION C: PREVIEW OF UPDATED BALANCES -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:18px 22px;border-bottom:1px solid var(--border);background:linear-gradient(135deg, rgba(22,135,54,0.06), var(--surface));">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">C &middot; Balances after transfer (live preview)</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">After all transfer rows above are applied &middot; rows tinted green where balance increased, red where decreased</div>
+      </div>
+      <div style="padding:18px 22px;">
+        <div class="table-wrap">
+          <table class="pmt09-matrix">
+            <thead>
+              <tr>
+                <th style="text-align:left;">Major head &dArr; / Minor head &rArr;</th>
+                <th>Tax (&#8377;)</th>
+                <th>Interest (&#8377;)</th>
+                <th>Penalty (&#8377;)</th>
+                <th>Fee (&#8377;)</th>
+                <th>Other (&#8377;)</th>
+                <th>Total (&#8377;)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>IGST</th>
+                <td style="background:rgba(200,16,46,0.06);color:var(--error);">12,450.00 <span style="font-size:10px;">(&minus; 5,000)</span></td>
+                <td class="zero">0.00</td>
+                <td class="zero">0.00</td>
+                <td class="zero">0.00</td>
+                <td class="zero">0.00</td>
+                <td><strong>12,450.00</strong></td>
+              </tr>
+              <tr>
+                <th>CGST</th>
+                <td style="background:rgba(200,16,46,0.06);color:var(--error);">22,000.00 <span style="font-size:10px;">(&minus; 20,000)</span></td>
+                <td style="background:rgba(22,135,54,0.08);color:var(--success);">5,000.00 <span style="font-size:10px;">(+ 5,000)</span></td>
+                <td class="zero">0.00</td>
+                <td class="zero">0.00</td>
+                <td class="zero">0.00</td>
+                <td><strong>27,000.00</strong></td>
+              </tr>
+              <tr>
+                <th>SGST / UTGST</th>
+                <td style="background:rgba(22,135,54,0.08);color:var(--success);">20,020.00 <span style="font-size:10px;">(+ 20,000)</span></td>
+                <td class="zero">0.00</td>
+                <td class="zero">0.00</td>
+                <td class="zero">0.00</td>
+                <td class="zero">0.00</td>
+                <td><strong>20,020.00</strong></td>
+              </tr>
+              <tr>
+                <th>Cess</th>
+                <td class="zero">0.00</td>
+                <td class="zero">0.00</td>
+                <td class="zero">0.00</td>
+                <td class="zero">0.00</td>
+                <td class="zero">0.00</td>
+                <td><strong>0.00</strong></td>
+              </tr>
+              <tr style="background:rgba(255,230,0,0.10);font-weight:700;">
+                <th>Total (unchanged)</th>
+                <td>54,470.00</td>
+                <td>5,000.00</td>
+                <td>0.00</td>
+                <td>0.00</td>
+                <td>0.00</td>
+                <td>59,470.00</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-top:14px;padding:10px 14px;background:rgba(255,230,0,0.08);border:1px solid var(--ey-yellow);border-radius:var(--radius);font-size:11.5px;color:var(--text);">
+          <strong>Total cash balance is unchanged at &#8377; 59,470.00 &mdash; PMT-09 only re-allocates within the ledger; it never adds or refunds money.</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION D: VERIFICATION -->
+    <div class="card" style="padding:18px 22px;margin-bottom:20px;">
+      <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px;">D &middot; Verification</div>
+      <div class="modal-field-grid">
+        <div class="modal-field">
+          <label class="modal-field-label">Authorised signatory</label>
+          <select class="modal-field-input">
+            <option>Jude Akash &middot; Tax Manager (DSC active)</option>
+            <option>Aditya Krishnan &middot; CFO (DSC active)</option>
+          </select>
+        </div>
+        <div class="modal-field">
+          <label class="modal-field-label">Verification method</label>
+          <select class="modal-field-input">
+            <option>DSC (mandatory for company / LLP)</option>
+            <option>EVC (proprietor / partnership)</option>
+          </select>
+        </div>
+        <div class="modal-field">
+          <label class="modal-field-label">Place</label>
+          <input class="modal-field-input" value="Mumbai">
+        </div>
+        <div class="modal-field">
+          <label class="modal-field-label">Reason / remark (optional)</label>
+          <input class="modal-field-input" value="Correction: wrong head at payment">
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTION BAR -->
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">2 transfer rows queued &middot; &#8377; 25,000 to be re-allocated</div>
+        <div class="action-bar-status">Submit with DSC &middot; balance updates instantly on GSTN portal</div>
+      </div>
+      <div class="action-bar-actions">
+        <a href="cash-ledger.html" class="btn btn-secondary cta-large">&larr; Back</a>
+        <button class="btn btn-secondary cta-large">Save as draft</button>
+        <button class="btn btn-primary cta-xlarge">Submit PMT-09 with DSC &rarr;</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('cash-ledger', 'Cash Ledger &middot; PMT-09', 'Inter-head transfer');</script>
+<script>
+  // Add-row handler
+  document.getElementById('pmt09-add-row').addEventListener('click', function(){
+    var rows = document.getElementById('pmt09-rows');
+    var firstRow = rows.querySelector('.pmt09-transfer-row');
+    var clone = firstRow.cloneNode(true);
+    // Reset amount + delete handler
+    clone.querySelector('input[type="text"]').value = '0.00';
+    clone.querySelector('.pmt09-delete-btn').onclick = function(){ this.parentElement.remove(); };
+    rows.appendChild(clone);
+  });
+</script>
+</body>
+</html>

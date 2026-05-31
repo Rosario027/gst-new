@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GSTR-6A · Auto-drafted · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">GSTR-6A &middot; Auto-drafted (view only)</h1>
+        <p class="page-subtitle">Read-only mirror of every record where a supplier entered your ISD GSTIN in their GSTR-1 &middot; updates dynamically as suppliers file</p>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn btn-secondary cta-large">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export CSV
+        </button>
+      </div>
+    </div>
+
+    <div class="help-strip">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <div>GSTR-6A is GSTN's auto-drafted statement and cannot be edited here. To take eligibility decisions or distribute ITC, use <a href="gstr6-step1.html" style="color:var(--info);font-weight:600;">Step 1 &middot; Auto-fetch GSTR-6A</a> in the workflow.</div>
+    </div>
+
+    <div class="big-stat-grid">
+      <div class="big-stat accent"><div class="big-stat-label">Records (May 2026)</div><div class="big-stat-value">3,418</div><div class="big-stat-sub">3,287 invoices + 96 CN + 35 DN</div></div>
+      <div class="big-stat"><div class="big-stat-label">Suppliers</div><div class="big-stat-value">218</div><div class="big-stat-sub">Distinct GSTINs</div></div>
+      <div class="big-stat"><div class="big-stat-label">Total taxable value</div><div class="big-stat-value">&#8377; 4.69 Cr</div><div class="big-stat-sub">Service-mix</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--success)"><div class="big-stat-label">Total tax (Cr)</div><div class="big-stat-value" style="color:var(--success)">&#8377; 92.04 L</div><div class="big-stat-sub">IGST + CGST + SGST</div></div>
+    </div>
+
+    <div class="card" style="padding:0;margin-top:20px;">
+      <div style="padding:18px 22px;border-bottom:1px solid var(--border);">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">Latest 8 records &middot; sorted by document date</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Showing 8 of 3,418 &middot; full data accessible via Step 1</div>
+      </div>
+      <div class="table-wrap">
+<table class="data-table grid-lined compact">
+        <thead>
+          <tr><th>Supplier GSTIN</th><th>Supplier</th><th>Doc no.</th><th>Doc date</th><th>Type</th><th class="num">Taxable</th><th class="num">IGST</th><th class="num">CGST</th><th class="num">SGST</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="mono">27AAACS3902E1ZB</td><td>SAP India</td><td class="mono">SAP/26/1842</td><td>14-May-26</td><td>INV</td><td class="num">18,42,000.00</td><td class="num">&mdash;</td><td class="num">1,65,780.00</td><td class="num">1,65,780.00</td></tr>
+          <tr><td class="mono">07AAACD6911J1ZK</td><td>Deloitte Haskins</td><td class="mono">DH/26/00284</td><td>13-May-26</td><td>INV</td><td class="num">8,42,000.00</td><td class="num">1,51,560.00</td><td class="num">&mdash;</td><td class="num">&mdash;</td></tr>
+          <tr><td class="mono">29AABCT8341Q1ZY</td><td>Tata Tele Business</td><td class="mono">TTBS/26/4188</td><td>13-May-26</td><td>INV</td><td class="num">2,84,200.00</td><td class="num">51,156.00</td><td class="num">&mdash;</td><td class="num">&mdash;</td></tr>
+          <tr><td class="mono">06AAACG2115R1ZP</td><td>Genpact India</td><td class="mono">GEN/26/00428</td><td>12-May-26</td><td>INV</td><td class="num">4,21,800.00</td><td class="num">75,924.00</td><td class="num">&mdash;</td><td class="num">&mdash;</td></tr>
+          <tr><td class="mono">27AAACE4587R1ZP</td><td>Ernst &amp; Young LLP</td><td class="mono">EY/26/02841</td><td>11-May-26</td><td>INV</td><td class="num">28,42,000.00</td><td class="num">&mdash;</td><td class="num">2,55,780.00</td><td class="num">2,55,780.00</td></tr>
+          <tr><td class="mono">27AABCG8847Q1ZX</td><td>Google Cloud India</td><td class="mono">GC/26/14821</td><td>10-May-26</td><td>INV</td><td class="num">14,21,800.00</td><td class="num">&mdash;</td><td class="num">1,27,962.00</td><td class="num">1,27,962.00</td></tr>
+          <tr><td class="mono">29AABCM3517R1ZW</td><td>Microsoft India</td><td class="mono">MS/26/08247</td><td>09-May-26</td><td>INV</td><td class="num">6,84,200.00</td><td class="num">1,23,156.00</td><td class="num">&mdash;</td><td class="num">&mdash;</td></tr>
+          <tr><td class="mono">27AAACA5689Q1ZK</td><td>Adobe India</td><td class="mono">ADB/26/00188</td><td>08-May-26</td><td>CN</td><td class="num">42,180.00</td><td class="num">&mdash;</td><td class="num">3,796.00</td><td class="num">3,796.00</td></tr>
+        </tbody>
+      </table>
+</div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('gstr6a', 'GSTR-6A', 'Auto-drafted &middot; View only');</script>
+</body>
+</html>

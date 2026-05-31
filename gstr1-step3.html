@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step 3 · Outward Summary · GSTR-1 · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Step 3 · Review of Outward Summary</h1>
+        <p class="page-subtitle">Walk through every GSTR-1 table tile-by-tile · verify counts and totals against Steps 1 + 2 · resolve warnings before HSN</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="gstr1.html" class="btn btn-secondary back-arrow-link">Back to workflow</a>
+      </div>
+    </div>
+
+    <div class="step-progress-bar">
+      <a href="gstr1-step1.html" class="step-pip done step-pip-link" title="Go to Sales data"><div class="step-pip-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></div>Sales data</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr1-step2.html" class="step-pip done step-pip-link" title="Go to IRN + Upload"><div class="step-pip-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></div>IRN + Upload</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr1-step3.html" class="step-pip current step-pip-link" title="Go to Step 3 · Outward summary"><div class="step-pip-dot">3</div>Outward summary</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr1-step4.html" class="step-pip step-pip-link" title="Go to Step 4 · HSN &amp; Docs"><div class="step-pip-dot">4</div>HSN &amp; Docs</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr1-step5.html" class="step-pip step-pip-link" title="Go to Step 5 · Preview &amp; File"><div class="step-pip-dot">5</div>Preview &amp; File</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr1a.html" class="step-pip step-pip-link" title="Go to Step 6 · GSTR-1A"><div class="step-pip-dot">6</div>GSTR-1A</a>
+    </div>
+
+
+
+    <!-- STEP FLOW MOUNT (v2.0.10) -->
+    <div id="step-flow"></div>
+
+
+    
+
+    <!-- v2.0.29 — Sync GSTR-1 template from Step 1 / Override with Excel upload -->
+    <div class="run-action-card" style="background:linear-gradient(135deg,#F0F7FF,var(--surface));border-color:var(--info);">
+      <div class="run-action-icon" style="background:var(--info);color:#fff;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      </div>
+      <div class="run-action-text">
+        <div class="run-action-title">Sync final GSTR-1 template from Step 1 + Step 2</div>
+        <div class="run-action-sub">Pulls the reconciled outward register (post Step 2) into the 9 GSTR-1 sections below &middot; last sync: <strong>15-May 10:24:18</strong> &middot; file: <strong>gstr1-outward-may26-v3.xlsx</strong> (8.2 MB) &middot; or upload an Excel template to override the auto-sync values</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <button class="run-action-btn" onclick="if(window.showToast)window.showToast('Re-syncing GSTR-1 template from Step 1+2...');">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          Re-sync template
+        </button>
+        <button class="btn btn-secondary btn-sm" onclick="if(window.showToast)window.showToast('Excel template upload dialog opening...');" style="background:var(--surface);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Upload Excel override
+        </button>
+      </div>
+    </div>
+
+    <div class="section-tile-grid">
+
+      <a class="section-tile filed" href="gstr1-detail-4a-b2b.html" style="text-decoration:none;color:inherit;">
+        <div class="section-tile-head">
+          <div class="section-tile-no">4A &amp; 4B</div>
+          <span class="section-tile-status filed">Saved · Matches</span>
+        </div>
+        <div class="section-tile-title">B2B Invoices</div>
+        <div class="section-tile-desc">Regular B2B taxable supplies to registered persons</div>
+        <div class="section-tile-stats">
+          <div class="section-stat"><span class="section-stat-label">Records</span><span class="section-stat-value">2,42,118</span></div>
+          <div class="section-stat"><span class="section-stat-label">Taxable</span><span class="section-stat-value mono">₹ 128.4 Cr</span></div>
+          <div class="section-stat"><span class="section-stat-label">Tax</span><span class="section-stat-value mono">₹ 23.1 Cr</span></div>
+        </div>
+      </a>
+
+      <a class="section-tile filed" href="gstr1-detail-5a-b2cl.html" style="text-decoration:none;color:inherit;">
+        <div class="section-tile-head">
+          <div class="section-tile-no">5A</div>
+          <span class="section-tile-status filed">Saved · Matches</span>
+        </div>
+        <div class="section-tile-title">B2C Large Invoices</div>
+        <div class="section-tile-desc">Inter-state to unregistered &gt; ₹ 2.5 L</div>
+        <div class="section-tile-stats">
+          <div class="section-stat"><span class="section-stat-label">Records</span><span class="section-stat-value">84</span></div>
+          <div class="section-stat"><span class="section-stat-label">Taxable</span><span class="section-stat-value mono">₹ 4.18 Cr</span></div>
+          <div class="section-stat"><span class="section-stat-label">Tax</span><span class="section-stat-value mono">₹ 75.2 L</span></div>
+        </div>
+      </a>
+
+      <a class="section-tile filed" href="gstr1-detail-6a-exp.html" style="text-decoration:none;color:inherit;">
+        <div class="section-tile-head">
+          <div class="section-tile-no">6A</div>
+          <span class="section-tile-status filed">Saved · Matches</span>
+        </div>
+        <div class="section-tile-title">Export Invoices</div>
+        <div class="section-tile-desc">Exports of goods &amp; services (LUT / with IGST)</div>
+        <div class="section-tile-stats">
+          <div class="section-stat"><span class="section-stat-label">Records</span><span class="section-stat-value">1,247</span></div>
+          <div class="section-stat"><span class="section-stat-label">FOB value</span><span class="section-stat-value mono">₹ 18.7 Cr</span></div>
+          <div class="section-stat"><span class="section-stat-label">IGST paid</span><span class="section-stat-value mono">₹ 1.2 Cr</span></div>
+        </div>
+      </a>
+
+      <a class="section-tile draft" href="gstr1-detail-7-b2cs.html" style="text-decoration:none;color:inherit;">
+        <div class="section-tile-head">
+          <div class="section-tile-no">7</div>
+          <span class="section-tile-status draft">Auto-summary · Review</span>
+        </div>
+        <div class="section-tile-title">B2C Others (summary)</div>
+        <div class="section-tile-desc">Intra-state to unregistered + Inter-state ≤ ₹ 2.5 L</div>
+        <div class="section-tile-stats">
+          <div class="section-stat"><span class="section-stat-label">PoS rows</span><span class="section-stat-value">38</span></div>
+          <div class="section-stat"><span class="section-stat-label">Taxable</span><span class="section-stat-value mono">₹ 9.4 Cr</span></div>
+          <div class="section-stat"><span class="section-stat-label">Tax</span><span class="section-stat-value mono">₹ 1.7 Cr</span></div>
+        </div>
+      </a>
+
+      <a class="section-tile filed" href="gstr1-detail-8-nil-exempt.html" style="text-decoration:none;color:inherit;">
+        <div class="section-tile-head">
+          <div class="section-tile-no">8</div>
+          <span class="section-tile-status filed">Saved · Matches</span>
+        </div>
+        <div class="section-tile-title">Nil / Exempt / Non-GST</div>
+        <div class="section-tile-desc">Outward supplies with nil / exempt / non-GST classification</div>
+        <div class="section-tile-stats">
+          <div class="section-stat"><span class="section-stat-label">Records</span><span class="section-stat-value">412</span></div>
+          <div class="section-stat"><span class="section-stat-label">Value</span><span class="section-stat-value mono">₹ 2.84 Cr</span></div>
+          <div class="section-stat"><span class="section-stat-label">Tax</span><span class="section-stat-value mono">₹ 0</span></div>
+        </div>
+      </a>
+
+      <a class="section-tile draft" href="gstr1-detail-9b-cdnr.html" style="text-decoration:none;color:inherit;">
+        <div class="section-tile-head">
+          <div class="section-tile-no">9B</div>
+          <span class="section-tile-status draft">Saved · Warnings</span>
+        </div>
+        <div class="section-tile-title">Credit / Debit Notes – Reg</div>
+        <div class="section-tile-desc">CDN issued against B2B invoices</div>
+        <div class="section-tile-stats">
+          <div class="section-stat"><span class="section-stat-label">Credit notes</span><span class="section-stat-value">842</span></div>
+          <div class="section-stat"><span class="section-stat-label">Debit notes</span><span class="section-stat-value">128</span></div>
+          <div class="section-stat"><span class="section-stat-label">Net value</span><span class="section-stat-value mono">−₹ 1.4 Cr</span></div>
+        </div>
+      </a>
+
+      <a class="section-tile filed" href="gstr1-detail-9a-9c-amend.html" style="text-decoration:none;color:inherit;">
+        <div class="section-tile-head">
+          <div class="section-tile-no">9A &amp; 9C</div>
+          <span class="section-tile-status filed">No amendments</span>
+        </div>
+        <div class="section-tile-title">Amendments (prior period)</div>
+        <div class="section-tile-desc">Amend earlier B2B / B2C Large / CDN records</div>
+        <div class="section-tile-stats">
+          <div class="section-stat"><span class="section-stat-label">Amendments</span><span class="section-stat-value">0</span></div>
+          <div class="section-stat"><span class="section-stat-label">Recall: GSTR-1A</span><span class="section-stat-value">In Step 7</span></div>
+        </div>
+      </a>
+
+      <a class="section-tile draft" href="gstr1-detail-11-advances.html" style="text-decoration:none;color:inherit;">
+        <div class="section-tile-head">
+          <div class="section-tile-no">11</div>
+          <span class="section-tile-status draft">Saved · Review</span>
+        </div>
+        <div class="section-tile-title">Advances received / adjusted</div>
+        <div class="section-tile-desc">Advances received this period and adjusted against invoices</div>
+        <div class="section-tile-stats">
+          <div class="section-stat"><span class="section-stat-label">Advances</span><span class="section-stat-value">24</span></div>
+          <div class="section-stat"><span class="section-stat-label">Adjusted</span><span class="section-stat-value">18</span></div>
+          <div class="section-stat"><span class="section-stat-label">Net liability</span><span class="section-stat-value mono">₹ 4.1 L</span></div>
+        </div>
+      </a>
+
+    </div>
+
+    
+
+    <!-- v2.0.30 — Late Fee Calculator (compact) -->
+    <div style="display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:14px 18px;margin-bottom:20px;background:linear-gradient(135deg,#FFF9F0,var(--surface));border:1px solid var(--warning);border-radius:var(--radius);">
+      <div style="width:38px;height:38px;border-radius:9px;background:var(--warning);color:#fff;display:grid;place-items:center;flex-shrink:0;">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <div style="min-width:0;">
+        <div style="font-size:13px;font-weight:700;color:var(--text);">Late fee estimate &middot; <span style="color:var(--success);">3 days remaining</span> to file</div>
+        <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px;">Normal &#8377;50/day (25 CGST + 25 SGST) &middot; cap &#8377;10,000 (turnover &#62; &#8377;5 Cr) &middot; Notification 7/2023-CT &middot; Sec 47</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">If filed on-time</div>
+        <div style="font-size:18px;font-weight:700;color:var(--success);font-family:var(--font-mono);">&#8377; 0</div>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">8 of 9 sections reviewed</div>
+        <div class="action-bar-status">2 sections have warnings — recommended to clear before HSN summary</div>
+      </div>
+      <div class="action-bar-actions">
+        <a href="gstr1-step2.html" class="btn btn-secondary cta-large back-arrow-link">Step 2</a>
+        <button class="btn btn-secondary cta-large">Save &amp; close</button>
+        <a href="gstr1-step4.html" class="btn btn-primary cta-xlarge">Mark complete · Next: HSN &amp; Docs →</a>
+      </div>
+    </div>
+
+    <!-- ACTIVITY LOG -->
+    <div class="activity-log-card">
+      <div class="activity-log-header">
+        <div>
+          <div class="activity-log-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            Activity log · Step 3 · Outward summary review
+          </div>
+          <div class="activity-log-sub">Every section opened, every edit, every draft generated · for audit trail</div>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn btn-secondary btn-sm">Export full log (CSV)</button>
+          <button class="btn btn-secondary btn-sm">Filter by section</button>
+        </div>
+      </div>
+      <div class="activity-log-summary">
+        <div class="activity-log-stat"><div class="activity-log-stat-label">Total events</div><div class="activity-log-stat-value">7</div></div>
+        <div class="activity-log-stat"><div class="activity-log-stat-label">Sections opened</div><div class="activity-log-stat-value">8 / 9</div></div>
+        <div class="activity-log-stat success"><div class="activity-log-stat-label">Records reviewed</div><div class="activity-log-stat-value">2,85,798</div></div>
+        <div class="activity-log-stat warn"><div class="activity-log-stat-label">Open warnings</div><div class="activity-log-stat-value">2</div></div>
+        <div class="activity-log-stat"><div class="activity-log-stat-label">Draft versions</div><div class="activity-log-stat-value">2</div></div>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width:135px;">Timestamp</th>
+            <th>User</th>
+            <th>Action</th>
+            <th>Section / Table</th>
+            <th class="num">Records affected</th>
+            <th>Result</th>
+            <th>Files</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono">14-May 10:02:18</td>
+            <td>Jude Akash</td>
+            <td><span class="log-action-pill system">Opened section</span></td>
+            <td class="mono">4A / 4B · B2B</td>
+            <td class="num">2,42,118</td>
+            <td><span class="ims-status-pill accept">Saved · Matches</span></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td class="mono">14-May 10:18:42</td>
+            <td>Jude Akash</td>
+            <td><span class="log-action-pill edit">Edited 3 rows · PoS fix</span></td>
+            <td class="mono">4A · B2B</td>
+            <td class="num">3</td>
+            <td><span class="ims-status-pill accept">Saved</span></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td class="mono">14-May 10:32:08</td>
+            <td>Jude Akash</td>
+            <td><span class="log-action-pill system">Opened section</span></td>
+            <td class="mono">6A · Exports</td>
+            <td class="num">1,247</td>
+            <td><span class="ims-status-pill accept">Saved · Matches</span></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td class="mono">14-May 10:44:27</td>
+            <td>Jude Akash</td>
+            <td><span class="log-action-pill edit">Bulk classify · with LUT</span></td>
+            <td class="mono">6A · Exports</td>
+            <td class="num">265</td>
+            <td><span class="ims-status-pill accept">Updated</span></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td class="mono">14-May 11:08:14</td>
+            <td>Jude Akash</td>
+            <td><span class="log-action-pill system">Opened section</span></td>
+            <td class="mono">9B · CDN</td>
+            <td class="num">970</td>
+            <td><span class="ims-status-pill pending">Saved · 1 warning</span></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td class="mono">14-May 11:14:18</td>
+            <td>Aditya Krishnan</td>
+            <td><span class="log-action-pill edit">Reviewed &amp; flagged</span></td>
+            <td class="mono">7 · B2C Others</td>
+            <td class="num">38 rows</td>
+            <td><span class="ims-status-pill pending">1 warning · PoS mismatch</span></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td class="mono">14-May 11:18:42</td>
+            <td>System</td>
+            <td><span class="log-action-pill system">Generated draft summary</span></td>
+            <td>All sections (snapshot v2)</td>
+            <td class="num">2,85,798</td>
+            <td>Draft v2</td>
+            <td><a class="file-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Draft summary v2</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('gstr1', 'GSTR-1 Outward Supplies', 'Step 3 · Review of Outward Summary');</script>
+
+<script>
+renderStepFlow({
+  anchor: "#step-flow",
+  intro: 'Review the consolidated outward summary across Tables 4-12 of GSTR-1 — B2B, exports, B2C-Large, B2C-Small (state-wise), credit/debit notes, prior-period amendments and advances.',
+  status: {
+  "state": "Completed",
+  "period": "May 2026",
+  "today": "15-May-2026 (Fri)",
+  "due": "GSTR-1 by 11-Jun-2026",
+  "dueClass": "warn",
+  "lastAction": "14-May 16:42 by Jude",
+  "nextMilestone": "Step 4: HSN summary & Docs"
+},
+  currentUpload: {
+  "fileName": "outward-summary-v2.json",
+  "fileType": "json",
+  "size": "8.4 MB",
+  "source": "Auto-derived from Steps 1 + 2",
+  "uploadedBy": "System",
+  "uploadedAt": "14-May 16:42:18",
+  "records": "2,82,418",
+  "pass": "2,82,418",
+  "warn": 0,
+  "fail": 0
+},
+  validations: [
+  {
+    "name": "Table 4 (B2B) tie-out",
+    "state": "pass",
+    "count": "✓ Reconciled"
+  },
+  {
+    "name": "Table 5 (B2C-L) tie-out",
+    "state": "pass",
+    "count": "✓ Reconciled"
+  },
+  {
+    "name": "Table 6 (Exports) consistency",
+    "state": "pass",
+    "count": "✓ Reconciled"
+  },
+  {
+    "name": "Table 7 (B2C-S) state-wise",
+    "state": "pass",
+    "count": "✓ All 36 states"
+  },
+  {
+    "name": "Table 9 amendment tagging",
+    "state": "pass",
+    "count": "✓ 1,847 tagged"
+  },
+  {
+    "name": "Table 11 (Advances) reconciled",
+    "state": "pass",
+    "count": "✓ 27 advances"
+  }
+],
+  history: [
+  {
+    "version": "v2",
+    "label": "After Step 1 re-validation",
+    "source": "Auto roll-up",
+    "by": "Jude Akash",
+    "time": "14-May 16:42:18",
+    "records": "2,82,418",
+    "tag": "current"
+  },
+  {
+    "version": "v1",
+    "label": "Initial roll-up",
+    "source": "Auto roll-up",
+    "by": "System",
+    "time": "14-May 10:08:02",
+    "records": "2,80,794",
+    "tag": "initial"
+  }
+],
+  dispositions: [
+  {
+    "id": "continue",
+    "primary": true,
+    "title": "Continue with v2",
+    "desc": "All 9 tables tie-out cleanly. Proceed to Step 4 (HSN summary & Documents issued)."
+  },
+  {
+    "id": "refresh",
+    "title": "Re-derive from Steps 1+2",
+    "desc": "Force-refresh the roll-up if you suspect Step 1 or Step 2 changed. Creates a new version."
+  },
+  {
+    "id": "amend",
+    "title": "Adjust prior-period amendments",
+    "desc": "Move records between Table 9A/B/C amendment buckets. Useful for fine-tuning before filing."
+  }
+]
+});
+</script>
+</body>
+</html>

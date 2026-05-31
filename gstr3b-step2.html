@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step 2 · Auto IMS Fetch · GSTR-3B · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Step 2 · Auto IMS Fetch</h1>
+        <p class="page-subtitle">Pull all records that your suppliers reported in GSTR-1 / IFF / GSTR-1A — across all IMS sections — for May 2026</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="gstr3b.html" class="btn btn-secondary back-arrow-link">Back to GSTR-3B</a>
+      </div>
+    </div>
+
+    <!-- STEP PROGRESS BAR -->
+
+    <div class="step-progress-bar">
+      <a href="gstr3b-step1.html" class="step-pip done step-pip-link" title="Go to Purchase data"><div class="step-pip-dot"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Purchase data</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr3b-step2.html" class="step-pip current step-pip-link" title="Go to Auto IMS fetch"><div class="step-pip-dot">2</div>Auto IMS fetch</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr3b-step3.html" class="step-pip  step-pip-link" title="Go to Confirm Inward"><div class="step-pip-dot">3</div>Confirm Inward</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr3b-step4.html" class="step-pip  step-pip-link" title="Go to Tax Summary"><div class="step-pip-dot">4</div>Tax Summary</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr3b-step5.html" class="step-pip  step-pip-link" title="Go to ITC &amp; Set-off"><div class="step-pip-dot">5</div>ITC &amp; Set-off</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr3b-step6.html" class="step-pip  step-pip-link" title="Go to Preview &amp; File"><div class="step-pip-dot">6</div>Preview &amp; File</a>
+    </div>
+
+    <!-- STEP FLOW MOUNT (v2.0.10) -->
+    <div id="step-flow"></div>
+
+
+    
+
+    <!-- IMS AUTO-FETCH BANNER -->
+    <div class="card" style="background:linear-gradient(135deg, var(--ey-black-deep), #1F1F2C);color:#fff;border:none;padding:22px 26px;margin-bottom:20px;">
+      <div style="display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;">
+        <div style="width:52px;height:52px;border-radius:14px;background:var(--ey-yellow);color:var(--ey-black-deep);display:grid;place-items:center;">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div>
+          <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ey-yellow);font-weight:600;margin-bottom:4px">GSTN IMS · Auto-fetch successful</div>
+          <div style="font-size:20px;font-weight:700;color:#fff;">1,82,891 records pulled from IMS for May 2026</div>
+          <div style="margin-top:6px;font-size:12.5px;color:rgba(255,255,255,0.78);">Last sync · 14-May-2026 09:48 AM · via ClearTax GSP · Cut-off for action: 14-Jun-2026 (deemed-Accept thereafter)</div>
+        </div>
+        <div style="text-align:right;">
+          <button class="btn cta-large" style="background:var(--ey-yellow);color:var(--ey-black-deep);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            Re-sync now
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- IMS SECTION TILES (6 sections per GSTN IMS structure) -->
+    <div style="margin:24px 0 12px;">
+      <div style="font-size:15px;font-weight:700;color:var(--text);letter-spacing:-0.005em;">IMS records by section</div>
+      <div style="font-size:12.5px;color:var(--text-muted);margin-top:3px;">Six IMS sections per GSTN advisory · all currently in <span class="mono">No-action</span> status · they flow into GSTR-2B based on your Step 3 decisions</div>
+    </div>
+
+    <div class="source-tile-grid">
+
+      <a class="source-tile complete" href="ims-detail-b2b-inv.html" style="text-decoration:none;color:inherit;">
+        <div class="source-tile-head">
+          <div>
+            <div class="source-tile-title">B2B Invoices</div>
+            <div class="source-tile-sub">Regular invoices reported by your suppliers in their GSTR-1 Table 4A/4B</div>
+          </div>
+          <span class="source-tile-method auto">AUTO · IMS</span>
+        </div>
+        <div class="source-tile-count">1,67,418</div>
+        <div class="source-tile-status-line">
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="var(--text-muted)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          All in No-action · cut-off 14-Jun-2026
+        </div>
+      </a>
+
+      <a class="source-tile complete" href="ims-detail-b2b-cdn.html" style="text-decoration:none;color:inherit;">
+        <div class="source-tile-head">
+          <div>
+            <div class="source-tile-title">B2B Debit / Credit Notes</div>
+            <div class="source-tile-sub">Issued by suppliers · Table 9B of GSTR-1</div>
+          </div>
+          <span class="source-tile-method auto">AUTO · IMS</span>
+        </div>
+        <div class="source-tile-count">10,612</div>
+        <div class="source-tile-status-line">8,428 CN · 2,184 DN · No-action</div>
+      </a>
+
+      <a class="source-tile complete" href="ims-detail-b2b-amd.html" style="text-decoration:none;color:inherit;">
+        <div class="source-tile-head">
+          <div>
+            <div class="source-tile-title">B2B Amendments</div>
+            <div class="source-tile-sub">Table 9A · prior-period amendments</div>
+          </div>
+          <span class="source-tile-method auto">AUTO · IMS</span>
+        </div>
+        <div class="source-tile-count">2,841</div>
+        <div class="source-tile-status-line">42 are downward amendments — review carefully</div>
+      </a>
+
+      <a class="source-tile complete" href="ims-detail-b2b-cdn-amd.html" style="text-decoration:none;color:inherit;">
+        <div class="source-tile-head">
+          <div>
+            <div class="source-tile-title">B2B CDN Amendments</div>
+            <div class="source-tile-sub">Table 9C · CDN amendments</div>
+          </div>
+          <span class="source-tile-method auto">AUTO · IMS</span>
+        </div>
+        <div class="source-tile-count">847</div>
+        <div class="source-tile-status-line">All in No-action</div>
+      </a>
+
+      <a class="source-tile complete" href="ims-detail-eco.html" style="text-decoration:none;color:inherit;">
+        <div class="source-tile-head">
+          <div>
+            <div class="source-tile-title">ECO supplies · §52</div>
+            <div class="source-tile-sub">Notified e-commerce operators · TCS supplies</div>
+          </div>
+          <span class="source-tile-method auto">AUTO · IMS</span>
+        </div>
+        <div class="source-tile-count">1,047</div>
+        <div class="source-tile-status-line">Via Amazon, Flipkart, Reliance Retail</div>
+      </a>
+
+      <a class="source-tile complete" href="ims-detail-eco-amd.html" style="text-decoration:none;color:inherit;">
+        <div class="source-tile-head">
+          <div>
+            <div class="source-tile-title">ECO Amendments</div>
+            <div class="source-tile-sub">Amendments to earlier ECO supplies</div>
+          </div>
+          <span class="source-tile-method auto">AUTO · IMS</span>
+        </div>
+        <div class="source-tile-count">126</div>
+        <div class="source-tile-status-line">All in No-action</div>
+      </a>
+
+    </div>
+
+    <!-- v2.0.32 — IMS auto-fetch action + reconciliation history -->
+    <div class="run-action-card" style="margin-top:18px;">
+      <div class="run-action-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      </div>
+      <div class="run-action-text">
+        <div class="run-action-title">Re-sync IMS data from GSTN portal</div>
+        <div class="run-action-sub">Pulls latest IMS records from the 6 sections (B2B / CDN / Amendments / ECO / RCM / Imports) &middot; portal data refreshed every 4 hrs &middot; current snapshot: 14-May 18:42:08</div>
+      </div>
+      <button class="run-action-btn" onclick="if(window.showToast)window.showToast('Re-syncing IMS from GSTN portal &middot; ETA 8 sec');">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Re-fetch IMS
+      </button>
+    </div>
+
+    <!-- v2.0.32 — IMS fetch & reconciliation history -->
+    <div class="activity-tracker-card">
+      <div class="activity-tracker-head">
+        <div>
+          <div class="activity-tracker-head-title">IMS fetch &amp; reconciliation history</div>
+          <div class="activity-tracker-head-sub">All IMS portal sync runs with current status &middot; download the IMS payload + reconciliation report</div>
+        </div>
+        <div class="activity-tracker-head-actions">
+          <button class="btn btn-secondary btn-sm">Export log (CSV)</button>
+        </div>
+      </div>
+
+      <table class="data-table grid-lined compact" style="margin-bottom:0;border:none;border-radius:0;">
+        <thead>
+          <tr>
+            <th style="width:120px;">Time</th>
+            <th>Fetch source &amp; payload</th>
+            <th style="width:130px;">Sections</th>
+            <th class="num" style="width:120px;">Records</th>
+            <th style="width:220px;">Status</th>
+            <th style="width:160px;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background:rgba(255,230,0,0.04);">
+            <td class="mono" style="font-size:11.5px;color:var(--text-muted);">15-May 11:24</td>
+            <td>
+              <div style="font-family:var(--font-mono);font-weight:600;font-size:12px;">ims-fetch-v5.json</div>
+              <div style="font-size:10.5px;color:var(--text-muted);margin-top:2px;">GSTN IMS API &middot; auto-triggered (4-hr cron)</div>
+            </td>
+            <td style="font-size:11.5px;color:var(--text-muted);">All 6 sections</td>
+            <td class="num mono" style="font-size:11.5px;">1,82,891</td>
+            <td>
+              <span class="activity-status-pill processing">Fetching 72%</span>
+              <div style="display:flex;align-items:center;gap:6px;margin-top:6px;">
+                <div class="activity-progress-bar" style="flex:1;"><div class="activity-progress-bar-fill" style="width:72%;"></div></div>
+                <span style="font-size:10px;color:var(--text-muted);font-family:var(--font-mono);">ETA 3s</span>
+              </div>
+            </td>
+            <td><button class="row-edit-btn">Cancel</button></td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:11.5px;color:var(--text-muted);">14-May 18:42</td>
+            <td>
+              <div style="font-family:var(--font-mono);font-weight:600;font-size:12px;">ims-fetch-v4.json</div>
+              <div style="font-size:10.5px;color:var(--text-muted);margin-top:2px;">GSTN IMS API &middot; 14.2 MB &middot; auto-trigger</div>
+            </td>
+            <td style="font-size:11.5px;color:var(--text-muted);">All 6 sections</td>
+            <td class="num mono" style="font-size:11.5px;">1,82,891</td>
+            <td><span class="activity-status-pill success">Fetched &amp; reconciled &middot; 1,68,418 matched &middot; 8,418 pending</span></td>
+            <td>
+              <button class="row-edit-btn" style="background:rgba(22,135,54,0.10);color:var(--success);">Download</button>
+              <button class="row-edit-btn">Reco report</button>
+            </td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:11.5px;color:var(--text-muted);">14-May 14:18</td>
+            <td>
+              <div style="font-family:var(--font-mono);font-weight:600;font-size:12px;">ims-fetch-v3.json</div>
+              <div style="font-size:10.5px;color:var(--text-muted);margin-top:2px;">GSTN IMS API &middot; 13.8 MB &middot; user-triggered</div>
+            </td>
+            <td style="font-size:11.5px;color:var(--text-muted);">B2B + CDN only</td>
+            <td class="num mono" style="font-size:11.5px;">1,42,818</td>
+            <td><span class="activity-status-pill partial">Partial fetch &middot; RCM section timed out</span></td>
+            <td>
+              <button class="row-edit-btn">Download</button>
+              <button class="row-edit-btn" style="background:rgba(199,119,0,0.10);color:var(--warning);">Retry</button>
+            </td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:11.5px;color:var(--text-muted);">14-May 10:08</td>
+            <td>
+              <div style="font-family:var(--font-mono);font-weight:600;font-size:12px;">ims-fetch-v2.json</div>
+              <div style="font-size:10.5px;color:var(--text-muted);margin-top:2px;">GSTN IMS API &middot; 12.4 MB &middot; auto-trigger</div>
+            </td>
+            <td style="font-size:11.5px;color:var(--text-muted);">All 6 sections</td>
+            <td class="num mono" style="font-size:11.5px;">1,78,442</td>
+            <td><span class="activity-status-pill success">Fetched &amp; reconciled &middot; 1,64,210 matched</span></td>
+            <td>
+              <button class="row-edit-btn">Download</button>
+              <button class="row-edit-btn">Reco report</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- IMS STATUS BREAKDOWN -->
+    <div style="margin:24px 0 12px;">
+      <div style="font-size:15px;font-weight:700;color:var(--text);letter-spacing:-0.005em;">IMS current status</div>
+      <div style="font-size:12.5px;color:var(--text-muted);margin-top:3px;">Status as of last IMS sync · Step 3 (Confirm Inward Summary) is where you take Accept / Reject / Pending decisions</div>
+    </div>
+
+    <div class="big-stat-grid">
+      <div class="big-stat accent">
+        <div class="big-stat-label">Total IMS records</div>
+        <div class="big-stat-value">1,82,891</div>
+        <div class="big-stat-sub">Combined value · ₹ 62.18 Cr</div>
+      </div>
+      <div class="big-stat">
+        <div class="big-stat-label">No-action (default)</div>
+        <div class="big-stat-value">1,82,891</div>
+        <div class="big-stat-sub">Deemed-Accept on 14-Jun if not actioned</div>
+      </div>
+      <div class="big-stat" style="border-left:3px solid var(--success)">
+        <div class="big-stat-label">Accepted (from prior)</div>
+        <div class="big-stat-value" style="color:var(--success)">0</div>
+        <div class="big-stat-sub">Will flow into GSTR-2B</div>
+      </div>
+      <div class="big-stat" style="border-left:3px solid var(--error)">
+        <div class="big-stat-label">Rejected (from prior)</div>
+        <div class="big-stat-value" style="color:var(--error)">0</div>
+        <div class="big-stat-sub">Excluded from 2B</div>
+      </div>
+    </div>
+
+    <!-- IMS PREVIEW TABLE (representative sample) -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:18px 22px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+        <div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);">IMS records preview · May 2026</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Showing latest 6 of 1,82,891 records · click into Step 3 for full reconciliation against your PR</div>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn btn-secondary btn-sm">All sections ▾</button>
+          <button class="btn btn-secondary btn-sm">Download CSV</button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+<table class="data-table grid-lined compact">
+        <thead>
+          <tr>
+            <th>IMS section</th>
+            <th>Supplier GSTIN</th>
+            <th>Supplier</th>
+            <th>Doc no.</th>
+            <th>Doc date</th>
+            <th>Type</th>
+            <th class="num">Taxable (₹)</th>
+            <th class="num">IGST</th>
+            <th class="num">CGST</th>
+            <th class="num">SGST</th>
+            <th class="num">Cess</th>
+            <th>Action status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>B2B Inv</td>
+            <td class="mono">27AAACR5055K1Z1</td>
+            <td>Reliance Industries</td>
+            <td class="mono">RIL/26/8841</td>
+            <td>12-May-2026</td>
+            <td>INV</td>
+            <td class="num">14,82,000.00</td>
+            <td class="num">—</td>
+            <td class="num">1,33,380.00</td>
+            <td class="num">1,33,380.00</td>
+            <td class="num">—</td>
+            <td><span class="ims-status-pill noaction">No-action</span></td>
+          </tr>
+          <tr>
+            <td>B2B Inv</td>
+            <td class="mono">29AAFCS5638E1ZW</td>
+            <td>Schneider Electric</td>
+            <td class="mono">SE/26/02841</td>
+            <td>12-May-2026</td>
+            <td>INV</td>
+            <td class="num">8,42,118.00</td>
+            <td class="num">1,51,581.24</td>
+            <td class="num">—</td>
+            <td class="num">—</td>
+            <td class="num">—</td>
+            <td><span class="ims-status-pill noaction">No-action</span></td>
+          </tr>
+          <tr>
+            <td>B2B CN</td>
+            <td class="mono">06AAACG2115R1ZP</td>
+            <td>Genpact India</td>
+            <td class="mono">GEN/CN/26/0247</td>
+            <td>13-May-2026</td>
+            <td>CN</td>
+            <td class="num">2,84,000.00</td>
+            <td class="num">51,120.00</td>
+            <td class="num">—</td>
+            <td class="num">—</td>
+            <td class="num">—</td>
+            <td><span class="ims-status-pill noaction">No-action</span></td>
+          </tr>
+          <tr>
+            <td>B2B Inv</td>
+            <td class="mono">29AABCI9912A1ZW</td>
+            <td>Infosys Ltd</td>
+            <td class="mono">INF/26/12841</td>
+            <td>13-May-2026</td>
+            <td>INV</td>
+            <td class="num">18,42,000.00</td>
+            <td class="num">3,31,560.00</td>
+            <td class="num">—</td>
+            <td class="num">—</td>
+            <td class="num">—</td>
+            <td><span class="ims-status-pill noaction">No-action</span></td>
+          </tr>
+          <tr>
+            <td>B2B Amd</td>
+            <td class="mono">27AAACB5305H1Z6</td>
+            <td>Bharat Petroleum</td>
+            <td class="mono">BPC/26/00841 (Apr)</td>
+            <td>05-Apr-2026</td>
+            <td>INV-A</td>
+            <td class="num">42,18,000.00</td>
+            <td class="num">—</td>
+            <td class="num">3,79,620.00</td>
+            <td class="num">3,79,620.00</td>
+            <td class="num">—</td>
+            <td><span class="ims-status-pill noaction">No-action</span></td>
+          </tr>
+          <tr>
+            <td>ECO</td>
+            <td class="mono">29AAACA8689Q1ZB</td>
+            <td>Amazon Seller Svcs</td>
+            <td class="mono">ASN-26-118427</td>
+            <td>14-May-2026</td>
+            <td>INV</td>
+            <td class="num">12,841.00</td>
+            <td class="num">2,311.38</td>
+            <td class="num">—</td>
+            <td class="num">—</td>
+            <td class="num">—</td>
+            <td><span class="ims-status-pill noaction">No-action</span></td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+
+      <div class="pagination">
+        <span style="font-size:12px;color:var(--text-muted);">Showing 1–6 of 1,82,891 IMS records</span>
+        <div class="flex gap-1">
+          <button class="page-btn" disabled>‹ Prev</button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn">…</button>
+          <button class="page-btn">30,482</button>
+          <button class="page-btn">Next ›</button>
+        </div>
+      </div>
+    </div>
+
+    
+
+    <!-- ACTION BAR -->
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">IMS data fetched · ready for reconciliation</div>
+        <div class="action-bar-status">1,82,891 records · 6 sections · no actions taken yet (Step 3 is where you Accept / Reject / Pending)</div>
+      </div>
+      <div class="action-bar-actions">
+        <a href="gstr3b-step1.html" class="btn btn-secondary cta-large back-arrow-link">Step 1</a>
+        <button class="btn btn-secondary cta-large">Save &amp; close</button>
+        <a href="gstr3b-step3.html" class="btn btn-primary cta-xlarge">Mark complete · Next: Confirm Inward Summary →</a>
+      </div>
+    </div>
+
+</main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('gstr3b', 'GSTR-3B Inward', 'Step 2 · Auto IMS Fetch');</script>
+
+<script>
+renderStepFlow({
+  anchor: "#step-flow",
+  intro: 'Auto-pull all records suppliers have reported in their GSTR-1/IFF/GSTR-1A across 6 IMS sections: B2B Inv, B2B CDN, B2B Amd, B2B CDN-Amd, ECO, ECO-Amd. Records arrive in No-action until you decide.',
+  status: {
+  "state": "Completed",
+  "period": "May 2026",
+  "today": "15-May-2026 (Fri)",
+  "due": "GSTR-3B by 20-Jun-2026",
+  "dueClass": "",
+  "lastAction": "14-May 09:48 by Jude",
+  "nextMilestone": "Step 3: Confirm Inward Summary"
+},
+  currentUpload: {
+  "fileName": "ims-fetch-v4.json",
+  "fileType": "json",
+  "size": "14.2 MB",
+  "source": "GSTN IMS portal pull via ClearTax GSP",
+  "uploadedBy": "Jude Akash",
+  "uploadedAt": "14-May 09:48:02",
+  "records": "1,82,891",
+  "pass": "1,82,891",
+  "warn": 0,
+  "fail": 0
+},
+  validations: [
+  {
+    "name": "All 6 IMS sections pulled",
+    "state": "pass",
+    "count": "✓ B2B/CDN/Amd/CDN-Amd/ECO/ECO-Amd"
+  },
+  {
+    "name": "Action status = No-action",
+    "state": "pass",
+    "count": "✓ All 1,82,891"
+  },
+  {
+    "name": "Cut-off date captured",
+    "state": "pass",
+    "count": "✓ 14-Jun-2026"
+  },
+  {
+    "name": "Supplier GSTIN unique",
+    "state": "pass",
+    "count": "✓ 218 distinct"
+  },
+  {
+    "name": "Delta vs prior fetch",
+    "state": "pass",
+    "count": "✓ +96 new"
+  }
+],
+  history: [
+  {
+    "version": "v4",
+    "label": "Final sync • 96 new records",
+    "source": "GSTN IMS manual sync",
+    "by": "Jude Akash",
+    "time": "14-May 09:48:02",
+    "records": "1,82,891",
+    "tag": "current"
+  },
+  {
+    "version": "v3",
+    "label": "Scheduled overnight sync",
+    "source": "GSTN IMS auto",
+    "by": "System",
+    "time": "14-May 03:48:02",
+    "records": "1,82,795",
+    "tag": "resync"
+  },
+  {
+    "version": "v2",
+    "label": "Manual re-sync • 418 new",
+    "source": "GSTN IMS manual sync",
+    "by": "Jude Akash",
+    "time": "13-May 18:08:42",
+    "records": "1,82,377",
+    "tag": "resync"
+  },
+  {
+    "version": "v1",
+    "label": "Initial pull from IMS",
+    "source": "GSTN IMS initial",
+    "by": "System",
+    "time": "13-May 09:48:02",
+    "records": "1,81,418",
+    "tag": "initial"
+  }
+],
+  dispositions: [
+  {
+    "id": "continue",
+    "primary": true,
+    "title": "Continue with v4",
+    "desc": "Proceed to Step 3 (Confirm Inward Summary) — match these 1,82,891 IMS records against your Purchase Register."
+  },
+  {
+    "id": "refresh",
+    "title": "Re-sync from GSTN IMS",
+    "desc": "Pull any new IMS records suppliers may have filed since 09:48. Last incremental delta was 96 records."
+  },
+  {
+    "id": "skip",
+    "title": "Trust prior pull",
+    "desc": "Skip the re-sync. Move to Step 3 with v4. Re-sync available later if you want a final check before filing."
+  }
+]
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Export Invoices &middot; goods &amp; services · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">
+          <a href="gstr1-step3.html" style="color:var(--text-muted);text-decoration:none;">&larr; Step 3 (Outward summary)</a> &middot; Detail view
+        </div>
+        <h1 class="page-title">6A &middot; Export Invoices &middot; goods &amp; services</h1>
+        <p class="page-subtitle">Zero-rated supplies under LUT or with IGST refund &middot; reported in foreign currency value</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="gstr1-step3.html" class="btn btn-secondary">&larr; Back to Step 3 (Outward summary)</a>
+      </div>
+    </div>
+
+    <div class="big-stat-grid" style="margin-bottom:20px;">
+      <div class="big-stat" style="border-left:3px solid var(--success);"><div class="big-stat-label">Export invoices</div><div class="big-stat-value">1,247</div><div class="big-stat-sub">Goods + services</div></div>
+      <div class="big-stat"><div class="big-stat-label">FoB value</div><div class="big-stat-value">&#8377; 18.7 Cr</div><div class="big-stat-sub">Converted at invoice-date FX</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--success);"><div class="big-stat-label">Under LUT</div><div class="big-stat-value">1,108</div><div class="big-stat-sub">89% &middot; no IGST paid</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--info);"><div class="big-stat-label">With IGST paid</div><div class="big-stat-value">139</div><div class="big-stat-sub">11% &middot; IGST refund claim</div></div>
+    </div>
+
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">
+        <div style="min-width:0;flex:1 1 240px;">
+          <div style="font-size:13.5px;font-weight:700;color:var(--text);line-height:1.4;">Export invoices &middot; 8 of 1,247 records</div>
+          <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">Shipping bill / port code captured where applicable &middot; LUT no. ref&apos;d on each row</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="btn btn-secondary btn-sm">Download CSV</button>
+          <button class="btn btn-secondary btn-sm">Filter</button>
+          <button class="btn btn-secondary btn-sm">Edit rows</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table grid-lined compact">
+          <thead><tr><th class="mono">Inv no.</th><th>Inv date</th><th>Type</th><th>Country</th><th>Port</th><th class="mono">Ship bill no.</th><th class="num">FoB (₹)</th><th class="num">IGST paid (₹)</th><th>Status</th></tr></thead>
+          <tbody><tr><td class="mono">TS/26/EXP/0418</td><td>12-May</td><td>Goods</td><td>USA</td><td>INMUN</td><td>3147826</td><td class="num">42,18,000</td><td class="num">— LUT</td><td><span class="action-status matched">Filed</span></td></tr><tr><td class="mono">TS/26/EXP/0419</td><td>12-May</td><td>Goods</td><td>Singapore</td><td>INMAA</td><td>3147912</td><td class="num">18,42,000</td><td class="num">— LUT</td><td><span class="action-status matched">Filed</span></td></tr><tr><td class="mono">TS/26/EXP/0420</td><td>13-May</td><td>Services</td><td>UK</td><td>—</td><td>—</td><td class="num">2,84,000</td><td class="num">51,120</td><td><span class="action-status matched">IGST paid</span></td></tr><tr><td class="mono">TS/26/EXP/0421</td><td>13-May</td><td>Goods</td><td>Germany</td><td>INPPV</td><td>3148024</td><td class="num">38,40,000</td><td class="num">— LUT</td><td><span class="action-status matched">Filed</span></td></tr><tr><td class="mono">TS/26/EXP/0422</td><td>13-May</td><td>Goods</td><td>UAE</td><td>INNHV</td><td>3148201</td><td class="num">22,18,000</td><td class="num">— LUT</td><td><span class="action-status matched">Filed</span></td></tr><tr><td class="mono">TS/26/EXP/0423</td><td>14-May</td><td>Services</td><td>Japan</td><td>—</td><td>—</td><td class="num">5,42,000</td><td class="num">97,560</td><td><span class="action-status matched">IGST paid</span></td></tr><tr><td class="mono">TS/26/EXP/0424</td><td>14-May</td><td>Goods</td><td>Vietnam</td><td>INMUN</td><td>3148428</td><td class="num">48,40,000</td><td class="num">— LUT</td><td><span class="action-status matched">Filed</span></td></tr><tr><td class="mono">TS/26/EXP/0425</td><td>14-May</td><td>Goods</td><td>Australia</td><td>INKND</td><td>3148516</td><td class="num">14,82,000</td><td class="num">— LUT</td><td><span class="action-status pending">Warn &middot; SB pending</span></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">1,247 export invoices &middot; FoB &#8377; 18.7 Cr &middot; refund claim &#8377; 2.16 Cr</div>
+        <div class="action-bar-status">12 shipping bills pending in ICEGATE &middot; LUT 26-27/MH/4218 valid till 31-Mar-2027</div>
+      </div>
+      <div class="action-bar-actions">
+        <a href="gstr1-step3.html" class="btn btn-secondary cta-large">&larr; Back to Step 3 (Outward summary)</a>
+        <button class="btn btn-secondary cta-large">Save changes</button>
+        <a href="gstr1-step3.html" class="btn btn-primary cta-large">Done &middot; return to Step 3 (Outward summary) &rarr;</a>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('gstr1', 'GSTR-1 &middot; Step 3 detail', '6A detail');</script>
+</body>
+</html>

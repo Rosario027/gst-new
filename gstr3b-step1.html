@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step 1 · Validate Purchase Data · GSTR-3B · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Step 1 · Validate Purchase Data</h1>
+        <p class="page-subtitle">GSTR-3B Inward Preparation · May 2026 · GSTIN 27AABCT3518Q1ZV (Tata Steel · Maharashtra)</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="gstr3b.html" class="btn btn-secondary back-arrow-link">Back to GSTR-3B</a>
+      </div>
+    </div>
+
+    <!-- STEP PROGRESS BAR -->
+
+    <div class="step-progress-bar">
+      <a href="gstr3b-step1.html" class="step-pip current step-pip-link" title="Go to Purchase data"><div class="step-pip-dot">1</div>Purchase data</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr3b-step2.html" class="step-pip  step-pip-link" title="Go to Auto IMS fetch"><div class="step-pip-dot">2</div>Auto IMS fetch</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr3b-step3.html" class="step-pip  step-pip-link" title="Go to Confirm Inward"><div class="step-pip-dot">3</div>Confirm Inward</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr3b-step4.html" class="step-pip  step-pip-link" title="Go to Tax Summary"><div class="step-pip-dot">4</div>Tax Summary</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr3b-step5.html" class="step-pip  step-pip-link" title="Go to ITC &amp; Set-off"><div class="step-pip-dot">5</div>ITC &amp; Set-off</a>
+      <div class="step-pip-connector"></div>
+      <a href="gstr3b-step6.html" class="step-pip  step-pip-link" title="Go to Preview &amp; File"><div class="step-pip-dot">6</div>Preview &amp; File</a>
+    </div>
+
+    <!-- STEP FLOW MOUNT (v2.0.10) -->
+    <div id="step-flow"></div>
+
+    <!-- PR UPLOAD DROP ZONE (v2.0.14) -->
+    <div style="margin:8px 0 10px;">
+      <div style="font-size:15px;font-weight:700;color:var(--text);letter-spacing:-0.005em;">Ingest Purchase Register · pick a source</div>
+      <div style="font-size:12.5px;color:var(--text-muted);margin-top:3px;">Upload a PR file, sync from your ERP, or open the manual entry form. All three feed the same record set &middot; switch any time.</div>
+    </div>
+
+    <div class="drop-zone-single has-file">
+      <div class="drop-zone-single-head">
+        <div>
+          <div class="drop-zone-title">Purchase Register · 1,84,217 records loaded</div>
+          <div class="drop-zone-sub">Currently sourced from Excel + SAP MM &middot; uploaded by Jude Akash &middot; 14-May 09:48</div>
+        </div>
+        <span class="drop-zone-source-pill auto">Loaded</span>
+      </div>
+
+      <div class="drop-zone-file" style="margin-bottom:14px;">
+        <div class="drop-zone-file-icon" style="background:rgba(199,119,0,0.15);color:var(--warning);">XLSX</div>
+        <div style="min-width:0;">
+          <div class="drop-zone-file-name">purchase-register-v3.xlsx</div>
+          <div class="drop-zone-file-meta">9.8 MB &middot; B2B + CDN + RCM + Imports &middot; 1,84,217 rows &middot; 14-May 09:48:02</div>
+        </div>
+        <button class="row-edit-btn" title="Download current PR">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          DL
+        </button>
+      </div>
+
+      <div class="drop-zone-single-content">
+        <div class="drop-zone-area">
+          <div class="drop-zone-area-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <div class="drop-zone-area-cta">Drop new PR file or click to browse</div>
+          <div class="drop-zone-area-formats">.xlsx .csv .json &middot; up to 100 MB &middot; DigiGST PR template</div>
+        </div>
+
+        <div class="drop-zone-divider">or</div>
+
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <button class="btn btn-secondary cta-large" style="justify-content:flex-start;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            Re-sync from SAP MM
+          </button>
+          <button class="btn btn-secondary cta-large" style="justify-content:flex-start;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+            Open manual entry form
+          </button>
+          <button class="btn btn-secondary cta-large" style="justify-content:flex-start;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download blank PR template
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    
+
+    
+
+    
+
+      <!-- v2.0.31 — Run Validate card (PR-specific validations) -->
+      <div class="run-action-card" style="margin-top:18px;">
+        <div class="run-action-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="run-action-text">
+          <div class="run-action-title">Run validation on purchase register</div>
+          <div class="run-action-sub">Applies 8 PR-specific checks: Supplier GSTIN format &middot; HSN code presence &middot; ITC eligibility (Sec 17(5)) &middot; RCM applicability &middot; 2A cross-ref &middot; doc date sanity &middot; line-item totals &middot; duplicate detection. Estimated 14 sec for 1,84,217 records.</div>
+        </div>
+        <button class="run-action-btn" onclick="if(window.showToast) window.showToast('PR validation engine started · processing 1,84,217 records · ETA 14 sec');">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Run validate
+        </button>
+      </div>
+
+      <!-- v2.0.31 — Upload & validation history (clean table layout) -->
+      <div class="activity-tracker-card">
+        <div class="activity-tracker-head">
+          <div>
+            <div class="activity-tracker-head-title">Upload &amp; validation history</div>
+            <div class="activity-tracker-head-sub">All PR uploads with current status &middot; download the validation-processed file (validated rows + failed rows in one workbook)</div>
+          </div>
+          <div class="activity-tracker-head-actions">
+            <button class="btn btn-secondary btn-sm">Export log (CSV)</button>
+          </div>
+        </div>
+
+        <table class="data-table grid-lined compact" style="margin-bottom:0;border:none;border-radius:0;">
+          <thead>
+            <tr>
+              <th style="width:120px;">Time</th>
+              <th>File</th>
+              <th style="width:140px;">Source</th>
+              <th class="num" style="width:100px;">Records</th>
+              <th style="width:220px;">Status</th>
+              <th style="width:140px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background:rgba(255,230,0,0.04);">
+              <td class="mono" style="font-size:11.5px;color:var(--text-muted);">15-May 11:24</td>
+              <td>
+                <div style="font-family:var(--font-mono);font-weight:600;font-size:12px;">purchase-register-v4.xlsx</div>
+                <div style="font-size:10.5px;color:var(--text-muted);margin-top:2px;">10.2 MB &middot; uploaded by Jude Akash</div>
+              </td>
+              <td style="font-size:11.5px;color:var(--text-muted);">Manual upload</td>
+              <td class="num mono" style="font-size:11.5px;">1,84,217</td>
+              <td>
+                <span class="activity-status-pill processing">Validating 38%</span>
+                <div style="display:flex;align-items:center;gap:6px;margin-top:6px;">
+                  <div class="activity-progress-bar" style="flex:1;"><div class="activity-progress-bar-fill" style="width:38%;"></div></div>
+                  <span style="font-size:10px;color:var(--text-muted);font-family:var(--font-mono);">ETA 8s</span>
+                </div>
+              </td>
+              <td><button class="row-edit-btn">Cancel</button></td>
+            </tr>
+            <tr>
+              <td class="mono" style="font-size:11.5px;color:var(--text-muted);">14-May 09:48</td>
+              <td>
+                <div style="font-family:var(--font-mono);font-weight:600;font-size:12px;">purchase-register-v3.xlsx</div>
+                <div style="font-size:10.5px;color:var(--text-muted);margin-top:2px;">9.8 MB &middot; uploaded by Jude Akash</div>
+              </td>
+              <td style="font-size:11.5px;color:var(--text-muted);">SAP MM connector</td>
+              <td class="num mono" style="font-size:11.5px;">1,82,418</td>
+              <td><span class="activity-status-pill success">Validated &middot; 1,82,401 OK &middot; 17 errors</span></td>
+              <td><button class="row-edit-btn" style="background:rgba(22,135,54,0.10);color:var(--success);">Download</button></td>
+            </tr>
+            <tr>
+              <td class="mono" style="font-size:11.5px;color:var(--text-muted);">13-May 14:18</td>
+              <td>
+                <div style="font-family:var(--font-mono);font-weight:600;font-size:12px;">purchase-register-v2.csv</div>
+                <div style="font-size:10.5px;color:var(--text-muted);margin-top:2px;">7.4 MB &middot; replaced by next upload</div>
+              </td>
+              <td style="font-size:11.5px;color:var(--text-muted);">Manual upload</td>
+              <td class="num mono" style="font-size:11.5px;">1,42,818</td>
+              <td><span class="activity-status-pill partial">Validated with warnings &middot; 1,082 warn</span></td>
+              <td><button class="row-edit-btn">Download</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- v2.0.31 — Preview of validation check (PR rows) -->
+      <div class="card" style="padding:0;margin-bottom:20px;overflow:hidden;">
+        <div style="padding:14px 22px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
+          <div>
+            <div style="font-size:13.5px;font-weight:700;color:var(--text);">Preview of validation check &middot; purchase-register-v4.xlsx</div>
+            <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">First 6 rows from current upload &middot; per-row validation status &middot; download full result via Activity history</div>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button class="btn btn-secondary btn-sm">Open full preview</button>
+            <button class="btn btn-secondary btn-sm">Download Excel</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table grid-lined compact" style="margin-bottom:0;border:none;border-radius:0;">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Inv no.</th>
+                <th>Date</th>
+                <th>Supplier GSTIN</th>
+                <th>Supplier</th>
+                <th class="num">Taxable (&#8377;)</th>
+                <th class="num">IGST (&#8377;)</th>
+                <th>Sec 17(5)</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td class="mono">RIL/26/2841</td><td>10-May</td><td class="mono">27AAACR5055K1Z1</td><td>Reliance Industries</td><td class="num">42,18,000</td><td class="num">7,59,240</td><td>Eligible</td><td><span class="action-status matched">Pass</span></td></tr>
+              <tr><td>2</td><td class="mono">TS/26/02418</td><td>12-May</td><td class="mono">27AABCT9912R1ZP</td><td>Tata Stationers</td><td class="num">1,28,400</td><td class="num">23,112</td><td>Eligible</td><td><span class="action-status matched">Pass</span></td></tr>
+              <tr><td>3</td><td class="mono">LT/26/04218</td><td>12-May</td><td class="mono">06AAACL3711J1ZB</td><td>L&amp;T Construction</td><td class="num">42,18,000</td><td class="num">7,59,240</td><td>Eligible</td><td><span class="action-status matched">Pass</span></td></tr>
+              <tr style="background:rgba(199,119,0,0.04);"><td>4</td><td class="mono">FT/26/00128</td><td>12-May</td><td class="mono">29AABCF7128Q1ZM</td><td>Food Treats Pvt Ltd</td><td class="num">8,42,000</td><td class="num">1,51,560</td><td style="color:var(--error);">Blocked &middot; 17(5)(b)(i)</td><td><span class="action-status pending">Warning</span></td></tr>
+              <tr style="background:rgba(200,16,46,0.04);"><td>5</td><td class="mono">XX/26/00284</td><td>13-May</td><td class="mono">99INVALID0000XX</td><td>(GSTIN format invalid)</td><td class="num">2,18,400</td><td class="num">39,312</td><td>&mdash;</td><td><span class="action-status reject">Error</span></td></tr>
+              <tr><td>6</td><td class="mono">MS/26/02841</td><td>13-May</td><td class="mono">29AABCM4218R1ZK</td><td>Maruti Suzuki</td><td class="num">8,42,000</td><td class="num">1,51,560</td><td>Eligible</td><td><span class="action-status matched">Pass</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- v2.0.33 — Download validation summary actions -->
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 18px;margin-bottom:18px;background:linear-gradient(135deg,#F0F7FF,var(--surface));border:1px solid var(--info);border-radius:var(--radius);">
+        <div style="min-width:0;">
+          <div style="font-size:13px;font-weight:700;color:var(--text);">Validation summary &middot; PR ready for IMS match</div>
+          <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px;">1,84,217 records &middot; 1,83,118 passed &middot; 1,082 warnings &middot; 17 errors &middot; download as whole consolidated workbook or as separate sheets per status</div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-secondary btn-sm" onclick="if(window.showToast)window.showToast('Downloading consolidated validation summary (Excel) - all 1,84,217 records with status column');">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" stroke-width="2.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download as whole (1 sheet)
+          </button>
+          <button class="btn btn-secondary btn-sm" onclick="if(window.showToast)window.showToast('Downloading validation breakup (Excel) - 3 sheets: Passed / Warnings / Errors');" style="background:var(--info);color:#fff;border-color:var(--info);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" stroke-width="2.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download as breakup (3 sheets)
+          </button>
+        </div>
+      </div>
+
+      <div class="big-stat-grid">
+        <div class="big-stat">
+          <div class="big-stat-label">Total inward records</div>
+          <div class="big-stat-value">1,84,217</div>
+          <div class="big-stat-sub">B2B + CDN + RCM + Imports · 01–14 May</div>
+        </div>
+        <div class="big-stat" style="border-left:3px solid var(--success)">
+          <div class="big-stat-label">Validations passed</div>
+          <div class="big-stat-value" style="color:var(--success)">1,83,118</div>
+          <div class="big-stat-sub">99.4% clean — ready for IMS match</div>
+        </div>
+        <div class="big-stat" style="border-left:3px solid var(--warning)">
+          <div class="big-stat-label">Warnings</div>
+          <div class="big-stat-value" style="color:var(--warning)">1,082</div>
+          <div class="big-stat-sub">Filing allowed · Review recommended</div>
+        </div>
+        <div class="big-stat" style="border-left:3px solid var(--error)">
+          <div class="big-stat-label">Errors (blocking)</div>
+          <div class="big-stat-value" style="color:var(--error)">17</div>
+          <div class="big-stat-sub">Fix before Step 2 (IMS match)</div>
+        </div>
+      </div>
+
+    
+    <!-- DOC TYPE BREAKDOWN -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:18px 22px;border-bottom:1px solid var(--border);">
+        <div style="font-size:14px;font-weight:700;color:var(--text);">Breakdown by inward document type</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Counts across 1–14 May 2026 · ready for IMS reconciliation in Step 2</div>
+      </div>
+      <div class="table-wrap">
+<table class="data-table grid-lined">
+        <thead>
+          <tr>
+            <th>Document type</th>
+            <th class="num">Count</th>
+            <th class="num">Taxable value (₹)</th>
+            <th class="num">IGST (₹)</th>
+            <th class="num">CGST (₹)</th>
+            <th class="num">SGST / UTGST (₹)</th>
+            <th class="num">Cess (₹)</th>
+            <th>ITC route</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>B2B Invoices · regular</td>
+            <td class="num">1,67,841</td>
+            <td class="num">38,42,18,400.00</td>
+            <td class="num">3,84,21,840.00</td>
+            <td class="num">1,72,89,828.00</td>
+            <td class="num">1,72,89,828.00</td>
+            <td class="num">—</td>
+            <td>Via IMS</td>
+          </tr>
+          <tr>
+            <td>Debit notes received</td>
+            <td class="num">2,184</td>
+            <td class="num">42,18,400.00</td>
+            <td class="num">4,21,840.00</td>
+            <td class="num">1,89,828.00</td>
+            <td class="num">1,89,828.00</td>
+            <td class="num">—</td>
+            <td>Via IMS · adds ITC</td>
+          </tr>
+          <tr>
+            <td>RCM · notified services</td>
+            <td class="num">3,418</td>
+            <td class="num">2,84,12,000.00</td>
+            <td class="num">28,41,200.00</td>
+            <td class="num">12,78,540.00</td>
+            <td class="num">12,78,540.00</td>
+            <td class="num">—</td>
+            <td>Self-invoice · direct</td>
+          </tr>
+          <tr>
+            <td>RCM · unregistered supplier</td>
+            <td class="num">847</td>
+            <td class="num">28,41,200.00</td>
+            <td class="num">2,84,120.00</td>
+            <td class="num">1,27,854.00</td>
+            <td class="num">1,27,854.00</td>
+            <td class="num">—</td>
+            <td>Self-invoice · direct</td>
+          </tr>
+          <tr>
+            <td>Imports of goods · Bill of Entry</td>
+            <td class="num">1,247</td>
+            <td class="num">14,28,90,000.00</td>
+            <td class="num">2,57,20,200.00</td>
+            <td class="num">—</td>
+            <td class="num">—</td>
+            <td class="num">42,18,400.00</td>
+            <td>BoE via ICEGATE · direct</td>
+          </tr>
+          <tr>
+            <td>Imports of services</td>
+            <td class="num">253</td>
+            <td class="num">2,18,42,000.00</td>
+            <td class="num">39,31,560.00</td>
+            <td class="num">—</td>
+            <td class="num">—</td>
+            <td class="num">—</td>
+            <td>Self-invoice · direct</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr style="font-weight:700;background:var(--bg);">
+            <td>Total · all inward</td>
+            <td class="num">1,75,790</td>
+            <td class="num">58,44,22,000.00</td>
+            <td class="num">7,16,20,760.00</td>
+            <td class="num">1,88,86,050.00</td>
+            <td class="num">1,88,86,050.00</td>
+            <td class="num">42,18,400.00</td>
+            <td>—</td>
+          </tr>
+        </tfoot>
+      </table>
+</div>
+    </div>
+
+    
+
+    <!-- STICKY ACTION BAR -->
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">Ready to proceed</div>
+        <div class="action-bar-status">1,84,217 records · 17 errors must be resolved before Step 2</div>
+      </div>
+      <div class="action-bar-actions">
+        <button class="btn btn-secondary cta-large">Skip validation</button>
+        <button class="btn btn-secondary cta-large">Save &amp; close</button>
+        <a href="gstr3b-step2.html" class="btn btn-primary cta-xlarge">Mark complete · Next: Auto IMS fetch →</a>
+      </div>
+    </div>
+
+</main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('gstr3b', 'GSTR-3B Inward', 'Step 1 · Validate Purchase Data');</script>
+
+<script>
+renderStepFlow({
+  anchor: "#step-flow",
+  intro: 'Ingest your inward supply data — purchase invoices received, debit/credit notes received, reverse-charge inward supplies, imports of goods (via Bill of Entry) and services. Run optional validations.',
+  status: {
+  "state": "In progress",
+  "period": "May 2026",
+  "today": "15-May-2026 (Fri)",
+  "due": "GSTR-3B by 20-Jun-2026",
+  "dueClass": "",
+  "lastAction": "14-May 09:48 by System",
+  "nextMilestone": "Step 2: Auto IMS fetch"
+},
+  currentUpload: {
+  "fileName": "purchase-register-v3.xlsx",
+  "fileType": "xlsx",
+  "size": "9.8 MB",
+  "source": "Excel upload + SAP MM ERP + manual self-invoices",
+  "uploadedBy": "System (auto-snapshot)",
+  "uploadedAt": "14-May 09:48:02",
+  "records": "1,84,217",
+  "pass": "1,83,118",
+  "warn": "1,082",
+  "fail": 17
+},
+  validations: [
+  {
+    "name": "Supplier GSTIN format",
+    "state": "pass",
+    "count": "✓ 1,84,217"
+  },
+  {
+    "name": "Place-of-supply consistency",
+    "state": "warn",
+    "count": "⚠ 384"
+  },
+  {
+    "name": "Tax arithmetic (rate × taxable)",
+    "state": "warn",
+    "count": "⚠ 17 fail"
+  },
+  {
+    "name": "RCM tagging",
+    "state": "warn",
+    "count": "⚠ 612"
+  },
+  {
+    "name": "Invoice number rules",
+    "state": "pass",
+    "count": "✓ 1,84,131"
+  },
+  {
+    "name": "ITC eligibility flag",
+    "state": "pass",
+    "count": "✓ 1,82,109"
+  }
+],
+  history: [
+  {
+    "version": "v3",
+    "label": "Final PR snapshot — ready for IMS match",
+    "source": "System snapshot",
+    "by": "System",
+    "time": "14-May 09:48:02",
+    "records": "1,84,217",
+    "tag": "current"
+  },
+  {
+    "version": "v2",
+    "label": "Manual entry — RCM imports of services",
+    "source": "Manual override",
+    "by": "Arjun Mehra",
+    "time": "13-May 16:42:08",
+    "records": "+253 added",
+    "tag": "override"
+  },
+  {
+    "version": "v1",
+    "label": "Initial Excel upload from ERP extract",
+    "source": "Excel upload",
+    "by": "Jude Akash",
+    "time": "12-May 09:42:18",
+    "records": "1,83,964",
+    "tag": "initial"
+  }
+],
+  dispositions: [
+  {
+    "id": "continue",
+    "primary": true,
+    "title": "Continue with v3",
+    "desc": "Proceed to Step 2 (Auto IMS fetch). 17 errors must be resolved before move-on; 1,082 warnings allowed."
+  },
+  {
+    "id": "refresh",
+    "title": "Re-sync from SAP MM",
+    "desc": "Pull latest purchase posts. Useful if AP team posted invoices after 09:48 today."
+  },
+  {
+    "id": "amend",
+    "title": "Amend prior-period purchases",
+    "desc": "Add late vendor invoices for April 2026 or earlier. They'll be tagged for prior-period ITC reclaim."
+  },
+  {
+    "id": "replace",
+    "title": "Replace upload entirely",
+    "desc": "Discard v3 and upload a fresh PR Excel. v1–v3 stay in history for rollback."
+  },
+  {
+    "id": "manual",
+    "title": "Fix 17 error rows manually",
+    "desc": "Open the error report (Excel) and fix the tax arithmetic rows inline. Recommended over a full re-upload."
+  },
+  {
+    "id": "skip",
+    "title": "Skip validation re-run",
+    "desc": "Move on with the current validation pass. Errors are still flagged — file at your risk."
+  }
+]
+});
+</script>
+</body>
+</html>

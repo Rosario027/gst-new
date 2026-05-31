@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amendments of ECO supplies by operator · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">
+          <a href="gstr3b-step2.html" style="color:var(--text-muted);text-decoration:none;">&larr; Step 2 (Auto IMS fetch)</a> &middot; Detail view
+        </div>
+        <h1 class="page-title">IMS &middot; ECO-Amd &middot; Amendments of ECO supplies by operator</h1>
+        <p class="page-subtitle">ECO revised a previously-reported &sect;9(5) supply &middot; no ITC implication</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="gstr3b-step2.html" class="btn btn-secondary">&larr; Back to Step 2 (Auto IMS fetch)</a>
+      </div>
+    </div>
+
+    <div class="big-stat-grid" style="margin-bottom:20px;">
+      <div class="big-stat" style="border-left:3px solid var(--info);"><div class="big-stat-label">ECO amendments</div><div class="big-stat-value">92</div><div class="big-stat-sub">From ECO GSTR-8</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--error);"><div class="big-stat-label">Net change</div><div class="big-stat-value">&minus; &#8377; 4,200</div><div class="big-stat-sub">Refunds/cancellations</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--success);"><div class="big-stat-label">No ITC impact</div><div class="big-stat-value">&#8377; 0</div><div class="big-stat-sub">&sect;9(5) blocks ITC</div></div>
+      <div class="big-stat" style="border-left:3px solid var(--warning);"><div class="big-stat-label">Action</div><div class="big-stat-value">No-action</div><div class="big-stat-sub">Reporting only</div></div>
+    </div>
+
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">
+        <div style="min-width:0;flex:1 1 240px;">
+          <div style="font-size:13.5px;font-weight:700;color:var(--text);line-height:1.4;">ECO amendment records &middot; sample of 8 from 92</div>
+          <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;">Operator revised a prior supply (cancellation/refund) &middot; recipient sees it for reconciliation only</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="btn btn-secondary btn-sm">Download CSV</button>
+          <button class="btn btn-secondary btn-sm">Filter</button>
+          <button class="btn btn-secondary btn-sm">Edit rows</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table grid-lined compact">
+          <thead><tr><th class="mono">ECO</th><th class="mono">Doc no.</th><th>Orig period</th><th class="num">Orig taxable</th><th class="num">New taxable</th><th class="num">Diff</th><th>Action</th></tr></thead>
+          <tbody><tr><td class="mono">Uber</td><td class="mono">UBE/26/7841</td><td>Apr-26</td><td class="num">1,200</td><td class="num">0</td><td class="num">− 1,200</td><td><span class="action-status pending">No-action</span></td></tr><tr><td class="mono">Ola</td><td class="mono">OLA/26/3812</td><td>Apr-26</td><td class="num">1,800</td><td class="num">900</td><td class="num">− 900</td><td><span class="action-status pending">No-action</span></td></tr><tr><td class="mono">Swiggy</td><td class="mono">SWG/26/8101</td><td>Apr-26</td><td class="num">850</td><td class="num">0</td><td class="num">− 850</td><td><span class="action-status pending">No-action</span></td></tr><tr><td class="mono">Zomato</td><td class="mono">ZOM/26/4118</td><td>Apr-26</td><td class="num">1,420</td><td class="num">1,420</td><td class="num">0</td><td><span class="action-status matched">Accepted</span></td></tr><tr><td class="mono">MMT</td><td class="mono">MMT/26/0418</td><td>Apr-26</td><td class="num">48,200</td><td class="num">44,800</td><td class="num">− 3,400</td><td><span class="action-status pending">No-action</span></td></tr><tr><td class="mono">Dunzo</td><td class="mono">DNZ/26/8181</td><td>Apr-26</td><td class="num">420</td><td class="num">0</td><td class="num">− 420</td><td><span class="action-status pending">No-action</span></td></tr><tr><td class="mono">BlueDart</td><td class="mono">BD/26/0301</td><td>Apr-26</td><td class="num">1,840</td><td class="num">1,840</td><td class="num">0</td><td><span class="action-status pending">No-action</span></td></tr><tr><td class="mono">Rapido</td><td class="mono">RPD/26/2818</td><td>Apr-26</td><td class="num">420</td><td class="num">0</td><td class="num">− 420</td><td><span class="action-status reject">Rejected</span></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-summary">92 ECO amendments &middot; mostly cancellations/refunds &middot; no ITC impact</div>
+        <div class="action-bar-status">&sect;9(5) flow &middot; review for reconciliation only</div>
+      </div>
+      <div class="action-bar-actions">
+        <a href="gstr3b-step2.html" class="btn btn-secondary cta-large">&larr; Back to Step 2 (Auto IMS fetch)</a>
+        <button class="btn btn-secondary cta-large">Save changes</button>
+        <a href="gstr3b-step2.html" class="btn btn-primary cta-large">Done &middot; return to Step 2 (Auto IMS fetch) &rarr;</a>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('gstr3b', 'GSTR-3B &middot; Step 2 detail', 'IMS &middot; ECO-Amd detail');</script>
+</body>
+</html>

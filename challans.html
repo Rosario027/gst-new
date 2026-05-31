@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Challans · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+    <div class="page-head">
+      <div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px;">
+          <a href="ledgers.html" class="back-arrow-link-inline" style="text-decoration:none;color:var(--text-muted);font-weight:600;">Ledgers &amp; Payments</a> &middot; <strong style="color:var(--text);">Challans · PMT-06</strong>
+        </div>
+        <h1 class="page-title">Challans · PMT-06</h1>
+        <p class="page-subtitle">Generate challans to deposit cash to your electronic cash ledger</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="cash-ledger.html" class="btn btn-secondary cta-large">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/></svg>
+          View Cash Ledger
+        </a>
+      </div>
+    </div>
+
+
+    <!-- LIFECYCLE / STATUS STRIP -->
+    <div class="lifecycle-strip">
+      <div class="lifecycle-header">
+        <div class="lifecycle-header-title">Challan activity · PMT-06 deposits</div>
+        <div class="lifecycle-header-help">Challan valid 15 days from CPIN · NEFT/RTGS, Net Banking, OTC ≤ ₹ 10,000, Credit/Debit Card</div>
+      </div>
+      <div class="lifecycle-body">
+        <div class="lifecycle-phase past">
+          <div class="phase-marker"><span class="marker-dot"></span>Last paid challan</div>
+          <div class="phase-title">12-May-2026</div>
+          <div class="phase-status success">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+            ₹ 8,40,000 · Net Banking · HDFC
+          </div>
+          <div class="phase-due">
+            <span class="due-date mono">CIN HDFC26050008412</span>
+            <span class="days-left onTrack">Confirmed same day</span>
+          </div>
+        </div>
+        <div class="lifecycle-phase current">
+          <div class="phase-marker"><span class="marker-dot"></span>Open challans</div>
+          <div class="phase-title">1 draft · 0 pending payment</div>
+          <div class="phase-status">No expiring challans · All clear</div>
+          <div class="phase-due">
+            <span class="due-date">Last 30 days · 4 challans · ₹ 38,12,000</span>
+            <span class="days-left onTrack">Normal volume</span>
+          </div>
+        </div>
+        <div class="lifecycle-phase upcoming">
+          <div class="phase-marker"><span class="marker-dot"></span>Next anticipated</div>
+          <div class="phase-title">GSTR-3B April</div>
+          <div class="phase-status muted">No challan required · ITC fully offsets liability</div>
+          <div class="phase-due">
+            <span class="due-date">If needed, by 19-May-2026</span>
+            <span class="days-left">5 days buffer</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HELP -->
+    <div class="help-strip">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <div><strong>About challans:</strong> Use PMT-06 to deposit tax to your electronic cash ledger. Challan is valid for 15 days. CPIN is generated on creation; CIN is issued post bank confirmation. Modes: NEFT/RTGS, Net Banking, Over-the-Counter (≤ ₹ 10,000), Credit/Debit Card.</div>
+    </div>
+
+    <!-- CREATE CHALLAN -->
+    <div class="section-banner">
+      <div class="section-banner-num">1</div>
+      <div>
+        <div class="section-banner-title">Create New Challan</div>
+        <div class="section-banner-sub">Enter tax amounts head-wise · Mode of payment · Generate</div>
+      </div>
+    </div>
+
+    <!-- GSTIN + Reason -->
+    <div class="filter-bar">
+      <div class="field">
+        <label class="field-label">GSTIN</label>
+        <select class="select"><option>27AABCT3518Q1ZV — Tata Steel · Maharashtra</option><option>06AABCT3518Q1Z2 — Tata Motors · Haryana</option><option>33AABCT3518Q1ZN — Tata Consumer · Tamil Nadu</option></select>
+      </div>
+      <div class="field">
+        <label class="field-label">Reason for Challan</label>
+        <select class="select"><option>Monthly payment for quarterly return</option><option>Any other payment</option><option>Demand payment</option><option>Pre-deposit for appeal</option><option>Liability under reverse charge</option></select>
+      </div>
+      <div class="field">
+        <label class="field-label">Period</label>
+        <select class="select"><option>April 2026</option><option>May 2026</option></select>
+      </div>
+    </div>
+
+    <!-- PAYMENT GRID -->
+    <div class="card mt-4">
+      <div class="card-head">
+        <div>
+          <h3 class="card-title">Tax Amount to Deposit</h3>
+          <p class="card-subtitle">Break down by head and sub-head as required</p>
+        </div>
+      </div>
+      <div style="padding:0 20px 4px;">
+        <div class="payment-grid">
+          <div class="payment-cell head">Description</div>
+          <div class="payment-cell head" style="text-align:right">IGST</div>
+          <div class="payment-cell head" style="text-align:right">CGST</div>
+          <div class="payment-cell head" style="text-align:right">SGST</div>
+
+          <div class="payment-cell"><strong>Tax</strong></div>
+          <div class="payment-cell"><input value="0.00"></div>
+          <div class="payment-cell"><input value="0.00"></div>
+          <div class="payment-cell"><input value="0.00"></div>
+
+          <div class="payment-cell"><strong>Interest</strong></div>
+          <div class="payment-cell"><input value="0.00"></div>
+          <div class="payment-cell"><input value="0.00"></div>
+          <div class="payment-cell"><input value="0.00"></div>
+
+          <div class="payment-cell"><strong>Penalty</strong></div>
+          <div class="payment-cell"><input value="0.00"></div>
+          <div class="payment-cell"><input value="0.00"></div>
+          <div class="payment-cell"><input value="0.00"></div>
+
+          <div class="payment-cell"><strong>Fee</strong></div>
+          <div class="payment-cell"><input value="0.00"></div>
+          <div class="payment-cell"><input value="0.00"></div>
+          <div class="payment-cell"><input value="0.00"></div>
+
+          <div class="payment-cell"><strong>Other</strong></div>
+          <div class="payment-cell"><input value="0.00"></div>
+          <div class="payment-cell"><input value="0.00"></div>
+          <div class="payment-cell"><input value="0.00"></div>
+
+          <div class="payment-cell" style="background:var(--ey-black-deep);color:var(--ey-yellow);font-weight:700">TOTAL</div>
+          <div class="payment-cell" style="background:var(--ey-black-deep);color:var(--ey-yellow);font-weight:700;text-align:right">₹ 0.00</div>
+          <div class="payment-cell" style="background:var(--ey-black-deep);color:var(--ey-yellow);font-weight:700;text-align:right">₹ 0.00</div>
+          <div class="payment-cell" style="background:var(--ey-black-deep);color:var(--ey-yellow);font-weight:700;text-align:right">₹ 0.00</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOTAL + MODE OF PAYMENT -->
+    <div style="display:grid;grid-template-columns:1fr 1.3fr;gap:16px;margin-top:16px;">
+      <div class="card-tight" style="background:linear-gradient(135deg, var(--ey-black-deep), #1F1F2C);color:#fff;border:none;">
+        <div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ey-yellow);font-weight:600;margin-bottom:8px">Total Challan Amount</div>
+        <div class="amount-display size-xl" style="color:#fff;font-size:36px;"><span class="currency-sym" style="color:rgba(255,230,0,0.6)">₹</span>0<span style="font-size:18px;color:rgba(255,255,255,0.6)">.00</span></div>
+        <div class="muted small" style="color:rgba(255,255,255,0.6);margin-top:10px">Challan valid for 15 days from generation</div>
+      </div>
+
+      <div class="card-tight">
+        <div class="card-tight-head">
+          <div class="card-tight-title">Mode of Payment</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <label class="file-type-option" style="display:flex;align-items:center;gap:10px;padding:14px;cursor:pointer;border-radius:var(--radius-sm);border:1px solid var(--border);">
+            <input type="radio" name="mode" checked style="accent-color:var(--ey-yellow)">
+            <div>
+              <div style="font-weight:600;font-size:13px">NEFT / RTGS</div>
+              <div class="muted small">Bank transfer via challan</div>
+            </div>
+          </label>
+          <label class="file-type-option" style="display:flex;align-items:center;gap:10px;padding:14px;cursor:pointer;border-radius:var(--radius-sm);border:1px solid var(--border);">
+            <input type="radio" name="mode" style="accent-color:var(--ey-yellow)">
+            <div>
+              <div style="font-weight:600;font-size:13px">Net Banking</div>
+              <div class="muted small">23 authorised banks</div>
+            </div>
+          </label>
+          <label class="file-type-option" style="display:flex;align-items:center;gap:10px;padding:14px;cursor:pointer;border-radius:var(--radius-sm);border:1px solid var(--border);">
+            <input type="radio" name="mode" style="accent-color:var(--ey-yellow)">
+            <div>
+              <div style="font-weight:600;font-size:13px">Over the Counter</div>
+              <div class="muted small">≤ ₹ 10,000 only · Cash/Cheque/DD</div>
+            </div>
+          </label>
+          <label class="file-type-option" style="display:flex;align-items:center;gap:10px;padding:14px;cursor:pointer;border-radius:var(--radius-sm);border:1px solid var(--border);">
+            <input type="radio" name="mode" style="accent-color:var(--ey-yellow)">
+            <div>
+              <div style="font-weight:600;font-size:13px">Credit/Debit Card</div>
+              <div class="muted small">Via authorized payment gateway</div>
+            </div>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- GENERATE ACTION -->
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-status">Challan summary · Maharashtra GSTIN · NEFT/RTGS · April 2026</div>
+        <div class="action-bar-summary">Click Generate to create challan and receive CPIN</div>
+      </div>
+      <div class="action-bar-actions">
+        <button class="btn btn-secondary cta-large">Save Draft</button>
+        <button class="btn btn-primary cta-xlarge" onclick="window.openChallanPopup()">
+          Generate Challan →
+        </button>
+      </div>
+    </div>
+
+    <!-- HISTORY -->
+    <div class="section-banner" style="margin-top:28px">
+      <div class="section-banner-num">2</div>
+      <div>
+        <div class="section-banner-title">Recent Challans</div>
+        <div class="section-banner-sub">All challans generated in the last 90 days</div>
+      </div>
+    </div>
+
+    <div class="filter-bar">
+      <div class="field">
+        <label class="field-label">Status</label>
+        <select class="select"><option>All</option><option>Generated (awaiting payment)</option><option>Paid</option><option>Expired</option><option>Failed</option></select>
+      </div>
+      <div class="field">
+        <label class="field-label">GSTIN</label>
+        <select class="select"><option>All 47 GSTINs</option><option>27AABCT3518Q1ZV</option><option>06AABCT3518Q1Z2</option></select>
+      </div>
+      <div class="field">
+        <label class="field-label">Date Range</label>
+        <select class="select"><option>Last 30 days</option><option>Last 90 days</option><option>FY 2025-26</option></select>
+      </div>
+      <div class="filter-actions">
+        <button class="btn btn-primary">Apply</button>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <div class="table-toolbar">
+        <div class="table-toolbar-left">
+          <div class="table-count"><strong>14 challans</strong> · Last 90 days · ₹ 2,84,42,000 total deposited</div>
+        </div>
+        <button class="btn btn-secondary btn-sm">Export</button>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>CPIN / Challan No.</th>
+            <th>Created</th>
+            <th>GSTIN</th>
+            <th>Mode</th>
+            <th>Bank</th>
+            <th>Heads</th>
+            <th class="num">Amount</th>
+            <th>Status</th>
+            <th>CIN</th>
+            <th class="th-actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono small">26271200541283</td>
+            <td>13-May-2026<br><span class="muted small">14:22</span></td>
+            <td class="mono small">27AABCT3518Q1ZV</td>
+            <td>NEFT/RTGS</td>
+            <td>ICICI Bank</td>
+            <td>IGST</td>
+            <td class="num">50,00,000.00</td>
+            <td><span class="badge success"><span class="badge-dot"></span>Paid</span></td>
+            <td class="mono small">ICIC26134552781</td>
+            <td>
+              <button class="icon-btn lg" title="View challan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+              <button class="icon-btn lg" title="Download receipt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/></svg></button>
+            </td>
+          </tr>
+          <tr>
+            <td class="mono small">26271100537182</td>
+            <td>12-May-2026<br><span class="muted small">09:14</span></td>
+            <td class="mono small">06AABCT3518Q1Z2</td>
+            <td>Net Banking</td>
+            <td>HDFC Bank</td>
+            <td>CGST, SGST</td>
+            <td class="num">1,00,00,000.00</td>
+            <td><span class="badge success"><span class="badge-dot"></span>Paid</span></td>
+            <td class="mono small">HDFC26124518471</td>
+            <td>
+              <button class="icon-btn lg" title="View challan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+              <button class="icon-btn lg" title="Download receipt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/></svg></button>
+            </td>
+          </tr>
+          <tr>
+            <td class="mono small">26270900524817</td>
+            <td>09-May-2026<br><span class="muted small">11:48</span></td>
+            <td class="mono small">33AABCT3518Q1ZN</td>
+            <td>NEFT/RTGS</td>
+            <td>SBI</td>
+            <td>IGST</td>
+            <td class="num">42,18,000.00</td>
+            <td><span class="badge warning"><span class="badge-dot"></span>Awaiting payment</span></td>
+            <td class="muted small">—</td>
+            <td>
+              <button class="icon-btn lg" title="View challan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+              <button class="icon-btn lg" title="Reminder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg></button>
+            </td>
+          </tr>
+          <tr>
+            <td class="mono small">26270500412749</td>
+            <td>03-May-2026<br><span class="muted small">15:07</span></td>
+            <td class="mono small">27AABCT3518Q1ZV</td>
+            <td>NEFT/RTGS</td>
+            <td>SBI</td>
+            <td>IGST</td>
+            <td class="num">68,42,000.00</td>
+            <td><span class="badge success"><span class="badge-dot"></span>Paid</span></td>
+            <td class="mono small">SBIN26054127183</td>
+            <td>
+              <button class="icon-btn lg" title="View challan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+              <button class="icon-btn lg" title="Download receipt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/></svg></button>
+            </td>
+          </tr>
+          <tr>
+            <td class="mono small">26270100348127</td>
+            <td>28-Apr-2026<br><span class="muted small">17:32</span></td>
+            <td class="mono small">29AABCT3518Q2ZK</td>
+            <td>Over the Counter</td>
+            <td>Bank of Baroda</td>
+            <td>CGST, SGST</td>
+            <td class="num">8,000.00</td>
+            <td><span class="badge error"><span class="badge-dot"></span>Expired</span></td>
+            <td class="muted small">—</td>
+            <td>
+              <button class="icon-btn lg" title="View challan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+              <button class="icon-btn lg" title="Regenerate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="table-footer">
+        <div class="pagination-info">Showing 1–5 of 14 challans</div>
+        <div class="pagination">
+          <button class="page-btn" disabled>←</button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn">→</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="height: 40px"></div>
+  </main>
+</div>
+
+<script src="app.js"></script>
+<script>renderShell('challans', 'Challans', 'PMT-06');</script>
+</body>
+</html>

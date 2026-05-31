@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RCM Liability/ITC Statement · DigiGST 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">RCM Liability / ITC Statement</h1>
+        <p class="page-subtitle">Track Reverse Charge Mechanism liabilities and corresponding ITC · GSTN advisory 23-Aug-2024 · 3 amendments allowed till 30-Nov-2025</p>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn btn-secondary">Download statement (Excel)</button>
+        <button class="btn btn-primary cta-large">Add RCM transaction</button>
+      </div>
+    </div>
+
+    <div class="help-strip">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <div><strong>About this statement:</strong> Tracks the period-wise RCM liability you pay in GSTR-3B Table 3.1(d) and the corresponding ITC you avail in Table 4(A)(3). Opening balance had to be reported by 30-Nov-2024. Three amendments to the opening balance are permitted till 30-Nov-2025.</div>
+    </div>
+
+    <!-- BALANCES -->
+    <div class="big-stat-grid">
+      <div class="big-stat">
+        <div class="big-stat-label">Opening balance · 01-Apr-2024</div>
+        <div class="big-stat-value">₹ 24.81 L</div>
+        <div class="big-stat-sub">Reported 30-Oct-2024 · 2 amendments remaining</div>
+      </div>
+      <div class="big-stat" style="border-left:3px solid var(--warning)">
+        <div class="big-stat-label">RCM liability added (YTD)</div>
+        <div class="big-stat-value" style="color:var(--warning)">₹ 1.42 Cr</div>
+        <div class="big-stat-sub">From 247 RCM transactions</div>
+      </div>
+      <div class="big-stat" style="border-left:3px solid var(--success)">
+        <div class="big-stat-label">ITC availed against RCM</div>
+        <div class="big-stat-value" style="color:var(--success)">₹ 1.38 Cr</div>
+        <div class="big-stat-sub">Lag due to in-progress periods</div>
+      </div>
+      <div class="big-stat accent">
+        <div class="big-stat-label">Closing balance · 14-May-2026</div>
+        <div class="big-stat-value">₹ 28.84 L</div>
+        <div class="big-stat-sub">Liability not yet offset by ITC</div>
+      </div>
+    </div>
+
+    <!-- AMENDMENT TRACKER -->
+    <div class="card" style="padding:18px 22px;margin-bottom:20px;background:#FFFDF0;border-left:4px solid var(--ey-yellow);">
+      <div style="display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;">
+        <div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px;">Opening balance amendments · 1 of 3 used</div>
+          <div style="font-size:12.5px;color:var(--text-muted);">Last amended 12-Dec-2024 by Jude Akash · Reason: missed Aug-24 reverse charge on legal services. Two amendments remain · cut-off 30-Nov-2025.</div>
+        </div>
+        <button class="btn btn-secondary cta-large">Amend opening balance</button>
+      </div>
+    </div>
+
+    <!-- LIABILITY TABLE -->
+    <div class="card" style="padding:0;margin-bottom:20px;">
+      <div style="padding:18px 22px;border-bottom:1px solid var(--border);">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
+          <div>
+            <div style="font-size:14px;font-weight:700;color:var(--text);">Period-wise RCM movement</div>
+            <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px;">Filter by date range &middot; export full history as Excel</div>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            <select class="btn btn-secondary btn-sm" style="padding:6px 10px;">
+              <option>This filing period (May-26)</option>
+              <option>Last 3 months</option>
+              <option>FYTD</option>
+              <option>Custom range…</option>
+            </select>
+            <button class="btn btn-secondary btn-sm" onclick="if(window.showToast)window.showToast('Downloading RCM period movement (Excel)...');">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13" stroke-width="2.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Export Excel
+            </button>
+          </div>
+        </div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">Reconciles with GSTR-3B Table 3.1(d) liability and Table 4(A)(3) ITC</div>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Period</th>
+            <th class="num">Opening</th>
+            <th class="num">RCM added (3B 3.1(d))</th>
+            <th class="num">ITC availed (3B 4(A)(3))</th>
+            <th class="num">Closing</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Apr-2026</td><td class="num">24,81,000</td><td class="num">11,28,400</td><td class="num">10,82,000</td><td class="num">25,27,400</td><td><span class="ims-status-pill accept">Filed</span></td></tr>
+          <tr><td>Mar-2026</td><td class="num">22,14,800</td><td class="num">9,42,400</td><td class="num">9,84,200</td><td class="num">21,73,000</td><td><span class="ims-status-pill accept">Filed</span></td></tr>
+          <tr><td>Feb-2026</td><td class="num">19,82,400</td><td class="num">8,12,000</td><td class="num">7,84,600</td><td class="num">20,09,800</td><td><span class="ims-status-pill accept">Filed</span></td></tr>
+          <tr><td>Jan-2026</td><td class="num">18,42,000</td><td class="num">6,84,200</td><td class="num">7,42,000</td><td class="num">17,84,200</td><td><span class="ims-status-pill accept">Filed</span></td></tr>
+          <tr style="background:#FFFDF0;"><td><strong>May-2026 (current)</strong></td><td class="num">25,27,400</td><td class="num">5,12,400</td><td class="num">4,42,800</td><td class="num">28,84,000 (projected)</td><td><span class="ims-status-pill pending">In progress</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- RCM TRANSACTIONS -->
+    <div class="card" style="padding:0;">
+      <div style="padding:18px 22px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+        <div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);">RCM transactions · May 2026 · 38 records</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">By nature of supply</div>
+        </div>
+        <div class="flex gap-2">
+          <select class="select select-sm">
+            <option>All categories</option>
+            <option>§9(3) Notified categories</option>
+            <option>§9(4) Purchase from URP</option>
+            <option>Import of services</option>
+            <option>GTA · Goods Transport</option>
+          </select>
+        </div>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Supplier (URP / regd.)</th>
+            <th>Nature of supply</th>
+            <th>Section</th>
+            <th class="num">Taxable</th>
+            <th class="num">RCM IGST</th>
+            <th class="num">RCM CGST</th>
+            <th class="num">RCM SGST</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>03-May-2026</td><td>Khaitan &amp; Co · URP</td><td>Legal services</td><td>§9(3)</td><td class="num">2,80,000</td><td class="num">—</td><td class="num">25,200</td><td class="num">25,200</td></tr>
+          <tr><td>05-May-2026</td><td>Mahindra Logistics · regd.</td><td>GTA · Road transport (FCM declined)</td><td>§9(3)</td><td class="num">4,82,000</td><td class="num">24,100</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr><td>07-May-2026</td><td>Microsoft Ireland · OIDAR</td><td>Cloud platform · Azure</td><td>§9(3)</td><td class="num">12,84,000</td><td class="num">2,31,120</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr><td>09-May-2026</td><td>Local printer · URP</td><td>Stationery</td><td>§9(4)</td><td class="num">42,000</td><td class="num">—</td><td class="num">3,780</td><td class="num">3,780</td></tr>
+          <tr><td>12-May-2026</td><td>Indian Bank · Director's remuneration</td><td>Director services</td><td>§9(3)</td><td class="num">8,40,000</td><td class="num">—</td><td class="num">75,600</td><td class="num">75,600</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+</div>
+<script src="app.js"></script>
+<script>renderShell('rcm', 'RCM Liability / ITC Statement', 'Inward Supplies · FY 2026-27');</script>
+</body>
+</html>
