@@ -55,6 +55,8 @@
     localStorage.setItem('fylepro.entity', state.regId);
     $('wb-context').textContent = `${state.gstin || '—'} · ${MONTHS[+$('wb-month').value - 1]} ${yyyy} · delivery: ${state.deliveryMode.toUpperCase()}`;
     $('wb-template').href = FP.gstr1.templateUrl(state.gstin, state.period);
+    $('wb-sample-books').href = FP.gstr1.sampleUrl('books');
+    $('wb-sample-einv').href = FP.gstr1.sampleUrl('einvoice');
   }
 
   // ── Generic drop-zone wiring ──
@@ -126,6 +128,10 @@
     try {
       $('recon-result').innerHTML = '<p class="wb-muted">Reconciling…</p>';
       const res = await FP.gstr1.reconcile(state.booksDatasetId, state.cmpDatasetId);
+      state.reconId = res.reconciliationId;
+      const reportBtn = $('btn-recon-report');
+      reportBtn.href = FP.gstr1.reconReportUrl(res.reconciliationId);
+      reportBtn.style.display = '';
       const s = res.summary;
       const statTiles = `<div class="wb-stat">
         <div class="s"><b style="color:#168736">${s.matched}</b><span>matched</span></div>

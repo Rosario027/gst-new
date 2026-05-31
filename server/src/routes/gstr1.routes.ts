@@ -5,6 +5,8 @@ import { withTenant } from '../db';
 import { requireAuth } from '../middleware/auth';
 import { wrap } from '../middleware/async';
 import { buildTemplateWorkbook } from '../services/gstr1/template';
+import { buildSampleWorkbook } from '../services/gstr1/sample-data';
+import { buildReconReport } from '../services/gstr1/recon-report';
 import { parseWorkbook, parseCsv } from '../services/gstr1/parser';
 import { reconcile } from '../services/gstr1/reconcile';
 import { buildGstr1Json } from '../services/gstr1/json-builder';
@@ -41,6 +43,15 @@ gstr1Router.get('/template', requireAuth, wrap(async (req, res) => {
   const buf = await buildTemplateWorkbook({ gstin: req.query.gstin as string, period: normPeriod(req.query.period) || undefined });
   res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
   res.setHeader('Content-Disposition', `attachment; filename="GSTR1-Template-${normPeriod(req.query.period) || 'blank'}.xlsx"`);
+  res.send(buf);
+}));
+
+// ── Download sample data files (books / e-invoice) for the reco demo ──
+gstr1Router.get('/sample/:type', requireAuth, wrap(async (req, res) => {
+  const type = req.params.type === 'einvoice' ? 'einvoice' : 'books';
+  const buf = await buildSampleWorkbook(type);
+  res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  res.setHeader('Content-Disposition', `attachment; filename="GSTR1-sample-${type}-052026.xlsx"`);
   res.send(buf);
 }));
 
@@ -175,6 +186,34 @@ gstr1Router.get('/reconciliations/:id', requireAuth, wrap(async (req, res) => {
   });
   if (!data) return res.status(404).json({ error: 'Reconciliation not found' });
   res.json(data);
+}));
+
+// ── Download the reconciliation report as an Excel output file ──
+gstr1Router.get('/reconciliations/:id/report', requireAuth, wrap(async (req, res) => {
+  const data = await withTenant(ctx(req), async (c) => {
+    const r = await c.query(
+      `SELECT rec.period, rec.summary, g.gstin
+         FROM gstr1_reconciliations rec
+         JOIN gst_registrations g ON g.id = rec.gst_registration_id
+        WHERE rec.id = $1`,
+      [req.params.id]
+    );
+    if (!r.rows[0]) return null;
+    const lines = await c.query(
+      `SELECT section, match_key, status, base, compare, diff FROM gstr1_recon_lines WHERE reconciliation_id = $1`,
+      [req.params.id]
+    );
+    return { recon: r.rows[0], lines: lines.rows };
+  });
+  if (!data) return res.status(404).json({ error: 'Reconciliation not found' });
+
+  const lines = data.lines.map((l: any) => ({
+    section: l.section, matchKey: l.match_key, status: l.status, base: l.base, compare: l.compare, diff: l.diff,
+  }));
+  const buf = await buildReconReport({ gstin: data.recon.gstin, period: data.recon.period, lines, summary: data.recon.summary });
+  res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  res.setHeader('Content-Disposition', `attachment; filename="GSTR1-reconciliation-${data.recon.period}.xlsx"`);
+  res.send(buf);
 }));
 
 // ── Generate GSTR-1 portal JSON from a dataset ──

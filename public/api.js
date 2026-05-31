@@ -83,6 +83,8 @@
   const gstr1 = {
     sections: () => api('/gstr1/sections'),
     templateUrl: (gstin, period) => '/api/gstr1/template?gstin=' + encodeURIComponent(gstin || '') + '&period=' + encodeURIComponent(period || ''),
+    sampleUrl: (type) => '/api/gstr1/sample/' + (type === 'einvoice' ? 'einvoice' : 'books'),
+    reconReportUrl: (reconId) => '/api/gstr1/reconciliations/' + reconId + '/report',
     upload: (file, registrationId, period, source) => {
       const fd = new FormData();
       fd.append('file', file);

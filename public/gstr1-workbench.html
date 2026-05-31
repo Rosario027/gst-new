@@ -77,8 +77,14 @@
           </div>
           <div class="wb-field">
             <label>&nbsp;</label>
-            <a class="btn btn-secondary" id="wb-template" download>Download template</a>
+            <a class="btn btn-secondary" id="wb-template" download>Download blank template</a>
           </div>
+        </div>
+        <div class="wb-row" style="margin-top:14px; padding-top:14px; border-top:1px dashed #E5E7EB;">
+          <span class="wb-muted" style="align-self:center;">Try it with sample data →</span>
+          <a class="btn btn-secondary" id="wb-sample-books" download>⬇ Sample books file</a>
+          <a class="btn btn-secondary" id="wb-sample-einv" download>⬇ Sample e-invoice file</a>
+          <span class="wb-muted" style="align-self:center;">Upload one as books, the other as comparison.</span>
         </div>
       </div>
 
@@ -105,6 +111,7 @@
         <input type="file" id="file-cmp" accept=".xlsx,.xls,.csv" hidden>
         <div class="wb-row" style="margin-top:12px;">
           <button class="btn btn-primary" id="btn-reconcile" disabled>Run reconciliation</button>
+          <a class="btn btn-secondary" id="btn-recon-report" style="display:none" download>⬇ Download reconciliation report (Excel)</a>
         </div>
         <div id="recon-result"></div>
       </div>
