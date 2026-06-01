@@ -1,7 +1,7 @@
 import { SectionDef, ColumnDef, SECTION_MAP } from './sections';
 import { ValidationError, ValidationContext, ValidationSummary, ParsedRecord } from '../../types';
-import { isValidGstin, isValidGstinFormat } from '../gstin';
-import { posCode, toNumber, round2, parsePeriod } from './util';
+import { isValidGstin, isValidGstinFormat, stateCodeFromGstin } from '../gstin';
+import { posCode, toNumber, round2, parsePeriod, STATE_NAMES } from './util';
 
 // Combined GST rate slabs valid in the rate-wise sheets (CGST+SGST or IGST).
 const VALID_RATES = [0, 0.1, 0.25, 1, 1.5, 3, 5, 6, 7.5, 12, 18, 28];
@@ -54,13 +54,50 @@ export function validateRecord(section: SectionDef, data: Record<string, any>, c
     if (toNumber(data.cessAmount) < 0) e.push(err('cessAmount', 'Cess cannot be negative'));
   }
 
-  // 5. Inter / intra-state tax logic (needs supplier context)
+  // 5. HSN / SAC master validation (structure + chapter + AATO granularity)
+  if (data.hsn !== undefined && data.hsn !== null && String(data.hsn).trim() !== '') {
+    validateHsn(String(data.hsn).trim(), ctx, e);
+  } else if (section.hasTax && (section.key === 'b2b' || section.key === 'b2cl' || section.key === 'cdnr' || section.key === 'exp')) {
+    e.push(warn('hsn', 'HSN/SAC code missing'));
+  }
+
+  // 6. Place-of-supply consistency: recipient GSTIN state must match PoS.
+  if ((section.key === 'b2b' || section.key === 'cdnr') && data.ctin && isValidGstinFormat(String(data.ctin))) {
+    const recipientState = stateCodeFromGstin(String(data.ctin));
+    const pos = posCode(data.pos);
+    if (recipientState && pos && recipientState !== pos) {
+      e.push(err('pos', `Place of Supply (${pos}) does not match recipient GSTIN state (${recipientState}-${STATE_NAMES[recipientState] || ''})`, 'RET191134'));
+    }
+  }
+
+  // 7. Inter / intra-state tax logic (needs supplier context)
   if (ctx) applyTaxLogic(section, data, ctx, e);
 
-  // 6. Section-specific rules
+  // 8. Section-specific rules
   applySectionRules(section, data, ctx, e);
 
   return e;
+}
+
+// HSN/SAC master validation. Goods chapters 01–98, services SAC starts 99.
+// AATO ≤ ₹5Cr → min 4 digits; AATO > ₹5Cr → min 6 digits (advisory when AATO unknown).
+function validateHsn(hsn: string, ctx: ValidationContext | undefined, e: ValidationError[]): void {
+  if (!/^\d+$/.test(hsn)) { e.push(err('hsn', `HSN/SAC "${hsn}" must be numeric`, 'RET191180')); return; }
+  if (![4, 6, 8].includes(hsn.length)) {
+    e.push(err('hsn', `HSN/SAC "${hsn}" must be 4, 6 or 8 digits`, 'RET191180')); return;
+  }
+  const chapter = parseInt(hsn.slice(0, 2), 10);
+  const isService = hsn.startsWith('99');
+  if (!isService && (chapter < 1 || chapter > 98)) {
+    e.push(err('hsn', `HSN "${hsn}" has an invalid chapter (${hsn.slice(0, 2)}); not in the HSN master`, 'RET191180'));
+    return;
+  }
+  // Granularity: 6-digit recommended (mandatory for AATO > ₹5 Cr).
+  const aatoOver5Cr = ctx && (ctx as any).aatoOver5Cr === true;
+  if (hsn.length < 6) {
+    if (aatoOver5Cr) e.push(err('hsn', `6-digit HSN required (AATO > ₹5 Cr); "${hsn}" is ${hsn.length}-digit`, 'RET191180'));
+    else e.push(warn('hsn', `Use 6-digit HSN — "${hsn}" is ${hsn.length}-digit (mandatory if AATO > ₹5 Cr)`));
+  }
 }
 
 function validateByType(col: ColumnDef, value: any, e: ValidationError[]): void {
@@ -152,10 +189,10 @@ function applyTaxLogic(section: SectionDef, data: Record<string, any>, ctx: Vali
       e.push(err('IntegratedTaxAmount', 'A line cannot carry IGST and CGST/SGST together', 'RET191150'));
     } else if (hasIntra) {
       if (Math.abs(cgst - sgst) > 1) e.push(err('CentralTaxAmount', `CGST (${cgst}) and SGST (${sgst}) must be equal`, 'RET191151'));
-      if (expected > 0 && Math.abs(cgst + sgst - expected) > AMOUNT_TOL) e.push(warn('CentralTaxAmount', `CGST+SGST (${round2(cgst + sgst)}) ≠ rate×taxable (${expected})`));
+      if (expected > 0 && Math.abs(cgst + sgst - expected) > 1) e.push(err('CentralTaxAmount', `Reverse-arithmetic: CGST+SGST (${round2(cgst + sgst)}) ≠ rate×taxable (${expected})`, 'RET191175'));
       if (interByPos) e.push(err('CentralTaxAmount', `Inter-state supply (POS ${pos} ≠ supplier ${ctx.supplierStateCode}) must use IGST, not CGST/SGST`, 'RET191150'));
     } else if (hasInter) {
-      if (expected > 0 && Math.abs(igst - expected) > AMOUNT_TOL) e.push(warn('IntegratedTaxAmount', `IGST (${igst}) ≠ rate×taxable (${expected})`));
+      if (expected > 0 && Math.abs(igst - expected) > 1) e.push(err('IntegratedTaxAmount', `Reverse-arithmetic: IGST (${igst}) ≠ rate×taxable (${expected})`, 'RET191175'));
       if (intraByPos) e.push(err('IntegratedTaxAmount', `Intra-state supply (POS = supplier state ${pos}) must use CGST+SGST, not IGST`, 'RET191150'));
     }
   } else if (rate > 0 && taxable > 0 && section.key === 'hsn') {
@@ -255,10 +292,25 @@ function crossRowChecks(records: ParsedRecord[], ctx: ValidationContext): void {
           taxable += tv; tax += (tv * toNumber(g.data.rate)) / 100; cess += toNumber(g.data.cessAmount);
         }
         const computed = round2(taxable + tax + cess);
-        if (statedVal > 0 && Math.abs(computed - statedVal) > Math.max(AMOUNT_TOL, statedVal * 0.01)) {
-          grp[0].errors.push(warn('invoiceValue', `Invoice value ${statedVal} ≠ taxable+tax+cess (computed ${computed})`));
+        // Round-off & cross-foot: grand total should equal taxable+tax+cess within rounding (±₹1).
+        if (statedVal > 0 && Math.abs(computed - statedVal) > 1) {
+          grp[0].errors.push(warn('invoiceValue', `Cross-foot: invoice value ${statedVal} ≠ taxable+tax+cess (computed ${computed}); round-off beyond ±0.99`));
         }
       }
+    }
+  }
+
+  // Duplicate invoice number per supplier-FY: same number used for >1 recipient.
+  const b2b = records.filter((r) => r.section === 'b2b' && r.data.invoiceNumber);
+  const byNumber = new Map<string, Set<string>>();
+  for (const r of b2b) {
+    const num = String(r.data.invoiceNumber).trim().toUpperCase();
+    (byNumber.get(num) ?? byNumber.set(num, new Set()).get(num)!).add(String(r.data.ctin || '').toUpperCase());
+  }
+  for (const r of b2b) {
+    const num = String(r.data.invoiceNumber).trim().toUpperCase();
+    if ((byNumber.get(num)?.size ?? 0) > 1) {
+      r.errors.push(err('invoiceNumber', `Duplicate invoice number "${r.data.invoiceNumber}" used for more than one recipient`, 'RET191102'));
     }
   }
 }

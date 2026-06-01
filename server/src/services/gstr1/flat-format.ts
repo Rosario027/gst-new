@@ -111,7 +111,8 @@ export function classifyRow(r: Record<string, any>, supplierStateCode: string): 
   const rate = combinedRate(r);
   const taxable = round2(num(r, 'TaxableValue'));
   const a = amounts(r);
-  const common = { rate, taxableValue: taxable, cessAmount: cess(r), pos: posLabel(r.POS), ...a, ecomGstin: str(r, 'eComGSTIN') };
+  const hsn = str(r, 'HSNorSAC');
+  const common = { rate, taxableValue: taxable, cessAmount: cess(r), pos: posLabel(r.POS), ...a, ecomGstin: str(r, 'eComGSTIN'), hsn };
 
   // Advances
   if (doc === 'ADV') return { section: 'at', data: { pos: common.pos, rate, grossAdvance: taxable, cessAmount: common.cessAmount }, supplyClass: 'B2C' };
@@ -123,7 +124,7 @@ export function classifyRow(r: Record<string, any>, supplierStateCode: string): 
       section: 'exp', supplyClass: 'B2C',
       data: { exportType: sup === 'EXPT' ? 'WPAY' : 'WOPAY', invoiceNumber: str(r, 'DocumentNumber'), invoiceDate: toGstnDate(r.DocumentDate),
         invoiceValue: num(r, 'InvoiceValue'), portCode: str(r, 'PortCode'), shippingBillNumber: str(r, 'ShippingBillNumber'),
-        shippingBillDate: toGstnDate(r.ShippingBillDate), rate, taxableValue: taxable, cessAmount: common.cessAmount },
+        shippingBillDate: toGstnDate(r.ShippingBillDate), rate, taxableValue: taxable, cessAmount: common.cessAmount, hsn },
     };
   }
 
@@ -143,11 +144,11 @@ export function classifyRow(r: Record<string, any>, supplierStateCode: string): 
         data: { ctin, receiverName: str(r, 'CustomerName'), noteNumber: str(r, 'DocumentNumber'), noteDate: toGstnDate(r.DocumentDate),
           noteType, pos: common.pos, reverseCharge: str(r, 'ReverseChargeFlag').toUpperCase() === 'Y' ? 'Y' : 'N',
           noteSupplyType: sup === 'SEZ' ? 'SEZ supplies with payment' : 'Regular B2B', noteValue: num(r, 'InvoiceValue'),
-          rate, taxableValue: taxable, cessAmount: common.cessAmount, ...a } };
+          rate, taxableValue: taxable, cessAmount: common.cessAmount, hsn, ...a } };
     }
     return { section: 'cdnur', supplyClass: 'B2C',
       data: { urType: inter ? 'B2CL' : 'B2CL', noteNumber: str(r, 'DocumentNumber'), noteDate: toGstnDate(r.DocumentDate),
-        noteType, pos: common.pos, noteValue: num(r, 'InvoiceValue'), rate, taxableValue: taxable, cessAmount: common.cessAmount, iamt: a.iamt } };
+        noteType, pos: common.pos, noteValue: num(r, 'InvoiceValue'), rate, taxableValue: taxable, cessAmount: common.cessAmount, hsn, iamt: a.iamt } };
   }
 
   // Invoices (INV/RNV/ANV) → B2B / B2CL / B2CS
@@ -156,15 +157,15 @@ export function classifyRow(r: Record<string, any>, supplierStateCode: string): 
     const invoiceType = sup === 'SEZ' ? 'SEZ supplies with payment' : sup === 'DXP' ? 'Deemed Exp' : 'Regular B2B';
     return { section: 'b2b', supplyClass: 'B2B',
       data: { ctin, receiverName: str(r, 'CustomerName'), ...invoiceCommon, reverseCharge: str(r, 'ReverseChargeFlag').toUpperCase() === 'Y' ? 'Y' : 'N',
-        invoiceType, ecomGstin: common.ecomGstin, rate, taxableValue: taxable, cessAmount: common.cessAmount, ...a } };
+        invoiceType, ecomGstin: common.ecomGstin, rate, taxableValue: taxable, cessAmount: common.cessAmount, hsn, ...a } };
   }
   // B2C: large inter-state invoices (> ₹1L) → B2CL, else B2CS rate-wise
   if (inter && num(r, 'InvoiceValue') > B2CL_THRESHOLD) {
     return { section: 'b2cl', supplyClass: 'B2C',
-      data: { ...invoiceCommon, rate, taxableValue: taxable, cessAmount: common.cessAmount, ecomGstin: common.ecomGstin, iamt: a.iamt } };
+      data: { ...invoiceCommon, rate, taxableValue: taxable, cessAmount: common.cessAmount, ecomGstin: common.ecomGstin, hsn, iamt: a.iamt } };
   }
   return { section: 'b2cs', supplyClass: 'B2C',
-    data: { type: common.ecomGstin ? 'E' : 'OE', pos: common.pos, rate, taxableValue: taxable, cessAmount: common.cessAmount, ecomGstin: common.ecomGstin, ...a } };
+    data: { type: common.ecomGstin ? 'E' : 'OE', pos: common.pos, rate, taxableValue: taxable, cessAmount: common.cessAmount, ecomGstin: common.ecomGstin, hsn, ...a } };
 }
 
 // ════════════════════════════════════════════════════════════════════
