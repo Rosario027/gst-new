@@ -32,7 +32,9 @@
     state.gstin = opt ? opt.dataset.gstin : '';
     state.period = String($('s1-month').value).padStart(2, '0') + $('s1-year').value;
     $('s1-context').textContent = `${state.gstin || '—'} · ${MONTHS[+$('s1-month').value - 1]} ${$('s1-year').value} · upload your sales register and validate`;
-    $('s1-template').href = FP.gstr1.templateUrl(state.gstin, state.period, 'validation');
+    const tmplUrl = FP.gstr1.templateUrl(state.gstin, state.period, 'validation');
+    $('s1-template').href = tmplUrl;
+    const dropTmpl = $('s1-template-drop'); if (dropTmpl) dropTmpl.href = tmplUrl;
     loadHistory();
   }
 
@@ -161,4 +163,7 @@
   initSetup();
   wireDrop();
   $('s1-run').addEventListener('click', runValidate);
+  // Download link inside the drop zone must not trigger the file browser.
+  const dropTmpl = $('s1-template-drop');
+  if (dropTmpl) dropTmpl.addEventListener('click', (e) => e.stopPropagation());
 })();
