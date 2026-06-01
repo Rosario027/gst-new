@@ -115,44 +115,52 @@ function applyTaxLogic(section: SectionDef, data: Record<string, any>, ctx: Vali
   const sez = /SEZ|Deemed|Intra-State supplies attracting IGST/i.test(String(data.invoiceType ?? data.noteSupplyType ?? ''));
 
   // HSN sheet carries explicit IGST/CGST/SGST — validate the split directly.
-  if (section.key === 'hsn') {
-    const igst = toNumber(data.igst), cgst = toNumber(data.cgst), sgst = toNumber(data.sgst);
-    const rate = toNumber(data.rate), taxable = toNumber(data.taxableValue);
-    const expected = round2((taxable * rate) / 100);
-    const supplyIsB2c = String(data.supplyType ?? '').toUpperCase() === 'B2C';
-    // We can't always know POS at HSN level; rely on which taxes are filled.
+  const rate = toNumber(data.rate), taxable = toNumber(data.taxableValue);
+  const expected = round2((taxable * rate) / 100);
+
+  // Explicit tax amounts: HSN uses igst/cgst/sgst; flat-format invoice rows use iamt/camt/samt.
+  const igst = toNumber(data.igst ?? data.iamt);
+  const cgst = toNumber(data.cgst ?? data.camt);
+  const sgst = toNumber(data.sgst ?? data.samt);
+  const hasAmounts = igst > 0 || cgst > 0 || sgst > 0;
+
+  // Resolve inter/intra from POS where we have it.
+  const knowPos = !!pos && !!ctx.supplierStateCode;
+  const interByPos = alwaysInter || sez || (knowPos && pos !== ctx.supplierStateCode);
+  const intraByPos = knowPos && !interByPos;
+  if (knowPos) data.__supplyType = interByPos ? 'INTER' : 'INTRA';
+
+  // B2CL is inter-state only.
+  if (section.key === 'b2cl' && knowPos && pos === ctx.supplierStateCode) {
+    e.push(err('pos', `B2CL is inter-state only — POS (${pos}) equals supplier state (${ctx.supplierStateCode})`, 'RET191150'));
+  }
+
+  if (hasAmounts && section.key === 'hsn') {
+    // HSN summary (table 12) legitimately aggregates intra + inter supplies of the
+    // same HSN, so IGST and CGST/SGST can coexist. Only sanity-check the totals.
+    if ((cgst > 0 || sgst > 0) && Math.abs(cgst - sgst) > Math.max(1, (cgst + sgst) * 0.01)) {
+      e.push(warn('CentralTaxAmount', `CGST (${cgst}) and SGST (${sgst}) should be equal`));
+    }
+    const totalTax = round2(igst + cgst + sgst);
+    if (expected > 0 && Math.abs(totalTax - expected) > Math.max(AMOUNT_TOL, expected * 0.02)) {
+      e.push(warn('IntegratedTaxAmount', `Tax (${totalTax}) ≠ rate×taxable (${expected})`));
+    }
+  } else if (hasAmounts) {
     const hasInter = igst > 0;
     const hasIntra = cgst > 0 || sgst > 0;
     if (hasInter && hasIntra) {
-      e.push(err('igst', 'A line cannot carry IGST and CGST/SGST together', 'RET191150'));
+      e.push(err('IntegratedTaxAmount', 'A line cannot carry IGST and CGST/SGST together', 'RET191150'));
     } else if (hasIntra) {
-      if (Math.abs(cgst - sgst) > 1) e.push(err('cgst', `CGST (${cgst}) and SGST (${sgst}) must be equal`, 'RET191151'));
-      if (expected > 0 && Math.abs(cgst + sgst - expected) > AMOUNT_TOL) {
-        e.push(warn('cgst', `CGST+SGST (${round2(cgst + sgst)}) ≠ rate×taxable (${expected})`));
-      }
+      if (Math.abs(cgst - sgst) > 1) e.push(err('CentralTaxAmount', `CGST (${cgst}) and SGST (${sgst}) must be equal`, 'RET191151'));
+      if (expected > 0 && Math.abs(cgst + sgst - expected) > AMOUNT_TOL) e.push(warn('CentralTaxAmount', `CGST+SGST (${round2(cgst + sgst)}) ≠ rate×taxable (${expected})`));
+      if (interByPos) e.push(err('CentralTaxAmount', `Inter-state supply (POS ${pos} ≠ supplier ${ctx.supplierStateCode}) must use IGST, not CGST/SGST`, 'RET191150'));
     } else if (hasInter) {
-      if (expected > 0 && Math.abs(igst - expected) > AMOUNT_TOL) {
-        e.push(warn('igst', `IGST (${igst}) ≠ rate×taxable (${expected})`));
-      }
-    } else if (rate > 0 && taxable > 0 && !supplyIsB2c) {
-      e.push(warn('igst', 'Rate is non-zero but no tax amount entered'));
+      if (expected > 0 && Math.abs(igst - expected) > AMOUNT_TOL) e.push(warn('IntegratedTaxAmount', `IGST (${igst}) ≠ rate×taxable (${expected})`));
+      if (intraByPos) e.push(err('IntegratedTaxAmount', `Intra-state supply (POS = supplier state ${pos}) must use CGST+SGST, not IGST`, 'RET191150'));
     }
-    return;
+  } else if (rate > 0 && taxable > 0 && section.key === 'hsn') {
+    e.push(warn('igst', 'Rate is non-zero but no tax amount entered'));
   }
-
-  // For the invoice sheets (b2b, cdnr, b2cs, at, atadj) there are no tax-amount
-  // columns, but we still enforce the POS↔supplier-state relationship.
-  if (!pos || !ctx.supplierStateCode) return;
-  const interState = pos !== ctx.supplierStateCode || alwaysInter || sez;
-
-  if (section.key === 'b2cl' && pos === ctx.supplierStateCode) {
-    e.push(err('pos', `B2CL is inter-state only — POS (${pos}) equals supplier state (${ctx.supplierStateCode})`, 'RET191150'));
-  }
-  if (section.key === 'b2cs' && data.type) {
-    // sply_ty derived later; nothing to block here
-  }
-  // Stash the resolved supply type for downstream consumers / report clarity
-  data.__supplyType = interState ? 'INTER' : 'INTRA';
 }
 
 function applySectionRules(section: SectionDef, data: Record<string, any>, ctx: ValidationContext | undefined, e: ValidationError[]): void {

@@ -5,8 +5,9 @@ import { withTenant } from '../db';
 import { requireAuth } from '../middleware/auth';
 import { wrap } from '../middleware/async';
 import { buildTemplateWorkbook } from '../services/gstr1/template';
+import { buildFlatTemplate, parseFlatWorkbook } from '../services/gstr1/flat-format';
 import { buildReconReport } from '../services/gstr1/recon-report';
-import { parseWorkbook, parseCsv } from '../services/gstr1/parser';
+import { parseWorkbook, parseCsv, summarizeRecords } from '../services/gstr1/parser';
 import { reconcile } from '../services/gstr1/reconcile';
 import { validateDataset } from '../services/gstr1/validate';
 import { buildValidationReport } from '../services/gstr1/validation-report';
@@ -41,9 +42,14 @@ gstr1Router.get('/sections', requireAuth, (_req, res) => {
 
 // ── Download the upload template ──
 gstr1Router.get('/template', requireAuth, wrap(async (req, res) => {
-  const buf = await buildTemplateWorkbook({ gstin: req.query.gstin as string, period: normPeriod(req.query.period) || undefined });
+  // Flat single-sheet template by default; ?format=sections for the legacy multi-sheet layout.
+  const period = normPeriod(req.query.period) || undefined;
+  const gstin = req.query.gstin as string;
+  const buf = req.query.format === 'sections'
+    ? await buildTemplateWorkbook({ gstin, period })
+    : await buildFlatTemplate({ gstin, period });
   res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-  res.setHeader('Content-Disposition', `attachment; filename="GSTR1-Template-${normPeriod(req.query.period) || 'blank'}.xlsx"`);
+  res.setHeader('Content-Disposition', `attachment; filename="GSTR1-Template-${period || 'blank'}.xlsx"`);
   res.send(buf);
 }));
 
@@ -56,9 +62,18 @@ gstr1Router.post('/datasets', requireAuth, upload.single('file'), async (req, re
   }
 
   const isCsv = /\.csv$/i.test(req.file.originalname) || req.file.mimetype.includes('csv');
-  const parsed = isCsv
-    ? await parseCsv(req.file.buffer, section)
-    : await parseWorkbook(req.file.buffer);
+  let parsed: { records: any[]; summary: any; warnings: string[] };
+  if (isCsv) {
+    parsed = await parseCsv(req.file.buffer, section);
+  } else {
+    // Prefer the flat single-sheet format; fall back to the legacy multi-sheet layout.
+    const flat = await parseFlatWorkbook(req.file.buffer);
+    if (flat) {
+      parsed = { records: flat.records, summary: summarizeRecords(flat.records), warnings: flat.warnings };
+    } else {
+      parsed = await parseWorkbook(req.file.buffer);
+    }
+  }
 
   try {
     const result = await withTenant(ctx(req), async (client) => {

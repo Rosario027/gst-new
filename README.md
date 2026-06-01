@@ -13,8 +13,8 @@
         →  Generate GSTN portal JSON  →  Download .json  OR  push via GSP API
 ```
 
-1. **Template** — generates the GSTN-style upload workbook (one sheet per section: b2b, b2cl, b2cs, cdnr, cdnur, exp, nil, hsn, docs, advances).
-2. **Upload + validate** — parses `.xlsx`/`.csv` (also ingests the official GSTN offline-tool export), validates GSTIN checksums, rates, POS, dates, required fields.
+1. **Template** — generates a friendly **flat single-sheet** upload workbook (`GSTR1Data` + `Instructions` + `Masters`). One row per invoice line; the tool classifies each line into the right GSTR-1 table from `DocumentType` + `SupplyType` + `CustomerGSTIN`. Column names match the common enterprise "raw file" layout, so exports from other tools import directly. (Legacy per-section template still available at `/api/gstr1/template?format=sections`.)
+2. **Upload + validate** — auto-detects the flat format (falls back to the multi-sheet layout / CSV). Validates GSTIN checksum, rates, POS, dates, invoice-number format, duplicates, **inter/intra tax logic** (IGST vs CGST+SGST by POS vs supplier state, CGST=SGST, no IGST+CGST/SGST on one line), and invoice value = taxable + tax + cess. HSN summary (table 12) is auto-aggregated from the lines.
 3. **Reconcile** — invoice-by-invoice match of books vs a comparison source (e-invoice / portal), flagging `matched`, `value mismatch`, `only in books`, `only in compare`.
 4. **Generate JSON** — builds the exact GSTR-1 portal JSON schema (CGST/SGST vs IGST split by place-of-supply, doc_issue net, HSN, etc.).
 5. **Deliver** — per-registration `delivery_mode`: `json` (download file) or `api` (push via a GST Suvidha Provider — interface stubbed, ready for credentials).

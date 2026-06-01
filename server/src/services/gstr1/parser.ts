@@ -135,6 +135,10 @@ function isNoteRow(data: Record<string, any>, section: SectionDef): boolean {
   return vals.some((v) => v.startsWith('*')) && vals.every((v) => v === '' || v.startsWith('*') || /required|DD-|NN-|OE=|WPAY=/.test(v));
 }
 
+export function summarizeRecords(records: ParsedRecord[]): DatasetSummary {
+  return summarize(records);
+}
+
 function summarize(records: ParsedRecord[]): DatasetSummary {
   const bySection: DatasetSummary['bySection'] = {};
   let totalTaxableValue = 0;

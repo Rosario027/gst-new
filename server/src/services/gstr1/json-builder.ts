@@ -58,6 +58,15 @@ export function buildGstr1Json(records: ParsedRecord[], opts: BuildOptions): Rec
   return out;
 }
 
+/** Use explicit tax amounts from the row when present (flat format), else compute. */
+function resolveSplit(l: Record<string, any>, opts: { supplierStateCode: string; pos: any; forceInterState?: boolean }): ReturnType<typeof computeTax> {
+  const iamt = toNumber(l.iamt), camt = toNumber(l.camt), samt = toNumber(l.samt);
+  if (iamt > 0 || camt > 0 || samt > 0) {
+    return { iamt: round2(iamt), camt: round2(camt), samt: round2(samt), csamt: round2(toNumber(l.cessAmount)) };
+  }
+  return computeTax({ supplierStateCode: opts.supplierStateCode, pos: opts.pos, rate: toNumber(l.rate), taxableValue: toNumber(l.taxableValue), cessAmount: toNumber(l.cessAmount), forceInterState: opts.forceInterState });
+}
+
 function itm(rate: number, split: ReturnType<typeof computeTax>, txval: number): any {
   const det: any = { rt: round2(rate), txval: round2(txval) };
   if (split.iamt) det.iamt = split.iamt;
@@ -75,11 +84,7 @@ function buildB2b(data: Record<string, any>[], stateCode: string): any[] {
       const first = lines[0];
       const sez = /SEZ/i.test(first.invoiceType ?? '');
       const items = lines.map((l, i) => {
-        const split = computeTax({
-          supplierStateCode: stateCode, pos: l.pos, rate: toNumber(l.rate),
-          taxableValue: toNumber(l.taxableValue), cessAmount: toNumber(l.cessAmount),
-          forceInterState: sez,
-        });
+        const split = resolveSplit(l, { supplierStateCode: stateCode, pos: l.pos, forceInterState: sez });
         return { num: i + 1, itm_det: itm(toNumber(l.rate), split, toNumber(l.taxableValue)) };
       });
       const o: any = {
@@ -117,7 +122,7 @@ function buildB2cs(data: Record<string, any>[], stateCode: string): any[] {
   // already rate-wise rows; emit one entry per (pos, rate, type, etin)
   return data.map((r) => {
     const pos = posCode(r.pos);
-    const split = computeTax({ supplierStateCode: stateCode, pos, rate: toNumber(r.rate), taxableValue: toNumber(r.taxableValue), cessAmount: toNumber(r.cessAmount) });
+    const split = resolveSplit(r, { supplierStateCode: stateCode, pos });
     const inter = pos !== stateCode;
     const o: any = {
       sply_ty: inter ? 'INTER' : 'INTRA',
@@ -138,7 +143,7 @@ function buildCdnr(data: Record<string, any>[], stateCode: string): any[] {
     const nt = Object.entries(byNote).map(([nt_num, lines]) => {
       const first = lines[0];
       const items = lines.map((l, i) => {
-        const split = computeTax({ supplierStateCode: stateCode, pos: l.pos, rate: toNumber(l.rate), taxableValue: toNumber(l.taxableValue), cessAmount: toNumber(l.cessAmount) });
+        const split = resolveSplit(l, { supplierStateCode: stateCode, pos: l.pos });
         return { num: i + 1, itm_det: itm(toNumber(l.rate), split, toNumber(l.taxableValue)) };
       });
       return {
