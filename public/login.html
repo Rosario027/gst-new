@@ -178,7 +178,6 @@
 
 <script src="api.js"></script>
 <script>
-const demoUsers = [{ id: 'admin', password: 'admin123', name: 'Admin User', role: 'Company Admin', company: 'Demo Workspace', initials: 'AD' }];
 let companies = [];
 let owner = null;
 let team = [];
@@ -222,29 +221,13 @@ document.getElementById('login-form').addEventListener('submit', async (event) =
   const errEl = document.getElementById('login-error');
   errEl.textContent = '';
 
-  // 1. Try the real backend first.
+  const btn = event.submitter; if (btn) btn.disabled = true;
   try {
-    await window.FP.login(loginId, password);
+    await window.FP.login(loginId, password);   // backend only — sets the auth token
     window.location.href = 'dashboard.html';
-    return;
   } catch (e) {
-    // 2. Fall back to local demo / saved-onboarding (offline prototype mode).
-    const demo = demoUsers.find(x => x.id === loginId && x.password === password);
-    const saved = findSavedUser(loginId, password);
-    if (demo) {
-      setSession(demo);
-      localStorage.removeItem('fylepro.entity');
-      window.location.href = 'dashboard.html';
-      return;
-    }
-    if (saved) {
-      const firstCompany = saved.data.companies.find(c => c.accessUserIds.includes(saved.user.userId));
-      setSession(saved.user, saved.data.workspaceName);
-      if (firstCompany) localStorage.setItem('fylepro.entity', firstCompany.id);
-      window.location.href = 'dashboard.html';
-      return;
-    }
     errEl.textContent = e.message || 'Invalid login ID or password.';
+    if (btn) btn.disabled = false;
   }
 });
 
@@ -267,8 +250,6 @@ document.getElementById('temp-form').addEventListener('submit', async (event) =>
     await window.FP.onboarding.verify(tempId, tempPassword);
     showStep(2);
   } catch (e) {
-    // offline fallback to the demo temporary credential
-    if (tempId === 'new' && tempPassword === 'new123') { showStep(2); return; }
     document.getElementById('temp-error').textContent = e.message || 'Temporary credentials do not match.';
   }
 });
@@ -364,22 +345,14 @@ document.getElementById('team-form').addEventListener('submit', async (event) =>
     team: team.map(t => ({ fullName: t.name, loginId: t.loginId, password: t.password, role: t.role }))
   };
 
+  const btn = event.submitter; if (btn) btn.disabled = true;
   try {
     // Create the real tenant, admin, companies, GSTINs and team in the database.
-    await window.FP.onboarding.complete(payload);
+    await window.FP.onboarding.complete(payload);   // sets the auth token
     window.location.href = 'gstr1-workbench.html';
   } catch (e) {
-    const msg = e.message || 'Onboarding failed.';
-    // Only fall back to offline mode on a network failure; surface real validation errors.
-    if (/failed to fetch|networkerror|load failed/i.test(msg)) {
-      const onboarding = { workspaceName: companies[0].companyName, owner, companies, teamMembers: team, createdAt: new Date().toISOString() };
-      localStorage.setItem('fylepro.onboarding', JSON.stringify(onboarding));
-      localStorage.setItem('fylepro.entity', companies[0].id);
-      setSession(owner, onboarding.workspaceName);
-      window.location.href = 'dashboard.html';
-      return;
-    }
-    teamError(msg);
+    teamError(e.message || 'Onboarding failed.');
+    if (btn) btn.disabled = false;
   }
 });
 </script>

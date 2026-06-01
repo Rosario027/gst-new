@@ -356,7 +356,11 @@ function renderEntityStripDue(entity) {
 // ============================================
 function renderShell(active, moduleName, breadcrumb) {
   const session = getStoredSession();
-  if (!session) {
+  // Require BOTH a session and an auth token — a session without a token is a
+  // stale/partial login and must not render (otherwise pages bounce to login).
+  const hasToken = !window.FP || !!(window.FP.getToken && window.FP.getToken());
+  if (!session || !hasToken) {
+    try { localStorage.removeItem('fylepro.session'); } catch (e) {}
     window.location.href = 'login.html';
     return;
   }

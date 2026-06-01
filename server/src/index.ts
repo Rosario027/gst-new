@@ -62,10 +62,18 @@ app.use((err: any, _req: express.Request, res: express.Response, _next: express.
   res.status(err.status ?? 500).json({ error: err.message ?? 'Internal server error' });
 });
 
-const server = app.listen(config.port, () => {
-  console.log(`FylePro GST server listening on :${config.port} (${config.env}) · ssl=${config.pgSsl}`);
-  void runMigrations();
-});
+async function start(): Promise<void> {
+  // Apply migrations BEFORE accepting traffic so the first login/onboarding
+  // request never hits missing tables. Resilient: starts even if it fails.
+  await runMigrations();
+  const server = app.listen(config.port, () => {
+    console.log(`FylePro GST server listening on :${config.port} (${config.env}) · ssl=${config.pgSsl}`);
+  });
+  process.on('SIGTERM', () => server.close(() => pool.end()));
+  process.on('SIGINT', () => server.close(() => pool.end()));
+}
 
-process.on('SIGTERM', () => server.close(() => pool.end()));
-process.on('SIGINT', () => server.close(() => pool.end()));
+start().catch((err) => {
+  console.error('[fatal] failed to start', err);
+  process.exit(1);
+});
