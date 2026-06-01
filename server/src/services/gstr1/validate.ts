@@ -1,7 +1,7 @@
 import { SectionDef, ColumnDef, SECTION_MAP } from './sections';
 import { ValidationError, ValidationContext, ValidationSummary, ParsedRecord } from '../../types';
 import { isValidGstin, isValidGstinFormat, stateCodeFromGstin } from '../gstin';
-import { posCode, toNumber, round2, parsePeriod, STATE_NAMES } from './util';
+import { posCode, toNumber, round2, parsePeriod, STATE_NAMES, isValidStateCode } from './util';
 
 // Combined GST rate slabs valid in the rate-wise sheets (CGST+SGST or IGST).
 const VALID_RATES = [0, 0.1, 0.25, 1, 1.5, 3, 5, 6, 7.5, 12, 18, 28];
@@ -105,6 +105,7 @@ function validateByType(col: ColumnDef, value: any, e: ValidationError[]): void 
   switch (col.type) {
     case 'gstin':
       if (!isValidGstinFormat(v)) e.push(err(col.key, `Invalid GSTIN format: ${v}`, 'RET191113'));
+      else if (!isValidStateCode(v.slice(0, 2))) e.push(err(col.key, `Invalid GST state code "${v.slice(0, 2)}" in GSTIN ${v}`, 'RET191113'));
       else if (!isValidGstin(v)) e.push(err(col.key, `Invalid GSTIN checksum: ${v}`, 'RET191113'));
       break;
     case 'number':
@@ -113,9 +114,11 @@ function validateByType(col: ColumnDef, value: any, e: ValidationError[]): void 
     case 'rate':
       if (!VALID_RATES.includes(toNumber(v))) e.push(err(col.key, `Invalid GST rate: ${v}% (allowed: ${VALID_RATES.join(', ')})`, 'RET191175'));
       break;
-    case 'pos':
-      if (!posCode(v)) e.push(err(col.key, `Invalid Place of Supply: ${v}`, 'RET191134'));
+    case 'pos': {
+      const pc = posCode(v);
+      if (!pc || !isValidStateCode(pc)) e.push(err(col.key, `Invalid Place of Supply state code: ${v}`, 'RET191134'));
       break;
+    }
     case 'date':
       if (!/\d/.test(v)) e.push(err(col.key, `Invalid date: ${v}`));
       break;

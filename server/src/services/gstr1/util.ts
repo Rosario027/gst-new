@@ -1,23 +1,32 @@
 // Shared helpers for GSTR-1: state codes, POS parsing, money/tax math, dates.
 
+// Official GST State / UT codes (current master).
+// Note: 25 (Daman & Diu) and 26 (Dadra & Nagar Haveli) were merged into 26
+// w.e.f. 2020; 28 (Andhra Pradesh old) is discontinued — both are excluded.
 export const STATE_NAMES: Record<string, string> = {
-  '01': 'Jammu & Kashmir', '02': 'Himachal Pradesh', '03': 'Punjab', '04': 'Chandigarh',
+  '01': 'Jammu And Kashmir', '02': 'Himachal Pradesh', '03': 'Punjab', '04': 'Chandigarh',
   '05': 'Uttarakhand', '06': 'Haryana', '07': 'Delhi', '08': 'Rajasthan', '09': 'Uttar Pradesh',
   '10': 'Bihar', '11': 'Sikkim', '12': 'Arunachal Pradesh', '13': 'Nagaland', '14': 'Manipur',
   '15': 'Mizoram', '16': 'Tripura', '17': 'Meghalaya', '18': 'Assam', '19': 'West Bengal',
-  '20': 'Jharkhand', '21': 'Odisha', '22': 'Chhattisgarh', '23': 'Madhya Pradesh', '24': 'Gujarat',
-  '25': 'Daman & Diu', '26': 'Dadra & Nagar Haveli', '27': 'Maharashtra', '28': 'Andhra Pradesh (Old)',
+  '20': 'Jharkhand', '21': 'Orissa', '22': 'Chhattisgarh', '23': 'Madhya Pradesh', '24': 'Gujarat',
+  '26': 'Dadra And Nagar Haveli & Daman And Diu', '27': 'Maharashtra',
   '29': 'Karnataka', '30': 'Goa', '31': 'Lakshadweep', '32': 'Kerala', '33': 'Tamil Nadu',
-  '34': 'Puducherry', '35': 'Andaman & Nicobar Islands', '36': 'Telangana', '37': 'Andhra Pradesh',
-  '38': 'Ladakh', '97': 'Other Territory', '99': 'Centre Jurisdiction',
+  '34': 'Puducherry', '35': 'Andaman And Nicobar', '36': 'Telangana', '37': 'Andhra Pradesh',
+  '38': 'Ladakh', '97': 'Other Territory', '99': 'Other Country',
 };
 
-/** Accepts "27-Maharashtra", "27", 27, "Maharashtra" -> "27". */
+/** True if `code` is a valid 2-digit GST state/UT code from the official master. */
+export function isValidStateCode(code: any): boolean {
+  const c = String(code ?? '').trim().padStart(2, '0');
+  return Object.prototype.hasOwnProperty.call(STATE_NAMES, c);
+}
+
+/** Accepts "27-Maharashtra", "27", 27, "Maharashtra" -> "27". '' if unrecognized. */
 export function posCode(pos: any): string {
   const s = String(pos ?? '').trim();
   const m = s.match(/^(\d{1,2})/);
   if (m) return m[1].padStart(2, '0');
-  // try matching by name
+  // try matching by name (case-insensitive)
   const byName = Object.entries(STATE_NAMES).find(([, n]) => n.toLowerCase() === s.toLowerCase());
   return byName ? byName[0] : '';
 }
