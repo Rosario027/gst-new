@@ -58,9 +58,45 @@ export const FLAT_COLUMNS: FlatColumn[] = [
   { key: 'ReasonForCreditDebitNote', type: 'string', req: 'O' },
 ];
 
-// Recognized header → canonical key (superset incl. full reference layout).
+// ── Step-1 "Sales Data Validation" template columns (friendly headers) ──
+// Separate, validation-focused layout (NOT the GSTR-1 portal format). Each
+// friendly header maps to the canonical key the parser/validator already uses.
+export interface VColumn { key: string; header: string; req: Req; note?: string; }
+export const VALIDATION_COLUMNS: VColumn[] = [
+  { key: 'ReturnPeriod', header: 'Return Period (MMYYYY)', req: 'M', note: 'e.g. 052026' },
+  { key: 'SupplierGSTIN', header: 'Your GSTIN (Supplier)', req: 'M' },
+  { key: 'DocumentType', header: 'Document Type', req: 'M', note: 'INV / CR / DR / ADV … (see Masters)' },
+  { key: 'SupplyType', header: 'Supply Type', req: 'M', note: 'TAX / EXPT / NIL … (see Masters)' },
+  { key: 'DocumentNumber', header: 'Invoice / Note Number', req: 'M', note: '≤16 chars; A-Z 0-9 - /' },
+  { key: 'DocumentDate', header: 'Invoice / Note Date', req: 'M', note: 'YYYY-MM-DD' },
+  { key: 'OriginalDocumentNumber', header: 'Original Invoice Number', req: 'C', note: 'Required for Credit/Debit notes' },
+  { key: 'OriginalDocumentDate', header: 'Original Invoice Date', req: 'C', note: 'YYYY-MM-DD (CR/DR)' },
+  { key: 'CustomerGSTIN', header: 'Recipient GSTIN', req: 'C', note: 'Fill for B2B; blank = B2C' },
+  { key: 'CustomerName', header: 'Recipient Name', req: 'O' },
+  { key: 'POS', header: 'Place of Supply (State Code)', req: 'M', note: '2-digit, e.g. 07' },
+  { key: 'HSNorSAC', header: 'HSN / SAC Code', req: 'M', note: '4 / 6 / 8 digit' },
+  { key: 'UnitOfMeasurement', header: 'Unit (UQC)', req: 'O', note: 'NOS, KGS, MTR … (see Masters)' },
+  { key: 'Quantity', header: 'Quantity', req: 'O' },
+  { key: 'TaxableValue', header: 'Taxable Value', req: 'M' },
+  { key: 'IntegratedTaxRate', header: 'IGST Rate %', req: 'C', note: 'Inter-state' },
+  { key: 'IntegratedTaxAmount', header: 'IGST Amount', req: 'C' },
+  { key: 'CentralTaxRate', header: 'CGST Rate %', req: 'C', note: 'Intra-state' },
+  { key: 'CentralTaxAmount', header: 'CGST Amount', req: 'C' },
+  { key: 'StateUTTaxRate', header: 'SGST/UTGST Rate %', req: 'C', note: 'Intra-state' },
+  { key: 'StateUTTaxAmount', header: 'SGST/UTGST Amount', req: 'C' },
+  { key: 'CessAmountAdvalorem', header: 'Cess Amount', req: 'O' },
+  { key: 'InvoiceValue', header: 'Total Invoice Value', req: 'M', note: 'Taxable + tax + cess' },
+  { key: 'ReverseChargeFlag', header: 'Reverse Charge (Y/N)', req: 'O' },
+  { key: 'eComGSTIN', header: 'E-commerce GSTIN', req: 'O' },
+  { key: 'PortCode', header: 'Port Code (Exports)', req: 'C' },
+  { key: 'ShippingBillNumber', header: 'Shipping Bill No (Exports)', req: 'C' },
+  { key: 'ShippingBillDate', header: 'Shipping Bill Date (Exports)', req: 'C', note: 'YYYY-MM-DD' },
+];
+
+// Recognized header → canonical key (superset incl. full reference layout + validation headers).
 const ALIAS: Record<string, string> = {};
 for (const c of FLAT_COLUMNS) ALIAS[c.key.toLowerCase()] = c.key;
+for (const c of VALIDATION_COLUMNS) ALIAS[c.header.toLowerCase()] = c.key;
 ['SourceIdentifier','SourceFileName','GLAccountCode','Division','SubDivision','ProfitCentre1','ProfitCentre2','PlantCode','OriginalCustomerGSTIN','CustomerCode','BillToState','ShipToState','FOB','ExportDuty','ProductCode','CategoryOfProduct','IntegratedTaxRate','CentralTaxRate','StateUTTaxRate','CessRateAdvalorem','CessRateSpecific','TCSFlag','ITCFlag','AccountingVoucherNumber','AccountingVoucherDate','Userdefinedfield1','Userdefinedfield2','Userdefinedfield3']
   .forEach((k) => { ALIAS[k.toLowerCase()] = k; });
 
@@ -364,4 +400,73 @@ function writeMaster(ws: ExcelJS.Worksheet, col: number, title: string, rows: [s
   ws.getCell(1, col + 1).value = 'Description'; ws.getCell(1, col + 1).font = { bold: true, color: { argb: 'FFFFFFFF' } };
   ws.getCell(1, col + 1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF374151' } };
   rows.forEach(([code, desc], i) => { ws.getCell(2 + i, col).value = code; ws.getCell(2 + i, col + 1).value = desc; });
+}
+
+// ════════════════════════════════════════════════════════════════════
+// STEP 1 — "Sales Data Validation" template (separate from the GSTR-1 format).
+// About sheet + Sales Data entry sheet + Masters. Used only to validate data
+// quality before GSTR-1 preparation.
+// ════════════════════════════════════════════════════════════════════
+const UQC_LIST = ['NOS', 'PCS', 'KGS', 'MTR', 'MTS', 'LTR', 'BOX', 'BAG', 'BTL', 'SET', 'PRS', 'DOZ', 'TON', 'SQM', 'SQF', 'CBM', 'UNT', 'OTH'];
+
+export async function buildValidationTemplate(opts?: { gstin?: string; period?: string }): Promise<Buffer> {
+  const wb = new ExcelJS.Workbook();
+  wb.creator = 'FylePro GST';
+  wb.created = new Date(0);
+
+  // ── About / instructions ──
+  const about = wb.addWorksheet('About', { properties: { tabColor: { argb: 'FF4F46E5' } } });
+  about.columns = [{ width: 4 }, { width: 118 }];
+  const L: [string, boolean][] = [
+    ['FylePro — GSTR-1 Step 1: Sales Data Validation Template', true],
+    ['', false],
+    ['What this is', true],
+    ['This template is ONLY for Step 1 — validating the quality of your sales data before you prepare GSTR-1.', false],
+    ['It is NOT the GSTR-1 portal upload / JSON format. Fill it, upload it on Step 1, and click "Run Validate" to', false],
+    ['get a pass / warning / fail report on each row. Fix the flagged rows, then continue to reconciliation.', false],
+    ['', false],
+    [`Your GSTIN: ${opts?.gstin ?? '________________'}      Return Period (MMYYYY): ${opts?.period ?? '______'}`, false],
+    ['', false],
+    ['How to fill the "Sales Data" sheet', true],
+    ['1. One row per invoice line. If an invoice has two tax rates, enter two rows with the same Invoice Number.', false],
+    ['2. Dates as YYYY-MM-DD. Amounts as plain numbers (no commas / ₹).', false],
+    ['3. Document Type & Supply Type must use the codes in the "Masters" sheet.', false],
+    ['4. Recipient GSTIN: fill for registered buyers (B2B); leave blank for B2C.', false],
+    ['5. Inter-state supply → fill IGST Rate% + IGST Amount. Intra-state → fill CGST and SGST (rate% + amount).', false],
+    ['6. Place of Supply = 2-digit state code (see Masters).', false],
+    ['', false],
+    ['What gets validated', true],
+    ['• GSTIN — 15-char structure, checksum, valid state code.', false],
+    ['• Place of Supply matches recipient GSTIN state; inter→IGST only, intra→CGST=SGST.', false],
+    ['• Reverse-arithmetic: Taxable × Rate = Tax (±₹1). IGST and CGST/SGST cannot coexist.', false],
+    ['• Invoice number: ≤16 chars (A-Z 0-9 - /); no duplicates (in file and across the financial year).', false],
+    ['• HSN/SAC: valid code, 4/6/8-digit per turnover; valid UQC; quantity for goods.', false],
+    ['• Credit/Debit notes linked to an Original Invoice Number + date.', false],
+    ['• Round-off / cross-foot: Total Invoice Value = Taxable + Tax + Cess (±0.99).', false],
+    ['• Exports: shipping bill expected. Document count summary (issued / cancelled / net).', false],
+  ];
+  L.forEach(([t, b], i) => { const c = about.getCell(`B${i + 1}`); c.value = t; if (b) c.font = { bold: true, size: i === 0 ? 14 : 12, color: { argb: 'FF1F2937' } }; });
+
+  // ── Sales Data (entry sheet) ──
+  const ws = wb.addWorksheet('Sales Data');
+  ws.columns = VALIDATION_COLUMNS.map((c) => ({ header: c.header, key: c.key, width: Math.max(14, Math.min(28, c.header.length + 3)) }));
+  const head = ws.getRow(1);
+  head.font = { bold: true, color: { argb: 'FFFFFFFF' } }; head.height = 30; head.alignment = { wrapText: true, vertical: 'middle' };
+  head.eachCell((cell) => { cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF374151' } }; });
+  const noteRow = ws.addRow(Object.fromEntries(VALIDATION_COLUMNS.map((c) => [c.key, (c.req === 'M' ? '★ ' : c.req === 'C' ? '◦ ' : '') + (c.note ?? (c.req === 'M' ? 'required' : ''))])));
+  noteRow.font = { italic: true, size: 9, color: { argb: 'FF9CA3AF' } };
+  ws.views = [{ state: 'frozen', ySplit: 1 }];
+
+  // ── Masters ──
+  const m = wb.addWorksheet('Masters');
+  m.columns = [{ width: 16 }, { width: 40 }, { width: 4 }, { width: 14 }, { width: 30 }, { width: 4 }, { width: 10 }, { width: 30 }, { width: 4 }, { width: 10 }];
+  writeMaster(m, 1, 'Document Type Code', DOC_TYPES);
+  writeMaster(m, 4, 'Supply Type Code', SUPPLY_TYPES);
+  m.getCell(1, 7).value = 'State Code'; m.getCell(1, 8).value = 'State / UT';
+  [7, 8].forEach((c) => { m.getCell(1, c).font = { bold: true, color: { argb: 'FFFFFFFF' } }; m.getCell(1, c).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF374151' } }; });
+  let sr = 2; for (const [code, name] of Object.entries(STATE_NAMES)) { m.getCell(sr, 7).value = code; m.getCell(sr, 8).value = name; sr++; }
+  m.getCell(1, 10).value = 'UQC'; m.getCell(1, 10).font = { bold: true, color: { argb: 'FFFFFFFF' } }; m.getCell(1, 10).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF374151' } };
+  UQC_LIST.forEach((u, i) => { m.getCell(2 + i, 10).value = u; });
+
+  return Buffer.from(await wb.xlsx.writeBuffer());
 }

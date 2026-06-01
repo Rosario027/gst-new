@@ -5,7 +5,7 @@ import { withTenant } from '../db';
 import { requireAuth } from '../middleware/auth';
 import { wrap } from '../middleware/async';
 import { buildTemplateWorkbook } from '../services/gstr1/template';
-import { buildFlatTemplate, parseFlatWorkbook } from '../services/gstr1/flat-format';
+import { buildFlatTemplate, buildValidationTemplate, parseFlatWorkbook } from '../services/gstr1/flat-format';
 import { buildReconReport } from '../services/gstr1/recon-report';
 import { parseWorkbook, parseCsv, summarizeRecords } from '../services/gstr1/parser';
 import { reconcile } from '../services/gstr1/reconcile';
@@ -53,14 +53,17 @@ gstr1Router.get('/sections', requireAuth, (_req, res) => {
 
 // ── Download the upload template ──
 gstr1Router.get('/template', requireAuth, wrap(async (req, res) => {
-  // Flat single-sheet template by default; ?format=sections for the legacy multi-sheet layout.
+  // kind=validation → Step-1 Sales Data Validation template (default);
+  // format=sections → legacy multi-sheet; flat → GSTR-1 flat upload format.
   const period = normPeriod(req.query.period) || undefined;
   const gstin = req.query.gstin as string;
-  const buf = req.query.format === 'sections'
-    ? await buildTemplateWorkbook({ gstin, period })
-    : await buildFlatTemplate({ gstin, period });
+  const kind = (req.query.kind as string) || (req.query.format as string) || 'validation';
+  let buf: Buffer; let name: string;
+  if (kind === 'sections') { buf = await buildTemplateWorkbook({ gstin, period }); name = 'GSTR1-Template-sections'; }
+  else if (kind === 'flat') { buf = await buildFlatTemplate({ gstin, period }); name = 'GSTR1-Template-flat'; }
+  else { buf = await buildValidationTemplate({ gstin, period }); name = 'GSTR1-Step1-Validation-Template'; }
   res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-  res.setHeader('Content-Disposition', `attachment; filename="GSTR1-Template-${period || 'blank'}.xlsx"`);
+  res.setHeader('Content-Disposition', `attachment; filename="${name}-${period || 'blank'}.xlsx"`);
   res.send(buf);
 }));
 

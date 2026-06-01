@@ -92,7 +92,7 @@
   // ── GSTR-1 module API ──
   const gstr1 = {
     sections: () => api('/gstr1/sections'),
-    templateUrl: (gstin, period) => '/api/gstr1/template?gstin=' + encodeURIComponent(gstin || '') + '&period=' + encodeURIComponent(period || ''),
+    templateUrl: (gstin, period, kind) => '/api/gstr1/template?gstin=' + encodeURIComponent(gstin || '') + '&period=' + encodeURIComponent(period || '') + (kind ? '&kind=' + encodeURIComponent(kind) : ''),
     reconReportUrl: (reconId) => '/api/gstr1/reconciliations/' + reconId + '/report',
     validationReportUrl: (datasetId) => '/api/gstr1/datasets/' + datasetId + '/validation-report',
     upload: (file, registrationId, period, source) => {

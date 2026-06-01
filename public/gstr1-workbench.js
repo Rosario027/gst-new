@@ -54,7 +54,7 @@
     state.period = mm + yyyy;
     localStorage.setItem('fylepro.entity', state.regId);
     $('wb-context').textContent = `${state.gstin || '—'} · ${MONTHS[+$('wb-month').value - 1]} ${yyyy} · delivery: ${state.deliveryMode.toUpperCase()}`;
-    $('wb-template').href = FP.gstr1.templateUrl(state.gstin, state.period);
+    $('wb-template').href = FP.gstr1.templateUrl(state.gstin, state.period, 'flat');
   }
 
   // ── Generic drop-zone wiring ──
