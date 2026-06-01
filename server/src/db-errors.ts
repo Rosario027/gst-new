@@ -1,3 +1,5 @@
+import { config } from './config';
+
 const DB_SETUP_ERROR_CODES = new Set([
   '28P01', // invalid_password
   '3D000', // invalid_catalog_name
@@ -30,19 +32,24 @@ export function isDatabaseSetupError(err: any): boolean {
 export function databaseSetupMessage(err: any): string {
   const code = String(err?.code ?? '');
   const message = String(err?.message ?? '').toLowerCase();
+  const target = `${config.databaseSource} (${config.databaseHost})`;
+
+  if (config.env === 'production' && config.databaseSource === 'default-local') {
+    return 'Railway app is not receiving the Postgres connection variables. Add DATABASE_URL (or DATABASE_PRIVATE_URL) from the Postgres service to the app service variables and redeploy.';
+  }
 
   if (code === '28P01' || message.includes('password authentication failed')) {
-    return 'Database login failed. Check DATABASE_URL in .env, then run npm run db:setup:dev.';
+    return `Database login failed for ${target}. Check the app service database variables and redeploy.`;
   }
 
   if (message.includes('relation "users" does not exist')) {
-    return 'Database tables are missing. Run npm run db:setup:dev, then try logging in again.';
+    return `Database tables are missing on ${target}. Set RUN_MIGRATIONS_ON_BOOT=true or run the schema setup once.`;
   }
 
   if (code === '3D000' || message.includes('database') && message.includes('does not exist')) {
-    return 'Configured database was not found. Create it or update DATABASE_URL, then run npm run db:setup:dev.';
+    return `Configured database was not found for ${target}. Check the database name in the app service variables.`;
   }
 
-  return 'Database is unavailable. Check DATABASE_URL/Postgres, then run npm run db:setup:dev.';
+  return `Database is unavailable at ${target}. The Postgres deployment may be online, but the app service cannot connect with its current variables.`;
 }
 

@@ -43,6 +43,7 @@ app.get('/api/health', async (_req, res) => {
     );
     res.json({
       ok: true, db: 'up', env: config.env, ssl: config.pgSsl,
+      db_source: config.databaseSource, db_host: config.databaseHost,
       jwtSecretSet: !!process.env.JWT_SECRET && process.env.JWT_SECRET.trim() !== '',
       ...meta.rows[0],
     });
@@ -50,7 +51,11 @@ app.get('/api/health', async (_req, res) => {
     // 'relation users does not exist' here means tables aren't applied on THIS db.
     let dbName: string | null = null;
     try { dbName = (await pool.query('SELECT current_database() AS db')).rows[0].db; } catch {}
-    res.status(503).json({ ok: false, db: 'down_or_unmigrated', db_name: dbName, error: err.message });
+    res.status(503).json({
+      ok: false, db: 'down_or_unmigrated', db_name: dbName,
+      db_source: config.databaseSource, db_host: config.databaseHost,
+      error: err.message,
+    });
   }
 });
 
