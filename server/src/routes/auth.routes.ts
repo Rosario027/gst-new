@@ -43,7 +43,10 @@ authRouter.post('/login', wrap(async (req, res) => {
     [loginId]
   );
   for (const u of candidates) {
-    if (await bcrypt.compare(password, u.password_hash)) {
+    if (!u.password_hash || typeof u.password_hash !== 'string') continue; // skip malformed rows
+    let ok = false;
+    try { ok = await bcrypt.compare(password, u.password_hash); } catch { ok = false; }
+    if (ok) {
       const user: AuthUser = {
         tenantId: u.tenant_id, userId: u.id, loginId: u.login_id,
         fullName: u.full_name, role: u.role,

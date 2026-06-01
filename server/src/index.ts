@@ -2,11 +2,29 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import path from 'path';
+import fs from 'fs';
 import { config } from './config';
 import { pool } from './db';
 import { authRouter } from './routes/auth.routes';
 import { gstr1Router } from './routes/gstr1.routes';
 import { gstr3bRouter } from './routes/gstr3b.routes';
+
+/** Apply schema.sql (+ seed.sql) on boot — idempotent, so a fresh deploy is self-setup. */
+async function runMigrations(): Promise<void> {
+  if (!config.runMigrationsOnBoot) return;
+  try {
+    const schemaPath = path.join(config.paths.dbDir, 'schema.sql');
+    if (fs.existsSync(schemaPath)) {
+      await pool.query(fs.readFileSync(schemaPath, 'utf8'));
+      console.log('[boot] schema.sql applied (idempotent).');
+    }
+    const seedPath = path.join(config.paths.dbDir, 'seed.sql');
+    if (fs.existsSync(seedPath)) await pool.query(fs.readFileSync(seedPath, 'utf8'));
+  } catch (err: any) {
+    // Don't crash the server — surface via /api/health and logs.
+    console.error('[boot] migration failed (server will still start):', err.message);
+  }
+}
 
 const app = express();
 
@@ -45,7 +63,8 @@ app.use((err: any, _req: express.Request, res: express.Response, _next: express.
 });
 
 const server = app.listen(config.port, () => {
-  console.log(`FylePro GST server listening on :${config.port} (${config.env})`);
+  console.log(`FylePro GST server listening on :${config.port} (${config.env}) · ssl=${config.pgSsl}`);
+  void runMigrations();
 });
 
 process.on('SIGTERM', () => server.close(() => pool.end()));

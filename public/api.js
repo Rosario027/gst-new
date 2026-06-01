@@ -25,9 +25,11 @@
     }
     const res = await fetch('/api' + pathname, Object.assign({ credentials: 'include' }, opts, { headers }));
     const ct = res.headers.get('content-type') || '';
-    const payload = ct.includes('application/json') ? await res.json() : await res.blob();
+    let payload;
+    if (ct.includes('application/json')) payload = await res.json();
+    else { const txt = await res.text(); try { payload = JSON.parse(txt); } catch (e) { payload = txt; } }
     if (!res.ok) {
-      const msg = (payload && payload.error) || ('Request failed (' + res.status + ')');
+      const msg = (payload && payload.error) || (typeof payload === 'string' && payload.slice(0, 200)) || ('Request failed (' + res.status + ')');
       throw new Error(msg);
     }
     return payload;
