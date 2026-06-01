@@ -23,16 +23,16 @@ function firstEnv(...names: string[]): { name: string; value: string } | null {
 }
 
 function buildPgUrlFromParts(): { source: string; url: string } | null {
-  const host = env('PGHOST') || env('POSTGRES_HOST');
+  const host = env('PGHOST') || env('PGHOST_PRIVATE') || env('POSTGRES_HOST') || env('POSTGRES_HOST_PRIVATE');
   const user = env('PGUSER') || env('POSTGRES_USER');
   const password = env('PGPASSWORD') || env('POSTGRES_PASSWORD');
   const database = env('PGDATABASE') || env('POSTGRES_DB') || env('POSTGRES_DATABASE');
   if (!host || !user || !password || !database) return null;
 
-  const port = env('PGPORT') || env('POSTGRES_PORT') || '5432';
+  const port = env('PGPORT') || env('PGPORT_PRIVATE') || env('POSTGRES_PORT') || env('POSTGRES_PORT_PRIVATE') || '5432';
   const protocol = env('PGPROTOCOL') || env('POSTGRES_PROTOCOL') || 'postgresql';
   return {
-    source: 'PGHOST/PGUSER/PGPASSWORD/PGDATABASE',
+    source: 'PGHOST/PGHOST_PRIVATE + PGUSER/PGPASSWORD/PGDATABASE',
     url: `${protocol}://${encodeURIComponent(user)}:${encodeURIComponent(password)}@${host}:${port}/${database}`,
   };
 }
@@ -41,8 +41,12 @@ function resolveDatabaseUrl(): { source: string; url: string } {
   const direct = firstEnv(
     'DATABASE_URL',
     'DATABASE_PRIVATE_URL',
+    'DATABASE_URL_PRIVATE',
     'DATABASE_PUBLIC_URL',
     'POSTGRES_URL',
+    'POSTGRES_DATABASE_URL',
+    'POSTGRES_PRIVATE_URL',
+    'POSTGRES_URL_PRIVATE',
     'RAILWAY_DATABASE_URL'
   );
   if (direct) return { source: direct.name, url: direct.value };

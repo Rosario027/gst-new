@@ -81,12 +81,19 @@ no pre-seeded demo account.
 
 ## Deploy on Railway
 
-1. Create a Railway project, add the **PostgreSQL** plugin (sets `DATABASE_URL`).
-2. Add service variables: `JWT_SECRET`, `PGSSL=true`, `NODE_ENV=production`.
+1. Create a Railway project, add the **PostgreSQL** plugin.
+2. On the **app service**, add a reference variable to the Postgres service:
+   `DATABASE_URL=${{Postgres.DATABASE_URL}}`.
+   If your Railway template exposes private variables instead, use
+   `DATABASE_URL=${{Postgres.DATABASE_URL_PRIVATE}}` or
+   `DATABASE_PRIVATE_URL=${{Postgres.DATABASE_PRIVATE_URL}}`.
+   Seeing healthy variables on the Postgres service is not enough; the app
+   service must receive one of these values too.
+3. Add app service variables: `JWT_SECRET`, `PGSSL=true`, `NODE_ENV=production`.
    (Optional GSP API: `GSP_PROVIDER`, `GSP_BASE_URL`, `GSP_CLIENT_ID`, `GSP_CLIENT_SECRET`.)
-3. Deploy this repo. Build/start are defined in `railway.json` (`npm run build` → `npm start`).
-4. One-time DB init: run `npm run db:setup` from the Railway shell (or locally pointed at the Railway `DATABASE_URL`).
-5. Health check: `GET /api/health`.
+4. Deploy this repo. Build/start are defined in `railway.json` (`npm run build` → `npm start`).
+5. One-time DB init: run `npm run db:setup` from the Railway shell (or locally pointed at the Railway `DATABASE_URL`).
+6. Health check: `GET /api/health`.
 
 ---
 

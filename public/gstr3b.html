@@ -3,35 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GSTR-3B · FylePro</title>
+<title>GSTR-3B · Inward Prep &amp; Filing · FylePro</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
-<style>
-  .tb-grid { display:grid; gap:16px; }
-  .tb-due { background:linear-gradient(135deg,#312E81,#4F46E5); color:#fff; border-radius:14px; padding:20px 24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
-  .tb-due .big { font-family:'IBM Plex Mono',monospace; font-size:30px; font-weight:600; }
-  .tb-due .sub { color:#C7CDF7; font-size:13px; }
-  .tb-card { background:#fff; border:1px solid #E5E7EB; border-radius:12px; padding:20px; }
-  .tb-card h3 { margin:0 0 4px; font-size:15px; }
-  .tb-card .hint { color:#6B7280; font-size:12.5px; margin:0 0 12px; }
-  .row { display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap; }
-  .fld { display:flex; flex-direction:column; gap:4px; }
-  .fld label { font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6B7280; font-weight:600; }
-  .fld select, .fld input { padding:8px 10px; border:1px solid #D1D5DB; border-radius:8px; font-family:inherit; font-size:13px; min-width:120px; background:#fff; color:#1F2937; }
-  .tb-due .fld label { color:#C7CDF7; }
-  table.t { width:100%; border-collapse:collapse; font-size:12.5px; }
-  table.t th { text-align:right; background:#F9FAFB; padding:8px 10px; border-bottom:1px solid #E5E7EB; font-size:11px; text-transform:uppercase; color:#6B7280; }
-  table.t th:first-child, table.t td:first-child { text-align:left; }
-  table.t td { padding:8px 10px; border-bottom:1px solid #F3F4F6; font-family:'IBM Plex Mono',monospace; text-align:right; }
-  table.t td.lbl { font-family:inherit; }
-  table.t tfoot td { font-weight:600; background:#F9FAFB; }
-  table.t input { width:110px; text-align:right; padding:5px 7px; border:1px solid #D1D5DB; border-radius:6px; font-family:'IBM Plex Mono',monospace; }
-  .banner { padding:10px 14px; border-radius:8px; font-size:13px; margin-bottom:12px; display:none; }
-  .banner.show { display:block; } .banner.e { background:#FBE9EC; color:#C8102E; } .banner.i { background:#EAF1FE; color:#155CDB; }
-  .net { font-size:22px; font-family:'IBM Plex Mono',monospace; font-weight:600; }
-</style>
 </head>
 <body>
 <div class="app">
@@ -40,75 +16,573 @@
   <main class="main">
     <div class="page-head">
       <div>
-        <h1 class="page-title">GSTR-3B · Monthly Summary Return</h1>
-        <p class="page-subtitle" id="tb-sub">Auto-prepared from your GSTR-1 data</p>
+        <h1 class="page-title">GSTR-3B · Inward Prep &amp; Filing</h1>
+        <p class="page-subtitle">Prepare your inward side step by step — Validate PR → Auto-fetch IMS → Confirm Inward Summary → Set-off &amp; File · Outward side comes locked from GSTR-1</p>
       </div>
-      <a href="dashboard.html" class="btn btn-secondary back-arrow-link">Back to dashboard</a>
+      <div class="flex gap-2">
+        <button class="btn btn-secondary cta-large">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download JSON
+        </button>
+        <button class="btn btn-secondary cta-large">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Preview Return
+        </button>
+      </div>
     </div>
 
-    <div class="banner" id="tb-banner"></div>
-
-    <div class="tb-grid">
-      <div class="tb-due">
+    <!-- 5-STEP INWARD PREPARATION WORKFLOW -->
+    <div class="workflow-lifecycle">
+      <div class="workflow-lifecycle-header">
         <div>
-          <div class="sub">Next GSTR-3B due</div>
-          <div class="big" id="tb-days">—</div>
-          <div class="sub" id="tb-date"></div>
+          <div class="workflow-lifecycle-title">Prepare GSTR-3B · Inward step-by-step workflow</div>
+          <div class="workflow-lifecycle-sub">Follow these 5 phases in order · each opens its own dedicated screen · activity log captured per step</div>
         </div>
-        <div class="row">
-          <div class="fld"><label>GSTIN</label><select id="tb-reg"></select></div>
-          <div class="fld"><label>Month</label><select id="tb-month"></select></div>
-          <div class="fld"><label>Year</label><select id="tb-year"></select></div>
-          <div class="fld"><label>&nbsp;</label><button class="btn btn-primary" id="tb-compute">Compute from GSTR-1</button></div>
+        <div class="workflow-progress-pill">2 of 5 complete</div>
+      </div>
+      <div class="step-cards">
+
+        <a href="gstr3b-step1.html" class="step-card completed">
+          <div class="step-num">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="step-body">
+            <div class="step-card-title">
+              Validate Purchase Data
+              <span class="step-pill completed">Completed</span>
+            </div>
+            <div class="step-card-desc">Bring in your purchase register — B2B inward invoices, debit / credit notes received, RCM inward supplies, imports of goods/services — from your ERP, an Excel template, or manual entry. Validations: supplier GSTIN, place-of-supply, reverse arithmetic on tax × rate, RCM tagging, ITC eligibility flagging.</div>
+            <div class="step-card-meta">1,84,217 inward records ingested · 99.4% validations passed · Completed 12-May-2026</div>
+          </div>
+          <div class="step-cta">Review →</div>
+        </a>
+
+        <a href="gstr3b-step2.html" class="step-card completed">
+          <div class="step-num">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="step-body">
+            <div class="step-card-title">
+              Auto IMS Fetch
+              <span class="step-pill completed">Completed</span>
+            </div>
+            <div class="step-card-desc">Auto-fetch all records that your suppliers have reported in their GSTR-1 / IFF / GSTR-1A — across IMS sections: B2B Invoices, B2B CDN, B2B Amendments, ECO supplies. Records arrive in "No-action" status by default until you Accept / Reject / Pending each.</div>
+            <div class="step-card-meta">1,82,891 IMS records pulled · 6 IMS sections · Last sync 14-May 09:48 AM via GSP</div>
+          </div>
+          <div class="step-cta">Review →</div>
+        </a>
+
+        <a href="gstr3b-step3.html" class="step-card current">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-card-title">
+              Confirm Inward Summary · PR ↔ IMS Reconciliation
+              <span class="step-pill current">In progress</span>
+            </div>
+            <div class="step-card-desc">Match your Purchase Register against the auto-fetched IMS records. Six sub-tables — Matched (PR=IMS) · Non-matched IMS · Rejected (timeline) · Pending (timeline) · Matched-from-prior-pending · Final IMS vs PR. Bulk Accept / Reject / Keep Pending per table.</div>
+            <div class="step-card-meta">1,79,418 matched · 3,473 non-matched · 142 pending · 18 rejected · ₹ 12.4 L ITC at risk</div>
+          </div>
+          <div class="step-cta">Open Step →</div>
+        </a>
+
+        <a href="gstr3b-step4.html" class="step-card">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-card-title">
+              Tax Summary · portal-style tile view
+              <span class="step-pill upcoming">Upcoming</span>
+            </div>
+            <div class="step-card-desc">GSTN portal-style summary of all sections (3.1, 3.1.1, 3.2, 4, 5, 5.1, 6.1) with clickable tiles to drill into line-wise data. Mirrors what you'll see on the GSTN portal before filing.</div>
+            <div class="step-card-meta">7 tiles · auto-computed from Steps 1-3 · click any tile to expand line-wise breakup</div>
+          </div>
+          <div class="step-cta">Open Step →</div>
+        </a>
+
+        <a href="gstr3b-step5.html" class="step-card">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <div class="step-card-title">
+              Compute ITC &amp; Set-off
+              <span class="step-pill upcoming">Upcoming</span>
+            </div>
+            <div class="step-card-desc">Section 4 — Eligible ITC computed from Accepted records (auto). Section 6.1 — apply ITC against output liability across IGST, CGST, SGST. Auto-suggest optimal set-off order per Rule 88A.</div>
+            <div class="step-card-meta">Estimated ITC ₹ 6.17 Cr · Estimated cash payable ₹ 0 (ITC sufficient)</div>
+          </div>
+          <div class="step-cta">Open Step →</div>
+        </a>
+
+        <a href="gstr3b-step6.html" class="step-card">
+          <div class="step-num">6</div>
+          <div class="step-body">
+            <div class="step-card-title">
+              Preview, Submit &amp; File with DSC / EVC
+              <span class="step-pill upcoming">Upcoming</span>
+            </div>
+            <div class="step-card-desc">Generate draft PDF preview. Confirm summary totals. Submit (freeze values) and file with DSC (mandatory for companies / LLPs) or EVC (others). ARN issued instantly.</div>
+            <div class="step-card-meta">Due 20-May-2026 · 6 days remaining · Recommended file-by date: 18-May-2026</div>
+          </div>
+          <div class="step-cta">Open Step →</div>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- LIFECYCLE STRIP -->
+    <div class="lifecycle-strip">
+      <div class="lifecycle-header">
+        <div class="lifecycle-header-title">GSTR-3B filing lifecycle · Monthly · Due 20th of following month</div>
+        <div class="lifecycle-header-help">Late fee ₹ 50/day (₹ 20/day if Nil) · Interest 18% p.a. on tax in cash</div>
+      </div>
+      <div class="lifecycle-body">
+        <div class="lifecycle-phase past">
+          <div class="phase-marker"><span class="marker-dot"></span>Previous period</div>
+          <div class="phase-title">March 2026</div>
+          <div class="phase-status success">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+            Filed on 18-Apr-2026
+          </div>
+          <div class="phase-due">
+            <span class="due-date mono">ARN AA270426006142M</span>
+            <span class="days-left onTrack">Filed 2 days before due</span>
+          </div>
+        </div>
+        <div class="lifecycle-phase current">
+          <div class="phase-marker"><span class="marker-dot"></span>Current period · ready to file</div>
+          <div class="phase-title">April 2026</div>
+          <div class="phase-status">Data prepared · ITC set-off computed · Awaiting filing</div>
+          <div class="phase-due">
+            <span class="due-date">Due 20-May-2026</span>
+            <span class="days-left nearDue">⚡ 6 days remaining · File soon</span>
+          </div>
+        </div>
+        <div class="lifecycle-phase upcoming">
+          <div class="phase-marker"><span class="marker-dot"></span>Next period</div>
+          <div class="phase-title">May 2026</div>
+          <div class="phase-status muted">Opens 1-Jun-2026</div>
+          <div class="phase-due">
+            <span class="due-date">Due 20-Jun-2026</span>
+            <span class="days-left">37 days from today</span>
+          </div>
+        </div>
+        <div class="lifecycle-action">
+          <a href="#payment" class="btn btn-primary cta-large">Go to Filing →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- FILING CONTEXT -->
+    <div class="filter-bar">
+      <div class="field">
+        <label class="field-label">Filing Period</label>
+        <select class="select">
+          <option>April 2026 (ready to file)</option>
+          <option>March 2026 (filed)</option>
+          <option>February 2026 (filed)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="field-label">Entity</label>
+        <select class="select">
+          <option>All Entities (consolidated)</option>
+          <option>Apex Steel Ltd.</option>
+          <option>Apex Motors Ltd.</option>
+          <option>Apex Consumer Products</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="field-label">GSTIN</label>
+        <select class="select">
+          <option>27AABCT3518Q1ZV — Maharashtra</option>
+          <option>06AABCT3518Q1Z2 — Haryana</option>
+          <option>33AABCT3518Q1ZN — Tamil Nadu</option>
+        </select>
+      </div>
+      <div class="filter-actions">
+        <button class="btn btn-primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+          Apply
+        </button>
+      </div>
+    </div>
+
+    <!-- BIG STATS -->
+    <div class="big-stat-grid">
+      <div class="big-stat accent">
+        <div class="big-stat-label"><span class="big-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg></span>Total Tax Payable</div>
+        <div class="big-stat-value"><span class="cur">₹</span>4,82,17,400</div>
+        <div class="big-stat-sub">From outward supplies · Auto-from GSTR-1</div>
+      </div>
+      <div class="big-stat">
+        <div class="big-stat-label"><span class="big-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>ITC Available</div>
+        <div class="big-stat-value"><span class="cur">₹</span>6,17,42,891</div>
+        <div class="big-stat-sub">From GSTR-2B · Auto-populated</div>
+      </div>
+      <div class="big-stat">
+        <div class="big-stat-label"><span class="big-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="6" width="20" height="12" rx="2"/></svg></span>Net Cash Payable</div>
+        <div class="big-stat-value"><span class="cur">₹</span>0</div>
+        <div class="big-stat-sub success-text">✓ ITC sufficient · No cash deposit needed</div>
+      </div>
+      <div class="big-stat">
+        <div class="big-stat-label"><span class="big-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>Due In</div>
+        <div class="big-stat-value">6<span class="cur"> days</span></div>
+        <div class="big-stat-sub" style="color:var(--warning);font-weight:600">Due 20-May-2026</div>
+      </div>
+    </div>
+
+    <!-- HELP -->
+    <div class="help-strip" style="margin-top:24px">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <div><strong>How this works:</strong> All sections are auto-prepared from your GSTR-1 (outward) and GSTR-2B (ITC). Review each section, then proceed to the ITC Set-off (Section 6.1) to allocate input credit against tax liability. The system computes the optimal set-off as per Rule 88A.</div>
+    </div>
+
+    <!-- SECTION TABS -->
+    <div class="section-banner">
+      <div class="section-banner-num">§</div>
+      <div>
+        <div class="section-banner-title">Return Sections (3.1 – 6.2)</div>
+        <div class="section-banner-sub">All sections auto-populated. Click to review or edit.</div>
+      </div>
+    </div>
+
+    <div class="gstr-sections">
+      <div class="gstr-section-tab active">
+        <div class="gst-tab-status complete"></div>
+        <div class="gst-tab-label">Section 3.1</div>
+        <div class="gst-tab-title">Outward &amp; RC</div>
+        <div class="gst-tab-meta">Taxable supplies + reverse charge</div>
+      </div>
+      <div class="gstr-section-tab">
+        <div class="gst-tab-status complete"></div>
+        <div class="gst-tab-label">Section 3.2</div>
+        <div class="gst-tab-title">Inter-state to UR / Comp</div>
+        <div class="gst-tab-meta">B2C inter-state breakdown</div>
+      </div>
+      <div class="gstr-section-tab">
+        <div class="gst-tab-status complete"></div>
+        <div class="gst-tab-label">Section 4</div>
+        <div class="gst-tab-title">Eligible ITC</div>
+        <div class="gst-tab-meta">From GSTR-2B + adjustments</div>
+      </div>
+      <div class="gstr-section-tab">
+        <div class="gst-tab-status complete"></div>
+        <div class="gst-tab-label">Section 5</div>
+        <div class="gst-tab-title">Exempt / Nil-rated</div>
+        <div class="gst-tab-meta">Inward supplies</div>
+      </div>
+      <div class="gstr-section-tab">
+        <div class="gst-tab-status pending"></div>
+        <div class="gst-tab-label">Section 6.1</div>
+        <div class="gst-tab-title">Payment of Tax</div>
+        <div class="gst-tab-meta">ITC set-off + cash</div>
+      </div>
+      <div class="gstr-section-tab">
+        <div class="gst-tab-status complete"></div>
+        <div class="gst-tab-label">Section 6.2</div>
+        <div class="gst-tab-title">Interest &amp; Late Fee</div>
+        <div class="gst-tab-meta">₹ 0 · No delay</div>
+      </div>
+    </div>
+
+    <!-- SECTION 3.1 — OUTWARD SUPPLIES (auto-populated, locked) -->
+    <div class="card mt-4">
+      <div class="card-head">
+        <div>
+          <h3 class="card-title">
+            Section 3.1 — Outward Supplies &amp; Inward Supplies on Reverse Charge
+            <span class="locked-pill" title="Hard-locking advisory · GSTN 17-Oct-2024">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Locked · auto from GSTR-1
+            </span>
+          </h3>
+          <p class="card-subtitle">Auto-populated from GSTR-1 (May 2026). Per GSTN advisory 17-Oct-2024, these fields are hard-locked at filing — corrections route through <a href="gstr1a.html" style="color:var(--info);font-weight:600;">GSTR-1A</a>, not direct edits here. All amounts in ₹.</p>
+        </div>
+        <a href="gstr1a.html" class="btn btn-secondary btn-sm">Correct via GSTR-1A →</a>
+      </div>
+
+      <div class="table-wrap" style="border-radius:0;border:none;box-shadow:none;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Nature of Supplies</th>
+              <th class="num">Total Taxable Value</th>
+              <th class="num">Integrated Tax (IGST)</th>
+              <th class="num">Central Tax (CGST)</th>
+              <th class="num">State/UT Tax (SGST)</th>
+              <th class="num">CESS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>(a)</strong> Outward taxable supplies (other than zero rated, nil rated and exempted)</td>
+              <td class="num">23,84,21,447.00</td>
+              <td class="num">2,18,42,180.00</td>
+              <td class="num">1,28,42,180.00</td>
+              <td class="num">1,28,42,180.00</td>
+              <td class="num">—</td>
+            </tr>
+            <tr>
+              <td><strong>(b)</strong> Outward taxable supplies (zero rated)</td>
+              <td class="num">1,84,42,890.00</td>
+              <td class="num">7,42,860.00</td>
+              <td class="num">—</td>
+              <td class="num">—</td>
+              <td class="num">—</td>
+            </tr>
+            <tr>
+              <td><strong>(c)</strong> Other outward supplies (Nil rated, exempted)</td>
+              <td class="num">1,84,000.00</td>
+              <td class="num">—</td>
+              <td class="num">—</td>
+              <td class="num">—</td>
+              <td class="num">—</td>
+            </tr>
+            <tr>
+              <td><strong>(d)</strong> Inward supplies (liable to reverse charge)</td>
+              <td class="num">28,42,000.00</td>
+              <td class="num">2,42,000.00</td>
+              <td class="num">1,28,000.00</td>
+              <td class="num">1,28,000.00</td>
+              <td class="num">—</td>
+            </tr>
+            <tr>
+              <td><strong>(e)</strong> Non-GST outward supplies</td>
+              <td class="num">—</td>
+              <td class="num">—</td>
+              <td class="num">—</td>
+              <td class="num">—</td>
+              <td class="num">—</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr style="background:var(--surface-2);font-weight:600">
+              <td>Total</td>
+              <td class="num">26,98,90,337.00</td>
+              <td class="num">2,28,27,040.00</td>
+              <td class="num">1,29,70,180.00</td>
+              <td class="num">1,29,70,180.00</td>
+              <td class="num">—</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    <!-- SECTION 4 — ELIGIBLE ITC SUMMARY -->
+    <div class="card mt-4">
+      <div class="card-head">
+        <div>
+          <h3 class="card-title">Section 4 — Eligible ITC</h3>
+          <p class="card-subtitle">From GSTR-2B (April 2026) · Net of ITC reversals under Rule 42/43</p>
+        </div>
+        <a href="credit-ledger.html" class="ledger-card-link">View Credit Ledger →</a>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Details</th>
+            <th class="num">IGST</th>
+            <th class="num">CGST</th>
+            <th class="num">SGST</th>
+            <th class="num">CESS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>(A) ITC Available</strong> (whether in full or part)</td>
+            <td class="num"></td>
+            <td class="num"></td>
+            <td class="num"></td>
+            <td class="num"></td>
+          </tr>
+          <tr><td>&nbsp;&nbsp;&nbsp;(1) Import of goods</td><td class="num">42,18,400.00</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr><td>&nbsp;&nbsp;&nbsp;(2) Import of services</td><td class="num">8,42,000.00</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr><td>&nbsp;&nbsp;&nbsp;(3) Inward supplies liable to RC</td><td class="num">2,42,000.00</td><td class="num">1,28,000.00</td><td class="num">1,28,000.00</td><td class="num">—</td></tr>
+          <tr><td>&nbsp;&nbsp;&nbsp;(4) Inward supplies from ISD</td><td class="num">4,18,400.00</td><td class="num">2,18,400.00</td><td class="num">2,18,400.00</td><td class="num">—</td></tr>
+          <tr><td>&nbsp;&nbsp;&nbsp;(5) All other ITC</td><td class="num">3,54,97,934.00</td><td class="num">99,15,678.00</td><td class="num">99,15,679.00</td><td class="num">—</td></tr>
+          <tr style="background:var(--surface-2);font-weight:600">
+            <td>(B) ITC Reversed (Rule 42, 43)</td>
+            <td class="num">−42,000.00</td>
+            <td class="num">−18,000.00</td>
+            <td class="num">−18,000.00</td>
+            <td class="num">—</td>
+          </tr>
+          <tr style="background:var(--fp-ink);color:var(--fp-accent);font-weight:700">
+            <td>(C) Net ITC Available (A − B)</td>
+            <td class="num" style="color:var(--fp-accent)">4,12,18,734.00</td>
+            <td class="num" style="color:var(--fp-accent)">1,02,62,078.00</td>
+            <td class="num" style="color:var(--fp-accent)">1,02,62,079.00</td>
+            <td class="num" style="color:var(--fp-accent)">—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SECTION 6.1 — ITC SET-OFF (the most distinctive screen) -->
+    <div id="payment"></div>
+    <div class="card mt-4">
+      <div class="card-head">
+        <div>
+          <h3 class="card-title">Section 6.1 — Payment of Tax · ITC Set-off</h3>
+          <p class="card-subtitle">Set-off ITC against tax liability as per Rule 88A. Yellow rows are editable — adjust if needed.</p>
+        </div>
+        <button class="btn btn-secondary btn-sm">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          Reset to optimal set-off
+        </button>
+      </div>
+
+      <div class="setoff-card" style="border:none;box-shadow:none;border-radius:0">
+        <div class="setoff-grid">
+          <div class="so-head">Description</div>
+          <div class="so-head">Total Tax</div>
+          <div class="so-head">Paid through ITC — IGST</div>
+          <div class="so-head">Paid through ITC — CGST</div>
+          <div class="so-head">Paid through ITC — SGST</div>
+          <div class="so-head">Paid in Cash</div>
+
+          <!-- IGST liability row -->
+          <div class="so-label">Integrated Tax (IGST)</div>
+          <div class="so-cell computed">2,28,27,040.00</div>
+          <div class="so-cell editable"><input value="2,28,27,040.00"></div>
+          <div class="so-cell">—</div>
+          <div class="so-cell">—</div>
+          <div class="so-cell computed">0.00</div>
+
+          <!-- CGST liability row -->
+          <div class="so-label">Central Tax (CGST)</div>
+          <div class="so-cell computed">1,29,70,180.00</div>
+          <div class="so-cell editable"><input value="27,07,000.00"></div>
+          <div class="so-cell editable"><input value="1,02,63,180.00"></div>
+          <div class="so-cell">—</div>
+          <div class="so-cell computed">0.00</div>
+
+          <!-- SGST liability row -->
+          <div class="so-label">State Tax (SGST)</div>
+          <div class="so-cell computed">1,29,70,180.00</div>
+          <div class="so-cell editable"><input value="27,08,101.00"></div>
+          <div class="so-cell">—</div>
+          <div class="so-cell editable"><input value="1,02,62,079.00"></div>
+          <div class="so-cell computed">0.00</div>
+
+          <!-- CESS row -->
+          <div class="so-label">CESS</div>
+          <div class="so-cell computed">—</div>
+          <div class="so-cell">—</div>
+          <div class="so-cell">—</div>
+          <div class="so-cell">—</div>
+          <div class="so-cell computed">—</div>
+
+          <!-- Interest row -->
+          <div class="so-label">Interest (Section 6.2)</div>
+          <div class="so-cell computed">0.00</div>
+          <div class="so-cell">—</div>
+          <div class="so-cell">—</div>
+          <div class="so-cell">—</div>
+          <div class="so-cell computed">0.00</div>
+
+          <!-- Late fee row -->
+          <div class="so-label">Late Fee (Section 6.2)</div>
+          <div class="so-cell computed">0.00</div>
+          <div class="so-cell">—</div>
+          <div class="so-cell">—</div>
+          <div class="so-cell">—</div>
+          <div class="so-cell computed">0.00</div>
+
+          <!-- TOTAL row -->
+          <div class="so-label row-total">Total Tax Liability</div>
+          <div class="so-cell row-total">4,87,67,400.00</div>
+          <div class="so-cell row-total">2,82,42,141.00</div>
+          <div class="so-cell row-total">1,02,63,180.00</div>
+          <div class="so-cell row-total">1,02,62,079.00</div>
+          <div class="so-cell row-total">0.00</div>
+
+          <!-- FINAL row -->
+          <div class="so-head row-final">CASH PAYABLE</div>
+          <div class="so-cell row-final">—</div>
+          <div class="so-cell row-final">—</div>
+          <div class="so-cell row-final">—</div>
+          <div class="so-cell row-final">—</div>
+          <div class="so-cell row-final">₹ 0.00</div>
         </div>
       </div>
 
-      <div id="tb-results" style="display:none">
-        <div class="tb-card" style="margin-bottom:16px">
-          <h3>3.1 Details of Outward Supplies and inward supplies liable to reverse charge</h3>
-          <p class="hint">Auto-computed from GSTR-1. Inward reverse charge (d) is entered manually.</p>
-          <table class="t">
-            <thead><tr><th>Nature of supply</th><th>Taxable value</th><th>IGST</th><th>CGST</th><th>SGST/UTGST</th><th>Cess</th></tr></thead>
-            <tbody id="tb-31"></tbody>
-          </table>
+      <div style="padding:18px 20px;background:#E6F4EA;border-top:1px solid var(--border);display:flex;align-items:center;gap:12px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--success)" width="22" height="22" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        <div style="flex:1">
+          <strong style="color:var(--success);font-size:14px">Set-off is valid &amp; optimal</strong>
+          <div class="muted small" style="margin-top:2px">All IGST ITC consumed first (₹ 2.82 Cr), then CGST ITC against CGST/IGST, then SGST ITC against SGST/IGST as per Rule 88A. Cash payable: <strong>₹ 0</strong>.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEDGER STATUS POST FILING -->
+    <div class="card mt-4">
+      <div class="card-head">
+        <div>
+          <h3 class="card-title">Ledger Status — Before &amp; After Filing</h3>
+          <p class="card-subtitle">Preview of how your ledgers will look post-utilization</p>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:0 4px;">
+        <div class="card-tight">
+          <div class="card-tight-head">
+            <div class="card-tight-title" style="display:flex;align-items:center;gap:8px"><span class="badge-dot" style="background:var(--info)"></span>Cash Ledger</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:center;">
+            <div>
+              <div class="muted small" style="margin-bottom:4px">Before filing</div>
+              <div class="amount-display size-lg"><span class="currency-sym">₹</span>1,84,72,418</div>
+            </div>
+            <div style="text-align:right">
+              <div class="muted small" style="margin-bottom:4px">After filing</div>
+              <div class="amount-display size-lg"><span class="currency-sym">₹</span>1,84,72,418</div>
+              <div class="muted small success-text" style="margin-top:4px">No change · Cash payable ₹ 0</div>
+            </div>
+          </div>
         </div>
 
-        <div class="tb-card" style="margin-bottom:16px">
-          <h3>3.2 Inter-State supplies to unregistered persons</h3>
-          <p class="hint">Derived from B2C Large and inter-state B2C Small.</p>
-          <table class="t">
-            <thead><tr><th>Place of Supply</th><th>Taxable value</th><th>IGST</th></tr></thead>
-            <tbody id="tb-32"></tbody>
-          </table>
-        </div>
-
-        <div class="tb-card" style="margin-bottom:16px">
-          <h3>4. Eligible ITC <span class="hint" style="font-weight:400">(enter from your inward reconciliation)</span></h3>
-          <table class="t">
-            <thead><tr><th>ITC</th><th>IGST</th><th>CGST</th><th>SGST/UTGST</th><th>Cess</th></tr></thead>
-            <tbody id="tb-itc"></tbody>
-          </table>
-        </div>
-
-        <div class="tb-card">
-          <h3>Net tax payable (in cash)</h3>
-          <p class="hint">Output tax liability (3.1) less eligible ITC (4). Indicative — interest/late fee not included.</p>
-          <table class="t">
-            <thead><tr><th>Head</th><th>Liability</th><th>ITC</th><th>Net payable</th></tr></thead>
-            <tbody id="tb-net"></tbody>
-          </table>
-          <div class="row" style="margin-top:14px">
-            <button class="btn btn-secondary" id="tb-dl-json">⬇ Download GSTR-3B JSON</button>
+        <div class="card-tight">
+          <div class="card-tight-head">
+            <div class="card-tight-title" style="display:flex;align-items:center;gap:8px"><span class="badge-dot" style="background:var(--success)"></span>Credit (ITC) Ledger</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:center;">
+            <div>
+              <div class="muted small" style="margin-bottom:4px">Before filing</div>
+              <div class="amount-display size-lg"><span class="currency-sym">₹</span>6,17,42,891</div>
+            </div>
+            <div style="text-align:right">
+              <div class="muted small" style="margin-bottom:4px">After filing</div>
+              <div class="amount-display size-lg"><span class="currency-sym">₹</span>1,29,75,491</div>
+              <div class="muted small" style="color:var(--warning);margin-top:4px">↓ ₹ 4,87,67,400 utilized</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- ACTION BAR -->
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <div class="action-bar-status">Auto-prepared from GSTR-1 &amp; 2B · Last refreshed 2 hours ago</div>
+        <div class="action-bar-summary">Ready to file · Cash payable ₹ 0 · No challan needed</div>
+      </div>
+      <div class="action-bar-actions">
+        <button class="btn btn-secondary cta-large">Save as Draft</button>
+        <button class="btn btn-dark cta-large">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+          Validate &amp; Preview
+        </button>
+        <button class="btn btn-primary cta-xlarge">
+          File GSTR-3B →
+        </button>
+      </div>
+    </div>
+
+    <div style="height: 40px"></div>
   </main>
 </div>
 
-<script src="api.js"></script>
 <script src="app.js"></script>
-<script>renderShell('gstr3b', 'GSTR-3B', '');</script>
-<script src="gstr3b.js"></script>
+<script>renderShell('gstr3b', 'GSTR-3B Inward', 'April 2026 · Ready to File');</script>
 </body>
 </html>
