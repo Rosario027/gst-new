@@ -32,13 +32,24 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ limit: '10mb' }));
 app.use(cookieParser());
 
-// ── Health check (used by Railway) ──
+// ── Health check (used by Railway) — also reports DB identity + standard user ──
 app.get('/api/health', async (_req, res) => {
   try {
-    await pool.query('SELECT 1');
-    res.json({ ok: true, db: 'up', env: config.env });
+    const meta = await pool.query(
+      `SELECT current_database() AS db_name, current_user AS db_role,
+              (SELECT count(*)::int FROM users) AS user_count,
+              EXISTS(SELECT 1 FROM users WHERE login_id = 'user' AND is_active) AS has_standard_user`
+    );
+    res.json({
+      ok: true, db: 'up', env: config.env, ssl: config.pgSsl,
+      jwtSecretSet: !!process.env.JWT_SECRET && process.env.JWT_SECRET.trim() !== '',
+      ...meta.rows[0],
+    });
   } catch (err: any) {
-    res.status(503).json({ ok: false, db: 'down', error: err.message });
+    // 'relation users does not exist' here means tables aren't applied on THIS db.
+    let dbName: string | null = null;
+    try { dbName = (await pool.query('SELECT current_database() AS db')).rows[0].db; } catch {}
+    res.status(503).json({ ok: false, db: 'down_or_unmigrated', db_name: dbName, error: err.message });
   }
 });
 
