@@ -6,6 +6,7 @@ import { config } from './config';
 import { pool } from './db';
 import { authRouter } from './routes/auth.routes';
 import { gstr1Router } from './routes/gstr1.routes';
+import { gstr3bRouter } from './routes/gstr3b.routes';
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.get('/api/health', async (_req, res) => {
 // ── API ──
 app.use('/api/auth', authRouter);
 app.use('/api/gstr1', gstr1Router);
+app.use('/api/gstr3b', gstr3bRouter);
 
 // ── Static frontend (the existing prototype) ──
 app.use(express.static(config.paths.publicDir));

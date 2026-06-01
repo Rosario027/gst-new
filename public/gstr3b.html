@@ -10,13 +10,27 @@
 <link rel="stylesheet" href="styles.css">
 <style>
   .tb-grid { display:grid; gap:16px; }
-  .tb-due { background:linear-gradient(135deg,#312E81,#4F46E5); color:#fff; border-radius:14px; padding:26px; }
-  .tb-due h2 { margin:0 0 4px; font-size:18px; }
-  .tb-due .big { font-family:'IBM Plex Mono',monospace; font-size:40px; font-weight:600; line-height:1.1; margin:10px 0 2px; }
-  .tb-due .sub { color:#C7CDF7; font-size:13.5px; }
+  .tb-due { background:linear-gradient(135deg,#312E81,#4F46E5); color:#fff; border-radius:14px; padding:20px 24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
+  .tb-due .big { font-family:'IBM Plex Mono',monospace; font-size:30px; font-weight:600; }
+  .tb-due .sub { color:#C7CDF7; font-size:13px; }
   .tb-card { background:#fff; border:1px solid #E5E7EB; border-radius:12px; padding:20px; }
-  .tb-card h3 { margin:0 0 6px; font-size:15px; }
-  .tb-muted { color:#6B7280; font-size:13px; line-height:1.6; }
+  .tb-card h3 { margin:0 0 4px; font-size:15px; }
+  .tb-card .hint { color:#6B7280; font-size:12.5px; margin:0 0 12px; }
+  .row { display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap; }
+  .fld { display:flex; flex-direction:column; gap:4px; }
+  .fld label { font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6B7280; font-weight:600; }
+  .fld select, .fld input { padding:8px 10px; border:1px solid #D1D5DB; border-radius:8px; font-family:inherit; font-size:13px; min-width:120px; background:#fff; color:#1F2937; }
+  .tb-due .fld label { color:#C7CDF7; }
+  table.t { width:100%; border-collapse:collapse; font-size:12.5px; }
+  table.t th { text-align:right; background:#F9FAFB; padding:8px 10px; border-bottom:1px solid #E5E7EB; font-size:11px; text-transform:uppercase; color:#6B7280; }
+  table.t th:first-child, table.t td:first-child { text-align:left; }
+  table.t td { padding:8px 10px; border-bottom:1px solid #F3F4F6; font-family:'IBM Plex Mono',monospace; text-align:right; }
+  table.t td.lbl { font-family:inherit; }
+  table.t tfoot td { font-weight:600; background:#F9FAFB; }
+  table.t input { width:110px; text-align:right; padding:5px 7px; border:1px solid #D1D5DB; border-radius:6px; font-family:'IBM Plex Mono',monospace; }
+  .banner { padding:10px 14px; border-radius:8px; font-size:13px; margin-bottom:12px; display:none; }
+  .banner.show { display:block; } .banner.e { background:#FBE9EC; color:#C8102E; } .banner.i { background:#EAF1FE; color:#155CDB; }
+  .net { font-size:22px; font-family:'IBM Plex Mono',monospace; font-weight:600; }
 </style>
 </head>
 <body>
@@ -27,21 +41,66 @@
     <div class="page-head">
       <div>
         <h1 class="page-title">GSTR-3B · Monthly Summary Return</h1>
-        <p class="page-subtitle" id="tb-sub">Summary of outward supplies, ITC and tax payment</p>
+        <p class="page-subtitle" id="tb-sub">Auto-prepared from your GSTR-1 data</p>
       </div>
       <a href="dashboard.html" class="btn btn-secondary back-arrow-link">Back to dashboard</a>
     </div>
 
+    <div class="banner" id="tb-banner"></div>
+
     <div class="tb-grid">
       <div class="tb-due">
-        <h2>Next GSTR-3B due</h2>
-        <div class="big" id="tb-days">—</div>
-        <div class="sub" id="tb-date"></div>
+        <div>
+          <div class="sub">Next GSTR-3B due</div>
+          <div class="big" id="tb-days">—</div>
+          <div class="sub" id="tb-date"></div>
+        </div>
+        <div class="row">
+          <div class="fld"><label>GSTIN</label><select id="tb-reg"></select></div>
+          <div class="fld"><label>Month</label><select id="tb-month"></select></div>
+          <div class="fld"><label>Year</label><select id="tb-year"></select></div>
+          <div class="fld"><label>&nbsp;</label><button class="btn btn-primary" id="tb-compute">Compute from GSTR-1</button></div>
+        </div>
       </div>
-      <div class="tb-card">
-        <h3>Auto-prepared summary</h3>
-        <p class="tb-muted">Your GSTR-3B outward-supply summary (3.1) and tax liability are auto-computed from the GSTR-1 data you upload in the Reconciliation Workbench. ITC (4) is drafted from inward reconciliation. This module is being wired up next — for now, prepare and reconcile GSTR-1 first.</p>
-        <a href="gstr1-workbench.html" class="btn btn-primary">Go to GSTR-1 Workbench →</a>
+
+      <div id="tb-results" style="display:none">
+        <div class="tb-card" style="margin-bottom:16px">
+          <h3>3.1 Details of Outward Supplies and inward supplies liable to reverse charge</h3>
+          <p class="hint">Auto-computed from GSTR-1. Inward reverse charge (d) is entered manually.</p>
+          <table class="t">
+            <thead><tr><th>Nature of supply</th><th>Taxable value</th><th>IGST</th><th>CGST</th><th>SGST/UTGST</th><th>Cess</th></tr></thead>
+            <tbody id="tb-31"></tbody>
+          </table>
+        </div>
+
+        <div class="tb-card" style="margin-bottom:16px">
+          <h3>3.2 Inter-State supplies to unregistered persons</h3>
+          <p class="hint">Derived from B2C Large and inter-state B2C Small.</p>
+          <table class="t">
+            <thead><tr><th>Place of Supply</th><th>Taxable value</th><th>IGST</th></tr></thead>
+            <tbody id="tb-32"></tbody>
+          </table>
+        </div>
+
+        <div class="tb-card" style="margin-bottom:16px">
+          <h3>4. Eligible ITC <span class="hint" style="font-weight:400">(enter from your inward reconciliation)</span></h3>
+          <table class="t">
+            <thead><tr><th>ITC</th><th>IGST</th><th>CGST</th><th>SGST/UTGST</th><th>Cess</th></tr></thead>
+            <tbody id="tb-itc"></tbody>
+          </table>
+        </div>
+
+        <div class="tb-card">
+          <h3>Net tax payable (in cash)</h3>
+          <p class="hint">Output tax liability (3.1) less eligible ITC (4). Indicative — interest/late fee not included.</p>
+          <table class="t">
+            <thead><tr><th>Head</th><th>Liability</th><th>ITC</th><th>Net payable</th></tr></thead>
+            <tbody id="tb-net"></tbody>
+          </table>
+          <div class="row" style="margin-top:14px">
+            <button class="btn btn-secondary" id="tb-dl-json">⬇ Download GSTR-3B JSON</button>
+          </div>
+        </div>
       </div>
     </div>
   </main>
@@ -50,19 +109,6 @@
 <script src="api.js"></script>
 <script src="app.js"></script>
 <script>renderShell('gstr3b', 'GSTR-3B', '');</script>
-<script>
-(function () {
-  if (!window.FP || !FP.requireSession()) return;
-  var entity = (typeof getCurrentEntity === 'function') ? getCurrentEntity() : null;
-  function paint() {
-    var d = computeGstDueDates(entity && entity.filingScheme).gstr3b;
-    document.getElementById('tb-days').textContent = dueDaysText(d.daysLeft);
-    document.getElementById('tb-date').textContent = d.label + ' · period ' + d.period;
-    document.getElementById('tb-sub').textContent = 'Filing period ' + d.period + ' · due ' + d.label.replace('GSTR-3B due ', '');
-  }
-  paint();
-  setInterval(paint, 60000);
-})();
-</script>
+<script src="gstr3b.js"></script>
 </body>
 </html>

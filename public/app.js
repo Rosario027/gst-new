@@ -264,7 +264,11 @@ function getSidebarHTML(active, entityType) {
       <div class="nav-section-label">Tools</div>
       <a href="gstr1-workbench.html" class="nav-item ${isActive('recon')}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        <span class="nav-item-label">Reconciliation</span>
+        <span class="nav-item-label">GSTR-1 Workbench</span>
+      </a>
+      <a href="reco-files.html" class="nav-item ${isActive('recofiles')}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        <span class="nav-item-label">Compare two files</span>
       </a>
     </div>`;
 }

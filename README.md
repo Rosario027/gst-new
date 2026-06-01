@@ -19,7 +19,13 @@
 4. **Generate JSON** — builds the exact GSTR-1 portal JSON schema (CGST/SGST vs IGST split by place-of-supply, doc_issue net, HSN, etc.).
 5. **Deliver** — per-registration `delivery_mode`: `json` (download file) or `api` (push via a GST Suvidha Provider — interface stubbed, ready for credentials).
 
-The reconciliation **workbench** is at `/gstr1-workbench.html` (linked from the GSTR-1 page).
+The reconciliation **workbench** is at `/gstr1-workbench.html`.
+
+**Also included**
+- **Live due dates** — GSTR-1 (11th) and GSTR-3B (20th) countdowns computed from today, shown on the dashboard, sidebar and entity strip (`computeGstDueDates`).
+- **GSTR-3B** (`/gstr3b.html`) — auto-prepares tables 3.1 / 3.2 and tax liability from the period's GSTR-1 data, with manual ITC entry, net-payable, and portal-JSON download.
+- **Compare two files** (`/reco-files.html`) — free-form reconciliation of any two GSTR-1 data files (no GSTIN/period needed) with a downloadable Excel report.
+- **Reset workflow** — wipes a period's datasets/reconciliations/filings and restarts from step 1.
 
 ---
 

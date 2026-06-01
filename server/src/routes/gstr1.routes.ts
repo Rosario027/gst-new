@@ -211,6 +211,40 @@ gstr1Router.get('/datasets/:id/validation-report', requireAuth, wrap(async (req,
   res.send(buf);
 }));
 
+// ── Free-form: reconcile two uploaded files directly (no GSTIN/period needed) ──
+const uploadPair = upload.fields([{ name: 'fileA', maxCount: 1 }, { name: 'fileB', maxCount: 1 }]);
+async function parseAnyBuffer(buf: Buffer): Promise<any[]> {
+  const flat = await parseFlatWorkbook(buf);
+  if (flat) return flat.records;
+  const ws = await parseWorkbook(buf);
+  return ws.records;
+}
+
+gstr1Router.post('/reconcile-files', requireAuth, uploadPair, wrap(async (req, res) => {
+  const files = req.files as Record<string, Express.Multer.File[]> | undefined;
+  const a = files?.fileA?.[0];
+  const b = files?.fileB?.[0];
+  if (!a || !b) return res.status(400).json({ error: 'Upload two files: fileA and fileB' });
+  const [recA, recB] = await Promise.all([parseAnyBuffer(a.buffer), parseAnyBuffer(b.buffer)]);
+  if (!recA.length && !recB.length) return res.status(400).json({ error: 'Neither file produced recognizable rows. Use the GSTR-1 template or flat format.' });
+  const recon = reconcile(recA, recB);
+  res.json({
+    summary: recon.summary, lines: recon.lines,
+    fileA: { name: a.originalname, rows: recA.length },
+    fileB: { name: b.originalname, rows: recB.length },
+  });
+}));
+
+// Stream the Excel report for a free-form reconciliation (lines posted back from the client).
+gstr1Router.post('/reconcile-files/report', requireAuth, wrap(async (req, res) => {
+  const { lines, summary, labelA, labelB } = req.body ?? {};
+  if (!Array.isArray(lines) || !summary) return res.status(400).json({ error: 'lines and summary are required' });
+  const buf = await buildReconReport({ gstin: labelA || 'File A', period: labelB || 'File B', lines, summary });
+  res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  res.setHeader('Content-Disposition', `attachment; filename="reconciliation-report.xlsx"`);
+  res.send(buf);
+}));
+
 // ── Reconcile two datasets (books vs compare) ──
 gstr1Router.post('/reconcile', requireAuth, async (req, res) => {
   const { baseDatasetId, compareDatasetId } = req.body ?? {};

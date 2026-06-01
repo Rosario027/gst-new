@@ -108,10 +108,42 @@
     jsonUrl: (filingId) => '/api/gstr1/filings/' + filingId + '/json',
     push: (filingId) => api('/gstr1/filings/' + filingId + '/push', { method: 'POST' }),
     reset: (registrationId, period) => api('/gstr1/reset', { method: 'POST', body: { registrationId, period } }),
+    reconcileFiles: (fileA, fileB) => {
+      const fd = new FormData(); fd.append('fileA', fileA); fd.append('fileB', fileB);
+      return api('/gstr1/reconcile-files', { method: 'POST', body: fd });
+    },
   };
+
+  const gstr3b = {
+    compute: (registrationId, period) => api('/gstr3b/compute', { method: 'POST', body: { registrationId, period } }),
+  };
+
+  // POST a JSON body and download the binary response as a file.
+  async function downloadPost(pathname, body, filename) {
+    const headers = { 'Content-Type': 'application/json' };
+    const token = getToken();
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+    const res = await fetch('/api' + pathname, { method: 'POST', credentials: 'include', headers, body: JSON.stringify(body) });
+    if (!res.ok) throw new Error('Download failed (' + res.status + ')');
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename; document.body.appendChild(a); a.click();
+    a.remove(); URL.revokeObjectURL(url);
+  }
+
+  // Trigger a client-side JSON file download.
+  function downloadJson(obj, filename) {
+    const blob = new Blob([JSON.stringify(obj, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename; document.body.appendChild(a); a.click();
+    a.remove(); URL.revokeObjectURL(url);
+  }
 
   window.FP = {
     api, login, logout, onboarding, requireSession, refreshRegistrations,
-    getRegistrations, currentRegistration, getToken, gstr1,
+    getRegistrations, currentRegistration, getToken, gstr1, gstr3b,
+    downloadPost, downloadJson,
   };
 })();

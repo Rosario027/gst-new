@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compare Two Files · FylePro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .rf-grid { display:grid; gap:16px; }
+  .rf-card { background:#fff; border:1px solid #E5E7EB; border-radius:12px; padding:20px; }
+  .rf-card h3 { margin:0 0 4px; font-size:15px; }
+  .rf-card .hint { color:#6B7280; font-size:12.5px; margin:0 0 14px; }
+  .rf-two { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:760px){ .rf-two { grid-template-columns:1fr; } }
+  .rf-drop { border:2px dashed #D1D5DB; border-radius:10px; padding:24px; text-align:center; color:#6B7280; font-size:13px; cursor:pointer; }
+  .rf-drop.drag { border-color:#4F46E5; background:#F0F0FF; color:#4F46E5; }
+  .rf-name { color:#9CA3AF; font-size:12px; margin-top:8px; }
+  .wb-stat { display:flex; gap:14px; flex-wrap:wrap; }
+  .wb-stat .s { background:#F9FAFB; border:1px solid #EEF0F3; border-radius:8px; padding:10px 14px; min-width:110px; }
+  .wb-stat .s b { display:block; font-family:'IBM Plex Mono',monospace; font-size:18px; }
+  .wb-stat .s span { font-size:11px; color:#6B7280; text-transform:uppercase; }
+  table.wb-tbl { width:100%; border-collapse:collapse; font-size:12.5px; margin-top:12px; }
+  table.wb-tbl th { text-align:left; background:#F9FAFB; padding:7px 10px; border-bottom:1px solid #E5E7EB; font-size:11px; text-transform:uppercase; color:#6B7280; }
+  table.wb-tbl td { padding:7px 10px; border-bottom:1px solid #F3F4F6; font-family:'IBM Plex Mono',monospace; }
+  .pill { display:inline-block; padding:2px 8px; border-radius:99px; font-size:11px; font-weight:600; }
+  .pill.warn { background:#FEF3E2; color:#C77700; } .pill.info { background:#EAF1FE; color:#155CDB; }
+  .pill.err { background:#FBE9EC; color:#C8102E; } .pill.ok { background:#E7F6ED; color:#168736; }
+  .banner { padding:10px 14px; border-radius:8px; font-size:13px; margin-bottom:12px; display:none; }
+  .banner.show { display:block; } .banner.e { background:#FBE9EC; color:#C8102E; } .banner.s { background:#E7F6ED; color:#168736; }
+  .muted { color:#9CA3AF; font-size:12px; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div id="shell-header"></div>
+  <main class="main">
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Compare Two Files</h1>
+        <p class="page-subtitle">Reconcile any two GSTR-1 data files (books vs e-invoice, current vs prior, etc.) — invoice by invoice.</p>
+      </div>
+      <a href="dashboard.html" class="btn btn-secondary back-arrow-link">Back to dashboard</a>
+    </div>
+
+    <div class="banner" id="rf-banner"></div>
+
+    <div class="rf-grid">
+      <div class="rf-card">
+        <h3>Upload two files</h3>
+        <p class="hint">Accepts the FylePro flat template or the section-wise GSTR-1 layout (.xlsx). No GSTIN or period needed.</p>
+        <div class="rf-two">
+          <div>
+            <div class="rf-drop" id="drop-a"><strong>Click or drop</strong> File A (e.g. books)<div class="rf-name" id="name-a"></div></div>
+            <input type="file" id="file-a" accept=".xlsx,.xls" hidden>
+          </div>
+          <div>
+            <div class="rf-drop" id="drop-b"><strong>Click or drop</strong> File B (e.g. e-invoice)<div class="rf-name" id="name-b"></div></div>
+            <input type="file" id="file-b" accept=".xlsx,.xls" hidden>
+          </div>
+        </div>
+        <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn btn-primary" id="rf-run" disabled>Run reconciliation</button>
+          <button class="btn btn-secondary" id="rf-report" style="display:none">⬇ Download report (Excel)</button>
+        </div>
+      </div>
+
+      <div id="rf-result"></div>
+    </div>
+  </main>
+</div>
+
+<script src="api.js"></script>
+<script src="app.js"></script>
+<script>renderShell('recon', 'Reconciliation', 'Compare two files');</script>
+<script src="reco-files.js"></script>
+</body>
+</html>
