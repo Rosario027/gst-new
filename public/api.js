@@ -107,6 +107,7 @@
     generate: (datasetId) => api('/gstr1/generate', { method: 'POST', body: { datasetId } }),
     jsonUrl: (filingId) => '/api/gstr1/filings/' + filingId + '/json',
     push: (filingId) => api('/gstr1/filings/' + filingId + '/push', { method: 'POST' }),
+    reset: (registrationId, period) => api('/gstr1/reset', { method: 'POST', body: { registrationId, period } }),
   };
 
   window.FP = {

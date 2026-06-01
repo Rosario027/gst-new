@@ -127,6 +127,31 @@ gstr1Router.post('/datasets', requireAuth, upload.single('file'), async (req, re
   }
 });
 
+// ── Reset: wipe all GSTR-1 working data for a registration + period ──
+gstr1Router.post('/reset', requireAuth, wrap(async (req, res) => {
+  const { registrationId } = req.body ?? {};
+  const period = req.body?.period ? normPeriod(req.body.period) : null;
+  if (!registrationId) return res.status(400).json({ error: 'registrationId is required' });
+
+  const result = await withTenant(ctx(req), async (client) => {
+    const reg = await loadRegistration(client, registrationId);
+    if (!reg) throw Object.assign(new Error('Registration not found'), { status: 404 });
+    const scope = period ? 'AND period = $2' : '';
+    const params = period ? [registrationId, period] : [registrationId];
+    // Filings + reconciliations + datasets (records/recon_lines cascade via FKs).
+    const f = await client.query(`DELETE FROM gstr1_filings WHERE gst_registration_id = $1 ${scope}`, params);
+    const r = await client.query(`DELETE FROM gstr1_reconciliations WHERE gst_registration_id = $1 ${scope}`, params);
+    const d = await client.query(`DELETE FROM gstr1_datasets WHERE gst_registration_id = $1 ${scope}`, params);
+    await client.query(
+      `INSERT INTO audit_logs (tenant_id, company_id, actor_user_id, action, entity_type, entity_id, details)
+       VALUES (current_tenant_id(), $1, current_app_user_id(), 'gstr1.reset', 'gst_registration', $2, $3)`,
+      [reg.company_id, registrationId, { period, datasets: d.rowCount, reconciliations: r.rowCount, filings: f.rowCount }]
+    );
+    return { datasets: d.rowCount, reconciliations: r.rowCount, filings: f.rowCount };
+  });
+  res.json({ ok: true, ...result });
+}));
+
 // ── List datasets ──
 gstr1Router.get('/datasets', requireAuth, wrap(async (req, res) => {
   const { registrationId, period } = req.query;

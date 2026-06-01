@@ -197,6 +197,28 @@
 
   function escapeHtml(s) { return s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c])); }
 
+  // ── Reset workflow: wipe data for this GSTIN+period, back to step 1 ──
+  async function resetWorkflow() {
+    if (!state.regId) return;
+    const period = state.period;
+    if (!confirm('Reset the GSTR-1 workflow?\n\nThis permanently deletes all uploaded data, reconciliations and generated JSON for ' + (state.gstin || 'this GSTIN') + ' · ' + period + ', and starts again from step 1.')) return;
+    try {
+      const r = await FP.gstr1.reset(state.regId, period);
+      // clear state
+      state.booksDatasetId = state.cmpDatasetId = state.reconId = state.filingId = null;
+      // clear UI
+      ['books-result', 'recon-result', 'json-result'].forEach(id => { const el = $(id); if (el) el.innerHTML = ''; });
+      ['books-name', 'cmp-name', 'push-status'].forEach(id => { const el = $(id); if (el) el.textContent = ''; });
+      ['file-books', 'file-cmp'].forEach(id => { const el = $(id); if (el) el.value = ''; });
+      ['btn-recon-report', 'btn-download-json', 'btn-push'].forEach(id => { const el = $(id); if (el) el.style.display = 'none'; });
+      const rb = $('btn-reconcile'); if (rb) rb.disabled = true;
+      $('card-recon').classList.add('disabled-card');
+      $('card-json').classList.add('disabled-card');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      banner(`Reset done — removed ${r.datasets} upload(s), ${r.reconciliations} reconciliation(s), ${r.filings} JSON file(s). Start from step 1.`, 's');
+    } catch (e) { banner(e.message, 'e'); }
+  }
+
   // ── Boot ──
   initSetup();
   wireDrop('drop-books', 'file-books', 'books-name', uploadBooks);
@@ -204,4 +226,5 @@
   $('btn-reconcile').addEventListener('click', runReconcile);
   $('btn-generate').addEventListener('click', generateJson);
   $('btn-push').addEventListener('click', pushToPortal);
+  $('wb-reset').addEventListener('click', resetWorkflow);
 })();

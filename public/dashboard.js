@@ -28,6 +28,12 @@
     }
 
     $('db-sub').textContent = regs.length + ' GST registration' + (regs.length > 1 ? 's' : '');
+    const dueChips = (r) => {
+      if (typeof computeGstDueDates !== 'function') return '';
+      const d = computeGstDueDates(r.filing_scheme);
+      const pill = (x, name) => `<span class="due-pill ${dueChipClass(x.daysLeft)}" title="${x.label} · period ${x.period}">${name} ${dueDaysText(x.daysLeft)}</span>`;
+      return `<div class="reg-meta" style="margin-top:-4px">${pill(d.gstr1, 'GSTR-1')}${pill(d.gstr3b, 'GSTR-3B')}</div>`;
+    };
     regsEl.innerHTML = regs.map(r => `
       <div class="reg-card">
         <div class="gstin">${esc(r.gstin)}</div>
@@ -37,6 +43,7 @@
           <span class="chip">${r.filing_scheme === 'qrmp' ? 'QRMP' : 'Monthly'}</span>
           <span class="chip b">${(r.delivery_mode || 'json').toUpperCase()}</span>
         </div>
+        ${dueChips(r)}
         <button class="btn btn-primary" onclick="__openWb('${r.id}')">Open GSTR-1 Workbench</button>
       </div>`).join('');
 

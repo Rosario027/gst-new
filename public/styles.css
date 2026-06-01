@@ -6991,3 +6991,12 @@ input[type="date"]:focus {
 .login-visual .visual-row strong { color: #fff; font-family: var(--font-mono); }
 
 @media (max-width: 980px) { .login-visual { display: none; } .login-shell { grid-template-columns: 1fr; } .login-panel { padding: 32px; } }
+
+/* ── Live GST due-date pills ── */
+.entity-strip-due { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.entity-strip-due-label { font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.04em; }
+.due-pill { display:inline-flex; align-items:center; gap:5px; padding:3px 10px; border-radius:999px; font-size:11.5px; font-weight:600; font-family:var(--font-mono); }
+.due-pill.success { background:#E7F6ED; color:#168736; }
+.due-pill.warn { background:#FEF3E2; color:#C77700; }
+.due-pill.error { background:#FBE9EC; color:#C8102E; }
+.due-pill::before { content:""; width:6px; height:6px; border-radius:50%; background:currentColor; opacity:.7; }

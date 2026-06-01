@@ -1,57 +1,69 @@
 // FylePro — shared interactivity + entity management
 
 // ============================================
-// ENTITY DATA MODEL (v2.0.8)
-// 3 entities under same PAN — switching changes
-// sidebar, dashboard, due dates, and workflow.
+// ENTITY DATA MODEL
+// Real entities come from the backend (getBackendRegistrations).
+// No demo entities — this is an empty fallback only.
 // ============================================
-const ENTITIES = [
-  {
-    id: 'apex-steel-mh',
-    name: 'Apex Steel · Maharashtra',
-    shortName: 'Apex Steel',
-    gstin: '27AABCT3518Q1ZV',
-    type: 'normal',
-    typeLabel: 'Normal Registration',
-    state: 'Maharashtra (27)',
-    pan: 'AABCT3518Q',
-    aato: '\u20B9 1,28,500 Cr (FY 25-26)',
-    period: 'Monthly',
-    nextDue: 'GSTR-1 by 11-Jun-2026',
-    daysToDue: 27,
-    homePage: 'gstr1.html'
-  },
-  {
-    id: 'apex-services-isd',
-    name: 'Apex Services Ltd · ISD',
-    shortName: 'Apex Services (ISD)',
-    gstin: '27AABCT3518Q2ZW',
-    type: 'isd',
-    typeLabel: 'Input Service Distributor',
-    state: 'Maharashtra (27)',
-    pan: 'AABCT3518Q',
-    aato: 'N/A (ISD distributes credit)',
-    period: 'Monthly',
-    nextDue: 'GSTR-6 by 13-Jun-2026',
-    daysToDue: 29,
-    homePage: 'gstr6.html'
-  },
-  {
-    id: 'apex-traders-comp',
-    name: 'Apex Traders LLP · Composition',
-    shortName: 'Apex Traders (Comp.)',
-    gstin: '27AABCT3518Q3ZX',
-    type: 'composition',
-    typeLabel: 'Composition Scheme (\u00A710)',
-    state: 'Maharashtra (27)',
-    pan: 'AABCT3518Q',
-    aato: '\u20B9 1.24 Cr (FY 25-26)',
-    period: 'Quarterly',
-    nextDue: 'CMP-08 (Q1) by 18-Jul-2026',
-    daysToDue: 64,
-    homePage: 'cmp08.html'
+const ENTITIES = [];
+
+// ============================================
+// LIVE GST DUE DATES (computed from today's date)
+// GSTR-1: 11th of following month (monthly) / 13th after quarter (QRMP)
+// GSTR-3B: 20th of following month (monthly) / 22nd after quarter (QRMP)
+// ============================================
+const MONTH_ABBR = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function daysBetween(from, to) {
+  const a = Date.UTC(from.getFullYear(), from.getMonth(), from.getDate());
+  const b = Date.UTC(to.getFullYear(), to.getMonth(), to.getDate());
+  return Math.round((b - a) / 86400000);
+}
+function fmtDueDate(d) {
+  return String(d.getDate()).padStart(2, '0') + '-' + MONTH_ABBR[d.getMonth()] + '-' + d.getFullYear();
+}
+function periodOf(dueDate) {
+  const m = dueDate.getMonth() === 0 ? 12 : dueDate.getMonth();
+  const y = dueDate.getMonth() === 0 ? dueDate.getFullYear() - 1 : dueDate.getFullYear();
+  return MONTH_ABBR[m - 1] + ' ' + y;
+}
+function nextDueOnDay(day, now) {
+  now = now || new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  let d = new Date(now.getFullYear(), now.getMonth(), day);
+  if (d < today) d = new Date(now.getFullYear(), now.getMonth() + 1, day);
+  return d;
+}
+function nextQuarterlyDue(day, now) {
+  now = now || new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const qEndMonth = [2, 5, 8, 11];
+  for (let i = 0; i < 8; i++) {
+    const qm = qEndMonth[i % 4];
+    const yr = now.getFullYear() + Math.floor(i / 4);
+    const due = new Date(yr, qm + 1, day);
+    if (due >= today) return due;
   }
-];
+  return new Date(now.getFullYear(), now.getMonth() + 1, day);
+}
+function computeGstDueDates(filingScheme, now) {
+  now = now || new Date();
+  const qrmp = filingScheme === 'qrmp';
+  const g1Due = qrmp ? nextQuarterlyDue(13, now) : nextDueOnDay(11, now);
+  const g3Due = qrmp ? nextQuarterlyDue(22, now) : nextDueOnDay(20, now);
+  const build = (due, name) => ({ due: due, daysLeft: daysBetween(now, due), period: periodOf(due), label: name + ' due ' + fmtDueDate(due) });
+  return { gstr1: build(g1Due, 'GSTR-1'), gstr3b: build(g3Due, 'GSTR-3B'), filingScheme: qrmp ? 'qrmp' : 'monthly' };
+}
+function dueChipClass(daysLeft) {
+  if (daysLeft <= 3) return 'error';
+  if (daysLeft <= 7) return 'warn';
+  return 'success';
+}
+function dueDaysText(daysLeft) {
+  if (daysLeft < 0) return Math.abs(daysLeft) + 'd overdue';
+  if (daysLeft === 0) return 'due today';
+  return daysLeft + 'd left';
+}
 
 function getStoredSession() {
   try {
@@ -100,6 +112,7 @@ function getBackendRegistrations() {
       shortName: r.company_name || r.legal_name || r.gstin,
       gstin: r.gstin,
       type: 'normal',
+      filingScheme: r.filing_scheme || 'monthly',
       typeLabel: r.filing_scheme === 'qrmp' ? 'Normal Registration · QRMP' : 'Normal Registration',
       state: (r.state_name || '') + (r.state_code ? ' (' + r.state_code + ')' : ''),
       pan: (r.gstin || '').slice(2, 12),
@@ -107,7 +120,7 @@ function getBackendRegistrations() {
       period: r.filing_scheme === 'qrmp' ? 'Quarterly' : 'Monthly',
       nextDue: 'GSTR-1 filing',
       daysToDue: 0,
-      homePage: 'gstr1.html'
+      homePage: 'gstr1-workbench.html'
     }));
   } catch (e) { return []; }
 }
@@ -226,533 +239,36 @@ document.addEventListener('DOMContentLoaded', () => {
 // ============================================
 function getSidebarHTML(active, entityType) {
   const isActive = (k) => active === k ? 'active' : '';
-
-  // ---- ISD ----
-  if (entityType === 'isd') {
-    return `
-      <a href="dashboard.html" class="nav-item ${isActive('dashboard')}">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
-        <span class="nav-item-label">Dashboard</span>
-      </a>
-      <div class="nav-section">
-        <div class="nav-section-label">Returns &middot; ISD</div>
-        <a href="gstr6.html" class="nav-item ${isActive('gstr6')}">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
-          <span class="nav-item-label">GSTR-6 Monthly</span>
-          <span class="nav-badge warn">29d</span>
-        </a>
-        <a href="gstr6a-view.html" class="nav-item ${isActive('gstr6a')}">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-          <span class="nav-item-label">GSTR-6A Auto-drafted</span>
-        </a>
-        <a href="gstr9-annual.html" class="nav-item ${isActive('gstr9')}">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          <span class="nav-item-label">GSTR-9 Annual</span>
-        </a>
-      </div>
-      <div class="nav-section">
-        <div class="nav-section-label">ITC Management</div>
-        <a href="gstr6-step1.html" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          <span class="nav-item-label">ITC Received</span>
-        </a>
-        <a href="gstr6-step2.html" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
-          <span class="nav-item-label">ITC Distribution</span>
-        </a>
-        <a href="isd-units.html" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-          <span class="nav-item-label">Recipient Units (12)</span>
-        </a>
-      </div>
-      <div class="nav-section">
-        <div class="nav-group-collapsible" data-group="reconciliation">
-          <button class="nav-section-toggle-header" type="button" aria-label="Toggle Reconciliation section">
-            <svg class="nav-section-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-            <span>Reconciliation</span>
-            <svg class="nav-section-toggle-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
-          </button>
-          <div class="nav-subitems">
-            <a href="reco-2a-vs-2b.html" class="nav-item nav-subitem ${isActive('reco2a2b')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-              <span class="nav-item-label">2A vs 2B</span>
-            </a>
-            <a href="reco-2a-vs-books.html" class="nav-item nav-subitem ${isActive('reco2abooks')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-              <span class="nav-item-label">2A vs Books</span>
-            </a>
-            <a href="reco-2b-vs-books.html" class="nav-item nav-subitem ${isActive('reco2bbooks')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-              <span class="nav-item-label">2B vs Books</span>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="nav-section">
-        <div class="nav-section-label">E-Invoice (IRN)</div>
-        <div class="nav-group-collapsible" data-group="einvoice">
-          <div class="nav-item-row">
-            <a href="einvoice.html" class="nav-item nav-item-parent ${isActive('einvoice')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-              <span class="nav-item-label">IRN hub</span>
-              <span class="nav-badge warn">84 ⏱</span>
-            </a>
-            <button class="nav-collapse-toggle" type="button" aria-label="Toggle IRN sub-items">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-          </div>
-          <div class="nav-subitems">
-            <a href="einvoice-generate.html" class="nav-item nav-subitem ${isActive('einvgen')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              <span class="nav-item-label">Generate (single)</span>
-            </a>
-            <a href="einvoice-bulk.html" class="nav-item nav-subitem ${isActive('einvbulk')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-              <span class="nav-item-label">Bulk &amp; ERP sync</span>
-            </a>
-            <a href="einvoice-management.html" class="nav-item nav-subitem ${isActive('einvmgmt')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              <span class="nav-item-label">Search &amp; manage</span>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="nav-section">
-        <div class="nav-section-label">E-Way Bill (EWB)</div>
-        <div class="nav-group-collapsible" data-group="ewb">
-          <div class="nav-item-row">
-            <a href="ewb.html" class="nav-item nav-item-parent ${isActive('ewb')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 17h2l1.5-9h11L19 17h2"/><circle cx="7" cy="19" r="2"/><circle cx="17" cy="19" r="2"/><path d="M10 12h4"/></svg>
-              <span class="nav-item-label">EWB hub</span>
-              <span class="nav-badge warn">12 ⏱</span>
-            </a>
-            <button class="nav-collapse-toggle" type="button" aria-label="Toggle EWB sub-items">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-          </div>
-          <div class="nav-subitems">
-            <a href="ewb-generate.html" class="nav-item nav-subitem ${isActive('ewbgen')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              <span class="nav-item-label">Generate (single)</span>
-            </a>
-            <a href="ewb-bulk.html" class="nav-item nav-subitem ${isActive('ewbbulk')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-              <span class="nav-item-label">Bulk &amp; portal sync</span>
-            </a>
-            <a href="ewb-management.html" class="nav-item nav-subitem ${isActive('ewbmgmt')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
-              <span class="nav-item-label">Manage all</span>
-            </a>
-          </div>
-        </div>
-      </div>
-
-
-      <div class="nav-section">
-        <div class="nav-section-label">Reports &amp; Compliance</div>
-        <a href="reports.html" class="nav-item ${isActive('reports')}">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-          <span class="nav-item-label">Reports &amp; downloads</span>
-        </a>
-      </div>
-      <div class="nav-section">
-        <div class="nav-group-collapsible" data-group="ledgers">
-          <button class="nav-section-toggle-header" type="button" aria-label="Toggle Ledgers section">
-            <svg class="nav-section-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
-            <span>Ledgers &amp; Payments</span>
-            <svg class="nav-section-toggle-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
-          </button>
-          <div class="nav-subitems">
-            <a href="ledgers.html" class="nav-item nav-subitem ${isActive('ledgers')}" style="font-weight:600;">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-              <span class="nav-item-label">Overview &middot; all ledgers</span>
-            </a>
-            <a href="cash-ledger.html" class="nav-item nav-subitem ${isActive('cashledger')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
-              <span class="nav-item-label">Cash Ledger</span>
-            </a>
-            <a href="credit-ledger.html" class="nav-item nav-subitem ${isActive('creditledger')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-              <span class="nav-item-label">Credit Ledger</span>
-            </a>
-            <a href="challans.html" class="nav-item nav-subitem ${isActive('challans')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/></svg>
-              <span class="nav-item-label">Challans</span>
-            </a>
-            <a href="drc03a.html" class="nav-item nav-subitem ${isActive('drc03a')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              <span class="nav-item-label">DRC-03A · Refunds</span>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="nav-section">
-        <div class="nav-section-label">Compliance</div>
-        <a href="notices.html" class="nav-item ${isActive('notices')}">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-          <span class="nav-item-label">Notices &amp; Orders</span>
-        </a>
-      </div>
-    `;
-  }
-
-  // ---- COMPOSITION ----
-  if (entityType === 'composition') {
-    return `
-      <a href="dashboard.html" class="nav-item ${isActive('dashboard')}">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
-        <span class="nav-item-label">Dashboard</span>
-      </a>
-      <div class="nav-section">
-        <div class="nav-section-label">Returns &middot; Composition</div>
-        <a href="cmp08.html" class="nav-item ${isActive('cmp08')}">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/></svg>
-          <span class="nav-item-label">CMP-08 Quarterly</span>
-          <span class="nav-badge warn">64d</span>
-        </a>
-        <a href="gstr4.html" class="nav-item ${isActive('gstr4')}">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          <span class="nav-item-label">GSTR-4 Annual</span>
-        </a>
-      </div>
-      <div class="nav-section">
-        <div class="nav-section-label">Outward Supplies</div>
-        <a href="bos-register.html" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-          <span class="nav-item-label">Bill of Supply</span>
-        </a>
-      </div>
-      <div class="nav-section">
-        <div class="nav-section-label">Inward Supplies</div>
-        <a href="purchase-register-comp.html" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-          <span class="nav-item-label">Purchase Register</span>
-        </a>
-      </div>
-            <div class="nav-section">
-        <div class="nav-group-collapsible" data-group="reconciliation">
-          <button class="nav-section-toggle-header" type="button" aria-label="Toggle Reconciliation section">
-            <svg class="nav-section-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-            <span>Reconciliation</span>
-            <svg class="nav-section-toggle-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
-          </button>
-          <div class="nav-subitems">
-            <a href="reco-2a-vs-books.html" class="nav-item nav-subitem ${isActive('reco2abooks')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-              <span class="nav-item-label">2A vs Books</span>
-            </a>
-            <a href="reco-books-vs-einv.html" class="nav-item nav-subitem ${isActive('recobookseinv')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/></svg>
-              <span class="nav-item-label">Books vs E-invoice</span>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="nav-section">
-        <div class="nav-section-label">E-Invoice (IRN)</div>
-        <div class="nav-group-collapsible" data-group="einvoice">
-          <div class="nav-item-row">
-            <a href="einvoice.html" class="nav-item nav-item-parent ${isActive('einvoice')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-              <span class="nav-item-label">IRN hub</span>
-              <span class="nav-badge warn">84 ⏱</span>
-            </a>
-            <button class="nav-collapse-toggle" type="button" aria-label="Toggle IRN sub-items">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-          </div>
-          <div class="nav-subitems">
-            <a href="einvoice-generate.html" class="nav-item nav-subitem ${isActive('einvgen')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              <span class="nav-item-label">Generate (single)</span>
-            </a>
-            <a href="einvoice-bulk.html" class="nav-item nav-subitem ${isActive('einvbulk')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-              <span class="nav-item-label">Bulk &amp; ERP sync</span>
-            </a>
-            <a href="einvoice-management.html" class="nav-item nav-subitem ${isActive('einvmgmt')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              <span class="nav-item-label">Search &amp; manage</span>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="nav-section">
-        <div class="nav-section-label">E-Way Bill (EWB)</div>
-        <div class="nav-group-collapsible" data-group="ewb">
-          <div class="nav-item-row">
-            <a href="ewb.html" class="nav-item nav-item-parent ${isActive('ewb')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 17h2l1.5-9h11L19 17h2"/><circle cx="7" cy="19" r="2"/><circle cx="17" cy="19" r="2"/><path d="M10 12h4"/></svg>
-              <span class="nav-item-label">EWB hub</span>
-              <span class="nav-badge warn">12 ⏱</span>
-            </a>
-            <button class="nav-collapse-toggle" type="button" aria-label="Toggle EWB sub-items">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-          </div>
-          <div class="nav-subitems">
-            <a href="ewb-generate.html" class="nav-item nav-subitem ${isActive('ewbgen')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              <span class="nav-item-label">Generate (single)</span>
-            </a>
-            <a href="ewb-bulk.html" class="nav-item nav-subitem ${isActive('ewbbulk')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-              <span class="nav-item-label">Bulk &amp; portal sync</span>
-            </a>
-            <a href="ewb-management.html" class="nav-item nav-subitem ${isActive('ewbmgmt')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
-              <span class="nav-item-label">Manage all</span>
-            </a>
-          </div>
-        </div>
-      </div>
-<div class="nav-section">
-        <div class="nav-section-label">Reports &amp; Compliance</div>
-        <a href="reports.html" class="nav-item ${isActive('reports')}">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-          <span class="nav-item-label">Reports &amp; downloads</span>
-        </a>
-      </div>
-            <div class="nav-section">
-        <div class="nav-group-collapsible" data-group="ledgers">
-          <button class="nav-section-toggle-header" type="button" aria-label="Toggle Ledgers section">
-            <svg class="nav-section-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
-            <span>Ledgers &amp; Payments</span>
-            <svg class="nav-section-toggle-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
-          </button>
-          <div class="nav-subitems">
-            <a href="ledgers.html" class="nav-item nav-subitem ${isActive('ledgers')}" style="font-weight:600;">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-              <span class="nav-item-label">Overview &middot; all ledgers</span>
-            </a>
-            <a href="cash-ledger.html" class="nav-item nav-subitem ${isActive('cashledger')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
-              <span class="nav-item-label">Cash Ledger</span>
-            </a>
-            <a href="credit-ledger.html" class="nav-item nav-subitem ${isActive('creditledger')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-              <span class="nav-item-label">Credit (ITC) Ledger</span>
-            </a>
-            <a href="challans.html" class="nav-item nav-subitem ${isActive('challans')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/></svg>
-              <span class="nav-item-label">Challans</span>
-            </a>
-            <a href="drc03a.html" class="nav-item nav-subitem ${isActive('drc03a')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              <span class="nav-item-label">DRC-03A &middot; Refunds</span>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="nav-section">
-        <div class="nav-section-label">Compliance</div>
-        <a href="notices.html" class="nav-item ${isActive('notices')}">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-          <span class="nav-item-label">Notices &amp; Orders</span>
-        </a>
-      </div>
-    `;
-  }
-
-  // ---- NORMAL (default) ----
+  const entity = getCurrentEntity();
+  const due = computeGstDueDates(entity && entity.filingScheme);
+  const badge = (d) => `<span class="nav-badge ${dueChipClass(d.daysLeft)}">${dueDaysText(d.daysLeft)}</span>`;
   return `
-      <a href="dashboard.html" class="nav-item ${isActive('dashboard')}">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
-        <span class="nav-item-label">Dashboard</span>
+    <a href="dashboard.html" class="nav-item ${isActive('dashboard')}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+      <span class="nav-item-label">Dashboard</span>
+    </a>
+    <div class="nav-section">
+      <div class="nav-section-label">Returns</div>
+      <a href="gstr1-workbench.html" class="nav-item ${isActive('gstr1')}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
+        <span class="nav-item-label">GSTR-1</span>
+        ${badge(due.gstr1)}
       </a>
-      <div class="nav-section">
-        <div class="nav-section-label">Returns</div>
-        <a href="gstr1.html" class="nav-item ${isActive('gstr1')}">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
-          <span class="nav-item-label">GSTR-1 Outward</span>
-          <span class="nav-badge warn">27d</span>
-        </a>
-        <a href="gstr1a.html" class="nav-item ${isActive('gstr1a')}">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
-          <span class="nav-item-label">GSTR-1A Amendment</span>
-          <span class="nav-badge success">New</span>
-        </a>
-        <a href="gstr3b.html" class="nav-item ${isActive('gstr3b')}">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-          <span class="nav-item-label">GSTR-3B Inward</span>
-          <span class="nav-badge">36d</span>
-        </a>
-        <a href="gstr9-annual.html" class="nav-item ${isActive('gstr9')}">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          <span class="nav-item-label">GSTR-9 Annual</span>
-        </a>
-      </div>
-      <div class="nav-section">
-        <div class="nav-section-label">Inward Supplies</div>
-        <a href="ims.html" class="nav-item ${isActive('ims')}" style="position:relative">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-          <span class="nav-item-label">IMS &middot; Invoice Mgmt</span>
-          <span class="nav-badge warn">142</span>
-        </a>
-        <a href="pr-recon.html" class="nav-item ${isActive('prrecon')}">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="2" x2="12" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
-          <span class="nav-item-label">PR vs 2B Recon</span>
-        </a>
-        <a href="itc-upload.html" class="nav-item ${isActive('itc')}">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></svg>
-          <span class="nav-item-label">ITC Reconciliation</span>
-        </a>
-        <a href="rcm-statement.html" class="nav-item ${isActive('rcm')}">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
-          <span class="nav-item-label">RCM Liability/ITC</span>
-        </a>
-      </div>
-      <div class="nav-section">
-        <div class="nav-group-collapsible" data-group="reconciliation">
-          <button class="nav-section-toggle-header" type="button" aria-label="Toggle Reconciliation section">
-            <svg class="nav-section-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-            <span>Reconciliation</span>
-            <svg class="nav-section-toggle-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
-          </button>
-          <div class="nav-subitems">
-            <a href="reco-2a-vs-2b.html" class="nav-item nav-subitem ${isActive('reco2a2b')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-              <span class="nav-item-label">2A vs 2B</span>
-            </a>
-            <a href="reco-2a-vs-books.html" class="nav-item nav-subitem ${isActive('reco2abooks')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-              <span class="nav-item-label">2A vs Books</span>
-            </a>
-            <a href="reco-2b-vs-books.html" class="nav-item nav-subitem ${isActive('reco2bbooks')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-              <span class="nav-item-label">2B vs Books</span>
-              <span class="nav-badge warn">critical</span>
-            </a>
-            <a href="reco-books-vs-ims.html" class="nav-item nav-subitem ${isActive('recobooksims')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-              <span class="nav-item-label">Books vs IMS</span>
-            </a>
-            <a href="reco-books-vs-einv.html" class="nav-item nav-subitem ${isActive('recobookseinv')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/></svg>
-              <span class="nav-item-label">Books vs E-invoice</span>
-            </a>
-            <a href="reco-export-inv-vs-books.html" class="nav-item nav-subitem ${isActive('recoexport')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-              <span class="nav-item-label">Exports tie-out</span>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="nav-section">
-        <div class="nav-section-label">E-Invoice (IRN)</div>
-        <div class="nav-group-collapsible" data-group="einvoice">
-          <div class="nav-item-row">
-            <a href="einvoice.html" class="nav-item nav-item-parent ${isActive('einvoice')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-              <span class="nav-item-label">IRN hub</span>
-              <span class="nav-badge warn">84 ⏱</span>
-            </a>
-            <button class="nav-collapse-toggle" type="button" aria-label="Toggle IRN sub-items">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-          </div>
-          <div class="nav-subitems">
-            <a href="einvoice-generate.html" class="nav-item nav-subitem ${isActive('einvgen')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              <span class="nav-item-label">Generate (single)</span>
-            </a>
-            <a href="einvoice-bulk.html" class="nav-item nav-subitem ${isActive('einvbulk')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-              <span class="nav-item-label">Bulk &amp; ERP sync</span>
-            </a>
-            <a href="einvoice-management.html" class="nav-item nav-subitem ${isActive('einvmgmt')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              <span class="nav-item-label">Search &amp; manage</span>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="nav-section">
-        <div class="nav-section-label">E-Way Bill (EWB)</div>
-        <div class="nav-group-collapsible" data-group="ewb">
-          <div class="nav-item-row">
-            <a href="ewb.html" class="nav-item nav-item-parent ${isActive('ewb')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 17h2l1.5-9h11L19 17h2"/><circle cx="7" cy="19" r="2"/><circle cx="17" cy="19" r="2"/><path d="M10 12h4"/></svg>
-              <span class="nav-item-label">EWB hub</span>
-              <span class="nav-badge warn">12 ⏱</span>
-            </a>
-            <button class="nav-collapse-toggle" type="button" aria-label="Toggle EWB sub-items">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-          </div>
-          <div class="nav-subitems">
-            <a href="ewb-generate.html" class="nav-item nav-subitem ${isActive('ewbgen')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              <span class="nav-item-label">Generate (single)</span>
-            </a>
-            <a href="ewb-bulk.html" class="nav-item nav-subitem ${isActive('ewbbulk')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-              <span class="nav-item-label">Bulk &amp; portal sync</span>
-            </a>
-            <a href="ewb-management.html" class="nav-item nav-subitem ${isActive('ewbmgmt')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
-              <span class="nav-item-label">Manage all</span>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="nav-section">
-        <div class="nav-section-label">Reports &amp; Compliance</div>
-        <a href="reports.html" class="nav-item ${isActive('reports')}">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-          <span class="nav-item-label">Reports &amp; downloads</span>
-        </a>
-      </div>
-      <div class="nav-section">
-        <div class="nav-group-collapsible" data-group="ledgers">
-          <button class="nav-section-toggle-header" type="button" aria-label="Toggle Ledgers section">
-            <svg class="nav-section-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
-            <span>Ledgers &amp; Payments</span>
-            <svg class="nav-section-toggle-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
-          </button>
-          <div class="nav-subitems">
-            <a href="ledgers.html" class="nav-item nav-subitem ${isActive('ledgers')}" style="font-weight:600;">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-              <span class="nav-item-label">Overview &middot; all ledgers</span>
-            </a>
-            <a href="cash-ledger.html" class="nav-item nav-subitem ${isActive('cashledger')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
-              <span class="nav-item-label">Cash Ledger</span>
-            </a>
-            <a href="credit-ledger.html" class="nav-item nav-subitem ${isActive('creditledger')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-              <span class="nav-item-label">Credit (ITC) Ledger</span>
-            </a>
-            <a href="challans.html" class="nav-item nav-subitem ${isActive('challans')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/></svg>
-              <span class="nav-item-label">Challans</span>
-            </a>
-            <a href="drc03a.html" class="nav-item nav-subitem ${isActive('drc03a')}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              <span class="nav-item-label">DRC-03A · Refunds</span>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="nav-section">
-        <div class="nav-section-label">Compliance</div>
-        <a href="notices.html" class="nav-item ${isActive('notices')}" style="position:relative">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-          <span class="nav-item-label">Notices &amp; Orders</span>
-          <span class="nav-badge">3</span>
-        </a>
-        <a href="amnesty.html" class="nav-item ${isActive('amnesty')}">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-          <span class="nav-item-label">\u00A7128A Amnesty</span>
-          <span class="nav-badge success">SPL</span>
-        </a>
-      </div>
-  `;
+      <a href="gstr3b.html" class="nav-item ${isActive('gstr3b')}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>
+        <span class="nav-item-label">GSTR-3B</span>
+        ${badge(due.gstr3b)}
+      </a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Tools</div>
+      <a href="gstr1-workbench.html" class="nav-item ${isActive('recon')}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span class="nav-item-label">Reconciliation</span>
+      </a>
+    </div>`;
 }
 
-// ============================================
-// ENTITY SWITCHER PANEL HTML
-// ============================================
 function getEntitySwitcherPanel(currentId) {
   const entities = getAccessibleEntities();
   const pan = entities[0] && entities[0].pan ? entities[0].pan : 'selected PAN';
@@ -809,12 +325,26 @@ function getEntityStripHTML(entity) {
         </div>
       </div>
       <div class="entity-strip-right">
-        <div class="entity-strip-due">
-          <span class="entity-strip-due-label">Next due:</span>
-          <span class="entity-strip-due-value">${entity.nextDue}</span>
-        </div>
+        <div class="entity-strip-due" id="entity-strip-due"></div>
       </div>
     </div>`;
+}
+
+// Render the live due-date chips into the entity strip (and keep them current).
+function renderEntityStripDue(entity) {
+  const el = document.getElementById('entity-strip-due');
+  if (!el) return;
+  const paint = () => {
+    const d = computeGstDueDates(entity && entity.filingScheme);
+    el.innerHTML =
+      `<span class="entity-strip-due-label">Due:</span>` +
+      `<span class="due-pill ${dueChipClass(d.gstr1.daysLeft)}" title="${d.gstr1.label} · period ${d.gstr1.period}">GSTR-1 ${dueDaysText(d.gstr1.daysLeft)}</span>` +
+      `<span class="due-pill ${dueChipClass(d.gstr3b.daysLeft)}" title="${d.gstr3b.label} · period ${d.gstr3b.period}">GSTR-3B ${dueDaysText(d.gstr3b.daysLeft)}</span>`;
+  };
+  paint();
+  // keep live across midnight while the tab stays open
+  if (window.__fpDueTimer) clearInterval(window.__fpDueTimer);
+  window.__fpDueTimer = setInterval(paint, 60000);
 }
 
 // ============================================
@@ -856,7 +386,7 @@ function renderShell(active, moduleName, breadcrumb) {
       </div>
     </nav>
     <div class="sidebar-footer">
-      v2.0.8 &middot; Build 2026.05<br>
+      v3.0 &middot; GSTR-1<br>
       <span style="opacity:0.6">FylePro Platform</span>
     </div>
   </aside>`;
@@ -873,7 +403,6 @@ function renderShell(active, moduleName, breadcrumb) {
       </button>
       <button class="header-icon-btn" title="Notifications">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-        <span class="notif-dot">7</span>
       </button>
       <button class="header-icon-btn" title="Settings">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/></svg>
@@ -898,6 +427,7 @@ function renderShell(active, moduleName, breadcrumb) {
     const stripWrap = document.createElement('div');
     stripWrap.innerHTML = getEntityStripHTML(entity);
     main.insertBefore(stripWrap.firstElementChild, main.firstChild);
+    renderEntityStripDue(entity);
     const panelWrap = document.createElement('div');
     panelWrap.innerHTML = getEntitySwitcherPanel(entity.id);
     while (panelWrap.firstChild) document.body.appendChild(panelWrap.firstChild);
@@ -1527,7 +1057,7 @@ window.openIrnPopup = function(ctx) {
           </div>
           <div class="modal-field">
             <label class="modal-field-label">Trade name</label>
-            <input class="modal-field-input" value="Apex Steel Mumbai" readonly style="background:var(--bg);">
+            <input class="modal-field-input" value="" readonly style="background:var(--bg);">
           </div>
         </div>
 
