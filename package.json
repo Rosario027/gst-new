@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc -p server/tsconfig.json",
     "start": "node dist/index.js",
-    "dev": "ts-node-dev --respawn --transpile-only server/src/index.ts",
+    "dev": "ts-node-dev --respawn --transpile-only --project server/tsconfig.json server/src/index.ts",
     "db:setup": "node dist/scripts/setup-db.js",
     "db:setup:dev": "ts-node --transpile-only server/src/scripts/setup-db.ts",
     "typecheck": "tsc -p server/tsconfig.json --noEmit"

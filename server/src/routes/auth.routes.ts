@@ -6,6 +6,8 @@ import { wrap } from '../middleware/async';
 import { AuthUser } from '../types';
 import { isValidGstin, stateCodeFromGstin, panFromGstin } from '../services/gstin';
 import { STATE_NAMES } from '../services/gstr1/util';
+import { config } from '../config';
+import { databaseSetupMessage, isDatabaseSetupError } from '../db-errors';
 
 export const authRouter = Router();
 
@@ -14,6 +16,34 @@ const ROLE_MAP: Record<string, string> = {
   reviewer: 'reviewer', preparer: 'preparer', viewer: 'viewer',
 };
 const mapRole = (r?: string) => ROLE_MAP[String(r ?? '').trim().toLowerCase()] ?? 'preparer';
+
+const LOCAL_DEMO_USER: AuthUser = {
+  tenantId: '00000000-0000-4000-8000-000000000001',
+  userId: '00000000-0000-4000-8000-000000000002',
+  loginId: 'user',
+  fullName: 'admin',
+  role: 'company_admin',
+};
+
+const LOCAL_DEMO_REGISTRATIONS = [{
+  id: '00000000-0000-4000-8000-000000000003',
+  gstin: '27AALCT0864B1ZE',
+  legal_name: 'Primary Company',
+  state_code: '27',
+  state_name: 'Maharashtra',
+  filing_scheme: 'monthly',
+  delivery_mode: 'json',
+  company_id: '00000000-0000-4000-8000-000000000004',
+  company_name: 'Primary Company',
+}];
+
+function isLocalDemoLogin(loginId: string, password: string): boolean {
+  return config.env !== 'production' && loginId === 'user' && password === 'user123';
+}
+
+function isLocalDemoUser(user?: AuthUser): boolean {
+  return config.env !== 'production' && user?.userId === LOCAL_DEMO_USER.userId;
+}
 
 /** Find a usable (not used, not expired) temporary onboarding credential. */
 async function findValidTempCredential(tempUserId: string, tempPassword: string): Promise<string | null> {
@@ -37,11 +67,25 @@ authRouter.post('/login', wrap(async (req, res) => {
   }
   // login_id is unique per tenant; for a simple multi-tenant login we match the
   // first active user whose password verifies.
-  const candidates = await rawQuery<any>(
-    `SELECT id, tenant_id, login_id, password_hash, full_name, role
-       FROM users WHERE login_id = $1 AND is_active = true`,
-    [loginId]
-  );
+  let candidates: any[];
+  try {
+    candidates = await rawQuery<any>(
+      `SELECT id, tenant_id, login_id, password_hash, full_name, role
+         FROM users WHERE login_id = $1 AND is_active = true`,
+      [loginId]
+    );
+  } catch (err: any) {
+    if (isDatabaseSetupError(err) && isLocalDemoLogin(loginId, password)) {
+      const token = signToken(LOCAL_DEMO_USER);
+      res.cookie('fp_token', token, { httpOnly: true, sameSite: 'lax', maxAge: 12 * 3600 * 1000 });
+      return res.json({ token, user: LOCAL_DEMO_USER, demoMode: true });
+    }
+    if (isDatabaseSetupError(err)) {
+      err.status = 503;
+      err.message = databaseSetupMessage(err);
+    }
+    throw err;
+  }
   for (const u of candidates) {
     if (!u.password_hash || typeof u.password_hash !== 'string') continue; // skip malformed rows
     let ok = false;
@@ -169,15 +213,27 @@ authRouter.get('/me', requireAuth, (req, res) => {
 
 /** Companies + GST registrations the user can access (drives the entity switcher). */
 authRouter.get('/registrations', requireAuth, wrap(async (req, res) => {
-  const rows = await withTenant({ tenantId: req.user!.tenantId, userId: req.user!.userId }, (c) =>
-    c.query(
-      `SELECT g.id, g.gstin, g.legal_name, g.state_code, g.state_name,
-              g.filing_scheme, g.delivery_mode, c.id AS company_id, c.legal_name AS company_name
-         FROM gst_registrations g
-         JOIN companies c ON c.id = g.company_id
-        WHERE g.is_active = true
-        ORDER BY c.legal_name, g.gstin`
-    ).then((r) => r.rows)
-  );
+  let rows;
+  try {
+    rows = await withTenant({ tenantId: req.user!.tenantId, userId: req.user!.userId }, (c) =>
+      c.query(
+        `SELECT g.id, g.gstin, g.legal_name, g.state_code, g.state_name,
+                g.filing_scheme, g.delivery_mode, c.id AS company_id, c.legal_name AS company_name
+           FROM gst_registrations g
+           JOIN companies c ON c.id = g.company_id
+          WHERE g.is_active = true
+          ORDER BY c.legal_name, g.gstin`
+      ).then((r) => r.rows)
+    );
+  } catch (err: any) {
+    if (isDatabaseSetupError(err) && isLocalDemoUser(req.user)) {
+      return res.json({ registrations: LOCAL_DEMO_REGISTRATIONS, demoMode: true });
+    }
+    if (isDatabaseSetupError(err)) {
+      err.status = 503;
+      err.message = databaseSetupMessage(err);
+    }
+    throw err;
+  }
   res.json({ registrations: rows });
 }));

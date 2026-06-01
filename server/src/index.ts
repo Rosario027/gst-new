@@ -8,6 +8,7 @@ import { pool } from './db';
 import { authRouter } from './routes/auth.routes';
 import { gstr1Router } from './routes/gstr1.routes';
 import { gstr3bRouter } from './routes/gstr3b.routes';
+import { databaseSetupMessage, isDatabaseSetupError } from './db-errors';
 
 /** Apply schema.sql (+ seed.sql) on boot — idempotent, so a fresh deploy is self-setup. */
 async function runMigrations(): Promise<void> {
@@ -70,6 +71,10 @@ app.get(/^(?!\/api).*/, (req, res, next) => {
 // ── Error handler ──
 app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   console.error('[error]', err);
+  if (isDatabaseSetupError(err)) {
+    res.status(err.status ?? 503).json({ error: databaseSetupMessage(err) });
+    return;
+  }
   res.status(err.status ?? 500).json({ error: err.message ?? 'Internal server error' });
 });
 
