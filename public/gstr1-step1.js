@@ -91,6 +91,13 @@
       tile(t.rows || 0, 'rows', '#1F2937') + tile(t.validRows || 0, 'valid', '#168736') +
       tile(t.errorRows || 0, 'rows w/ errors', t.errorRows ? '#C8102E' : '#168736') +
       tile(t.errors || 0, 'errors', '#C8102E') + tile(t.warnings || 0, 'warnings', '#C77700');
+    // Document-count summary (Table 13)
+    const ds = res.docSummary;
+    if (ds && ds.totalDocuments != null) {
+      const byType = Object.entries(ds.byType || {}).map(([k, n]) => `${esc(k)}: ${n}`).join(' · ');
+      $('s1-tiles').innerHTML += tile(ds.totalDocuments, 'documents', '#1F2937') + tile(ds.cancelled, 'cancelled', ds.cancelled ? '#C77700' : '#168736') + tile(ds.netDocuments, 'net issued', '#155CDB');
+      if (byType) $('s1-summary-sub').innerHTML += ` <span class="issue">· ${byType}</span>`;
+    }
     const issues = (v.topIssues || []).slice(0, 10);
     $('s1-topissues').innerHTML = issues.length
       ? `<table class="data-table compact" style="width:100%"><thead><tr><th>Code</th><th>Severity</th><th>Count</th><th>Issue</th></tr></thead><tbody>${issues.map((i) => `<tr><td class="mono">${esc(i.code || '')}</td><td><span class="action-status ${i.severity === 'error' ? 'reject' : 'pending'}">${i.severity}</span></td><td>${i.count}</td><td>${esc(i.message)}</td></tr>`).join('')}</tbody></table>`

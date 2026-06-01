@@ -142,12 +142,14 @@ export function classifyRow(r: Record<string, any>, supplierStateCode: string): 
     if (hasCtin) {
       return { section: 'cdnr', supplyClass: 'B2B',
         data: { ctin, receiverName: str(r, 'CustomerName'), noteNumber: str(r, 'DocumentNumber'), noteDate: toGstnDate(r.DocumentDate),
+          origInvoiceNumber: str(r, 'OriginalDocumentNumber'), origInvoiceDate: toGstnDate(r.OriginalDocumentDate),
           noteType, pos: common.pos, reverseCharge: str(r, 'ReverseChargeFlag').toUpperCase() === 'Y' ? 'Y' : 'N',
           noteSupplyType: sup === 'SEZ' ? 'SEZ supplies with payment' : 'Regular B2B', noteValue: num(r, 'InvoiceValue'),
           rate, taxableValue: taxable, cessAmount: common.cessAmount, hsn, ...a } };
     }
     return { section: 'cdnur', supplyClass: 'B2C',
       data: { urType: inter ? 'B2CL' : 'B2CL', noteNumber: str(r, 'DocumentNumber'), noteDate: toGstnDate(r.DocumentDate),
+        origInvoiceNumber: str(r, 'OriginalDocumentNumber'), origInvoiceDate: toGstnDate(r.OriginalDocumentDate),
         noteType, pos: common.pos, noteValue: num(r, 'InvoiceValue'), rate, taxableValue: taxable, cessAmount: common.cessAmount, hsn, iamt: a.iamt } };
   }
 
@@ -159,19 +161,27 @@ export function classifyRow(r: Record<string, any>, supplierStateCode: string): 
       data: { ctin, receiverName: str(r, 'CustomerName'), ...invoiceCommon, reverseCharge: str(r, 'ReverseChargeFlag').toUpperCase() === 'Y' ? 'Y' : 'N',
         invoiceType, ecomGstin: common.ecomGstin, rate, taxableValue: taxable, cessAmount: common.cessAmount, hsn, ...a } };
   }
+  // A non-empty but non-15-char CustomerGSTIN is a data-entry error (routed to B2C).
+  const partialCtin = ctin && !hasCtin ? ctin : undefined;
   // B2C: large inter-state invoices (> ₹1L) → B2CL, else B2CS rate-wise
   if (inter && num(r, 'InvoiceValue') > B2CL_THRESHOLD) {
     return { section: 'b2cl', supplyClass: 'B2C',
-      data: { ...invoiceCommon, rate, taxableValue: taxable, cessAmount: common.cessAmount, ecomGstin: common.ecomGstin, hsn, iamt: a.iamt } };
+      data: { ...invoiceCommon, rate, taxableValue: taxable, cessAmount: common.cessAmount, ecomGstin: common.ecomGstin, hsn, partialCtin, iamt: a.iamt } };
   }
   return { section: 'b2cs', supplyClass: 'B2C',
-    data: { type: common.ecomGstin ? 'E' : 'OE', pos: common.pos, rate, taxableValue: taxable, cessAmount: common.cessAmount, ecomGstin: common.ecomGstin, hsn, ...a } };
+    data: { type: common.ecomGstin ? 'E' : 'OE', pos: common.pos, rate, taxableValue: taxable, cessAmount: common.cessAmount, ecomGstin: common.ecomGstin, hsn, partialCtin, ...a } };
 }
 
 // ════════════════════════════════════════════════════════════════════
 // Parse a flat workbook → normalized ParsedRecord[] (+ auto HSN summary)
 // ════════════════════════════════════════════════════════════════════
-export interface FlatParseResult { records: ParsedRecord[]; warnings: string[]; rawCount: number; supplierGstin: string; }
+export interface DocSummary {
+  byType: Record<string, number>;   // distinct document numbers per DocumentType
+  totalDocuments: number;
+  cancelled: number;
+  netDocuments: number;
+}
+export interface FlatParseResult { records: ParsedRecord[]; warnings: string[]; rawCount: number; supplierGstin: string; docSummary: DocSummary; }
 
 export async function parseFlatWorkbook(buffer: Buffer): Promise<FlatParseResult | null> {
   const wb = new ExcelJS.Workbook();
@@ -229,7 +239,20 @@ export async function parseFlatWorkbook(buffer: Buffer): Promise<FlatParseResult
   if (!records.length) warnings.push('No classifiable rows found. Check DocumentType / SupplyType values.');
   if (!supplierGstin) warnings.push('SupplierGSTIN column is empty — inter/intra tax checks may be inaccurate.');
 
-  return { records, warnings, rawCount: flatRows.length, supplierGstin };
+  // Document-count summary (Table 13): distinct document numbers per type.
+  const seenDocs = new Map<string, Set<string>>();
+  for (const r of flatRows) {
+    const dt = str(r, 'DocumentType').toUpperCase() || 'INV';
+    const num = str(r, 'DocumentNumber').toUpperCase();
+    if (!num) continue;
+    (seenDocs.get(dt) ?? seenDocs.set(dt, new Set()).get(dt)!).add(num);
+  }
+  const byType: Record<string, number> = {};
+  let totalDocuments = 0, cancelled = 0;
+  for (const [dt, set] of seenDocs) { byType[dt] = set.size; totalDocuments += set.size; if (dt === 'CAN') cancelled += set.size; }
+  const docSummary: DocSummary = { byType, totalDocuments, cancelled, netDocuments: totalDocuments - cancelled };
+
+  return { records, warnings, rawCount: flatRows.length, supplierGstin, docSummary };
 }
 
 function accumulateHsn(agg: Map<string, any>, r: Record<string, any>, supplyClass: 'B2B' | 'B2C', supplierState: string): void {

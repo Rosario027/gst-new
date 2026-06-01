@@ -5,6 +5,13 @@ import { posCode, toNumber, round2, parsePeriod, STATE_NAMES, isValidStateCode }
 
 // Combined GST rate slabs valid in the rate-wise sheets (CGST+SGST or IGST).
 const VALID_RATES = [0, 0.1, 0.25, 1, 1.5, 3, 5, 6, 7.5, 12, 18, 28];
+
+// Valid Unit Quantity Codes (GSTN UQC master).
+const UQC_MASTER = new Set([
+  'BAG','BAL','BDL','BKL','BOU','BOX','BTL','BUN','CAN','CBM','CCM','CMS','CTN','DOZ','DRM','GGK',
+  'GMS','GRS','GYD','KGS','KLR','KME','LTR','MTR','MLT','MTS','NOS','OTH','PAC','PCS','PRS','QTL',
+  'ROL','SET','SQF','SQM','SQY','TBS','TGM','THD','TON','TUB','UGS','UNT','YDS',
+]);
 const INVOICE_NO_RE = /^[A-Za-z0-9\/-]{1,16}$/;
 const AMOUNT_TOL = 2;       // ₹ rounding tolerance on tax amounts
 const GST_EPOCH = 201707;   // GST rollout: Jul-2017
@@ -208,13 +215,24 @@ function applySectionRules(section: SectionDef, data: Record<string, any>, ctx: 
     case 'b2cl': {
       const v = toNumber(data.invoiceValue);
       if (v > 0 && v <= 100000) e.push(warn('invoiceValue', 'B2CL invoice value should exceed ₹1,00,000', 'RET191167'));
+      if (data.partialCtin) e.push(warn('ctin', `CustomerGSTIN "${data.partialCtin}" is not 15 chars — treated as B2C; verify B2B/B2C classification`));
+      break;
+    }
+    case 'b2cs': {
+      if (data.partialCtin) e.push(warn('ctin', `CustomerGSTIN "${data.partialCtin}" is not 15 chars — treated as B2C; verify B2B/B2C classification`));
       break;
     }
     case 'b2b':
-    case 'cdnr': {
+    case 'cdnr':
+    case 'cdnur': {
       const inv = toNumber(data.invoiceValue ?? data.noteValue);
       const tax = toNumber(data.taxableValue);
       if (inv > 0 && tax > inv + AMOUNT_TOL) e.push(warn('taxableValue', 'Taxable value exceeds invoice/note value'));
+      // Credit/Debit notes must reference a valid original invoice + date.
+      if (section.key === 'cdnr' || section.key === 'cdnur') {
+        if (!String(data.origInvoiceNumber ?? '').trim()) e.push(err('origInvoiceNumber', 'Credit/Debit note must reference the Original Invoice Number', 'RET191115'));
+        if (!String(data.origInvoiceDate ?? '').trim()) e.push(warn('origInvoiceDate', 'Original Invoice Date is recommended for credit/debit notes'));
+      }
       break;
     }
     case 'exp': {
@@ -222,6 +240,15 @@ function applySectionRules(section: SectionDef, data: Record<string, any>, ctx: 
       const t = String(data.exportType ?? '').toUpperCase();
       if (t === 'WOPAY' && rate > 0) e.push(warn('rate', 'Export WITHOUT payment of tax should have 0% rate'));
       if (t === 'WPAY' && rate === 0) e.push(warn('rate', 'Export WITH payment of tax should have a non-zero rate'));
+      // Zero-rated: shipping bill expected to claim refund / close the export.
+      if (!String(data.shippingBillNumber ?? '').trim()) e.push(warn('shippingBillNumber', 'Shipping bill number missing for export (can be added later, required to claim refund)'));
+      break;
+    }
+    case 'hsn': {
+      const uqc = String(data.uqc ?? '').trim().toUpperCase();
+      if (uqc && !UQC_MASTER.has(uqc)) e.push(warn('uqc', `UQC "${uqc}" is not a valid unit code`));
+      const isService = String(data.hsn ?? '').startsWith('99');
+      if (!isService && toNumber(data.quantity) <= 0) e.push(warn('quantity', `Quantity required for goods (HSN ${data.hsn})`));
       break;
     }
     case 'docs': {
@@ -314,6 +341,30 @@ function crossRowChecks(records: ParsedRecord[], ctx: ValidationContext): void {
     const num = String(r.data.invoiceNumber).trim().toUpperCase();
     if ((byNumber.get(num)?.size ?? 0) > 1) {
       r.errors.push(err('invoiceNumber', `Duplicate invoice number "${r.data.invoiceNumber}" used for more than one recipient`, 'RET191102'));
+    }
+  }
+
+  // Cross-upload duplicate: invoice number already filed for this registration in the FY.
+  const priorNumbers = new Set((ctx.existingInvoiceNumbers || []).map((n) => String(n).trim().toUpperCase()));
+  if (priorNumbers.size) {
+    for (const r of records.filter((x) => ['b2b', 'b2cl', 'exp'].includes(x.section) && x.data.invoiceNumber)) {
+      if (priorNumbers.has(String(r.data.invoiceNumber).trim().toUpperCase())) {
+        r.errors.push(err('invoiceNumber', `Invoice number "${r.data.invoiceNumber}" was already uploaded for this GSTIN in the current financial year`, 'RET191102'));
+      }
+    }
+  }
+
+  // Credit/Debit note → original invoice linkage: warn if the referenced original
+  // invoice is not present in this upload (it may belong to an earlier period).
+  const invoiceNumbers = new Set(
+    records.filter((r) => ['b2b', 'b2cl', 'exp'].includes(r.section) && r.data.invoiceNumber)
+      .map((r) => String(r.data.invoiceNumber).trim().toUpperCase())
+  );
+  for (const r of records) {
+    if (r.section !== 'cdnr' && r.section !== 'cdnur') continue;
+    const orig = String(r.data.origInvoiceNumber ?? '').trim().toUpperCase();
+    if (orig && invoiceNumbers.size && !invoiceNumbers.has(orig)) {
+      r.errors.push(warn('origInvoiceNumber', `Original invoice "${r.data.origInvoiceNumber}" not found in this upload — verify it was reported in an earlier period`));
     }
   }
 }

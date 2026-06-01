@@ -33,6 +33,10 @@ export interface ValidationContext {
   supplierGstin: string;
   supplierStateCode: string;
   period: string; // MMYYYY
+  /** Invoice numbers already uploaded for this registration in the same FY (for duplicate detection). */
+  existingInvoiceNumbers?: string[];
+  /** True when the registration's AATO exceeds ₹5 Cr (drives 6-digit HSN requirement). */
+  aatoOver5Cr?: boolean;
 }
 
 export interface ValidationSummary {

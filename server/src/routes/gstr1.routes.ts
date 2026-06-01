@@ -22,6 +22,17 @@ const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 25 
 const ctx = (req: any) => ({ tenantId: req.user.tenantId, userId: req.user.userId });
 const normPeriod = (p: any) => String(p ?? '').replace(/\D/g, '').padStart(6, '0').slice(0, 6);
 
+// The 12 MMYYYY periods of the GST financial year (Apr–Mar) containing `period`.
+function fyPeriods(period: string): string[] {
+  const p = normPeriod(period);
+  const mm = +p.slice(0, 2), yy = +p.slice(2);
+  const startYear = mm >= 4 ? yy : yy - 1;
+  const out: string[] = [];
+  for (let m = 4; m <= 12; m++) out.push(String(m).padStart(2, '0') + startYear);
+  for (let m = 1; m <= 3; m++) out.push(String(m).padStart(2, '0') + (startYear + 1));
+  return out;
+}
+
 async function loadRegistration(client: PoolClient, registrationId: string) {
   const r = await client.query(
     `SELECT id, company_id, gstin, state_code, delivery_mode FROM gst_registrations WHERE id = $1`,
@@ -63,6 +74,7 @@ gstr1Router.post('/datasets', requireAuth, upload.single('file'), async (req, re
 
   const isCsv = /\.csv$/i.test(req.file.originalname) || req.file.mimetype.includes('csv');
   let parsed: { records: any[]; summary: any; warnings: string[] };
+  let docSummary: any = null;
   if (isCsv) {
     parsed = await parseCsv(req.file.buffer, section);
   } else {
@@ -70,6 +82,7 @@ gstr1Router.post('/datasets', requireAuth, upload.single('file'), async (req, re
     const flat = await parseFlatWorkbook(req.file.buffer);
     if (flat) {
       parsed = { records: flat.records, summary: summarizeRecords(flat.records), warnings: flat.warnings };
+      docSummary = flat.docSummary;
     } else {
       parsed = await parseWorkbook(req.file.buffer);
     }
@@ -80,11 +93,29 @@ gstr1Router.post('/datasets', requireAuth, upload.single('file'), async (req, re
       const reg = await loadRegistration(client, registrationId);
       if (!reg) throw Object.assign(new Error('Registration not found or access denied'), { status: 404 });
 
+      // Invoice numbers already uploaded for this registration in OTHER periods of the
+      // same FY (duplicate-per-FY check; same period is excluded so re-uploads aren't flagged).
+      let existingInvoiceNumbers: string[] = [];
+      try {
+        const otherPeriods = fyPeriods(period).filter((p) => p !== period);
+        if (otherPeriods.length) {
+          const dup = await client.query(
+            `SELECT DISTINCT upper(rec.data->>'invoiceNumber') AS inv
+               FROM gstr1_records rec JOIN gstr1_datasets d ON d.id = rec.dataset_id
+              WHERE d.gst_registration_id = $1 AND d.period = ANY($2::text[])
+                AND rec.section IN ('b2b','b2cl','exp') AND rec.data->>'invoiceNumber' IS NOT NULL`,
+            [registrationId, otherPeriods]
+          );
+          existingInvoiceNumbers = dup.rows.map((r: any) => r.inv).filter(Boolean);
+        }
+      } catch { /* non-fatal */ }
+
       // Validate with supplier context so inter/intra (IGST vs CGST+SGST) rules apply.
       const { records, validation } = validateDataset(parsed.records, {
         supplierGstin: reg.gstin,
         supplierStateCode: reg.state_code,
         period,
+        existingInvoiceNumbers,
       });
       const summary = { ...parsed.summary, validRecords: validation.totals.validRows, errorRecords: validation.totals.errorRows };
 
@@ -119,6 +150,7 @@ gstr1Router.post('/datasets', requireAuth, upload.single('file'), async (req, re
       createdAt: result.createdAt,
       summary: result.summary,
       validation: result.validation,
+      docSummary,
       warnings: parsed.warnings,
       records: result.records,
     });
