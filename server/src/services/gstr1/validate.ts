@@ -55,10 +55,24 @@ export function validateRecord(section: SectionDef, data: Record<string, any>, c
     checkDate(k, data[k], ctx, e);
   }
 
-  // 4. Amount sanity
-  if (section.hasTax) {
-    if (toNumber(data.taxableValue) < 0) e.push(err('taxableValue', 'Taxable value cannot be negative'));
-    if (toNumber(data.cessAmount) < 0) e.push(err('cessAmount', 'Cess cannot be negative'));
+  // 3b. Return period must match the filing period being prepared.
+  if (ctx && data.returnPeriod) {
+    const rp = String(data.returnPeriod).replace(/\D/g, '').padStart(6, '0').slice(0, 6);
+    if (rp && rp !== ctx.period) {
+      e.push(err('returnPeriod', `Return Period ${data.returnPeriod} does not match the filing period ${ctx.period}`));
+    }
+  }
+
+  // 4. Amount sanity — no negatives in any amount field.
+  for (const k of ['taxableValue', 'iamt', 'camt', 'samt', 'cessAmount', 'invoiceValue', 'noteValue', 'grossAdvance', 'igst', 'cgst', 'sgst', 'nilSupplies', 'exemptedSupplies', 'nonGstSupplies']) {
+    if (data[k] !== undefined && toNumber(data[k]) < 0) e.push(err(k, `${k} cannot be negative`));
+  }
+
+  // 4b. Amendment documents must carry a reason + original invoice reference.
+  const AMEND = ['RNV', 'RCR', 'RDR', 'ANV', 'ACR', 'ADR'];
+  if (data.docType && AMEND.includes(String(data.docType).toUpperCase())) {
+    if (!String(data.reason ?? '').trim()) e.push(warn('reason', 'Amendment — specify the reason and original invoice details (recipient GSTIN, number, date)'));
+    if (!String(data.origInvoiceNumber ?? '').trim()) e.push(warn('origInvoiceNumber', 'Amendment — original invoice number is required'));
   }
 
   // 5. HSN / SAC master validation (structure + chapter + AATO granularity)
@@ -147,10 +161,11 @@ function checkDate(field: string, raw: any, ctx: ValidationContext | undefined, 
   if (!mon || mon < 1 || mon > 12) return;
   const ym = year * 100 + mon;
   if (ym < GST_EPOCH) e.push(err(field, `Date ${raw} is before GST rollout (Jul-2017)`));
-  if (ctx && field === 'invoiceDate') {
+  if (ctx && (field === 'invoiceDate' || field === 'noteDate')) {
     const p = parsePeriod(ctx.period);
     const periodYm = p.year * 100 + p.month;
-    if (ym > periodYm) e.push(warn(field, `Invoice date ${raw} is after the return period ${ctx.period}`));
+    if (ym > periodYm) e.push(warn(field, `${raw} is after the return period ${ctx.period} — verify amendment / future-dated`));
+    else if (ym < periodYm) e.push(warn(field, `${raw} is not in the return period ${ctx.period} — verify amendment / undeclared sale`));
   }
 }
 
@@ -228,10 +243,11 @@ function applySectionRules(section: SectionDef, data: Record<string, any>, ctx: 
       const inv = toNumber(data.invoiceValue ?? data.noteValue);
       const tax = toNumber(data.taxableValue);
       if (inv > 0 && tax > inv + AMOUNT_TOL) e.push(warn('taxableValue', 'Taxable value exceeds invoice/note value'));
-      // Credit/Debit notes must reference a valid original invoice + date.
+      // Credit/Debit notes must reference a valid original invoice + date, and a reason.
       if (section.key === 'cdnr' || section.key === 'cdnur') {
         if (!String(data.origInvoiceNumber ?? '').trim()) e.push(err('origInvoiceNumber', 'Credit/Debit note must reference the Original Invoice Number', 'RET191115'));
-        if (!String(data.origInvoiceDate ?? '').trim()) e.push(warn('origInvoiceDate', 'Original Invoice Date is recommended for credit/debit notes'));
+        if (!String(data.origInvoiceDate ?? '').trim()) e.push(warn('origInvoiceDate', 'Original Invoice Date is required for credit/debit notes'));
+        if (!String(data.reason ?? '').trim()) e.push(err('reason', 'Reason for credit/debit note must be specified (ReasonForCreditDebitNote)', 'RET191116'));
       }
       break;
     }

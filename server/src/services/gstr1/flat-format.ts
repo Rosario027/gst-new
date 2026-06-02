@@ -91,6 +91,7 @@ export const VALIDATION_COLUMNS: VColumn[] = [
   { key: 'PortCode', header: 'Port Code (Exports)', req: 'C' },
   { key: 'ShippingBillNumber', header: 'Shipping Bill No (Exports)', req: 'C' },
   { key: 'ShippingBillDate', header: 'Shipping Bill Date (Exports)', req: 'C', note: 'YYYY-MM-DD' },
+  { key: 'ReasonForCreditDebitNote', header: 'Reason (Credit/Debit Note / Amendment)', req: 'C', note: 'Required for CR / DR / amendments' },
 ];
 
 // Recognized header → canonical key (superset incl. full reference layout + validation headers).
@@ -261,6 +262,10 @@ export async function parseFlatWorkbook(buffer: Buffer): Promise<FlatParseResult
     rowNo += 1;
     const cls = classifyRow(r, supplierState);
     if (!cls) continue;
+    // Carry source fields needed by cross-cutting validations (period / doc type / reason).
+    cls.data.returnPeriod = str(r, 'ReturnPeriod');
+    cls.data.docType = str(r, 'DocumentType').toUpperCase();
+    if (cls.data.reason === undefined) cls.data.reason = str(r, 'ReasonForCreditDebitNote');
     records.push({ section: cls.section, rowNo, data: cls.data, errors: [], isValid: true });
     accumulateHsn(hsnAgg, r, cls.supplyClass, supplierState);
   }
